@@ -1,7 +1,7 @@
 #include "hashing.hpp" //this includes header file we have defined
 #include <openssl/evp.h>  //this includes libraries pre-defined, evp is the envelope library
 #include <sstream>  //
-#include <iomanip>
+#include <iomanip>  //used for input and output manipulation used in setfill and setw
 
 using namespace std;
 
