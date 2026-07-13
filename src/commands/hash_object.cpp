@@ -5,75 +5,79 @@
 #include <sstream>
 #include <filesystem>
 
-namespace fs = std::filesystem;
+namespace fs=std::filesystem;
 
-namespace Commands {
-    int runHashObject(const std::string& filePath) {
-        // 1. Verify that the target file actually exists on the disk
-        if (!fs::exists(filePath)) {
-            std::cerr << "Error: File does not exist: " << filePath << "\n";
+namespace Commands{
+    int runHashObject(const std::string& filePath){
+        
+        //verify whether file exists on disk
+        if (!fs::exists(filePath)){
+            std::cerr<< "Error: File does not exist: "<< filePath<< endl;  //cerr=cout with error giving capabilities
             return 1;
         }
+        //func returns boolean value false if it is a folder or a system file and not a regular file
         if (!fs::is_regular_file(filePath)) {
-            std::cerr << "Error: Path specified is not a regular file: " << filePath << "\n";
+            std::cerr<< "Error: Path specified is not a regular file: "<< filePath<< endl;
             return 1;
         }
 
-        // 2. Read the raw content of the file in binary mode
+        //object inFile created by ifstream
+        //OPENS THE FILE IN BINARY MODEEE
         std::ifstream inFile(filePath, std::ios::binary);
         if (!inFile.is_open()) {
-            std::cerr << "Error: Could not open file for reading: " << filePath << "\n";
+            std::cerr<< "Error: Could not open file for reading: "<< filePath<< endl;
             return 1;
         }
 
+        //buffer named empty string stream created
         std::stringstream buffer;
-        buffer << inFile.rdbuf();
-        std::string fileContent = buffer.str();
+        //reads buffer and returns pointer to it
+        buffer<< inFile.rdbuf();
+        //packages buffer content to string
+        std::string fileContent=buffer.str();
+        //breaks connection between hard drive and program
         inFile.close();
 
-        // 3. Replicate Git's official object format structure
-        // Git doesn't just hash raw file text. It prepends a header: "blob <content_size>\0"
-        // The '\0' null byte acts as a strict separator between the header metadata and the payload.
-        std::string gitHeader = "blob " + std::to_string(fileContent.size()) + '\0';
-        std::string storePayload = gitHeader + fileContent;
+        //blob=large binary object
+        //separates metadata header and file payload so basically like separating 
+        //IMPLEMENTATION OF MODEL SUBPARSER INTO HEADING AND CONTENT
+        std::string gitHeader="blob "+std::to_string(fileContent.size())+'\0';  //blob=object type identifier, tree=folders, commit=history snapshots
+        std::string storePayload= gitHeader+fileContent;  //puts header in front of the text file
 
-        // 4. Compute the OpenSSL SHA-256 hash using your Core module
-        std::string sha256Hash = Core::calcSHA256(storePayload);
-        if (sha256Hash.empty()) {
-            std::cerr << "Error: Cryptographic hashing mechanism failed.\n";
+        //compute hash using the core module
+        std::string sha256Hash=Core::calcSHA256(storePayload);
+        if(sha256Hash.empty()){
+            std::cerr<< "Error: Cryptographic hashing mechanism failed."<<endl;
             return 1;
         }
 
-        // 5. Determine the split-path database storage architecture
-        // The first 2 characters become the subfolder, remaining 62 become the file name.
-        fs::path objectsRoot = ".git/objects";
-        std::string dirPrefix = sha256Hash.substr(0, 2);
-        std::string fileSuffix = sha256Hash.substr(2);
+        //text slicing for storage: first two characters become the subfolder, remaining 62 become the file name
+        fs::path objectsRoot=".git/objects";
+        std::string dirPrefix=sha256Hash.substr(0, 2);
+        std::string fileSuffix sha256Hash.substr(2);
 
-        fs::path objectFolder = objectsRoot / dirPrefix;
-        fs::path objectFile = objectFolder / fileSuffix;
+        fs::path objectFolder= objectsRoot/dirPrefix;
+        fs::path objectFile= objectFolder/fileSuffix;
 
-        try {
-            // 6. Ensure the 2-character subfolder exists inside the database
+        try {//create 2 char folder inside the database
             fs::create_directories(objectFolder);
 
-            // 7. Write the header + file data package to the object store
+            //write the header+file as an object
             std::ofstream outFile(objectFile, std::ios::binary);
             if (!outFile.is_open()) {
-                std::cerr << "Error: Failed to write object path to disk.\n";
+                std::cerr<< "Error: Failed to write object path to disk."<< endl;
                 return 1;
             }
 
-            outFile << storePayload;
+            outFile<< storePayload;
             outFile.close();
 
-            // 8. Print out the full calculated hash string to standard output
-            // This mirrors real Git behavior perfectly!
-            std::cout << sha256Hash << "\n";
+            //print hash string
+            std::cout<< sha256Hash<< endl;
             return 0;
 
-        } catch (const fs::filesystem_error& e) {
-            std::cerr << "Database Write Exception: " << e.what() << "\n";
+        } catch(const fs::filesystem_error& e){
+            std::cerr<< "Database Write Exception: "<< e.what()<< endl;
             return 1;
         }
     }
