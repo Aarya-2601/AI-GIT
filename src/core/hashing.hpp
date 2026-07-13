@@ -1,6 +1,6 @@
 //include guard prevents double inclusion errors
-#ifndef HASHING_H
-#define HASHING_H
+#ifndef HASHING_HPP
+#define HASHING_HPP
 
 //other headers this file needs
 #include <string>
