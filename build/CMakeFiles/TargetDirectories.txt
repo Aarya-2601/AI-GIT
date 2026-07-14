@@ -1,0 +1,3 @@
+C:/Users/Dr. Hiren Doshi/Desktop/AI-GIT/build/CMakeFiles/ai-git.dir
+C:/Users/Dr. Hiren Doshi/Desktop/AI-GIT/build/CMakeFiles/edit_cache.dir
+C:/Users/Dr. Hiren Doshi/Desktop/AI-GIT/build/CMakeFiles/rebuild_cache.dir
