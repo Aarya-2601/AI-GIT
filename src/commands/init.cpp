@@ -3,14 +3,15 @@
 #include <fstream>
 
 namespace fs = std::filesystem;
-
-void init()
+namespace Commands
+{
+int runInit()
 {
     // Check if a repository already exists
     if (fs::exists(".aigit"))
     {
         std::cout << "Repository already exists.\n";
-        return;
+        return 1;
     }
 
     try
@@ -37,4 +38,7 @@ void init()
     {
         std::cerr << "Initialization failed: "<< e.what() << std::endl;
     }
+
+    return 0;
+}
 }
