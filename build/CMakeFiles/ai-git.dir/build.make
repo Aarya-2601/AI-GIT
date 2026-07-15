@@ -71,11 +71,41 @@ include CMakeFiles/ai-git.dir/flags.make
 CMakeFiles/ai-git.dir/codegen:
 .PHONY : CMakeFiles/ai-git.dir/codegen
 
+CMakeFiles/ai-git.dir/src/main.cpp.obj: CMakeFiles/ai-git.dir/flags.make
+CMakeFiles/ai-git.dir/src/main.cpp.obj: CMakeFiles/ai-git.dir/includes_CXX.rsp
+CMakeFiles/ai-git.dir/src/main.cpp.obj: C:/Users/Dr.\ Hiren\ Doshi/Desktop/AI-GIT/src/main.cpp
+CMakeFiles/ai-git.dir/src/main.cpp.obj: CMakeFiles/ai-git.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ai-git.dir/src/main.cpp.obj"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ai-git.dir/src/main.cpp.obj -MF CMakeFiles\ai-git.dir\src\main.cpp.obj.d -o CMakeFiles\ai-git.dir\src\main.cpp.obj -c "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\main.cpp"
+
+CMakeFiles/ai-git.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ai-git.dir/src/main.cpp.i"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\main.cpp" > CMakeFiles\ai-git.dir\src\main.cpp.i
+
+CMakeFiles/ai-git.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ai-git.dir/src/main.cpp.s"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\main.cpp" -o CMakeFiles\ai-git.dir\src\main.cpp.s
+
+CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj: CMakeFiles/ai-git.dir/flags.make
+CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj: CMakeFiles/ai-git.dir/includes_CXX.rsp
+CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj: C:/Users/Dr.\ Hiren\ Doshi/Desktop/AI-GIT/src/core/hashing.cpp
+CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj: CMakeFiles/ai-git.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj -MF CMakeFiles\ai-git.dir\src\core\hashing.cpp.obj.d -o CMakeFiles\ai-git.dir\src\core\hashing.cpp.obj -c "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\core\hashing.cpp"
+
+CMakeFiles/ai-git.dir/src/core/hashing.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ai-git.dir/src/core/hashing.cpp.i"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\core\hashing.cpp" > CMakeFiles\ai-git.dir\src\core\hashing.cpp.i
+
+CMakeFiles/ai-git.dir/src/core/hashing.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ai-git.dir/src/core/hashing.cpp.s"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\core\hashing.cpp" -o CMakeFiles\ai-git.dir\src\core\hashing.cpp.s
+
 CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj: CMakeFiles/ai-git.dir/flags.make
 CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj: CMakeFiles/ai-git.dir/includes_CXX.rsp
 CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj: C:/Users/Dr.\ Hiren\ Doshi/Desktop/AI-GIT/src/commands/hash_object.cpp
 CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj: CMakeFiles/ai-git.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj"
 	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj -MF CMakeFiles\ai-git.dir\src\commands\hash_object.cpp.obj.d -o CMakeFiles\ai-git.dir\src\commands\hash_object.cpp.obj -c "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\commands\hash_object.cpp"
 
 CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.i: cmake_force
@@ -90,7 +120,7 @@ CMakeFiles/ai-git.dir/src/commands/init.cpp.obj: CMakeFiles/ai-git.dir/flags.mak
 CMakeFiles/ai-git.dir/src/commands/init.cpp.obj: CMakeFiles/ai-git.dir/includes_CXX.rsp
 CMakeFiles/ai-git.dir/src/commands/init.cpp.obj: C:/Users/Dr.\ Hiren\ Doshi/Desktop/AI-GIT/src/commands/init.cpp
 CMakeFiles/ai-git.dir/src/commands/init.cpp.obj: CMakeFiles/ai-git.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ai-git.dir/src/commands/init.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ai-git.dir/src/commands/init.cpp.obj"
 	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ai-git.dir/src/commands/init.cpp.obj -MF CMakeFiles\ai-git.dir\src\commands\init.cpp.obj.d -o CMakeFiles\ai-git.dir\src\commands\init.cpp.obj -c "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\commands\init.cpp"
 
 CMakeFiles/ai-git.dir/src/commands/init.cpp.i: cmake_force
@@ -101,50 +131,20 @@ CMakeFiles/ai-git.dir/src/commands/init.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ai-git.dir/src/commands/init.cpp.s"
 	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\commands\init.cpp" -o CMakeFiles\ai-git.dir\src\commands\init.cpp.s
 
-CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj: CMakeFiles/ai-git.dir/flags.make
-CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj: CMakeFiles/ai-git.dir/includes_CXX.rsp
-CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj: C:/Users/Dr.\ Hiren\ Doshi/Desktop/AI-GIT/src/core/hashing.cpp
-CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj: CMakeFiles/ai-git.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj -MF CMakeFiles\ai-git.dir\src\core\hashing.cpp.obj.d -o CMakeFiles\ai-git.dir\src\core\hashing.cpp.obj -c "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\core\hashing.cpp"
-
-CMakeFiles/ai-git.dir/src/core/hashing.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ai-git.dir/src/core/hashing.cpp.i"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\core\hashing.cpp" > CMakeFiles\ai-git.dir\src\core\hashing.cpp.i
-
-CMakeFiles/ai-git.dir/src/core/hashing.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ai-git.dir/src/core/hashing.cpp.s"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\core\hashing.cpp" -o CMakeFiles\ai-git.dir\src\core\hashing.cpp.s
-
-CMakeFiles/ai-git.dir/src/main.cpp.obj: CMakeFiles/ai-git.dir/flags.make
-CMakeFiles/ai-git.dir/src/main.cpp.obj: CMakeFiles/ai-git.dir/includes_CXX.rsp
-CMakeFiles/ai-git.dir/src/main.cpp.obj: C:/Users/Dr.\ Hiren\ Doshi/Desktop/AI-GIT/src/main.cpp
-CMakeFiles/ai-git.dir/src/main.cpp.obj: CMakeFiles/ai-git.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ai-git.dir/src/main.cpp.obj"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ai-git.dir/src/main.cpp.obj -MF CMakeFiles\ai-git.dir\src\main.cpp.obj.d -o CMakeFiles\ai-git.dir\src\main.cpp.obj -c "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\main.cpp"
-
-CMakeFiles/ai-git.dir/src/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ai-git.dir/src/main.cpp.i"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\main.cpp" > CMakeFiles\ai-git.dir\src\main.cpp.i
-
-CMakeFiles/ai-git.dir/src/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ai-git.dir/src/main.cpp.s"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Dr. Hiren Doshi\Desktop\AI-GIT\src\main.cpp" -o CMakeFiles\ai-git.dir\src\main.cpp.s
-
 # Object files for target ai-git
 ai__git_OBJECTS = \
-"CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj" \
-"CMakeFiles/ai-git.dir/src/commands/init.cpp.obj" \
+"CMakeFiles/ai-git.dir/src/main.cpp.obj" \
 "CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj" \
-"CMakeFiles/ai-git.dir/src/main.cpp.obj"
+"CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj" \
+"CMakeFiles/ai-git.dir/src/commands/init.cpp.obj"
 
 # External object files for target ai-git
 ai__git_EXTERNAL_OBJECTS =
 
+ai-git.exe: CMakeFiles/ai-git.dir/src/main.cpp.obj
+ai-git.exe: CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj
 ai-git.exe: CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj
 ai-git.exe: CMakeFiles/ai-git.dir/src/commands/init.cpp.obj
-ai-git.exe: CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj
-ai-git.exe: CMakeFiles/ai-git.dir/src/main.cpp.obj
 ai-git.exe: CMakeFiles/ai-git.dir/build.make
 ai-git.exe: CMakeFiles/ai-git.dir/linkLibs.rsp
 ai-git.exe: CMakeFiles/ai-git.dir/objects1.rsp
