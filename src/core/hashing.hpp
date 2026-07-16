@@ -1,5 +1,4 @@
-//include guard prevents double inclusion errors
-#ifndef HASHING_HPP
+#ifndef HASHING_HPP  //include guard prevents double inclusion errors
 #define HASHING_HPP
 
 //other headers this file needs
