@@ -4,7 +4,7 @@
 #include "models/object.hpp"
 #include <vector>
 
-namespace Models {
+namespace Models{
 
     struct CommitMsg{
         std::string name;  //identity
