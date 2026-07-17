@@ -4,7 +4,7 @@
 #include <vector>
 #include <stdexcept>  //standard exceptions library
 
-namespace Core {
+namespace Core{
 
     //compresses block to small string
     std::string compressString(const std::string& data){

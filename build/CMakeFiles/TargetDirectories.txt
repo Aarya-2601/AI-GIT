@@ -1,0 +1,3 @@
+C:/AI-GIT/build/CMakeFiles/ai-git.dir
+C:/AI-GIT/build/CMakeFiles/ALL_BUILD.dir
+C:/AI-GIT/build/CMakeFiles/ZERO_CHECK.dir

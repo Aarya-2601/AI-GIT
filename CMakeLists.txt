@@ -5,47 +5,13 @@ project(AIGit LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 #how strictly the compiler must adhere to the version standard
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(LINK_LIBRARIES "")
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
-#look for OpenSSL in hosting OS
-find_package(OpenSSL)
-
-#automation of OpenSSL download
-if(NOT OpenSSL_FOUND)
-    message(STATUS "Local OpenSSL not found. Downloading from GitHub...")
-    include(FetchContent)
-    FetchContent_Declare(
-        openssl
-        GIT_REPOSITORY https://github.com/openssl/openssl.git
-        GIT_TAG        openssl-3.4.0
-    )
-    # Download and make the OpenSSL targets available to our build system
-    FetchContent_MakeAvailable(openssl)
-else()
-    message(STATUS "Native OpenSSL detection complete.")
-    list(APPEND LINK_LIBRARIES OpenSSL::SSL OpenSSL::Crypto)
-endif()
-
-find_package(zlib)
-
-if(NOT ZLIB_FOUND)
-    message(STATUS "Local zlib tracking target missing. Fetching source from GitHub.")
-    include(FetchContent)
-    FetchContent_Declare(
-        zlib
-        GIT_REPOSITORY https://github.com/facebook/zstd.git
-        GIT_TAG        zstd 1.5.7 -1
-    )
-    FetchContent_MakeAvailable(zlib)
-    add_library(ZlibFallback ALIAS zlibstatic)
-    list(APPEND LINK_LIBRARIES ZlibFallback)
-else()
-    message(STATUS "Native Zlib detection complete.")
-    list(APPEND LINK_LIBRARIES ZLIB::ZLIB)
-
-endif()
-
+#because vcpkg handles the downloading, these must be found locally.
+find_package(OpenSSL REQUIRED)
+find_package(ZLIB REQUIRED)
 
 #gather all source files into the variable sources
 set(SOURCES
@@ -68,11 +34,9 @@ add_executable(ai-git ${SOURCES})
 #instead of global include_directories(src), we explicitly scope it to our binary object
 target_include_directories(ai-git PRIVATE src)
 
-#link OpenSSl binary to the backend
-if(NOT OpenSSL_FOUND AND NOT TARGET openssl)
-    target_link_libraries(ai-git PRIVATE ssl crypto)
-endif()
-
-if(NOT ZLIB_FOUND AND NOT TARGET zibstatic)
-    target_link_libraries(ai-git PRIVATE z)
-endif()
+#modern CMake targets auto pull all necessary downstream system dependencies
+target_link_libraries(ai-git PRIVATE 
+    OpenSSL::SSL 
+    OpenSSL::Crypto 
+    ZLIB::ZLIB
+)
