@@ -5,29 +5,30 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
+#include <unordered_map>
 
 namespace fs = std::filesystem;
 using namespace std;
+
+// index is not history it is basically the staging area and only has to store the file you are going to commit the very next
+// so if we modify a file, we modify its hash and remove the old hash completely.
 
 namespace Commands
 {
     int runAdd(const std::string& filePath)
     {
-        //verify whether repository exists
         if (!fs::exists(".aigit"))
         {
             std::cerr << "Error: Not an AI-Git repository." << std::endl;
             return 1;
         }
 
-        //verify whether file exists on disk
         if (!fs::exists(filePath))
         {
-            std::cerr << "Error: File does not exist: " << filePath << std::endl;  //cerr=cout with error giving capabilities
+            std::cerr << "Error: File does not exist: " << filePath << std::endl;
             return 1;
         }
 
-        //func returns boolean value false if it is a folder or a system file and not a regular file
         if (!fs::is_regular_file(filePath))
         {
             std::cerr << "Error: Path specified is not a regular file: " << filePath << std::endl;
@@ -46,7 +47,6 @@ namespace Commands
         buffer << inFile.rdbuf();
 
         std::string fileContent = buffer.str();
-
         inFile.close();
 
         std::string gitHeader = "blob " + std::to_string(fileContent.size()) + '\0';
@@ -71,7 +71,6 @@ namespace Commands
         {
             fs::create_directories(objectFolder);
 
-            // Store object only if it doesn't already exist
             if (!fs::exists(objectFile))
             {
                 std::ofstream outFile(objectFile, std::ios::binary);
@@ -86,17 +85,41 @@ namespace Commands
                 outFile.close();
             }
 
-            // Append blob information to the staging index
-            std::ofstream index(".aigit/index", std::ios::app);
+          
+            //update staging index with the new/modified file and its hash
 
-            if (!index.is_open())
+            std::unordered_map<std::string, std::string> indexEntries;
+
+            std::ifstream indexIn(".aigit/index");
+
+            if (indexIn.is_open())
+            {
+                std::string hash, path;
+
+                while (indexIn >> hash >> path)
+                {
+                    indexEntries[path] = hash;
+                }
+
+                indexIn.close();
+            }
+
+            indexEntries[filePath] = sha256Hash;
+
+            std::ofstream indexOut(".aigit/index", std::ios::trunc);
+
+            if (!indexOut.is_open())
             {
                 std::cerr << "Error: Could not open index." << std::endl;
                 return 1;
             }
 
-            index << sha256Hash << " " << filePath << '\n';
-            index.close();
+            for (const auto& entry : indexEntries)
+            {
+                indexOut << entry.second << " " << entry.first << '\n';
+            }
+
+            indexOut.close();
 
             std::cout << "Added " << filePath << " to staging area." << std::endl;
 
