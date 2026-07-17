@@ -1,15 +1,24 @@
 #include "commands.hpp"
 #include "../core/hashing.hpp"
+#include "../core/storage.hpp"
+#include "../core/compression.hpp"
+#include "../models/blob.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <filesystem>
+<<<<<<< HEAD
 #include <unordered_map>
+=======
+#include <stdexcept>
+#include <exception>
+>>>>>>> f81f17cb9740dd59ec61237e5b7ee89be3b56cc4
 
 namespace fs = std::filesystem;
 using namespace std;
 
+<<<<<<< HEAD
 // index is not history it is basically the staging area and only has to store the file you are going to commit the very next
 // so if we modify a file, we modify its hash and remove the old hash completely.
 
@@ -19,10 +28,18 @@ namespace Commands
     {
         if (!fs::exists(".aigit"))
         {
+=======
+namespace Commands{
+    int runAdd(const std::string& filePath){
+        
+        //verify whether repository exists
+        if (!fs::exists(".aigit")){
+>>>>>>> f81f17cb9740dd59ec61237e5b7ee89be3b56cc4
             std::cerr << "Error: Not an AI-Git repository." << std::endl;
             return 1;
         }
 
+<<<<<<< HEAD
         if (!fs::exists(filePath))
         {
             std::cerr << "Error: File does not exist: " << filePath << std::endl;
@@ -31,27 +48,45 @@ namespace Commands
 
         if (!fs::is_regular_file(filePath))
         {
+=======
+        //verify whether file exists on disk
+        if (!fs::exists(filePath)){
+            std::cerr << "Error: File does not exist: " << filePath << std::endl;  //cerr=cout with error giving capabilities
+            return 1;
+        }
+
+        //func returns boolean value false if it is a folder or a system file and not a regular file
+        if (!fs::is_regular_file(filePath)){
+>>>>>>> f81f17cb9740dd59ec61237e5b7ee89be3b56cc4
             std::cerr << "Error: Path specified is not a regular file: " << filePath << std::endl;
             return 1;
         }
 
+        //open the raw file in binary mode, take the data and put it as a chunk into fileContent
         std::ifstream inFile(filePath, std::ios::binary);
 
-        if (!inFile.is_open())
-        {
+        if (!inFile.is_open()){
             std::cerr << "Error: Could not open file." << std::endl;
             return 1;
         }
-
         std::stringstream buffer;
         buffer << inFile.rdbuf();
+<<<<<<< HEAD
 
         std::string fileContent = buffer.str();
+=======
+        std::string fileContent= buffer.str();
+>>>>>>> f81f17cb9740dd59ec61237e5b7ee89be3b56cc4
         inFile.close();
 
-        std::string gitHeader = "blob " + std::to_string(fileContent.size()) + '\0';
-        std::string storePayload = gitHeader + fileContent;
+        try{
+            Models::Blob modelBlob(fileContent);
+            std::string rawData= modelBlob.serialize();
+            std::string sha256Hash=Core::calcSHA256(rawData);
+            std::string compressed=Core::compressString(rawData);
+            Core::writeObject(sha256Hash, rawData);
 
+<<<<<<< HEAD
         std::string sha256Hash = Core::calcSHA256(storePayload);
 
         if (sha256Hash.empty())
@@ -120,14 +155,28 @@ namespace Commands
             }
 
             indexOut.close();
+=======
+            if(sha256Hash.empty()){
+                std::cerr<< "Error: Model storage failed."<< std::endl;
+                return 1;
+            }
 
-            std::cout << "Added " << filePath << " to staging area." << std::endl;
+            std::filesystem::path indexPath= std::filesystem::path(".aigit") / "index";
+            std::ofstream index(indexPath, std::ios::app);
+            
+            if(!index.is_open()){
+                std::cerr << "Error: Could not open index." << std::endl;
+                return 1;
+            }
+            index<< sha256Hash<< " "<< filePath.string()<< std::endl;
+            index.close();
+>>>>>>> f81f17cb9740dd59ec61237e5b7ee89be3b56cc4
 
+            std::cout<< "Added: "<< filePath<< "to the staging ledger."<< std::endl;
             return 0;
         }
-        catch (const fs::filesystem_error& e)
-        {
-            std::cerr << "Filesystem Error: " << e.what() << std::endl;
+        catch(const std::exception& e){
+            std::cerr<< "Filesystem Error: "<< e.what()<< std::endl;
             return 1;
         }
     }
