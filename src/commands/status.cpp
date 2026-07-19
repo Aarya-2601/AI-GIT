@@ -14,7 +14,7 @@ namespace Commands
 {
     int runStatus()
     {
-        if (!fs::exists(".aigit"))
+        if (!fs::exists(".aigit")) // repository check
         {
             std::cerr << "Error: Not an AI-Git repository.\n";
             return 1;
@@ -24,13 +24,13 @@ namespace Commands
 
         std::unordered_map<std::string, std::string> indexEntries;
 
-        std::ifstream index(".aigit/index");
+        std::ifstream index(".aigit/index"); //index file kholo
 
-        if (index.is_open())
+        if (index.is_open()) 
         {
             std::string hash, path;
 
-            while (index >> hash >> path)
+            while (index >> hash >> path) // usme me se sab padho aur map me daal do
             {
                 indexEntries[path] = hash;
             }
@@ -44,7 +44,7 @@ namespace Commands
 
        
 
-        for (const auto& entry : fs::recursive_directory_iterator("."))
+        for (const auto& entry : fs::recursive_directory_iterator(".")) // ye aise repository scan karte he
         {
             if (!entry.is_regular_file())
                 continue;
@@ -53,22 +53,23 @@ namespace Commands
             if (entry.path().string().find(".aigit") != std::string::npos)
                 continue;
 
-            std::string filePath = entry.path().string();
+            std::string filePath = entry.path().string(); // remove ./ from file path so you will get file name and map me daalo
 
             // Remove leading "./"
             if (filePath.substr(0,2) == "./")
                 filePath = filePath.substr(2);
 
             
-
-            if (indexEntries.find(filePath) == indexEntries.end())
+            // if file is in index, continue, else, put that file into untracked files
+            if (indexEntries.find(filePath) == indexEntries.end()) 
             {
                 untrackedFiles.push_back(filePath);
                 continue;
             }
 
            
-
+            // modified file check agar file is in index, toh blob, hash, compare if hashes are same
+            // if not modify hash, put in map
             std::ifstream inFile(filePath, std::ios::binary);
 
             std::stringstream buffer;
@@ -92,7 +93,7 @@ namespace Commands
         }
 
 
-        for (const auto& file : indexEntries)
+        for (const auto& file : indexEntries) // now scan index and check if file is still present in working directory, if not, put that file into deleted files
         {
             if (!fs::exists(file.first))
             {
