@@ -3,8 +3,7 @@
 #include <utility>  //low level library 
 
 namespace Models {
-
-    Commit::Commit(std::string treeHash, std::vector<std::string> parents, 
+    Commit(std::string treeHash, std::vector<std::string> parents, 
                    std::string author, std::string committer, 
                    std::string message, long long timestamp)
         : mtreeHash(std::move(treeHash)), mparentHashes(std::move(parents)),
