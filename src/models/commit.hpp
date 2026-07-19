@@ -22,7 +22,7 @@ namespace Models{
         std::string messagewrite;  //revision history
 
     public:
-        Commit() = default;
+        Commit()= default;
 
         std::string getTypeString() const override{
             return "commit"; 
