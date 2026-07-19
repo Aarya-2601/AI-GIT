@@ -43,7 +43,7 @@ namespace Commands{
         std::string storePayload= blobObject.serialize(); 
 
         //compute hash using the core module
-        std::string sha256Hash=Core::calcSHA256(storePayload);
+        std::string sha256Hash= Core::calcSHA256(storePayload);
         if(sha256Hash.empty()){
             std::cerr<< "Error: Cryptographic hashing mechanism failed."<< std::endl;
             return 1;

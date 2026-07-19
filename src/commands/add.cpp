@@ -66,7 +66,7 @@ namespace Commands{
                 std::cerr << "Error: Could not open index." << std::endl;
                 return 1;
             }
-            index<< sha256Hash<< " "<< filePath.string()<< std::endl;
+            index<< sha256Hash<< " "<< filePath<< std::endl;
             index.close();
 
             std::cout<< "Added: "<< filePath<< "to the staging ledger."<< std::endl;
