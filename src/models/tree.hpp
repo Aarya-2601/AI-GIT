@@ -27,7 +27,7 @@ namespace Models{
         std::string Models::Tree::serialize() const override;
 
         void Models::Tree::addEntry(const TreeDef& entry);
-        const std::vector<TreeDef>& getEntries() const { 
+        const std::vector<TreeDef>& getEntries() const{ 
             return mentries; 
         }
     };
