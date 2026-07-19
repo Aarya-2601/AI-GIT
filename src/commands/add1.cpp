@@ -1,24 +1,17 @@
 #include "commands.hpp"
 #include "../core/hashing.hpp"
-#include "../core/storage.hpp"
-#include "../core/compression.hpp"
-#include "../models/blob.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <filesystem>
-<<<<<<< HEAD
 #include <unordered_map>
-=======
-#include <stdexcept>
-#include <exception>
->>>>>>> f81f17cb9740dd59ec61237e5b7ee89be3b56cc4
+
+//map to store filename and hash
 
 namespace fs = std::filesystem;
 using namespace std;
 
-<<<<<<< HEAD
 // index is not history it is basically the staging area and only has to store the file you are going to commit the very next
 // so if we modify a file, we modify its hash and remove the old hash completely.
 
@@ -26,68 +19,42 @@ namespace Commands
 {
     int runAdd(const std::string& filePath)
     {
-        if (!fs::exists(".aigit"))
+        if (!fs::exists(".aigit")) //does .aigit exist?
         {
-=======
-namespace Commands{
-    int runAdd(const std::string& filePath){
-        
-        //verify whether repository exists
-        if (!fs::exists(".aigit")){
->>>>>>> f81f17cb9740dd59ec61237e5b7ee89be3b56cc4
             std::cerr << "Error: Not an AI-Git repository." << std::endl;
             return 1;
         }
 
-<<<<<<< HEAD
-        if (!fs::exists(filePath))
+        if (!fs::exists(filePath)) // does specified file exist?
         {
             std::cerr << "Error: File does not exist: " << filePath << std::endl;
             return 1;
         }
 
-        if (!fs::is_regular_file(filePath))
+        if (!fs::is_regular_file(filePath))  // is file a normal readbale file
         {
-=======
-        //verify whether file exists on disk
-        if (!fs::exists(filePath)){
-            std::cerr << "Error: File does not exist: " << filePath << std::endl;  //cerr=cout with error giving capabilities
-            return 1;
-        }
-
-        //func returns boolean value false if it is a folder or a system file and not a regular file
-        if (!fs::is_regular_file(filePath)){
->>>>>>> f81f17cb9740dd59ec61237e5b7ee89be3b56cc4
             std::cerr << "Error: Path specified is not a regular file: " << filePath << std::endl;
             return 1;
         }
 
-        //open the raw file in binary mode, take the data and put it as a chunk into fileContent
-        std::ifstream inFile(filePath, std::ios::binary);
+        std::ifstream inFile(filePath, std::ios::binary); //open the file and convert to binary
 
-        if (!inFile.is_open()){
+        if (!inFile.is_open())
+        {
             std::cerr << "Error: Could not open file." << std::endl;
             return 1;
         }
-        std::stringstream buffer;
-        buffer << inFile.rdbuf();
-<<<<<<< HEAD
 
-        std::string fileContent = buffer.str();
-=======
-        std::string fileContent= buffer.str();
->>>>>>> f81f17cb9740dd59ec61237e5b7ee89be3b56cc4
-        inFile.close();
+        std::stringstream buffer; // this takes everything into ram
+        buffer << inFile.rdbuf(); // so instead of disk- stream, it's now ram- stream
 
-        try{
-            Models::Blob modelBlob(fileContent);
-            std::string rawData= modelBlob.serialize();
-            std::string sha256Hash=Core::calcSHA256(rawData);
-            std::string compressed=Core::compressString(rawData);
-            Core::writeObject(sha256Hash, rawData);
+        std::string fileContent = buffer.str(); // take file input into buffer and read into a string
+        inFile.close();  // ab file ki jarurat nahi close it cause everything's already in string
 
-<<<<<<< HEAD
-        std::string sha256Hash = Core::calcSHA256(storePayload);
+        std::string gitHeader = "blob " + std::to_string(fileContent.size()) + '\0';  //harcoding the blob format blob <size>\0<contents>
+        std::string storePayload = gitHeader + fileContent;
+
+        std::string sha256Hash = Core::calcSHA256(storePayload); // hash this blob object
 
         if (sha256Hash.empty())
         {
@@ -95,11 +62,11 @@ namespace Commands{
             return 1;
         }
 
-        std::string dirPrefix = sha256Hash.substr(0, 2);
+        std::string dirPrefix = sha256Hash.substr(0, 2); // create sub folders to store blobs
         std::string fileSuffix = sha256Hash.substr(2);
 
         fs::path objectsRoot = ".aigit/objects";
-        fs::path objectFolder = objectsRoot / dirPrefix;
+        fs::path objectFolder = objectsRoot / dirPrefix; // this is basically rejoining the paths again to check for duplication now
         fs::path objectFile = objectFolder / fileSuffix;
 
         try
@@ -155,28 +122,14 @@ namespace Commands{
             }
 
             indexOut.close();
-=======
-            if(sha256Hash.empty()){
-                std::cerr<< "Error: Model storage failed."<< std::endl;
-                return 1;
-            }
 
-            std::filesystem::path indexPath= std::filesystem::path(".aigit") / "index";
-            std::ofstream index(indexPath, std::ios::app);
-            
-            if(!index.is_open()){
-                std::cerr << "Error: Could not open index." << std::endl;
-                return 1;
-            }
-            index<< sha256Hash<< " "<< filePath<< std::endl;
-            index.close();
->>>>>>> f81f17cb9740dd59ec61237e5b7ee89be3b56cc4
+            std::cout << "Added " << filePath << " to staging area." << std::endl;
 
-            std::cout<< "Added: "<< filePath<< "to the staging ledger."<< std::endl;
             return 0;
         }
-        catch(const std::exception& e){
-            std::cerr<< "Filesystem Error: "<< e.what()<< std::endl;
+        catch (const fs::filesystem_error& e)
+        {
+            std::cerr << "Filesystem Error: " << e.what() << std::endl;
             return 1;
         }
     }
