@@ -1,0 +1,31 @@
+#build putputs and generated binaries
+build/
+bin/
+lib/
+out/
+*.exe
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.obj
+*.o
+*.pdb
+
+#heavy packages
+vcpkg/
+vcpkg_installed/
+
+#vscode local settings
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/settings.json
+
+#vs code cache
+.vs/
+*.user
+*.suo
+*.userosv
+*.sln.docstates
