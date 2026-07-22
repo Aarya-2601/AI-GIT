@@ -19,14 +19,17 @@ set(SOURCES
     "src/core/hashing.cpp"
     "src/core/compression.cpp"
     "src/core/storage.cpp"
+    "src/core/config.cpp"
+    "src/core/index.cpp"
+    "src/core/refs.cpp"
+
     "src/commands/hash_object.cpp"
     "src/commands/init.cpp"
     "src/commands/add.cpp"
 
-    # to be added when we write the code
-    # "src/models/blob.cpp"
-    # "src/models/tree.cpp"
-    # "src/models/commit.cpp"
+    "src/models/blob.cpp"
+    "src/models/tree.cpp"
+    "src/models/commit.cpp"
 )
 
 add_executable(ai-git ${SOURCES})
