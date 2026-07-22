@@ -27,7 +27,7 @@ namespace Models{
 
     //adding entry to tree
     void Tree::addEntry(const TreeDef& entry){
-        mentries.push_back(entry);
+        entries.push_back(entry);
     }
 
     //converts tree object to flat sequence of binary data
@@ -35,9 +35,9 @@ namespace Models{
         std::string treeContent;
 
         //processes every folder or file record entry
-        for(const auto& entry:mentries){
+        for(const auto& entry: entries){
             //[mode] [name]\0[hash_bytes]
-            treeContent+= entry.mode+" "+entry.name;
+            treeContent+= entry.mode+" "+entry.name;  //entry mode info is given below
             treeContent.push_back('\0'); 
             treeContent+= hexToBinary(entry.hash);
         }
@@ -54,4 +54,6 @@ namespace Models{
 [type][permissions]
 100-normal files
 120-symbolic link
-040-directory*/
+040-directory
+
+040000-tree, 100644-blob normal file, 100755-blob executable, 120000-symbolic link*/
