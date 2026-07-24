@@ -23,9 +23,7 @@ namespace Core{
         void addEntry(const IndexEntry& entry);
         void removeEntry(const std::string& path);
 
-        const std::map<std::string, IndexEntry>& getEntries() const{
-            return entries;
-        }
+        const std::map<std::string, IndexEntry>& getEntries() const;
     };
 }
 
