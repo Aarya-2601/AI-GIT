@@ -13,9 +13,9 @@ namespace Core{
             return str.substr(first, (last-first+1));
         }
 
-        std::string getHead(){
+        std::string getHead(const std::string& repoPath){
             fs::path headpath=fs::path(repoPath)/"HEAD";
-            std::ifstream file(headPath);
+            std::ifstream file(headpath);
             if(!file.is_open()){
                 return "";
             }
@@ -24,8 +24,8 @@ namespace Core{
             return trim(line);
         }
 
-        std::string getcurrentCommitHash(){
-            std::string headContent=getHEAD(repoPath);
+        std::string getcurrentCommitHash(const std::string& repoPath){
+            std::string headContent=getHead(repoPath);
             if(headContent.empty()){
                 return "";
             }
@@ -63,7 +63,7 @@ namespace Core{
             file<<commitHash<<std::endl;
         }
 
-        void setHead(const std::string& targetRef){
+        void setHead(const std::string& targetRef, const std::string& repoPath){
             fs::path headPath=fs::path(repoPath)/"HEAD";
             fs::create_directories(headPath.parent_path());
 

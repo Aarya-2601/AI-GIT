@@ -66,7 +66,7 @@ namespace Core{
         settings[key]=value;
     }
 
-    std::string Config::get(const std::string& key, const std::string& defaultValue="") const{
+    std::string Config::get(const std::string& key, const std::string& defaultValue) const{
         auto it=settings.find(key);
         if(it!=settings.end()){
             return it->second;
