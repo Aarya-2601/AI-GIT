@@ -1,3 +1,5 @@
 #pragma once
 
-void init();
+namespace Commands{
+    int runInit();
+}

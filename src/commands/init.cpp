@@ -1,3 +1,5 @@
+#include "commands/init.hpp"
+
 #include <iostream>
 #include <filesystem>
 #include <fstream>
