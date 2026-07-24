@@ -26,6 +26,7 @@ set(SOURCES
     "src/commands/hash_object.cpp"
     "src/commands/init.cpp"
     "src/commands/add.cpp"
+    "src/commands/status.cpp"
 
     "src/models/blob.cpp"
     "src/models/tree.cpp"
