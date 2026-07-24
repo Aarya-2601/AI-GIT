@@ -1,6 +1,7 @@
 #include "commands.hpp"
 #include "core/hashing.hpp"
 #include "core/filesystem.hpp"
+#include "commands/add.hpp"
 
 #include <iostream>
 #include <fstream>
