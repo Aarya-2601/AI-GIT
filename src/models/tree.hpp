@@ -9,12 +9,12 @@ namespace Models{
         std::string mode; //permissions string for files, dirs, etc
         std::string name; 
         std::string hash; 
-        bool isSubtree;   //identifies if the treee points to another tree
+        bool isSubtree;   //identifies if the tree points to another tree
     };
 
     class Tree: public GitObject{
     private:
-        std::vector<TreeDef> mentries;
+        std::vector<TreeDef> entries;
 
     public:
         Tree()=default;
@@ -28,7 +28,7 @@ namespace Models{
 
         void Models::Tree::addEntry(const TreeDef& entry);
         const std::vector<TreeDef>& getEntries() const{ 
-            return mentries; 
+            return entries; 
         }
     };
 }

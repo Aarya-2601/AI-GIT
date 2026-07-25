@@ -1,14 +1,13 @@
 #include "commands.hpp"
-#include "../core/hashing.hpp"
+#include "commands/status.hpp"
+#include "core/hashing.hpp"
+#include "core/filesystem.hpp"
 
 #include <iostream>
 #include <fstream>
-#include <filesystem>
 #include <unordered_map>
 #include <vector>
-
-namespace fs = std::filesystem;
-using namespace std;
+#include <sstream>
 
 namespace Commands
 {
@@ -19,8 +18,6 @@ namespace Commands
             std::cerr << "Error: Not an AI-Git repository.\n";
             return 1;
         }
-
-        
 
         std::unordered_map<std::string, std::string> indexEntries;
 
@@ -73,7 +70,7 @@ namespace Commands
             std::ifstream inFile(filePath, std::ios::binary);
 
             std::stringstream buffer;
-            buffer << inFile.rdbuf();
+            buffer<< inFile.rdbuf();
 
             std::string fileContent = buffer.str();
 

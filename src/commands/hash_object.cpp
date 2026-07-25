@@ -53,7 +53,7 @@ namespace Commands{
             //deflate via zlib
             std::string compressedPayload=Core::compressString(storePayload);
 
-            if(!Core::writeObject(sha256hash, compressedPayload)){
+            if(!Core::Storage::writeObject(sha256Hash, compressedPayload)){
                 return 1;
             }
             //print hash string

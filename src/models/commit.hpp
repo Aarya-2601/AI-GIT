@@ -3,6 +3,7 @@
 
 #include "models/object.hpp"
 #include <vector>
+#include <string>
 
 namespace Models{
 
@@ -17,12 +18,13 @@ namespace Models{
     private:
         std::string treeHash;  //pointer to the master snapshot folder 
         std::vector<std::string> parents;  //arrays tracking parent hash
-        CommitMsg mauthor;
-        CommitMsg mcommitter;
-        std::string messagewrite;  //revision history
+        CommitMsg author;
+        CommitMsg committer;
+        std::string message;  //revision history
 
     public:
         Commit()= default;
+        Commit(std::string committreeHash, std::vector<std::string> commitparents, CommitMsg commitauthor, CommitMsg commitcommitter, std::string commitmessage, long long timestamp, std::string timezone);
 
         std::string getTypeString() const override{
             return "commit"; 
@@ -38,14 +40,14 @@ namespace Models{
         void addParentHash(const std::string& hash){ 
             parents.push_back(hash); 
         }
-        void setAuthor(const CommitMsg& author){ 
-            mauthor=author; 
+        void setAuthor(const CommitMsg& commitauthor){ 
+            author=commitauthor; 
         }
-        void setCommitter(const CommitMsg& committer){ 
-            mcommitter=committer; 
+        void setCommitter(const CommitMsg& commitcommitter){ 
+            committer=commitcommitter; 
         }
-        void setMessage(const std::string& message){ 
-            messagewrite=message; }
+        void setMessage(const std::string& commitmessage){ 
+            message=commitmessage; }
 
         //write parameters
         const std::string& getTreeHash() const{ 
@@ -55,13 +57,13 @@ namespace Models{
             return parents;
         }
         const CommitMsg& getAuthor() const{ 
-            return mauthor; 
+            return author; 
         }
         const CommitMsg& getCommitter() const{ 
-            return mcommitter; 
+            return committer; 
         }
         const std::string& getMessage() const{ 
-            return messagewrite; 
+            return message; 
         }
     };
 }
