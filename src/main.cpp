@@ -24,6 +24,16 @@ int main(int argc, char* argv[]) {
         }
         return Commands::runHashObject(args[2]);
     } 
+    else if(command == "add")
+    {
+        if (args.size() < 3) {
+            std::cerr << "Error: 'add' requires a valid filename parameter.\n";
+            return 1;
+        }
+        return Commands::runAdd(args[2]);
+    }
+    
+
     else {
         std::cerr << "Error: Command '" << command << "' not recognized.\n";
         return 1;
