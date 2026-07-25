@@ -2,13 +2,13 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include<
+#include <filesystem>
 
 namespace fs=std::filesystem;
 
 namespace Core{
         //object path for the other two funcs
-        fs::path getObjectPath(const std::string& sha256Hash){
+        fs::path Storage::getObjectPath(const std::string& sha256Hash){
             fs::path objectsRoot=".git/objects";
             
             //if invalid or short hash
@@ -20,10 +20,10 @@ namespace Core{
             std::string fileSuffix=sha256Hash.substr(2);
 
             //overloading of slash for building paths
-            return objectsRoot / dirPrefix / fileSuffix;
+            return objectsRoot/dirPrefix/fileSuffix;
         }
 
-        bool writeObject(const std::string& sha256Hash, const std::string& compressedData){
+        bool Storage::writeObject(const std::string& sha256Hash, const std::string& compressedData){
             fs::path objectFile=getObjectPath(sha256Hash);
             //empty object file
             if(objectFile.empty()){
@@ -57,8 +57,8 @@ namespace Core{
             }
         }
 
-        std::string readObject(const std::string& sha256Hash){
-            fs::path objectFile=getObjectPath(sha256Hash);
+        std::string Storage::readObject(const std::string& sha256Hash){
+            fs::path objectFile=Storage::getObjectPath(sha256Hash);
 
             //not regular file means system file
             if(!fs::exists(objectFile) || !fs::is_regular_file(objectFile)){
