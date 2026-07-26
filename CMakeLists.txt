@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 #how strictly the compiler must adhere to the version standard
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 #because vcpkg handles the downloading, these must be found locally.
