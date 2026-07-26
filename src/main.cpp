@@ -30,11 +30,8 @@ int main(int argc, char* argv[]) {
         }
         return Commands::runHashObject(args[2]);
     } 
-    else if(command=="status"){
-        return Commands::runStatus();
-    }
-    else{
-        std::cerr<<"Error: Command '" << command << "' not recognized.\n";
+    else {
+        std::cerr << "Error: Command '" << command << "' not recognized.\n";
         return 1;
     }
 }
