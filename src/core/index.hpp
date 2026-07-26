@@ -9,6 +9,9 @@ namespace Core{
         std::string path;
         std::string hash;
         std::string mode;  //directory/file code
+
+        IndexEntry() = default;
+        IndexEntry(std::string p, std::string h, std::string m = "100644"): path(std::move(p)), hash(std::move(h)), mode(std::move(m)) {}
     };
 
     class Index{
@@ -22,6 +25,7 @@ namespace Core{
 
         void addEntry(const IndexEntry& entry);
         void removeEntry(const std::string& path);
+        bool hasEntry(const std::string& path) const;
 
         const std::map<std::string, IndexEntry>& getEntries() const;
     };

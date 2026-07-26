@@ -3,8 +3,18 @@
 
 #include "models/object.hpp"
 #include <vector>
+#include <string>
+#include <map>
+#include <memory>
 
 namespace Models{
+    struct TreeNode{
+        std::string name;
+        bool isDirectory;
+        std::string hash;std::map<std::string, std::unique_ptr<TreeNode>> children;
+        TreeNode(const std::string& n, bool dir): name(n), isDirectory(dir) {}
+    };
+
     struct TreeDef{
         std::string mode; //permissions string for files, dirs, etc
         std::string name; 
@@ -22,11 +32,11 @@ namespace Models{
         std::string getTypeString() const override{ 
             return "tree"; 
         }
-        
         //all trees converted into standard ones
-        std::string Models::Tree::serialize() const override;
+        std::string serialize() const override;
 
-        void Models::Tree::addEntry(const TreeDef& entry);
+        void addEntry(const TreeDef& entry);
+        
         const std::vector<TreeDef>& getEntries() const{ 
             return entries; 
         }

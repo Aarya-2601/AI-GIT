@@ -1,21 +1,21 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 #include "../commands/commit.hpp"
-#include "../models/index_entry.hpp"
-#include "../models/tree_node.hpp"
-
+#include "../core/index.hpp"
+#include "../models/tree.hpp"
 #include "../core/hashing.hpp"
-#include "../core/filesystem.hpp"
-namespace fs=std::filesystem;
+#include "core/filesystem.hpp"
 
 using namespace std;
 
 namespace
 {
 
-std::vector<Models::IndexEntry> readIndex()
+std::vector<Core::IndexEntry> readIndex()
 {
-    std::vector<Models::IndexEntry> entries;
+    std::vector<Core::IndexEntry> entries;
 
     std::ifstream index(".aigit/index");
 
@@ -29,7 +29,7 @@ std::vector<Models::IndexEntry> readIndex()
 
     while (index >> hash >> path)
     {
-        Models::IndexEntry entry;
+        Core::IndexEntry entry;
 
         entry.path = path;
         entry.hash = hash;
@@ -43,7 +43,7 @@ std::vector<Models::IndexEntry> readIndex()
 }
 
 std::unique_ptr<Models::TreeNode>
-buildDirectoryTree(const std::vector<Models::IndexEntry>& entries)
+buildDirectoryTree(const std::vector<Core::IndexEntry>& entries)
 {
     auto root =
         std::make_unique<Models::TreeNode>("", true);

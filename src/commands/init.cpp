@@ -1,7 +1,7 @@
 #include "commands/init.hpp"
+#include "core/filesystem.hpp"
 
 #include <iostream>
-#include <filesystem>
 #include <fstream>
 
 namespace fs = std::filesystem;
