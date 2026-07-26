@@ -43,3 +43,4 @@ target_link_libraries(ai-git PRIVATE
     OpenSSL::Crypto 
     ZLIB::ZLIB
 )
+
