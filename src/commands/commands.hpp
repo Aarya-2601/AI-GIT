@@ -8,5 +8,7 @@ namespace Commands{  //organizational namepace box
     int runInit();  //init command to be scheduled for run first
     int runHashObject(const std::string& filePath);  //hash object function
     int runAdd(const std::string& filePath);
+    int runCommit(const std::string& message);
+    int runStatus();
 }
 #endif

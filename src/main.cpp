@@ -23,15 +23,28 @@ int main(int argc, char* argv[]) {
     if(command=="init"){
         return Commands::runInit();
     } 
+    else if(command=="add"){
+        for(int i=2; i<argc-1; i++){
+            return Commands::runAdd(args[i]);
+        }
+    }
+    else if(command=="status"){
+        return Commands::runStatus();
+    }
+    else if(command=="commit"){
+        for(int i=2; i<argc-1; i++){
+            return Commands::runCommit(args[i]);
+        }
+    }
     else if(command=="hash-object"){
-        if (args.size()<3) {
+        if(args.size()<3){
             std::cerr<<"Error: 'hash-object' requires a valid filename parameter."<<std::endl;
             return 1;
         }
         return Commands::runHashObject(args[2]);
     } 
-    else {
-        std::cerr << "Error: Command '" << command << "' not recognized.\n";
+    else{
+        std::cerr<<"Error: Command '"<<command<<"' not recognized."<<std::endl;
         return 1;
     }
 }
