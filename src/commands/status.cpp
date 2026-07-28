@@ -41,7 +41,7 @@ namespace Commands
 
             size_t nullEntryPos=body.find('\0', spacePos+1);
             if (nullEntryPos == std::string::npos) break;
-            std::string name=body.substr(spacePos + 1, nullEntryPos - (spacePos + 1));
+            std::string name=body.substr(spacePos + 1, nullEntryPos-(spacePos + 1));
 
             if(nullEntryPos + 20 > body.size()) break;
             std::string binaryHash=body.substr(nullEntryPos+1, 20);
@@ -209,7 +209,7 @@ namespace Commands
             hasChanges=true;
             std::cout<<"Changes to be committed:\n";
             for(const auto& [label, file] : stagedFiles){
-                std::cout<<"\tnew file:   "<<label<<file<<"\n";
+                std::cout<<"\t"<<label<<file<<"\n";
             }
             std::cout<<"\n";
         }
