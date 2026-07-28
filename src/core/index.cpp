@@ -22,7 +22,6 @@ namespace Core{
                 entries[entry.path]=entry;
             }
         }
-        std::cout<<"Index loaded from "<<Indexpath<<std::endl;
     }
 
     void Index::save(const std::string& Indexpath) const{
@@ -34,19 +33,16 @@ namespace Core{
         for(const auto& [path, entry]:entries){
             file<<entry.mode<<" "<<entry.hash<<" "<<entry.path<<std::endl;
         }
-        std::cout<<"Index saved to "<<Indexpath<<std::endl;
     }
 
     void Index::addEntry(const IndexEntry& entry){
         entries[entry.path]=entry;
-        std::cout<<"Entry added: "<<entry.path <<std::endl;
     }
 
     void Index::removeEntry(const std::string& path){
         auto it=entries.find(path);
         if(!entries.empty() && it!=entries.end()){
             entries.erase(it);
-            std::cout<<"Entry removed: "<<path<<std::endl;
         }
         else{
             std::cout<<"Entry not found at: "<<path<<std::endl;
@@ -54,9 +50,6 @@ namespace Core{
     }  
 
     const std::map<std::string, IndexEntry>& Index::getEntries() const{
-        for(const auto& entry: entries){
-            std::cout<<"Mode: "<<entry.second.mode<<", Hash: "<<entry.second.hash<<", Path: "<<entry.second.path<<std::endl;
-        }
         return entries;
     }
 }

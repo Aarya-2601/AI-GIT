@@ -9,7 +9,7 @@ namespace fs=std::filesystem;
 namespace Core{
         //object path for the other two funcs
         fs::path Storage::getObjectPath(const std::string& sha256Hash){
-            fs::path objectsRoot=".git/objects";
+            fs::path objectsRoot=".aigit/objects";
             
             //if invalid or short hash
             if(sha256Hash.size()<2) {
