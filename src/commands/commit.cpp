@@ -1,44 +1,21 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
+#include "commands/commit.hpp"
 
-#include "../commands/commit.hpp"
-#include "../core/index.hpp"
-#include "../models/tree.hpp"
-#include "../core/hashing.hpp"
-#include "core/filesystem.hpp"
-
+namespace fs=std::filesystem;
 using namespace std;
 
 namespace
 {
 
 std::vector<Core::IndexEntry> readIndex()
-{
+{   
+    Core::Index index;
+    index.load(".aigit/index");
     std::vector<Core::IndexEntry> entries;
 
-    std::ifstream index(".aigit/index");
-
-    if (!index.is_open())
+    for (const auto& [path, entry] : index.getEntries())
     {
-        throw std::runtime_error("Failed to open index.");
-    }
-
-    std::string hash;
-    std::string path;
-
-    while (index >> hash >> path)
-    {
-        Core::IndexEntry entry;
-
-        entry.path = path;
-        entry.hash = hash;
-
         entries.push_back(entry);
-    }
-
-    index.close();
-
+    }   
     return entries;
 }
 
@@ -89,81 +66,47 @@ buildDirectoryTree(const std::vector<Core::IndexEntry>& entries)
     return root;
 }
 
-std::string createTreeObject(Models::TreeNode* node)
-{
-    std::ostringstream payload;
-
-    for (const auto& child : node->children)
-    {
-        if (child.second->isDirectory)
-        {
-            payload
-                << "40000 "
-                << child.second->name
-                << " "
-                << child.second->hash
-                << '\n';
-        }
-        else
-        {
-            payload
-                << "100644 "
-                << child.second->name
-                << " "
-                << child.second->hash
-                << '\n';
-        }
-    }
-
-    return payload.str();
-}
-
 std::string writeTree(Models::TreeNode* node)
-{
+{   
+    Models::Tree treeObj;
     for (auto& child : node->children)
     {
         if (child.second->isDirectory)
-        {
+        {   
             child.second->hash = writeTree(child.second.get());
+
+            Models::TreeDef def;
+            def.mode = "040000";
+            def.name = child.second->name;
+            def.hash = child.second->hash;
+            def.isSubtree = true;
+
+            treeObj.addEntry(def);
+        }
+        else{
+            Models::TreeDef def;
+            def.mode = "100644";
+            def.name = child.second->name;
+            def.hash = child.second->hash;
+            def.isSubtree = false;
+
+            treeObj.addEntry(def);
         }
     }
 
-    std::string payload = createTreeObject(node);
-
-    std::string header =
-        "tree " +
-        std::to_string(payload.size()) +
-        '\0';
-
-    std::string object = header + payload;
-
-    std::string treeHash = Core::calcSHA256(object);
+    std::string payload = treeObj.serialize();
+    std::string treeHash = Core::calcSHA256(payload);
 
     if (treeHash.empty())
     {
         throw std::runtime_error("Failed to hash tree object.");
     }
 
-    std::string dirPrefix = treeHash.substr(0, 2);
-    std::string fileSuffix = treeHash.substr(2);
+    std::string compressedObject = Core::compressString(payload);
 
-    fs::path objectsRoot = ".aigit/objects";
-    fs::path objectFolder = objectsRoot / dirPrefix;
-    fs::path objectFile = objectFolder / fileSuffix;
-
-    fs::create_directories(objectFolder);
-
-    if (!fs::exists(objectFile))
+    if (!Core::Storage::writeObject(treeHash, compressedObject))
     {
-        std::ofstream outFile(objectFile, std::ios::binary);
-
-        if (!outFile.is_open())
-        {
-            throw std::runtime_error("Failed to store tree object.");
-        }
-
-        outFile << object;
-        outFile.close();
+        throw std::runtime_error("Failed to store tree object.");
     }
 
     node->hash = treeHash;
@@ -202,61 +145,50 @@ std::string writeCommit(const std::string& rootTreeHash,
         branchFile.close();
     }
 
-    std::ostringstream payload;
+    Core::Config config;
+    config.load(".aigit/config");
 
-    payload << "tree "
-            << rootTreeHash
-            << '\n';
+    long long timestamp = static_cast<long long>(std::time(nullptr));
+    std::string timezone = "+0000";
 
+    Models::CommitMsg author{
+        config.getAuthorName(),
+        config.getAuthorEmail(),
+        timestamp,
+        timezone
+    };
+    Models::CommitMsg committer = author;
+
+    std::vector<std::string> parents;
     if (!parentHash.empty())
     {
-        payload << "parent "
-                << parentHash
-                << '\n';
+        parents.push_back(parentHash);
     }
 
-    payload << "author AI-Git\n";
-    payload << "committer AI-Git\n";
-    payload << '\n';
-    payload << message << '\n';
+    Models::Commit commitObj(
+        rootTreeHash,
+        parents,
+        author,
+        committer,
+        message,
+        timestamp,
+        timezone
+    );
 
-    std::string payloadString = payload.str();
+    std::string uncompressedObject = commitObj.serialize();
 
-    std::string header =
-        "commit " +
-        std::to_string(payloadString.size()) +
-        '\0';
-
-    std::string object =
-        header + payloadString;
-
-            std::string commitHash = Core::calcSHA256(object);
+    std::string commitHash = Core::calcSHA256(uncompressedObject);
 
     if (commitHash.empty())
     {
         throw std::runtime_error("Failed to hash commit object.");
     }
 
-    std::string dirPrefix = commitHash.substr(0, 2);
-    std::string fileSuffix = commitHash.substr(2);
+    std::string compressedObject = Core::compressString(uncompressedObject);
 
-    fs::path objectsRoot = ".aigit/objects";
-    fs::path objectFolder = objectsRoot / dirPrefix;
-    fs::path objectFile = objectFolder / fileSuffix;
-
-    fs::create_directories(objectFolder);
-
-    if (!fs::exists(objectFile))
+    if (!Core::Storage::writeObject(commitHash, compressedObject))
     {
-        std::ofstream outFile(objectFile, std::ios::binary);
-
-        if (!outFile.is_open())
-        {
-            throw std::runtime_error("Failed to store commit object.");
-        }
-
-        outFile << object;
-        outFile.close();
+        throw std::runtime_error("Failed to store commit object.");
     }
 
     return commitHash;
@@ -342,5 +274,4 @@ int runCommit(const std::string& message)
         return 1;
     }
 }
-
 }
