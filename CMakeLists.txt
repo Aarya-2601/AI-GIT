@@ -45,3 +45,28 @@ target_link_libraries(ai-git PRIVATE
     ZLIB::ZLIB
 )
 
+#CPACK INSTALLATION AND PACKAGING CONFIGURATION
+
+#put executable in the bin folder
+install(TARGETS ai-git DESTINATION bin)
+
+#package metadata info
+set(CPACK_PACKAGE_NAME "AI-Git")
+set(CPACK_PACKAGE_VENDOR "The Ai-Git Team")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "High-Performance Standalone VCS for AI & ML Models")
+set(CPACK_PACKAGE_VERSION_MAJOR "1")
+set(CPACK_PACKAGE_VERSION_MINOR "0")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+
+#for Windows setup wizards (NSIS), this automatically adds a checkbox asking the user if they want to append ai-git to system environment variables so they can run ai-git from any terminal prompt instantly.
+set(CPACK_NSIS_MODIFY_PATH ON)
+
+if(WIN32)
+    set(CPACK_GENERATOR "NSIS;ZIP")
+elseif(APPLE)
+    set(CPACK_GENERATOR "DragNDrop;TGZ")
+else()
+    set(CPACK_GENERATOR "DEB;RPM;TGZ")
+endif()
+
+include(CPack)

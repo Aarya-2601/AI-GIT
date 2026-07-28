@@ -24,9 +24,8 @@ int main(int argc, char* argv[]) {
         return Commands::runInit();
     } 
     else if(command=="add"){
-        for(int i=2; i<argc-1; i++){
-            return Commands::runAdd(args[i]);
-        }
+        std::vector<std::string> targets(args.begin()+2, args.end());
+        return Commands::runAdd(targets);
     }
     else if(command=="status"){
         return Commands::runStatus();
