@@ -89,7 +89,6 @@ namespace Commands
             std::cerr << "Error: Not an AI-Git repository." << std::endl;
             return 1;
         }
-
         if(targets.empty()){
             std::cerr << "Nothing specified, nothing added." << std::endl;
             return 0;
@@ -123,9 +122,9 @@ namespace Commands
                     std::string pStr=entry.path().generic_string();
 
                     //skip aigit folder
-                    if(pStr.find(".aigit") != std::string::npos)
+                    if(pStr.find(".aigit") != std::string::npos || pStr.find("build/") != std::string::npos || pStr.find(".git") != std::string::npos ||pStr.find(".vscode/") != std::string::npos || pStr.find("vcpkg/") != std::string::npos ){
                         continue;
-
+                    }
                     //process regular files inside sub-directories
                     if(fs::is_regular_file(entry.status())){
                         processfile(entry.path(), indexEntries);
