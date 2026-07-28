@@ -1,16 +1,4 @@
-#include "commands.hpp"
 #include "commands/status.hpp"
-#include "core/hashing.hpp"
-#include "core/filesystem.hpp"
-#include "models/blob.hpp"
-
-#include <iostream>
-#include <fstream>
-#include <unordered_map>
-#include <vector>
-#include <sstream>
-#include <set>
-#include <algorithm>
 
 namespace fs=std::filesystem;
 
@@ -25,11 +13,103 @@ namespace Commands
             pathStr=pathStr.substr(2);
         }
         //carriage return will not turn into a newline character
-        while (!pathStr.empty() && (pathStr.back() == '\r' || pathStr.back() == '\n' || pathStr.back() == ' '))
+        while(!pathStr.empty() && (pathStr.back() == '\r' || pathStr.back() == '\n' || pathStr.back() == ' '))
         {
             pathStr.pop_back();
         }
         return pathStr;
+    }
+
+    static void collectHeadEntries(const std::string& treeHash, const std::string& currentPrefix, std::unordered_map<std::string, std::string>& headEntries){
+        if(treeHash.empty()) return;
+
+        std::string compressedTree=Core::Storage::readObject(treeHash);
+        if(compressedTree.empty()) return;
+
+        std::string rawTree=Core::decompressData(compressedTree);
+        if(rawTree.empty()) return;
+
+        size_t nullPos=rawTree.find('\0');
+        if(nullPos == std::string::npos) return;
+
+        std::string body=rawTree.substr(nullPos + 1);
+        size_t i=0;
+        while(i < body.size()){
+            size_t spacePos=body.find(' ', i);
+            if(spacePos == std::string::npos) break;
+            std::string mode=body.substr(i, spacePos-i);
+
+            size_t nullEntryPos=body.find('\0', spacePos+1);
+            if (nullEntryPos == std::string::npos) break;
+            std::string name=body.substr(spacePos + 1, nullEntryPos - (spacePos + 1));
+
+            if(nullEntryPos + 20 > body.size()) break;
+            std::string binaryHash=body.substr(nullEntryPos+1, 20);
+            i=nullEntryPos+21;
+
+            std::stringstream ss;
+            for(unsigned char c : binaryHash){
+                ss<<std::hex<<std::setw(2)<<std::setfill('0')<<static_cast<int>(c);
+            }
+            std::string hexHash=ss.str();
+
+            std::string fullPath=currentPrefix.empty() ? name : currentPrefix+"/"+name;
+
+            if(mode == "040000"){
+                collectHeadEntries(hexHash, fullPath, headEntries);
+            } 
+            else{
+                headEntries[fullPath]=hexHash;
+            }
+        }
+    }
+
+    static std::unordered_map<std::string, std::string> getHeadCommitEntries()
+    {
+        std::unordered_map<std::string, std::string> headEntries;
+        if(!fs::exists(".aigit/HEAD")) return headEntries;
+
+        std::ifstream headFile(".aigit/HEAD");
+        if(!headFile.is_open()) return headEntries;
+
+        std::string refLine;
+        std::getline(headFile, refLine);
+        headFile.close();
+
+        if(refLine.rfind("ref: ", 0) != 0) return headEntries;
+
+        std::string refPath = ".aigit/"+refLine.substr(5);
+        if(!fs::exists(refPath)) return headEntries;
+
+        std::ifstream branchFile(refPath);
+        if(!branchFile.is_open()) return headEntries;
+
+        std::string commitHash;
+        std::getline(branchFile, commitHash);
+        branchFile.close();
+
+        while(!commitHash.empty() && (commitHash.back() == '\r' || commitHash.back() == '\n' || commitHash.back() == ' ')){
+            commitHash.pop_back();
+        }
+
+        if(commitHash.empty()) return headEntries;
+
+        std::string compressedCommit=Core::Storage::readObject(commitHash);
+        if(compressedCommit.empty()) return headEntries;
+
+        std::string rawCommit=Core::decompressData(compressedCommit);
+        if(rawCommit.empty()) return headEntries;
+
+        size_t treePos = rawCommit.find("tree ");
+        if(treePos != std::string::npos){
+            size_t start = treePos + 5;
+            size_t end = rawCommit.find_first_of("\r\n", start);
+            if(end != std::string::npos){
+                std::string rootTreeHash = rawCommit.substr(start, end - start);
+                collectHeadEntries(rootTreeHash, "", headEntries);
+            }
+        }
+        return headEntries;
     }
 
     int runStatus()
@@ -40,95 +120,86 @@ namespace Commands
             return 1;
         }
 
-        std::unordered_map<std::string, std::string> indexEntries;
-        std::ifstream index(".aigit/index"); //index file kholo
+        Core::Index index;
+        index.load(".aigit/index"); //index file kholo
 
-        if (index.is_open()) 
-        {   
-            std::string line;
-            while (std::getline(index, line)){
-                std::string cleanLine = normalizePath(line);
-                if (cleanLine.empty()) continue;
-
-                std::stringstream ss(cleanLine);
-                std::string hash, path;
-
-                if (ss >> hash >> path) // usme me se sab padho aur map me daal do
-                {
-                    indexEntries[path] = hash;
-                }
-            }
-            index.close();
-        }
-
+        auto headEntries = getHeadCommitEntries();
+        
+        std::vector<std::pair<std::string, std::string>> stagedFiles; // <type, path>
         std::vector<std::string> modifiedFiles;
         std::vector<std::string> deletedFiles;
         std::vector<std::string> untrackedFiles;
-        std::vector<std::string> stagedFiles;
         std::set<std::string> seenDiskFiles;
 
-        for (const auto& entry : fs::recursive_directory_iterator(".")) // ye aise repository scan karte he
-        {      
-            if(!entry.is_regular_file()) continue;
+        for (const auto& [path, entry] : index.getEntries())
+        {
+            auto headIt = headEntries.find(path);
+            if (headIt == headEntries.end()) {
+                stagedFiles.push_back({"new file:   ", path});
+            } else if (headIt->second != entry.hash) {
+                stagedFiles.push_back({"modified:   ", path});
+            }
+        }
 
-            std::string pStr=normalizePath(entry.path().generic_string());
-            // Skip repository metadata
+        for (const auto& entry : fs::recursive_directory_iterator("."))
+        {      
+            if (!entry.is_regular_file()) continue;
+
+            std::string pStr = normalizePath(entry.path().generic_string());
+            
+            // Skip repository metadata & build output folders
             if (pStr.find(".aigit") != std::string::npos || pStr.find("build/") != std::string::npos || pStr.find(".git") != std::string::npos || pStr.find(".vscode/") != std::string::npos || pStr.find("vcpkg/") != std::string::npos)
             {
                 continue;
             }
-            if (!entry.is_regular_file())
-                continue;
 
-            std::string filePath=normalizePath(entry.path());
+            std::string filePath = normalizePath(entry.path());
             seenDiskFiles.insert(filePath);
 
-            // Remove leading "./"
-            if (filePath.substr(0,2) == "./")
-                filePath = filePath.substr(2);
+            const auto& indexMap = index.getEntries();
+            auto idxIt = indexMap.find(filePath);
 
-            // if file is in index, continue, else, put that file into untracked files
-            if (indexEntries.find(filePath) == indexEntries.end()) 
+            if(idxIt == indexMap.end()) 
             {
                 untrackedFiles.push_back(filePath);
-                continue;
             }
-            else{
-                // modified file check agar file is in index, toh blob, hash, compare if hashes are same
-                // if not modify hash, put in map
+            else 
+            {
                 std::ifstream inFile(entry.path(), std::ios::binary);
-                if(inFile.is_open()){
+                if (inFile.is_open()) {
                     std::stringstream buffer;
-                    buffer<< inFile.rdbuf();
+                    buffer << inFile.rdbuf();
                     std::string fileContent = buffer.str();
                     inFile.close();
 
                     Models::Blob blobObject(fileContent);
-                    std::string storePayload= blobObject.serialize();
-                    std::string sha256Hash= Core::calcSHA256(storePayload);
-                    if(sha256Hash.empty()){
-                        std::cerr<< "Error: Cryptographic hashing mechanism failed."<< std::endl;
-                        return false;
+                    std::string storePayload = blobObject.serialize();
+                    std::string sha256Hash = Core::calcSHA256(storePayload);
+
+                    if (sha256Hash.empty()) {
+                        std::cerr << "Error: Cryptographic hashing mechanism failed." << std::endl;
+                        return 1; 
                     }
-                    if (sha256Hash != indexEntries[filePath])
+
+                    if (sha256Hash != idxIt->second.hash)
                     {
                         modifiedFiles.push_back(filePath);
                     }
                 }
-                else{
-                    std::cerr<<"Error: Failed to open an InFile."<<std::endl;
+                else {
+                    std::cerr << "Error: Failed to open file for reading: " << filePath << std::endl;
                 }
             }
         }
 
-        for (const auto& file : indexEntries) // now scan index and check if file is still present in working directory, if not, put that file into deleted files
+        for (const auto& [path, entry] : index.getEntries())
         {
-            if (seenDiskFiles.find(file.first) == seenDiskFiles.end())
+            if (seenDiskFiles.find(path) == seenDiskFiles.end())
             {
-                deletedFiles.push_back(file.first);
+                deletedFiles.push_back(path);
             }
         }
-
+           
         //formatting
         std::cout<<"On branch main\n\n";  //abhi ke liye main rakha hai, when we get ai-git branch sorted then we will add branch name here
         bool hasChanges=false;
@@ -137,15 +208,14 @@ namespace Commands
         if (!stagedFiles.empty()){
             hasChanges=true;
             std::cout<<"Changes to be committed:\n";
-            for(const auto& file : stagedFiles){
-                std::cout<<"\tnew file:   "<<file<<"\n";
+            for(const auto& [label, file] : stagedFiles){
+                std::cout<<"\tnew file:   "<<label<<file<<"\n";
             }
             std::cout<<"\n";
         }
 
         //unstaged modifications and deletions
-        if (modifiedFiles.empty() ||
-            deletedFiles.empty())
+        if (!modifiedFiles.empty() || !deletedFiles.empty())
         {
             hasChanges=true;
             std::cout<<"Changes not staged for commit:\n";
