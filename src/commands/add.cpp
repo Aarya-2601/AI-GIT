@@ -1,13 +1,4 @@
-#include "commands.hpp"
-#include "core/hashing.hpp"
-#include "core/filesystem.hpp"
 #include "commands/add.hpp"
-#include "models/blob.hpp"
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <unordered_map>
 
 //map to store filename and hash
 
@@ -27,7 +18,7 @@ namespace Commands
         return pathStr;
     }
 
-    static bool processfile(const fs::path& filePath, std::unordered_map<std::string, std::string>& indexEntries){
+    static bool processfile(const fs::path& filePath, Core::Index& indexEntries){
         std::ifstream inFile(filePath, std::ios::binary);
         if(!inFile.is_open()){
             std::cerr<<"Error: Could not open file: "<<std::endl;
@@ -47,37 +38,20 @@ namespace Commands
             return false;
         }
 
-        std::string dirPrefix=sha256Hash.substr(0, 2);
-        std::string fileSuffix=sha256Hash.substr(2);
-
-        fs::path objectFolder=fs::path(".aigit/objects")/dirPrefix;
-        fs::path objectFile=objectFolder/fileSuffix;
-
-        try
-        {
-            fs::create_directories(objectFolder);
-
-            if (!fs::exists(objectFile))
-            {
-                std::ofstream outFile(objectFile, std::ios::binary);
-
-                if (!outFile.is_open())
-                {
-                    std::cerr << "Error: Failed to create object." << std::endl;
-                    return false;
-                }
-
-                outFile << storePayload;
-                outFile.close();
+        try{
+            std::string compressedData=Core::compressString(storePayload);
+            if(!Core::Storage::writeObject(sha256Hash, compressedData)){
+                std::cerr << "Error: Storage system failed to write object blob." << std::endl;
+                return false;
             }
         }
-        catch(const fs::filesystem_error& e){
-            std::cerr<<"Filesystem Error: "<<e.what()<<std::endl;
+        catch(const std::exception& e){
+            std::cerr<<"Compression/Storage Error: "<<e.what()<<std::endl;
             return false;
         }
-            
+
         std::string normPath=normalizePath(filePath);
-        indexEntries[normPath]=sha256Hash;
+        indexEntries.addEntry(Core::IndexEntry(normPath, sha256Hash, "100644"));
         std::cout<<"Added "<<normPath<<" to staging area."<<std::endl;
         return true;
     }
@@ -93,23 +67,10 @@ namespace Commands
             std::cerr << "Nothing specified, nothing added." << std::endl;
             return 0;
         }
-          
-        //update staging index with the new/modified file and its hash
-        std::unordered_map<std::string, std::string> indexEntries;
-        std::ifstream indexIn(".aigit/index");
-
-        if (indexIn.is_open())
-        {
-            std::string hash, path;
-
-            while (indexIn >> hash >> path)
-            {
-                indexEntries[path] = hash;
-            }
-
-            indexIn.close();
-        }
-
+        
+        Core::Index indexEntries;
+        indexEntries.load(".aigit/index");
+        
         for(const auto& target : targets){
             fs::path targetPath(target);
             if(!fs::exists(targetPath)){
@@ -147,12 +108,7 @@ namespace Commands
             return 1;
         }
 
-        for (const auto& entry : indexEntries)
-        {
-            indexOut << entry.second << " " << entry.first << '\n';
-        }
-
-        indexOut.close();
+        indexEntries.save(".aigit/index");
         return 0;
     }
 
