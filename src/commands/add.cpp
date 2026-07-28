@@ -52,7 +52,7 @@ namespace Commands
 
         std::string normPath=normalizePath(filePath);
         indexEntries.addEntry(Core::IndexEntry(normPath, sha256Hash, "100644"));
-        std::cout<<"Added "<<normPath<<" to staging area."<<std::endl;
+        std::cout<<"\nAdded "<<normPath<<" to staging area."<<std::endl<<std::endl;
         return true;
     }
 
