@@ -25,7 +25,6 @@ namespace Core{
 
         void addEntry(const IndexEntry& entry);
         void removeEntry(const std::string& path);
-        bool hasEntry(const std::string& path) const;
 
         const std::map<std::string, IndexEntry>& getEntries() const;
     };

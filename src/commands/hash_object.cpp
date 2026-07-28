@@ -1,13 +1,4 @@
-#include "commands.hpp"
-#include "core/hashing.hpp"
-#include "core/compression.hpp"
-#include "core/storage.hpp"
-#include "models/blob.hpp"
-#include "core/filesystem.hpp"
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
+#include "commands/hash_object.hpp"
 
 namespace Commands{
 
