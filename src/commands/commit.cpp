@@ -207,6 +207,11 @@ void updateHEAD(const std::string& commitHash)
     std::getline(headFile, refLine);
     headFile.close();
 
+    while (!refLine.empty() && (refLine.back() == '\r' || refLine.back() == '\n' || refLine.back() == ' '))
+    {
+        refLine.pop_back();
+    }
+    
     if (refLine.substr(0, 5) != "ref: ")
     {
         throw std::runtime_error("Invalid HEAD format.");
