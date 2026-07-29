@@ -10,5 +10,7 @@ namespace Commands{  //organizational namepace box
     int runAdd(const std::vector<std::string>& targets);
     int runCommit(const std::string& message);
     int runStatus();
+    int runLog();
+    int runConfig(const std::vector<std::string>& args);
 }
 #endif

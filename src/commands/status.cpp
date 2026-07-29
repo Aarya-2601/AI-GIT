@@ -41,11 +41,11 @@ namespace Commands
 
             size_t nullEntryPos=body.find('\0', spacePos+1);
             if (nullEntryPos == std::string::npos) break;
-            std::string name=body.substr(spacePos + 1, nullEntryPos-(spacePos + 1));
+            std::string name=body.substr(spacePos+1, nullEntryPos-(spacePos + 1));
 
-            if(nullEntryPos + 20 > body.size()) break;
-            std::string binaryHash=body.substr(nullEntryPos+1, 20);
-            i=nullEntryPos+21;
+            if(nullEntryPos+1+32 > body.size()) break;
+            std::string binaryHash=body.substr(nullEntryPos+1, 32);
+            i=nullEntryPos+1+32;
 
             std::stringstream ss;
             for(unsigned char c : binaryHash){
@@ -75,6 +75,10 @@ namespace Commands
         std::string refLine;
         std::getline(headFile, refLine);
         headFile.close();
+
+        while(!refLine.empty() && (refLine.back()=='\r' || refLine.back()=='\n' || refLine.back()==' ')){
+            refLine.pop_back();
+        }
 
         if(refLine.rfind("ref: ", 0) != 0) return headEntries;
 

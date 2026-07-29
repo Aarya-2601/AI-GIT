@@ -1,17 +1,12 @@
-#include <bits/stdc++.h>
-
-#include "../commands/log.hpp"
-
-#include "../models/commitstruct.hpp"
+#include "commands/log.hpp"
 
 namespace fs=std::filesystem;
-
 using namespace std;
 
 //theres no input in this everythings from head and refs folders 
 
 namespace
-{
+{   
     // first thing is to know where the latest pointer is at (which branch) and get the latest commit hash
     std::string getCurrentBranchRef()
 {
@@ -26,6 +21,11 @@ namespace
     std::getline(headFile, refLine);
     headFile.close();
 
+    while (!refLine.empty() && (refLine.back() == '\r' || refLine.back() == '\n' || refLine.back() == ' '))
+    {
+        refLine.pop_back();
+    }
+
     if (refLine.substr(0, 5) != "ref: ")
     {
         throw std::runtime_error("Invalid HEAD format.");
@@ -34,9 +34,17 @@ namespace
     return refLine.substr(5);
 }
 
+//latest commit hash from the current branch
 std::string getCurrentCommitHash(const std::string& branchRef)
-{
-    std::ifstream branchFile(".aigit/" + branchRef);
+{   
+    fs::path refPath = fs::path(".aigit") / branchRef;
+
+    if (!fs::exists(refPath))
+    {
+        return "";
+    }
+
+    std::ifstream branchFile(refPath);
 
     if (!branchFile.is_open())
     {
@@ -55,128 +63,147 @@ Models::Commit loadCommit(const std::string& hash)
 {
     Models::Commit commit;
 
-    // Split hash into folder and filename
-    std::string dirPrefix = hash.substr(0, 2);
-    std::string fileSuffix = hash.substr(2);
-
-    fs::path objectFile =
-        fs::path(".aigit/objects") /
-        dirPrefix /
-        fileSuffix;
-
-    // Open commit object
-    std::ifstream inFile(objectFile, std::ios::binary);
-
-    if (!inFile.is_open())
+    // Split hash into folder and filename & open commit object and read entire object
+    std::string compressedData = Core::Storage::readObject(hash);
+    if (compressedData.empty())
     {
-        throw std::runtime_error("Failed to open commit object.");
+        throw std::runtime_error("Failed to read commit object from storage: " + hash);
     }
 
-    // Read entire object
-    std::stringstream buffer;
-    buffer << inFile.rdbuf();
+    std::string rawObject = Core::decompressData(compressedData);
 
-    std::string object = buffer.str();
-
-    inFile.close();
+    if (rawObject.empty())
+    {
+        throw std::runtime_error("Failed to decompress commit object: " + hash);
+    }
 
     // Find end of header ("commit <size>\0")
-    size_t nullPos = object.find('\0');
+    size_t nullPos = rawObject.find('\0');
 
     if (nullPos == std::string::npos)
     {
-        throw std::runtime_error("Invalid commit object.");
+        throw std::runtime_error("Invalid commit object payload.");
     }
 
-    // Remove header
-    std::string payload = object.substr(nullPos + 1);
-
-    // Parse payload
+    //remove header and parse payload
+    std::string payload = rawObject.substr(nullPos + 1);
     std::stringstream ss(payload);
     std::string line;
 
-    // Read metadata
     while (std::getline(ss, line))
     {
+        while (!line.empty() && (line.back() == '\r' || line.back() == '\n'))
+        {
+            line.pop_back();
+        }
+
         if (line.empty())
         {
-            break;
+            break; //Header section end
         }
 
-        if (line.substr(0, 5) == "tree ")
+        if (line.rfind("tree ", 0) == 0)
         {
-            commit.treeHash = line.substr(5);
+            commit.setTreeHash(line.substr(5));
         }
-        else if (line.substr(0, 7) == "parent ")
+        else if (line.rfind("parent ", 0) == 0)
         {
-            commit.parentHash = line.substr(7);
+            commit.addParentHash(line.substr(7));
         }
-        else if (line.substr(0, 7) == "author ")
+        else if (line.rfind("author ", 0) == 0)
         {
-            commit.author = line.substr(7);
+            commit.setAuthor(Models::parseCommitMsg(line.substr(7)));
         }
-        else if (line.substr(0, 10) == "committer ")
+        else if (line.rfind("committer ", 0) == 0)
         {
-            commit.committer = line.substr(10);
+            commit.setCommitter(Models::parseCommitMsg(line.substr(10)));
         }
     }
 
-    // Read commit message
     std::string message;
-
     while (std::getline(ss, line))
     {
-        message += line;
-
-        if (!ss.eof())
+        while (!line.empty() && line.back() == '\r')
         {
-            message += '\n';
+            line.pop_back();
+        }
+        message += line + "\n";
+    }
+
+    while (!message.empty() && (message.back() == '\n' || message.back() == '\r'))
+    {
+        message.pop_back();
+    }
+
+    commit.setMessage(message);
+
+    return commit;
+
+}
+
+void printCommit(const Models::Commit& commit, const std::string& commitHash)
+{
+   std::cout << "Commit: "
+              << commitHash
+              << std::endl;
+
+    std::cout << "Tree: "
+              << commit.getTreeHash()
+              << std::endl;
+
+    const auto& parents = commit.getParentHashes();
+    for (const auto& parent : parents)
+    {
+        if (!parent.empty())
+        {
+            std::cout << "Parent: "
+                      << parent
+                      << std::endl;
         }
     }
 
-    commit.message = message;
-
-    return commit;
-}
-
-void printCommit(const Models::Commit& commit)
-{
-    std::cout << "Commit" << std::endl;
-
-    std::cout << "Tree: "
-              << commit.treeHash
-              << std::endl;
-
-    if (!commit.parentHash.empty())
+    const auto& author = commit.getAuthor();
+    std::cout << "Author: ";
+    if (!author.email.empty())
     {
-        std::cout << "Parent: "
-                  << commit.parentHash
-                  << std::endl;
+        std::cout << author.name << " <" << author.email << ">";
     }
+    else
+    {
+        std::cout << author.name;
+    }
+    std::cout << std::endl;
 
-    std::cout << "Author: "
-              << commit.author
-              << std::endl;
-
-    std::cout << "Committer: "
-              << commit.committer
-              << std::endl;
+    const auto& committer = commit.getCommitter();
+    std::cout << "Committer: ";
+    if (!committer.email.empty())
+    {
+        std::cout << committer.name << " <" << committer.email << ">";
+    }
+    else
+    {
+        std::cout << committer.name;
+    }
+    std::cout << std::endl;
 
     std::cout << "\nMessage:\n"
-              << commit.message
+              << commit.getMessage()
               << std::endl;
+    std::cout << std::endl;
 }
-
-
 }
 
 namespace Commands
 {
-
 int runLog()
 {
     try
-    {
+    {   
+        if (!fs::exists(".aigit"))
+        {
+            std::cerr << "fatal: not an ai-git repository (or any of the parent directories): .aigit" << std::endl;
+            return 1;
+        }
         // Find current branch
         std::string branchRef = getCurrentBranchRef();
 
@@ -188,11 +215,18 @@ int runLog()
         {
             Models::Commit commit = loadCommit(commitHash);
 
-            printCommit(commit);
+            printCommit(commit, commitHash);
 
-            commitHash = commit.parentHash;
+            const auto& parents = commit.getParentHashes();
+            if (!parents.empty())
+            {
+                commitHash = parents[0];
+            }
+            else
+            {
+                commitHash = "";
+            }
         }
-
         return 0;
     }
     catch (const std::exception& e)
@@ -201,5 +235,4 @@ int runLog()
         return 1;
     }
 }
-
 }
