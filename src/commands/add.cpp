@@ -19,6 +19,16 @@ namespace Commands
     }
 
     static bool processfile(const fs::path& filePath, Core::Index& indexEntries){
+        std::string normPath=normalizePath(filePath);
+
+        if(normPath.find(".aigit") != std::string::npos || 
+           normPath.find("build/") != std::string::npos || 
+           normPath.find(".git") != std::string::npos || 
+           normPath.find(".vscode/") != std::string::npos || 
+           normPath.find("vcpkg/") != std::string::npos){
+            return true;
+        }
+
         std::ifstream inFile(filePath, std::ios::binary);
         if(!inFile.is_open()){
             std::cerr<<"Error: Could not open file: "<<std::endl;
@@ -38,6 +48,12 @@ namespace Commands
             return false;
         }
 
+        const auto& existingEntries = indexEntries.getEntries();
+        auto it = existingEntries.find(normPath);
+        if(it != existingEntries.end() && it->second.hash == sha256Hash){
+            return true; // File content hasn't changed; skip quietly
+        }
+
         try{
             std::string compressedData=Core::compressString(storePayload);
             if(!Core::Storage::writeObject(sha256Hash, compressedData)){
@@ -50,9 +66,8 @@ namespace Commands
             return false;
         }
 
-        std::string normPath=normalizePath(filePath);
         indexEntries.addEntry(Core::IndexEntry(normPath, sha256Hash, "100644"));
-        std::cout<<"\nAdded "<<normPath<<" to staging area."<<std::endl<<std::endl;
+        std::cout<<"Added "<<normPath<<" to staging area."<<std::endl;
         return true;
     }
 

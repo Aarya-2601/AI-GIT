@@ -29,4 +29,29 @@ namespace Models{
         header.push_back('\0');
         return header + commitContent;
     }
+
+    CommitMsg parseCommitMsg(const std::string& line){
+        CommitMsg msg;
+        size_t emailStart=line.find('<');
+        size_t emailEnd=line.find('>');
+
+        if(emailStart != std::string::npos && emailEnd!=std::string::npos && emailEnd>emailStart){
+            msg.name=line.substr(0, emailStart);
+            while (!msg.name.empty() && msg.name.back()==' ') {
+                msg.name.pop_back();
+            }
+
+            msg.email=line.substr(emailStart+1, emailEnd-emailStart-1);
+
+            std::string rest=line.substr(emailEnd + 1);
+            std::stringstream ss(rest);
+            ss>>msg.timestamp>>msg.timezone;
+        }
+        else{
+            msg.name=line;
+            msg.timestamp=0;
+        }
+
+        return msg;
+    }
 }

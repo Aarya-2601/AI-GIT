@@ -13,6 +13,8 @@ namespace Models{
         long long timestamp;   
         std::string timezone;  
     };
+    //parsing commit from disk storage to actually how it looks
+    CommitMsg parseCommitMsg(const std::string& line);
 
     class Commit: public GitObject{
     private:
