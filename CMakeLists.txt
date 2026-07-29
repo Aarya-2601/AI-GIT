@@ -27,6 +27,8 @@ set(SOURCES
     "src/commands/add.cpp"
     "src/commands/status.cpp"
     "src/commands/commit.cpp"
+    "src/commands/log.cpp"
+    "src/commands/command_config.cpp"
 
     "src/models/blob.cpp"
     "src/models/tree.cpp"
