@@ -18,6 +18,7 @@ namespace Core{
 
         std::string getAuthorName() const;
         std::string getAuthorEmail() const;
+
     };
 }
 
