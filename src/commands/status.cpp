@@ -41,11 +41,11 @@ namespace Commands
 
             size_t nullEntryPos=body.find('\0', spacePos+1);
             if (nullEntryPos == std::string::npos) break;
-            std::string name=body.substr(spacePos + 1, nullEntryPos-(spacePos + 1));
+            std::string name=body.substr(spacePos+1, nullEntryPos-(spacePos + 1));
 
-            if(nullEntryPos + 32 > body.size()) break;
-            std::string binaryHash=body.substr(nullEntryPos+1, 20);
-            i=nullEntryPos+21;
+            if(nullEntryPos+1+32 > body.size()) break;
+            std::string binaryHash=body.substr(nullEntryPos+1, 32);
+            i=nullEntryPos+1+32;
 
             std::stringstream ss;
             for(unsigned char c : binaryHash){
