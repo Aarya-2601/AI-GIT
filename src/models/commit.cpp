@@ -1,4 +1,4 @@
-#include "models/commit.hpp"
+#include "commit.hpp"
 #include <sstream>
 #include <utility>  //low level library 
 

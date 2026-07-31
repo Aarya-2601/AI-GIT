@@ -8,6 +8,21 @@ namespace fs = std::filesystem;
 
 namespace Utils
 {
+    std::string getBranchCommitHash(const std::string& branchName)
+{
+    std::ifstream branchFile(".aigit/refs/heads/" + branchName);
+
+    if(!branchFile)
+    {
+        std::cerr << "Error: Unable to open branch reference.\n";
+        return "";
+    }
+
+    std::string commitHash;
+    std::getline(branchFile, commitHash);
+
+    return commitHash;
+}
 
     // basically finding the last of the / in the ref path and returning the substring after it
 
@@ -52,18 +67,7 @@ std::string Utils::getCurrentCommitHash()
     if(branch.empty())
         return "";
 
-    std::ifstream branchFile(".aigit/refs/heads/" + branch);
-
-    if(!branchFile)
-    {
-        std::cerr << "Error: Unable to open branch reference.\n";
-        return "";
-    }
-
-    std::string commitHash;
-    std::getline(branchFile, commitHash);
-
-    return commitHash;
+    return getBranchCommitHash(branch);
 }
 
 bool Utils::branchExists(const std::string& branchName)
