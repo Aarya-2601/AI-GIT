@@ -1,4 +1,4 @@
-#include "models/tree.hpp"
+#include "tree.hpp"
 #include <stdexcept>
 
 namespace Models{
@@ -64,6 +64,53 @@ namespace Models{
 
         return header+treeContent;
     }
+
+    Tree Tree::deserialize(const std::string& data)
+{
+    Tree tree;
+
+    size_t headerEnd = data.find('\0');
+
+    if(headerEnd == std::string::npos)
+    {
+        throw std::runtime_error("Invalid tree object.");
+    }
+
+    size_t pos = headerEnd + 1;
+
+    while(pos < data.size())
+    {
+        size_t spacePos = data.find(' ', pos);
+
+        std::string mode =
+            data.substr(pos, spacePos - pos);
+
+        pos = spacePos + 1;
+
+        size_t nullPos = data.find('\0', pos);
+
+        std::string name =
+            data.substr(pos, nullPos - pos);
+
+        pos = nullPos + 1;
+
+        std::string hashBytes =
+            data.substr(pos, 32);
+
+        pos += 32;
+
+        TreeDef entry;
+
+        entry.mode = mode;
+        entry.name = name;
+        entry.hash = binaryToHex(hashBytes);
+        entry.isSubtree = (mode == "040000");
+
+        tree.addEntry(entry);
+    }
+
+    return tree;
+}
 }
 
 /*POSIX DIRECTORY FILE FORMATS
