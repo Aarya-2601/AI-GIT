@@ -1,9 +1,10 @@
 #ifndef COMMIT_HPP
 #define COMMIT_HPP
 
-#include "models/object.hpp"
+#include "object.hpp"
 #include <vector>
 #include <string>
+#include "object.hpp"
 
 namespace Models{
 
@@ -33,7 +34,7 @@ namespace Models{
         }
         
         //generation of readable block
-        std::string Models::Commit::serialize() const override;
+        std::string serialize() const override;
 
         //data
         void setTreeHash(const std::string& hash){ 
