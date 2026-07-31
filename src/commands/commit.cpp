@@ -1,8 +1,16 @@
-#include "commands/commit.hpp"
-
-namespace fs=std::filesystem;
+#include "../models/object.hpp"
+#include "../core/index.hpp"
+#include "../core/config.hpp"
+#include "../core/storage.hpp"
+#include "../models/tree.hpp"
+#include "../models/commit.hpp"
+#include "../core/hashing.hpp"
+#include "../core/compression.hpp"
+#include "../core/filesystem.hpp"
+# include "../commands/commit.hpp"
 using namespace std;
-
+#include <filesystem>
+namespace fs=std::filesystem;
 namespace
 {
 
