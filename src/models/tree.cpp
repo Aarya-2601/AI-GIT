@@ -25,6 +25,22 @@ namespace Models{
         return binaryBytes;
     }
 
+    static std::string binaryToHex(const std::string& binary)
+{
+    static const char hexDigits[] = "0123456789abcdef";
+
+    std::string hex;
+    hex.reserve(binary.size() * 2);
+
+    for (unsigned char byte : binary)
+    {
+        hex.push_back(hexDigits[(byte >> 4) & 0x0F]);
+        hex.push_back(hexDigits[byte & 0x0F]);
+    }
+
+    return hex;
+}
+
     //adding entry to tree
     void Tree::addEntry(const TreeDef& entry){
         entries.push_back(entry);
