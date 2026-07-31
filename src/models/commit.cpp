@@ -21,7 +21,7 @@ namespace Models{
         }
         //timeline insertion, +0000 tracks standard UTC clock states.
         body<< "author "<< author.name<< " "<< author.email<<"> "<< author.timestamp<<" " << author.timezone<< std::endl;
-        body<< "committer "<< committer.name<< " "<< committer.email<< "> "<<committer.timestamp<< " "<<committer.timezone<< std::endl;
+        body<< "committer "<< committer.name<< " "<< committer.email<<"> "<<committer.timestamp<< " "<<committer.timezone<< std::endl;
         body<< std::endl<< message<< std::endl;
         std::string commitContent= body.str();
         //encapsulation of data with a header
@@ -29,6 +29,62 @@ namespace Models{
         header.push_back('\0');
         return header + commitContent;
     }
+
+    Commit Commit::deserialize(const std::string& data)
+{
+    Commit commit;
+
+    size_t headerEnd = data.find('\0');
+
+    if(headerEnd == std::string::npos)
+    {
+        throw std::runtime_error("Invalid commit object.");
+    }
+
+    std::string body = data.substr(headerEnd + 1);
+
+    std::stringstream ss(body);
+
+    std::string line;
+
+    while(std::getline(ss, line))
+    {
+        if(line.empty())
+            break;
+
+        if(line.rfind("tree ", 0) == 0)
+        {
+            commit.setTreeHash(line.substr(5));
+        }
+        else if(line.rfind("parent ", 0) == 0)
+        {
+            commit.addParentHash(line.substr(7));
+        }
+        else if(line.rfind("author ", 0) == 0)
+        {
+            commit.setAuthor(parseCommitMsg(line.substr(7)));
+        }
+        else if(line.rfind("committer ", 0) == 0)
+        {
+            commit.setCommitter(parseCommitMsg(line.substr(10)));
+        }
+    }
+
+    std::string message;
+    std::string temp;
+
+    while(std::getline(ss, temp))
+    {
+        if(!message.empty())
+            message += "\n";
+
+        message += temp;
+    }
+
+    commit.setMessage(message);
+
+    return commit;
+}
 
     CommitMsg parseCommitMsg(const std::string& line){
         CommitMsg msg;
