@@ -1,7 +1,7 @@
 #ifndef TREE_HPP
 #define TREE_HPP
 
-#include "models/object.hpp"
+#include "object.hpp"
 #include <vector>
 #include <string>
 #include <map>
