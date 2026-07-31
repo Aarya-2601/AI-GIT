@@ -1,4 +1,4 @@
-#include "core/compression.hpp"
+#include "compression.hpp"
 #include <zlib.h>
 #include <cstring>  //low level mem manipulation
 #include <vector>

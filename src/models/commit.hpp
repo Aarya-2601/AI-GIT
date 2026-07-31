@@ -35,6 +35,7 @@ namespace Models{
         
         //generation of readable block
         std::string serialize() const override;
+        static Commit deserialize(const std::string& data);
 
         //data
         void setTreeHash(const std::string& hash){ 

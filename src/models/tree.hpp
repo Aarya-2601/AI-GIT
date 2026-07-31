@@ -34,6 +34,7 @@ namespace Models{
         }
         //all trees converted into standard ones
         std::string serialize() const override;
+        static Tree deserialize(const std::string& data);
 
         void addEntry(const TreeDef& entry);
         
