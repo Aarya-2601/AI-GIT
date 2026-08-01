@@ -1,6 +1,6 @@
-#include "commands/command_config.hpp"
-#include "core/config.hpp"
-#include "core/filesystem.hpp"
+#include "command_config.hpp"
+#include "../core/config.hpp"
+#include "../core/filesystem.hpp"
 
 #include <iostream>
 
