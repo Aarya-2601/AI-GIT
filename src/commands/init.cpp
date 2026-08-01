@@ -1,5 +1,5 @@
-#include "commands/init.hpp"
-#include "core/filesystem.hpp"
+#include "init.hpp"
+#include "../core/filesystem.hpp"
 
 #include <iostream>
 #include <fstream>

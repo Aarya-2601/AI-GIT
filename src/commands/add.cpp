@@ -1,4 +1,6 @@
-#include "commands/add.hpp"
+#include "add.hpp"
+#include "../core/filesystem.hpp"
+#include "../core/hashing.hpp"
 
 //map to store filename and hash
 
