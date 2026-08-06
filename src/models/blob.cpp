@@ -1,5 +1,12 @@
-#include <models/blob.hpp>
+#include "../models/blob.hpp"
 #include <utility>
+#include <string>
+#include "../models/blob.hpp"
+#include <utility>
+#include <string>
+#include <stdexcept>
+#include "../core/storage.hpp"
+#include "../core/compression.hpp"
 
 namespace Models{
 
@@ -14,4 +21,21 @@ namespace Models{
         header.push_back('\0');
         return header+mcontent;
     }
+
+    Blob Blob::deserialize(const std::string& data)
+{
+    size_t headerEnd = data.find('\0');
+
+    if (headerEnd == std::string::npos)
+    {
+        throw std::runtime_error("Invalid blob object.");
+    }
+
+    std::string content =
+        data.substr(headerEnd + 1);
+
+    return Blob(content);
+}
+
+
 } 

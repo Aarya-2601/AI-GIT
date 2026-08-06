@@ -1,7 +1,7 @@
 #ifndef BLOB_HPP
 #define BLOB_HPP
 
-#include <models/object.hpp>
+#include "../models/object.hpp"
 
 namespace Models{
     class Blob: public GitObject{  //inherits from the GitObject class
@@ -18,7 +18,8 @@ namespace Models{
             }
 
             //pack raw data with the blob[size]/0 header
-            std::string Models::Blob::serialize() const override;
+            std::string serialize() const override;
+            static Blob deserialize(const std::string& data);
 
             const std::string& getContent() const{ 
                 return mcontent; 
