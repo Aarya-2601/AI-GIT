@@ -2,15 +2,14 @@
 #define ADD_HPP
 
 #include "commands.hpp"
-#include "core/hashing.hpp"
-#include "core/filesystem.hpp"
+#include "../core/hashing.hpp"
+#include "../core/filesystem.hpp"
 
-#include "models/blob.hpp"
-#include "core/compression.hpp"
-#include "core/storage.hpp"
-#include "core/index.hpp"
-
-
+#include "../models/blob.hpp"
+#include "../core/compression.hpp"
+#include "../core/storage.hpp"
+#include "../core/index.hpp"
+#include "../models/object.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
