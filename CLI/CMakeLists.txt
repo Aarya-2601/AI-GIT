@@ -11,6 +11,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 #because vcpkg handles the downloading, these must be found locally.
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
+find_package(SQLite3 REQUIRED)
 
 #gather all source files into the variable sources
 set(SOURCES
@@ -38,6 +39,7 @@ set(SOURCES
 
     "src/helpers/gitutils.cpp"
     "src/storage/object_store.cpp"
+    "src/storage/metadata_db.cpp"
 
 )
 
@@ -53,6 +55,7 @@ target_include_directories(object-store-test PRIVATE src)
 
 target_link_libraries(object-store-test PRIVATE
     OpenSSL::Crypto
+    SQLite::SQLite3
 )
 
 #instead of global include_directories(src), we explicitly scope it to our binary object
