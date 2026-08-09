@@ -60,7 +60,7 @@ std::string getCurrentBranchName()
     return refPath.substr(pos + 1);
 }
 
-std::string Utils::getCurrentCommitHash()
+std::string getCurrentCommitHash()
 {
     std::string branch = getCurrentBranchName();
 
@@ -70,7 +70,7 @@ std::string Utils::getCurrentCommitHash()
     return getBranchCommitHash(branch);
 }
 
-bool Utils::branchExists(const std::string& branchName)
+bool branchExists(const std::string& branchName)
 {
     fs::path branchPath = ".aigit/refs/heads/" + branchName;
 

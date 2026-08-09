@@ -55,7 +55,7 @@ void runBranch(const std::vector<std::string>& args)
 
 namespace fs = std::filesystem;
 
-void Commands::listBranches()
+void listBranches()
 {
     std::string currentBranch = Utils::getCurrentBranchName();
 
