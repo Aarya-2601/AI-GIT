@@ -33,9 +33,25 @@ set(SOURCES
     "src/models/blob.cpp"
     "src/models/tree.cpp"
     "src/models/commit.cpp"
+
+    "src/storage/object_store.cpp"
+
+  
 )
 
 add_executable(ai-git ${SOURCES})
+
+add_executable(object-store-test
+    "src/storage/object_store_test.cpp"
+    "src/storage/object_store.cpp"
+    "src/core/hashing.cpp"
+)
+
+target_include_directories(object-store-test PRIVATE src)
+
+target_link_libraries(object-store-test PRIVATE
+    OpenSSL::Crypto
+)
 
 #instead of global include_directories(src), we explicitly scope it to our binary object
 target_include_directories(ai-git PRIVATE src)
