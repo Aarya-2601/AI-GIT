@@ -5,6 +5,14 @@
 
 namespace Storage {
 
+struct ObjectMetadata
+{
+    std::string objectId;
+    long long size;
+    std::string type;
+    long long createdAt;
+};
+
 class MetadataDB
 {
 private:
@@ -22,6 +30,10 @@ public:
     );
 
     bool objectExists(
+        const std::string& objectId
+    ) const;
+
+    ObjectMetadata getObject(
         const std::string& objectId
     ) const;
 };
