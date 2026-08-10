@@ -14,14 +14,19 @@ void MetadataDB::initialize()
 {
     sqlite3* db = nullptr;
 
-    int result = sqlite3_open(dbPath.string().c_str(), &db);
+    int result = sqlite3_open(
+        dbPath.string().c_str(),
+        &db
+    );
 
     if (result != SQLITE_OK)
     {
         std::string error = sqlite3_errmsg(db);
 
         if (db)
+        {
             sqlite3_close(db);
+        }
 
         throw std::runtime_error(
             "Could not open SQLite database: " + error
@@ -49,9 +54,10 @@ void MetadataDB::initialize()
 
     if (result != SQLITE_OK)
     {
-        std::string error = errorMessage
-            ? errorMessage
-            : "Unknown SQLite error";
+        std::string error =
+            errorMessage
+                ? errorMessage
+                : "Unknown SQLite error";
 
         sqlite3_free(errorMessage);
         sqlite3_close(db);
@@ -72,14 +78,19 @@ void MetadataDB::addObject(
 {
     sqlite3* db = nullptr;
 
-    int result = sqlite3_open(dbPath.string().c_str(), &db);
+    int result = sqlite3_open(
+        dbPath.string().c_str(),
+        &db
+    );
 
     if (result != SQLITE_OK)
     {
         std::string error = sqlite3_errmsg(db);
 
         if (db)
+        {
             sqlite3_close(db);
+        }
 
         throw std::runtime_error(
             "Could not open SQLite database: " + error
@@ -105,6 +116,7 @@ void MetadataDB::addObject(
     if (result != SQLITE_OK)
     {
         std::string error = sqlite3_errmsg(db);
+
         sqlite3_close(db);
 
         throw std::runtime_error(
@@ -152,4 +164,75 @@ void MetadataDB::addObject(
     sqlite3_close(db);
 }
 
+bool MetadataDB::objectExists(
+    const std::string& objectId
+) const
+{
+    sqlite3* db = nullptr;
+
+    int result = sqlite3_open(
+        dbPath.string().c_str(),
+        &db
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::string error = sqlite3_errmsg(db);
+
+        if (db)
+        {
+            sqlite3_close(db);
+        }
+
+        throw std::runtime_error(
+            "Could not open SQLite database: " + error
+        );
+    }
+
+    const char* sql = R"(
+        SELECT 1
+        FROM objects
+        WHERE object_id = ?
+        LIMIT 1;
+    )";
+
+    sqlite3_stmt* statement = nullptr;
+
+    result = sqlite3_prepare_v2(
+        db,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::string error = sqlite3_errmsg(db);
+
+        sqlite3_close(db);
+
+        throw std::runtime_error(
+            "Could not prepare SQLite query: " + error
+        );
+    }
+
+    sqlite3_bind_text(
+        statement,
+        1,
+        objectId.c_str(),
+        -1,
+        SQLITE_TRANSIENT
+    );
+
+    result = sqlite3_step(statement);
+
+    bool exists = (result == SQLITE_ROW);
+
+    sqlite3_finalize(statement);
+    sqlite3_close(db);
+
+    return exists;
 }
+
+} 
