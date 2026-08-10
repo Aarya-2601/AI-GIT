@@ -3,11 +3,15 @@
 #include <filesystem>
 #include <string>
 
+#include "metadata_db.hpp"
+
 namespace Storage {
 
-class ObjectStore {
+class ObjectStore
+{
 private:
     std::filesystem::path rootPath;
+    MetadataDB metadataDB;
 
 public:
     explicit ObjectStore(const std::filesystem::path& root);

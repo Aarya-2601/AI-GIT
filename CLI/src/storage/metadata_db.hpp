@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <filesystem>
+#include <string>
 
 namespace Storage {
 
@@ -20,6 +20,10 @@ public:
         long long size,
         const std::string& type
     );
+
+    bool objectExists(
+        const std::string& objectId
+    ) const;
 };
 
 }
