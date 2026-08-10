@@ -9,14 +9,14 @@ namespace Storage {
 
 ObjectStore::ObjectStore(const std::filesystem::path& root)
     : rootPath(root),
-      metadataDB(root / "metadata.db")
+      metadataDB(root / "metadata.db") //sets path as .aigit
 {
 }
 
 void ObjectStore::initialize()
 {
     std::filesystem::create_directories(
-        rootPath / "objects"
+        rootPath / "cas"
     );
 
     metadataDB.initialize();

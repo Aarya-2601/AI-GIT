@@ -3,10 +3,10 @@
 #include <sqlite3.h>
 #include <stdexcept>
 
-namespace Storage {
+namespace Storage 
+{
 
-MetadataDB::MetadataDB(const std::filesystem::path& path)
-    : dbPath(path)
+MetadataDB::MetadataDB(const std::filesystem::path& path): dbPath(path)
 {
 }
 
