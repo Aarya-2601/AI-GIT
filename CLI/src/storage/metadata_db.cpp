@@ -235,4 +235,97 @@ bool MetadataDB::objectExists(
     return exists;
 }
 
+ObjectMetadata MetadataDB::getObject(const std::string& objectId) const
+{
+    sqlite3* db = nullptr;
+
+    int result = sqlite3_open(
+        dbPath.string().c_str(),
+        &db
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::string error = sqlite3_errmsg(db);
+
+        if (db)
+            sqlite3_close(db);
+
+        throw std::runtime_error(
+            "Could not open SQLite database: " + error
+        );
+    }
+
+    const char* sql = R"(
+        SELECT object_id, size, type, created_at
+        FROM objects
+        WHERE object_id = ?
+        LIMIT 1;
+    )";
+
+    sqlite3_stmt* statement = nullptr;
+
+    result = sqlite3_prepare_v2(
+        db,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::string error = sqlite3_errmsg(db);
+
+        sqlite3_close(db);
+
+        throw std::runtime_error(
+            "Could not prepare SQLite query: " + error
+        );
+    }
+
+    sqlite3_bind_text(
+        statement,
+        1,
+        objectId.c_str(),
+        -1,
+        SQLITE_TRANSIENT
+    );
+
+    result = sqlite3_step(statement);
+
+    if (result != SQLITE_ROW)
+    {
+        sqlite3_finalize(statement);
+        sqlite3_close(db);
+
+        throw std::runtime_error(
+            "Object metadata not found: " + objectId
+        );
+    }
+
+    ObjectMetadata metadata;
+
+    metadata.objectId =
+        reinterpret_cast<const char*>(
+            sqlite3_column_text(statement, 0)
+        );
+
+    metadata.size =
+        sqlite3_column_int64(statement, 1);
+
+    metadata.type =
+        reinterpret_cast<const char*>(
+            sqlite3_column_text(statement, 2)
+        );
+
+    metadata.createdAt =
+        sqlite3_column_int64(statement, 3);
+
+    sqlite3_finalize(statement);
+    sqlite3_close(db);
+
+    return metadata;
+}
+
 } 
