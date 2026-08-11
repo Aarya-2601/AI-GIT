@@ -10,7 +10,7 @@ struct ObjectMetadata
     std::string objectId;
     long long size;
     std::string type;
-    long long createdAt;
+    std::string createdAt;
 };
 
 class MetadataDB
