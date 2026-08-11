@@ -1,4 +1,4 @@
-#include "commands/hash_object.hpp"
+#include "hash_object.hpp"
 
 namespace Commands{
 

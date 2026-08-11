@@ -1,4 +1,4 @@
-#include "commands/status.hpp"
+#include "status.hpp"
 
 namespace fs=std::filesystem;
 
