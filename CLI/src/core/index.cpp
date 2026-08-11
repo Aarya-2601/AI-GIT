@@ -1,4 +1,4 @@
-#include "core/index.hpp"
+#include "index.hpp"
 #include<iostream>
 #include<fstream>
 #include<sstream>

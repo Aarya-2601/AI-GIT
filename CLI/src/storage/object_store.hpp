@@ -7,8 +7,7 @@
 
 namespace Storage {
 
-class ObjectStore
-{
+class ObjectStore {
 private:
     std::filesystem::path rootPath;
     MetadataDB metadataDB;

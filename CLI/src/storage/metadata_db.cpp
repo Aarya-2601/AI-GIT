@@ -319,8 +319,7 @@ ObjectMetadata MetadataDB::getObject(const std::string& objectId) const
             sqlite3_column_text(statement, 2)
         );
 
-    metadata.createdAt =
-        sqlite3_column_int64(statement, 3);
+    metadata.createdAt = reinterpret_cast<const char*>( sqlite3_column_text(statement, 3) );
 
     sqlite3_finalize(statement);
     sqlite3_close(db);

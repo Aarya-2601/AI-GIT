@@ -1,4 +1,4 @@
-#include "commands/log.hpp"
+#include "log.hpp"
 
 namespace fs=std::filesystem;
 using namespace std;
