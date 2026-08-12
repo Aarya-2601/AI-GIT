@@ -36,6 +36,8 @@ public:
     ObjectMetadata getObject(
         const std::string& objectId
     ) const;
+
+    std::vector<std::string> getAllObjIDs() const;
 };
 
 }
