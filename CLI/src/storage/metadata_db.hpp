@@ -3,7 +3,8 @@
 #include <filesystem>
 #include <string>
 
-namespace Storage {
+namespace Storage
+{
 
 struct ObjectMetadata
 {
@@ -36,8 +37,6 @@ public:
     ObjectMetadata getObject(
         const std::string& objectId
     ) const;
-
-    std::vector<std::string> getAllObjIDs() const;
 };
 
 }
