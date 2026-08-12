@@ -1,12 +1,15 @@
 #include "metadata_db.hpp"
 
 #include <sqlite3.h>
-#include <stdexcept>
 
-namespace Storage 
+#include <stdexcept>
+#include <string>
+
+namespace Storage
 {
 
-MetadataDB::MetadataDB(const std::filesystem::path& path): dbPath(path)
+MetadataDB::MetadataDB(const std::filesystem::path& path)
+    : dbPath(path)
 {
 }
 
@@ -21,7 +24,9 @@ void MetadataDB::initialize()
 
     if (result != SQLITE_OK)
     {
-        std::string error = sqlite3_errmsg(db);
+        std::string error =
+            db ? sqlite3_errmsg(db)
+               : "Unknown SQLite error";
 
         if (db)
         {
@@ -85,7 +90,9 @@ void MetadataDB::addObject(
 
     if (result != SQLITE_OK)
     {
-        std::string error = sqlite3_errmsg(db);
+        std::string error =
+            db ? sqlite3_errmsg(db)
+               : "Unknown SQLite error";
 
         if (db)
         {
@@ -177,7 +184,9 @@ bool MetadataDB::objectExists(
 
     if (result != SQLITE_OK)
     {
-        std::string error = sqlite3_errmsg(db);
+        std::string error =
+            db ? sqlite3_errmsg(db)
+               : "Unknown SQLite error";
 
         if (db)
         {
@@ -235,7 +244,9 @@ bool MetadataDB::objectExists(
     return exists;
 }
 
-ObjectMetadata MetadataDB::getObject(const std::string& objectId) const
+ObjectMetadata MetadataDB::getObject(
+    const std::string& objectId
+) const
 {
     sqlite3* db = nullptr;
 
@@ -246,10 +257,14 @@ ObjectMetadata MetadataDB::getObject(const std::string& objectId) const
 
     if (result != SQLITE_OK)
     {
-        std::string error = sqlite3_errmsg(db);
+        std::string error =
+            db ? sqlite3_errmsg(db)
+               : "Unknown SQLite error";
 
         if (db)
+        {
             sqlite3_close(db);
+        }
 
         throw std::runtime_error(
             "Could not open SQLite database: " + error
@@ -319,7 +334,10 @@ ObjectMetadata MetadataDB::getObject(const std::string& objectId) const
             sqlite3_column_text(statement, 2)
         );
 
-    metadata.createdAt = reinterpret_cast<const char*>( sqlite3_column_text(statement, 3) );
+    metadata.createdAt =
+        reinterpret_cast<const char*>(
+            sqlite3_column_text(statement, 3)
+        );
 
     sqlite3_finalize(statement);
     sqlite3_close(db);
@@ -327,4 +345,4 @@ ObjectMetadata MetadataDB::getObject(const std::string& objectId) const
     return metadata;
 }
 
-} 
+}

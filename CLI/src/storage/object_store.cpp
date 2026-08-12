@@ -1,29 +1,42 @@
 #include "object_store.hpp"
+
 #include "../core/hashing.hpp"
 
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
 
-namespace Storage {
+namespace Storage
+{
 
-ObjectStore::ObjectStore(const std::filesystem::path& root)
-    : rootPath(root),
-      metadataDB(root / "metadata.db")
+ObjectStore::ObjectStore(
+    const std::filesystem::path& root
+)
+    : rootPath(root)
 {
 }
 
 void ObjectStore::initialize()
 {
-    std::filesystem::create_directories(rootPath / "objects");
+    // rootPath is the CAS root.
+    //
+    // Example:
+    // .aigit/cas
+    //
+    // Therefore objects are stored in:
+    // .aigit/cas/objects
 
-    // Create SQLite database and objects table
-    metadataDB.initialize();
+    std::filesystem::create_directories(
+        rootPath / "objects"
+    );
 }
 
-bool ObjectStore::exists(const std::string& objectId) const
+bool ObjectStore::exists(
+    const std::string& objectId
+) const
 {
-    if (objectId.length() < 2) {
+    if (objectId.length() < 2)
+    {
         return false;
     }
 
@@ -35,13 +48,20 @@ bool ObjectStore::exists(const std::string& objectId) const
     return std::filesystem::exists(objectPath);
 }
 
-std::string ObjectStore::store(const std::filesystem::path& filePath)
+std::string ObjectStore::store(
+    const std::filesystem::path& filePath
+)
 {
-    std::ifstream input(filePath, std::ios::binary);
+    std::ifstream input(
+        filePath,
+        std::ios::binary
+    );
 
-    if (!input.is_open()) {
+    if (!input.is_open())
+    {
         throw std::runtime_error(
-            "Could not open file: " + filePath.string()
+            "Could not open file: " +
+            filePath.string()
         );
     }
 
@@ -50,10 +70,12 @@ std::string ObjectStore::store(const std::filesystem::path& filePath)
 
     std::string fileData = buffer.str();
 
-    // Hash RAW file contents
-    std::string objectId = Core::calcSHA256(fileData);
+    // Hash the raw file contents.
+    std::string objectId =
+        Core::calcSHA256(fileData);
 
-    if (objectId.empty()) {
+    if (objectId.empty())
+    {
         throw std::runtime_error(
             "SHA-256 hashing failed."
         );
@@ -64,52 +86,48 @@ std::string ObjectStore::store(const std::filesystem::path& filePath)
         objectId.substr(0, 2) /
         objectId.substr(2);
 
-    // Object already exists.
-    // No need to write the file again.
-    if (std::filesystem::exists(objectPath)) {
+    // Content-addressable storage:
+    //
+    // If an object with this hash already exists,
+    // the exact same bytes are already stored.
+    //
+    // Therefore we don't write it again.
 
-        // Make sure metadata exists too.
-        if (!metadataDB.objectExists(objectId)) {
-            metadataDB.addObject(
-                objectId,
-                static_cast<long long>(fileData.size()),
-                "file"
-            );
-        }
-
+    if (std::filesystem::exists(objectPath))
+    {
         return objectId;
     }
 
-    // Create directory for object
     std::filesystem::create_directories(
         objectPath.parent_path()
     );
 
-    // Write raw file contents
-    std::ofstream output(objectPath, std::ios::binary);
+    std::ofstream output(
+        objectPath,
+        std::ios::binary
+    );
 
-    if (!output.is_open()) {
+    if (!output.is_open())
+    {
         throw std::runtime_error(
-            "Could not create object: " + objectPath.string()
+            "Could not create object: " +
+            objectPath.string()
         );
     }
 
-    output.write(fileData.data(), fileData.size());
+    output.write(
+        fileData.data(),
+        static_cast<std::streamsize>(fileData.size())
+    );
 
-    if (!output) {
+    if (!output)
+    {
         throw std::runtime_error(
             "Failed to write object."
         );
     }
 
     output.close();
-
-    // Store metadata in SQLite
-    metadataDB.addObject(
-        objectId,
-        static_cast<long long>(fileData.size()),
-        "file"
-    );
 
     return objectId;
 }
@@ -118,8 +136,11 @@ std::string ObjectStore::retrieve(
     const std::string& objectId
 ) const
 {
-    if (objectId.length() < 2) {
-        throw std::runtime_error("Invalid object ID.");
+    if (objectId.length() < 2)
+    {
+        throw std::runtime_error(
+            "Invalid object ID."
+        );
     }
 
     std::filesystem::path objectPath =
@@ -127,17 +148,24 @@ std::string ObjectStore::retrieve(
         objectId.substr(0, 2) /
         objectId.substr(2);
 
-    if (!std::filesystem::exists(objectPath)) {
+    if (!std::filesystem::exists(objectPath))
+    {
         throw std::runtime_error(
-            "Object not found: " + objectId
+            "Object not found: " +
+            objectId
         );
     }
 
-    std::ifstream input(objectPath, std::ios::binary);
+    std::ifstream input(
+        objectPath,
+        std::ios::binary
+    );
 
-    if (!input.is_open()) {
+    if (!input.is_open())
+    {
         throw std::runtime_error(
-            "Could not open object: " + objectId
+            "Could not open object: " +
+            objectId
         );
     }
 

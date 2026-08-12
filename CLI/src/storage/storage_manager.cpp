@@ -1,6 +1,6 @@
 #include "storage_manager.hpp"
 
-#include <fstream>
+#include <filesystem>
 #include <stdexcept>
 
 namespace Storage
@@ -16,6 +16,8 @@ StorageManager::StorageManager(
 
 void StorageManager::initialize()
 {
+    // Initialize both parts of the storage layer.
+
     objectStore.initialize();
     metadataDB.initialize();
 }
@@ -27,22 +29,36 @@ std::string StorageManager::storeFile(
     if (!std::filesystem::exists(filePath))
     {
         throw std::runtime_error(
-            "File does not exist: " + filePath.string()
+            "File does not exist: " +
+            filePath.string()
         );
     }
 
+    // ------------------------------------------------
+    // STEP 1:
     // Store the actual bytes.
-    // ObjectStore calculates SHA-256 and performs deduplication.
+    //
+    // ObjectStore:
+    //   file → SHA-256 → CAS object
+    // ------------------------------------------------
+
     std::string objectId =
         objectStore.store(filePath);
 
-    // Get file size for metadata.
+
+    // ------------------------------------------------
+    // STEP 2:
+    // Record metadata about that object.
+    //
+    // MetadataDB:
+    //   objectId + size + type → SQLite
+    // ------------------------------------------------
+
     long long fileSize =
         static_cast<long long>(
             std::filesystem::file_size(filePath)
         );
 
-    // This is currently a normal whole file.
     metadataDB.addObject(
         objectId,
         fileSize,
@@ -56,6 +72,9 @@ std::string StorageManager::retrieveFile(
     const std::string& objectId
 ) const
 {
+    // StorageManager delegates actual byte retrieval
+    // to ObjectStore.
+
     return objectStore.retrieve(objectId);
 }
 
