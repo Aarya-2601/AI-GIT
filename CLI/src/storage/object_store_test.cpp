@@ -1,4 +1,5 @@
 #include "object_store.hpp"
+
 #include <iostream>
 #include <string>
 
@@ -6,25 +7,36 @@ int main()
 {
     try
     {
-        Storage::ObjectStore store(".aigit");
+        Storage::ObjectStore store(".aigit/cas");
 
         store.initialize();
 
-        std::string id = store.store("test.txt");
+        std::string id =
+            store.store("test.txt");
 
-        std::cout << "Object ID: " << id << "\n";
-
-        std::cout << "Exists: "
-                  << (store.exists(id) ? "YES" : "NO")
+        std::cout << "Object ID: "
+                  << id
                   << "\n";
 
-        std::string data = store.retrieve(id);
+        std::cout << "Exists: "
+                  << (store.exists(id)
+                        ? "YES"
+                        : "NO")
+                  << "\n";
 
-        std::cout << "Retrieved: " << data << "\n";
+        std::string data =
+            store.retrieve(id);
+
+        std::cout << "Retrieved: "
+                  << data
+                  << "\n";
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Error: " << e.what() << "\n";
+        std::cerr << "Error: "
+                  << e.what()
+                  << "\n";
+
         return 1;
     }
 
