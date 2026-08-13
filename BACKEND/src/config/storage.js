@@ -9,4 +9,6 @@ const client=new Minio.Client({
     secretKey: process.env.MINIO_SECRET_KEY || 'minioadmin',
 });
 
-module.exports={ client };
+module.exports={
+    client
+};
