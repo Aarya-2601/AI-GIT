@@ -1,4 +1,4 @@
-//read all local hashes
+    //read all local hashes
 //send a POST request with the chunks we have
 //request reaches postgreSQL and it check the missing or modified chunks
 //returns a presigned MinIo url for the missing chunks
