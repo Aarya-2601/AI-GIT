@@ -1,7 +1,10 @@
-{ "name": "ai-git",
+{
+  "name": "ai-git",
   "version-string": "0.1.0",
-  "dependencies":[
+  "dependencies": [
     "openssl",
-    "zlib"
+    "zlib",
+    "sqlite3",
+    "curl"
   ]
 }
