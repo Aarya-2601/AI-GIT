@@ -6,7 +6,8 @@
 
 namespace fs=std::filesystem;
 
-namespace Core{
+namespace Core
+{
         //object path for the other two funcs
         fs::path Storage::getObjectPath(const std::string& sha256Hash)
         {
