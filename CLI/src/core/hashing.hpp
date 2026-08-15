@@ -5,7 +5,8 @@
 #include <string>
 
 //namespace is an organization box
-namespace Core{
+namespace Core
+{
     //function declarations
     std::string calcSHA256(const std::string &content);
 }
