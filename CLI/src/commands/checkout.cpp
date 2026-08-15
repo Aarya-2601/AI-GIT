@@ -30,22 +30,18 @@ Models::Commit readCommit(const std::string& commitHash)
         throw std::runtime_error("Failed to read commit object.");
     }
 
-    std::string objectData =
-        Core::decompressData(compressedObject);
+    std::string objectData = Core::decompressData(compressedObject);
 
     return Models::Commit::deserialize(objectData);
 }
 
 Models::Tree readTree(const std::string& treeHash)
 {
-    std::string compressedObject =
-        Core::Storage::readObject(treeHash);
+    std::string compressedObject =Core::Storage::readObject(treeHash);
 
     if (compressedObject.empty())
     {
-        throw std::runtime_error(
-            "Failed to read tree object: " + treeHash
-        );
+        throw std::runtime_error("Failed to read tree object: " + treeHash);
     }
 
     std::string treeData =Core::decompressData(compressedObject);
@@ -55,8 +51,7 @@ Models::Tree readTree(const std::string& treeHash)
 
 Models::Blob readBlob(const std::string& blobHash)
 {
-    std::string compressedObject =
-        Core::Storage::readObject(blobHash);
+    std::string compressedObject =Core::Storage::readObject(blobHash);
 
     if (compressedObject.empty())
     {
@@ -65,8 +60,7 @@ Models::Blob readBlob(const std::string& blobHash)
         );
     }
 
-    std::string blobData =
-        Core::decompressData(compressedObject);
+    std::string blobData =Core::decompressData(compressedObject);
 
     return Models::Blob::deserialize(blobData);
 }
@@ -95,10 +89,7 @@ void restoreTree(
             Models::Blob blob =
                 readBlob(entry.hash);
 
-            std::ofstream outFile(
-                targetPath,
-                std::ios::binary
-            );
+            std::ofstream outFile(targetPath,std::ios::binary);
 
             if (!outFile.is_open())
             {
