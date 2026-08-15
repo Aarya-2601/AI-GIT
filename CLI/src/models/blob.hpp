@@ -3,8 +3,10 @@
 
 #include "../models/object.hpp"
 
-namespace Models{
-    class Blob: public GitObject{  //inherits from the GitObject class
+namespace Models
+{
+    class Blob: public GitObject
+    {  //inherits from the GitObject class
         private:
             std::string mcontent;
         
@@ -13,7 +15,8 @@ namespace Models{
 
             //initialize directly with file string contents
             explicit Blob(std::string content);  //parameterized constructor
-            std::string getTypeString() const override{  //overrride=perfectly matches the layout of the virtual class
+            std::string getTypeString() const override
+            {  //overrride=perfectly matches the layout of the virtual class
                 return "blob";
             }
 
@@ -21,7 +24,8 @@ namespace Models{
             std::string serialize() const override;
             static Blob deserialize(const std::string& data);
 
-            const std::string& getContent() const{ 
+            const std::string& getContent() const
+            { 
                 return mcontent; 
             }
     };
