@@ -4,17 +4,20 @@
 #include <vector>
 #include <stdexcept>  //standard exceptions library
 
-namespace Core{
+namespace Core
+{
 
     //compresses block to small string
-    std::string compressString(const std::string& data){
+    std::string compressString(const std::string& data)
+    {
         //zstream is a struct of zlib
         z_stream zs;
         //set all the mem blocks to zero manually
         std::memset(&zs, 0, sizeof(zs));
 
         //if it fails to get ready for compression throw error
-        if(deflateInit(&zs, Z_DEFAULT_COMPRESSION)!= Z_OK){
+        if(deflateInit(&zs, Z_DEFAULT_COMPRESSION)!= Z_OK)
+        {
             throw std::runtime_error("Failed to initialize zlib deflate stream.");
         }
 
@@ -39,7 +42,8 @@ namespace Core{
         deflateEnd(&zs);
 
         //if does not give zstreamend then throw error
-        if(ret!= Z_STREAM_END){
+        if(ret!= Z_STREAM_END)
+        {
             throw std::runtime_error("An error occurred while deflating data payload.");
         }
 
@@ -49,13 +53,15 @@ namespace Core{
 
 
     //decompression
-    std::string decompressData(const std::string& compressedData){
+    std::string decompressData(const std::string& compressedData)
+    {
         z_stream zs;
         //set mem to 0
         std::memset(&zs, 0, sizeof(zs));
 
         //if not proper restoration, error
-        if(inflateInit(&zs)!= Z_OK){
+        if(inflateInit(&zs)!= Z_OK)
+        {
             return "";
         }
 
