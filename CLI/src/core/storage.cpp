@@ -8,11 +8,13 @@ namespace fs=std::filesystem;
 
 namespace Core{
         //object path for the other two funcs
-        fs::path Storage::getObjectPath(const std::string& sha256Hash){
+        fs::path Storage::getObjectPath(const std::string& sha256Hash)
+        {
             fs::path objectsRoot=".aigit/objects";
             
             //if invalid or short hash
-            if(sha256Hash.size()<2) {
+            if(sha256Hash.size()<2) 
+            {
                 return fs::path();
             }
 
@@ -23,10 +25,12 @@ namespace Core{
             return objectsRoot/dirPrefix/fileSuffix;
         }
 
-        bool Storage::writeObject(const std::string& sha256Hash, const std::string& compressedData){
+        bool Storage::writeObject(const std::string& sha256Hash, const std::string& compressedData)
+        {
             fs::path objectFile=getObjectPath(sha256Hash);
             //empty object file
-            if(objectFile.empty()){
+            if(objectFile.empty())
+            {
                 std::cerr<< "Storage Error: Invalid hash provided for storage routing."<< std::endl;
                 return false;
             }
@@ -40,7 +44,8 @@ namespace Core{
 
                 //open file in binary mode to write compressed structures
                 std::ofstream outFile(objectFile, std::ios::binary);
-                if(!outFile.is_open()){
+                if(!outFile.is_open())
+                {
                     std::cerr<< "Storage Error: Failed to open target path for writing: "<< objectFile<< std::endl;
                     return false;
                 }
@@ -51,24 +56,28 @@ namespace Core{
                 return true;
 
             } //error handling 
-            catch(const fs::filesystem_error& e){
+            catch(const fs::filesystem_error& e)
+            {
                 std::cerr<< "Storage Write Exception: "<< e.what()<< std::endl;
                 return false;
             }
         }
 
-        std::string Storage::readObject(const std::string& sha256Hash){
+        std::string Storage::readObject(const std::string& sha256Hash)
+        {
             fs::path objectFile=Storage::getObjectPath(sha256Hash);
 
             //not regular file means system file
-            if(!fs::exists(objectFile) || !fs::is_regular_file(objectFile)){
+            if(!fs::exists(objectFile) || !fs::is_regular_file(objectFile))
+            {
                 std::cerr<< "Storage Error: Object database node not found for hash identity: "<< sha256Hash<< std::endl;
                 return "";
             }
 
             //open a stream for data exchange named inFile in binary mode
             std::ifstream inFile(objectFile, std::ios::binary);
-            if (!inFile.is_open()) {
+            if (!inFile.is_open()) 
+            {
                 std::cerr<< "Storage Error: Failed to acquire stream handle for object: "<< objectFile<< std::endl;
                 return "";
             }
