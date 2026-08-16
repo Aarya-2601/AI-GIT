@@ -12,22 +12,26 @@ using namespace std;
 
 namespace Commands
 {   
-    static std::string normalizePath(const fs::path& p){
+    static std::string normalizePath(const fs::path& p) //extract path for indexing and storage
+    {
         std::string pathStr=p.generic_string();
-        if(pathStr.rfind("./", 0) ==0){
+        if(pathStr.rfind("./", 0) ==0)
+        {
             pathStr=pathStr.substr(2);
         }
         return pathStr;
     }
 
-    static bool processfile(const fs::path& filePath, Core::Index& indexEntries){
+    static bool processfile(const fs::path& filePath, Core::Index& indexEntries)
+    {
         std::string normPath=normalizePath(filePath);
 
         if(normPath.find(".aigit") != std::string::npos || 
            normPath.find("build/") != std::string::npos || 
            normPath.find(".git") != std::string::npos || 
            normPath.find(".vscode/") != std::string::npos || 
-           normPath.find("vcpkg/") != std::string::npos){
+           normPath.find("vcpkg/") != std::string::npos)
+           {
             return true;
         }
 
