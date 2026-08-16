@@ -5,7 +5,8 @@
 #include <map>
 
 namespace Core{
-    struct IndexEntry{
+    struct IndexEntry
+    {
         std::string path;
         std::string hash;
         std::string mode;  //directory/file code
@@ -14,7 +15,8 @@ namespace Core{
         IndexEntry(std::string p, std::string h, std::string m = "100644"): path(std::move(p)), hash(std::move(h)), mode(std::move(m)) {}
     };
 
-    class Index{
+    class Index
+    {
         private:
         std::map<std::string, IndexEntry> entries;
 

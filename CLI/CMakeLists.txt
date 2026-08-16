@@ -77,6 +77,14 @@ add_executable(object-store-test
     src/core/hashing.cpp
 )
 
+target_include_directories(object-store-test PRIVATE
+    src
+)
+
+target_link_libraries(object-store-test PRIVATE
+    OpenSSL::Crypto
+)
+
 add_executable(storage-manager-test
     src/storage/storage_manager_test.cpp
     src/storage/storage_manager.cpp
