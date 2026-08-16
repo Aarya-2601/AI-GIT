@@ -27,7 +27,9 @@ int runInit()
         head.close();
 
         std::ofstream config(".aigit/config");
+        //section header that groups all low level Git functions interacting with the filesystem header
         config << "[core]\n";
+        //version decided for repo, so higher versions will be cautious
         config << "\trepositoryformatversion = 0\n";
         config.close();
 
