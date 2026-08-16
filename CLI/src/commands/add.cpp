@@ -13,9 +13,10 @@ using namespace std;
 namespace Commands
 {   
     static std::string normalizePath(const fs::path& p){
-        std::string pathStr=p.generic_string();
+        std::string pathStr=p.generic_string();  //converts backslashes like in Windows to forward slashes for uniformity, between paths
         if(pathStr.rfind("./", 0) ==0){
-            pathStr=pathStr.substr(2);
+            pathStr=pathStr.substr(2);  //rfind=reverse find, for realtive paths, it starts at index zero and searches backwards, if it finds 
+            //./then it changes the relative paths to just the path without ./
         }
         return pathStr;
     }
@@ -29,36 +30,36 @@ namespace Commands
            normPath.find(".vscode/") != std::string::npos || 
            normPath.find("vcpkg/") != std::string::npos){
             return true;
-        }
+        }  //ignores if belongs to this category
 
-        std::ifstream inFile(filePath, std::ios::binary);
+        std::ifstream inFile(filePath, std::ios::binary);  //opens file in binary mode and reads the raw content into filecontent
         if(!inFile.is_open()){
             std::cerr<<"Error: Could not open file: "<<std::endl;
             return false;
         }
 
         std::stringstream buffer;
-        buffer<<inFile.rdbuf();
+        buffer<<inFile.rdbuf();  //read buffer
         std::string fileContent=buffer.str();
         inFile.close();
 
         Models::Blob blobObject(fileContent);
-        std::string storePayload= blobObject.serialize();
-        std::string sha256Hash= Core::calcSHA256(storePayload);
+        std::string storePayload= blobObject.serialize();  //convert to the standard blob<size>/0<content> format
+        std::string sha256Hash= Core::calcSHA256(storePayload);  //calculate SHA of this converted format
         if(sha256Hash.empty()){
             std::cerr<< "Error: Cryptographic hashing mechanism failed."<< std::endl;
             return false;
         }
 
-        const auto& existingEntries = indexEntries.getEntries();
+        const auto& existingEntries = indexEntries.getEntries();  //looks up the hash in the entries
         auto it = existingEntries.find(normPath);
         if(it != existingEntries.end() && it->second.hash == sha256Hash){
             return true; // File content hasn't changed; skip quietly
         }
 
         try{
-            std::string compressedData=Core::compressString(storePayload);
-            if(!Core::Storage::writeObject(sha256Hash, compressedData)){
+            std::string compressedData=Core::compressString(storePayload);  //if not present, compress the serialized payload
+            if(!Core::Storage::writeObject(sha256Hash, compressedData)){    //write the compressed payload in the disk
                 std::cerr << "Error: Storage system failed to write object blob." << std::endl;
                 return false;
             }
@@ -68,7 +69,7 @@ namespace Commands
             return false;
         }
 
-        indexEntries.addEntry(Core::IndexEntry(normPath, sha256Hash, "100644"));
+        indexEntries.addEntry(Core::IndexEntry(normPath, sha256Hash, "100644"));  //posix mode: for file permissions, standard non executable file
         std::cout<<"Added "<<normPath<<" to staging area."<<std::endl;
         return true;
     }
@@ -85,7 +86,7 @@ namespace Commands
             return 0;
         }
         
-        Core::Index indexEntries;
+        Core::Index indexEntries;  //loads index
         indexEntries.load(".aigit/index");
         
         for(const auto& target : targets){
@@ -124,7 +125,7 @@ namespace Commands
             std::cerr << "Error: Could not open index." << std::endl;
             return 1;
         }
-
+        //save the updated index entries back to the index
         indexEntries.save(".aigit/index");
         return 0;
     }
