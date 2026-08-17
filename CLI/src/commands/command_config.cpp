@@ -7,6 +7,7 @@
 namespace fs = std::filesystem;
 
 namespace Commands{
+    //vector jaha pe the key is user.name and user.email and values we can update
     int runConfig(const std::vector<std::string>& args){
         if(!fs::exists(".aigit")){
             std::cerr<<"error: not an ai-git repository (or any of the parent directories): .aigit"<<std::endl;
@@ -15,7 +16,7 @@ namespace Commands{
 
         std::string configPath=".aigit/config";
         Core::Config config;
-        config.load(configPath);
+        config.load(configPath);  //gets path loaded from disk to memory
 
         //no args so list all stored key/value pairs
         if(args.empty() || args[0]=="--list" || args[0]=="-l"){
@@ -24,7 +25,7 @@ namespace Commands{
             return 0;
         }
 
-        //if user.name mentioned
+        //if user.name mentioned, 1 arg
         if(args.size()==1){
             std::string key=args[0];
             std::string value=config.get(key, "");
@@ -37,7 +38,7 @@ namespace Commands{
             return 0;
         }
 
-        //set value
+        //set value, args more than 2
         if(args.size()>=2){
             std::string key=args[0];
             std::string value=args[1];

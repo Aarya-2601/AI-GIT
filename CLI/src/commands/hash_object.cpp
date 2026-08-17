@@ -15,7 +15,7 @@ namespace Commands{
         }
 
         //object inFile created by ifstream
-        //OPENS THE FILE IN BINARY MODEEE
+        //READS DATA IN BINARY MODEEE
         std::ifstream inFile(filePath, std::ios::binary);
         if (!inFile.is_open()){
             std::cerr<< "Error: Could not open file for reading: "<< filePath<< std::endl;
@@ -25,17 +25,17 @@ namespace Commands{
         //buffer named empty string stream created
         std::stringstream buffer;
         //reads buffer and returns pointer to it
-        buffer<< inFile.rdbuf();
+        buffer<<inFile.rdbuf();
         //packages buffer content to string
         std::string fileContent=buffer.str();
         //breaks connection between hard drive and program
         inFile.close();
 
         Models::Blob blobObject(fileContent);
-        std::string storePayload= blobObject.serialize(); 
+        std::string storePayload=blobObject.serialize(); 
 
         //compute hash using the core module
-        std::string sha256Hash= Core::calcSHA256(storePayload);
+        std::string sha256Hash=Core::calcSHA256(storePayload);
         if(sha256Hash.empty()){
             std::cerr<< "Error: Cryptographic hashing mechanism failed."<< std::endl;
             return 1;
