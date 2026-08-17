@@ -5,17 +5,18 @@
 
 namespace Models{
     struct objectType{
-        inline static const std::string blob= "blob";
+        inline static const std::string blob= "blob"; //const=read only, static=belongs to the struct rather than an object of the struct, inline=
+        //allow this member to be a part of this header lowk
         inline static const std::string tree= "tree";
         inline static const std::string commit= "commit";
     };
 
     class GitObject{
         public:
-        virtual ~GitObject()= default;
+        virtual ~GitObject()= default;  //virtual class that cannot be called on its own using an obj's property
         virtual std::string getTypeString() const= 0;
         virtual std::string serialize() const= 0;
     };
 }
 
-#endif
+#endif  
