@@ -3,7 +3,7 @@ const db=require('../services/minioservice.js')
 
 const try_clone=async(req, res)=>{
     try{
-        const {repoName}=req.params;
+        const {repoName}=req.params;  //get reponame
         if(!reponame){
             return res.status(400).send({
                 status: 'error',
