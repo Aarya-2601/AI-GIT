@@ -18,7 +18,8 @@
 #include <algorithm>
 #include <iomanip>
 
-namespace Commands{
+namespace Commands
+{
     int runStatus();
 }
 
