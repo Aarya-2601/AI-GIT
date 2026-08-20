@@ -4,15 +4,17 @@
 #include <string>
 
 namespace Models{
-    struct objectType{
+    struct objectType
+    {
         inline static const std::string blob= "blob";
         inline static const std::string tree= "tree";
         inline static const std::string commit= "commit";
     };
 
-    class GitObject{
+    class GitObject
+    {
         public:
-        virtual ~GitObject()= default;
+        virtual ~GitObject()= default; //virtual destructor, default implementation
         virtual std::string getTypeString() const= 0;
         virtual std::string serialize() const= 0;
     };

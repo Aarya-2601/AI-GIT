@@ -1,15 +1,19 @@
 #include "hash_object.hpp"
 
-namespace Commands{
+namespace Commands
+{
 
-    int runHashObject(const std::string& filePath){
+    int runHashObject(const std::string& filePath)
+    {
         //verify whether file exists on disk
-        if (!fs::exists(filePath)){
+        if (!fs::exists(filePath))
+        {
             std::cerr<< "Error: File does not exist: "<< filePath<< std::endl;  //cerr=cout with error giving capabilities
             return 1;
         }
         //func returns boolean value false if it is a folder or a system file and not a regular file
-        if (!fs::is_regular_file(filePath)){
+        if (!fs::is_regular_file(filePath))
+        {
             std::cerr<< "Error: Path specified is not a regular file: "<< filePath<< std::endl;
             return 1;
         }
@@ -17,7 +21,8 @@ namespace Commands{
         //object inFile created by ifstream
         //OPENS THE FILE IN BINARY MODEEE
         std::ifstream inFile(filePath, std::ios::binary);
-        if (!inFile.is_open()){
+        if (!inFile.is_open())
+        {
             std::cerr<< "Error: Could not open file for reading: "<< filePath<< std::endl;
             return 1;
         }
@@ -36,12 +41,14 @@ namespace Commands{
 
         //compute hash using the core module
         std::string sha256Hash= Core::calcSHA256(storePayload);
-        if(sha256Hash.empty()){
+        if(sha256Hash.empty())
+        {
             std::cerr<< "Error: Cryptographic hashing mechanism failed."<< std::endl;
             return 1;
         }
 
-        try{
+        try
+        {
             //deflate via zlib
             std::string compressedPayload=Core::compressString(storePayload);
 
@@ -53,7 +60,8 @@ namespace Commands{
             return 0;
 
         } 
-        catch(const std::exception& e){
+        catch(const std::exception& e)
+        {
             std::cerr<< "Execution Exception: "<< e.what()<< std::endl;
             return 1;
         }

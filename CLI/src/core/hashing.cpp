@@ -5,8 +5,10 @@
 
 using namespace std;
 
-namespace Core{
-    string calcSHA256(const string& content) {
+namespace Core
+{
+    string calcSHA256(const string& content) 
+    {
         EVP_MD_CTX* context = EVP_MD_CTX_new();
         if (!context) return "";
 
@@ -19,7 +21,8 @@ namespace Core{
         EVP_MD_CTX_free(context);
 
         std::stringstream ss;
-        for (unsigned int i = 0; i < length; ++i) {
+        for (unsigned int i = 0; i < length; ++i) 
+        {
             ss << hex<< setfill('0') <<setw(2) << static_cast<int>(hash[i]);
         }
         return ss.str();
