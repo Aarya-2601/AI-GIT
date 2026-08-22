@@ -14,14 +14,14 @@ namespace Models{
         }
         
         std::string binaryBytes;
-        binaryBytes.reserve(hex.length()/2);
+        binaryBytes.reserve(hex.length()/2);  //reserve space for 32 char
         
         for(size_t i=0; i<hex.length(); i+=2)
         {
             std::string byteString= hex.substr(i, 2);
             //string to integer function using hexadecimal values
-            char byte= static_cast<char>(std::stoi(byteString, nullptr, 16));  //converts int of 4 byte to char of 1 byte
-            binaryBytes.push_back(byte);
+            char byte= static_cast<char>(std::stoi(byteString, nullptr, 16));  //parses 2char into an int btw 0 and 255, passing nullptr=dont have to track the end
+            binaryBytes.push_back(byte);  //static_char=4byte int to 1 byte char
         }
         
         return binaryBytes;
@@ -35,9 +35,9 @@ namespace Models{
     hex.reserve(binary.size() * 2);
 
     for (unsigned char byte : binary)
-    {
-        hex.push_back(hexDigits[(byte >> 4) & 0x0F]);
-        hex.push_back(hexDigits[byte & 0x0F]);
+    {  //each byte is split into 2 4-bit nibbles
+        hex.push_back(hexDigits[(byte >> 4) & 0x0F]);  //isolates the top 4 bits
+        hex.push_back(hexDigits[byte & 0x0F]);  //isolates the bottom 4 bits
     }
 
     return hex;
@@ -120,8 +120,4 @@ namespace Models{
 
 /*POSIX DIRECTORY FILE FORMATS
 [type][permissions]
-100-normal files
-120-symbolic link
-040-directory
-
 040000-tree, 100644-blob normal file, 100755-blob executable, 120000-symbolic link*/

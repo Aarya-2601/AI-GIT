@@ -12,8 +12,8 @@ namespace Core{
             return;
         }
 
-        std::string line;
-        std::string currentSection="";
+        std::string line;  //tracsks each line being read
+        std::string currentSection="";  //keeps track of the section of settings config is in
 
         while(std::getline(file, line)){
             //remove leading and trailing whitespace

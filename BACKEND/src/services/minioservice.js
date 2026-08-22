@@ -1,5 +1,5 @@
 //auto-generation of presigned URLs
-const client=require('../config/storage.js')
+const {client}=require('../config/storage.js')
 
 const BUCKET_NAME=process.env.MINIO_BUCKET_NAME || 'aigit-chunks';
 const EXPIRY_SECONDS=3600 //urls will remain valid for 1 hr

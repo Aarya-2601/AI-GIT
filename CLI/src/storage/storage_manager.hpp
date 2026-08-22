@@ -2,6 +2,7 @@
 
 #include "object_store.hpp"
 #include "metadata_db.hpp"
+#include "chunking.hpp"
 
 #include <filesystem>
 #include <string>
@@ -14,6 +15,12 @@ class StorageManager
 private:
     ObjectStore objectStore;
     MetadataDB metadataDB;
+
+    std::string readSlice(
+        const std::filesystem::path& filePath,
+        size_t offset,
+        size_t length
+    ) const;
 
 public:
     explicit StorageManager(
@@ -28,6 +35,11 @@ public:
 
     std::string retrieveFile(
         const std::string& objectId
+    ) const;
+
+    void restoreFile(
+        const std::string& objectId,
+        const std::filesystem::path& destinationPath
     ) const;
 
     bool objectExists(

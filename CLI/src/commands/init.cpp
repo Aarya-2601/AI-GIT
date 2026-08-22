@@ -28,10 +28,19 @@ head.close();
 Storage::StorageManager storage(".aigit");
 storage.initialize();
 
+<<<<<<< HEAD
 std::ofstream config(".aigit/config");
 config << "[core]\n";
 config << "\trepositoryformatversion = 0\n";
 config.close();
+=======
+        std::ofstream config(".aigit/config");
+        //section header that groups all low level Git functions interacting with the filesystem header
+        config << "[core]\n";
+        //version decided for repo, so higher versions will be cautious
+        config << "\trepositoryformatversion = 0\n";
+        config.close();
+>>>>>>> aaryascrazycommits
 
 
 std::ofstream index(".aigit/index"); // staging area, stores filees to be committed, so basically files on which git add is run
