@@ -12,5 +12,10 @@ namespace Commands{  //organizational namepace box
     int runStatus();
     int runLog();
     int runConfig(const std::vector<std::string>& args);
+
+    //remote commands
+    bool runPush(const std::string& server = "http://localhost:3000");
+    bool runPull(const std::string& reponame = "default-repo", const std::string& server = "http://localhost:3000");
+    bool runClone(const std::string& reponame, const std::string& server = "http://localhost:3000");
 }
 #endif
