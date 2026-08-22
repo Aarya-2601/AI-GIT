@@ -5,6 +5,7 @@
     "openssl",
     "zlib",
     "sqlite3",
-    "curl"
+    "curl",
+     "nlohmann-json"
   ]
 }
