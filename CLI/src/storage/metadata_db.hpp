@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <string>
+#include <vector>
 
 namespace Storage
 {
@@ -37,6 +38,8 @@ public:
     ObjectMetadata getObject(
         const std::string& objectId
     ) const;
+
+    std::vector<std::string> getAllObjectIds() const;
 };
 
 }

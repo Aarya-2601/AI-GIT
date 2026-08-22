@@ -1,5 +1,3 @@
-#include "../models/commit.hpp"
-
 #ifndef CHECKOUT_HPP
 #define CHECKOUT_HPP
 

@@ -74,6 +74,29 @@ int main(int argc, char* argv[]) {
         return Commands::runConfig(configArgs);
     }
 
+    else if(command=="push"){
+        //custom server parameter: ai-git push http://localhost:3000
+        std::string server=(args.size()>=3)? args[2]:"http://localhost:3000";
+        return Commands::runPush(server);
+    }
+
+    else if (command=="pull") {
+        //use like ai-git pull <reponame>
+        std::string repoName=(args.size()>=3)? args[2]:"default-repo";
+        return Commands::runPull(repoName);
+    }
+    
+    else if(command == "clone") {
+        // Usage: ai-git clone <reponame>
+        if(args.size()<3){
+            std::cerr<<"Error: 'clone' requires a repository name."<<std::endl;
+            std::cerr<<"Usage: ai-git clone <repo_name>"<<std::endl;
+            return 1;
+        }
+        std::string repoName=args[2];
+        return Commands::runClone(repoName);
+    }
+
     else{
         std::cerr<<"Error: Command '"<<command<<"' not recognized."<<std::endl;
         return 1;

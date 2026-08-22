@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace Storage
 {
@@ -343,6 +344,73 @@ ObjectMetadata MetadataDB::getObject(
     sqlite3_close(db);
 
     return metadata;
+}
+
+std::vector<std::string> MetadataDB::getAllObjectIds() const
+{
+    sqlite3* db = nullptr;
+
+    int result = sqlite3_open(
+        dbPath.string().c_str(),
+        &db
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::string error =
+            db ? sqlite3_errmsg(db)
+               : "Unknown SQLite error";
+
+        if (db)
+        {
+            sqlite3_close(db);
+        }
+
+        throw std::runtime_error(
+            "Could not open SQLite database: " + error
+        );
+    }
+
+    const char* sql = "SELECT object_id FROM objects;";
+    sqlite3_stmt* statement = nullptr;
+
+    result = sqlite3_prepare_v2(
+        db,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::string error = sqlite3_errmsg(db);
+        sqlite3_close(db);
+
+        throw std::runtime_error(
+            "Could not prepare SQLite query: " + error
+        );
+    }
+
+    std::vector<std::string> objectIds;
+
+    while (sqlite3_step(statement) == SQLITE_ROW)
+    {
+        const char* text =
+            reinterpret_cast<const char*>(
+                sqlite3_column_text(statement, 0)
+            );
+
+        if (text)
+        {
+            objectIds.emplace_back(text);
+        }
+    }
+
+    sqlite3_finalize(statement);
+    sqlite3_close(db);
+
+    return objectIds;
 }
 
 }

@@ -1,7 +1,8 @@
-const app= require('express')();  //api framework likhne ke liye
-const cors= require('cors')();  //cross origin handler
+const express= require('express');  //api framework likhne ke liye
+const cors= require('cors');  //cross origin handler
 require('dotenv').config();  //required to read the .env file
 
+const app=express();
 const{bucket_exists}=require('./services/minioservice.js'); //importing the bucket exists function from minio
 
 const PORT=process.env.port||3000;
@@ -19,7 +20,7 @@ app.get('/health', (req,res)=>{
 });
 
 //put 
-app.post('api/v1/push/negotiate', (req, res)=>{
+app.post('/api/v1/push/negotiate', (req, res)=>{
     const {chunks}=req.body;
 
     if(!chunks || !Array.isArray(chunks)){
@@ -36,7 +37,7 @@ app.post('api/v1/push/negotiate', (req, res)=>{
 });
 
 app.listen(PORT, async()=> {
-    console.log(`AI-Git backend live on http://localhost:${port}`);
+    console.log(`AI-Git backend live on http://localhost:${PORT}`);
     try{
         await bucket_exists();
     }

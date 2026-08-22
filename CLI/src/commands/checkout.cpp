@@ -1,21 +1,19 @@
-#include "../commands/checkout.hpp"
-#include "../core/storage.hpp"
-#include "../core/compression.hpp"
 #include "checkout.hpp"
-
 #include "../core/storage.hpp"
 #include "../core/compression.hpp"
 #include "../models/tree.hpp"
-
 #include "../models/blob.hpp"
+#include "../models/commit.hpp"
+#include "../storage/storage_manager.hpp"
+#include "../helpers/gitutils.hpp"
 
 #include <iostream>
 #include <stdexcept>
 #include <filesystem>
 #include <fstream>
-#include <stdexcept>
 #include <vector>
-#include "../helpers/gitutils.hpp"
+
+namespace fs = std::filesystem;
 
 namespace 
 {
@@ -37,32 +35,16 @@ Models::Commit readCommit(const std::string& commitHash)
 
 Models::Tree readTree(const std::string& treeHash)
 {
-    std::string compressedObject =Core::Storage::readObject(treeHash);
+    std::string compressedObject = Core::Storage::readObject(treeHash);
 
     if (compressedObject.empty())
     {
         throw std::runtime_error("Failed to read tree object: " + treeHash);
     }
 
-    std::string treeData =Core::decompressData(compressedObject);
+    std::string treeData = Core::decompressData(compressedObject);
 
     return Models::Tree::deserialize(treeData);
-}
-
-Models::Blob readBlob(const std::string& blobHash)
-{
-    std::string compressedObject =Core::Storage::readObject(blobHash);
-
-    if (compressedObject.empty())
-    {
-        throw std::runtime_error(
-            "Failed to read blob object: " + blobHash
-        );
-    }
-
-    std::string blobData =Core::decompressData(compressedObject);
-
-    return Models::Blob::deserialize(blobData);
 }
 
 void restoreTree(
@@ -70,6 +52,8 @@ void restoreTree(
     const fs::path& destination
 )
 {
+    Storage::StorageManager storageManager(".aigit");
+
     for (const auto& entry : tree.getEntries())
     {
         fs::path targetPath =
@@ -86,22 +70,8 @@ void restoreTree(
         }
         else
         {
-            Models::Blob blob =
-                readBlob(entry.hash);
-
-            std::ofstream outFile(targetPath,std::ios::binary);
-
-            if (!outFile.is_open())
-            {
-                throw std::runtime_error(
-                    "Failed to create file: " +
-                    targetPath.string()
-                );
-            }
-
-            outFile << blob.getContent();
-
-            outFile.close();
+            // Reassembles FastCDC chunks or monolithic blobs
+            storageManager.restoreFile(entry.hash, targetPath);
         }
     }
 }
@@ -175,9 +145,8 @@ void updateHEAD(const std::string& branchName)
 }
 
 }
+
 namespace Commands
-{
-    namespace Commands
 {
 
 int runCheckout(const std::string& branchName)
@@ -285,5 +254,4 @@ int runCheckout(const std::string& branchName)
     }
 }
 
-}
 }
