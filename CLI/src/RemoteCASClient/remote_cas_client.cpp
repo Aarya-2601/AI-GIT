@@ -18,13 +18,9 @@ size_t writeCallback(
     void* userData
 )
 {
-    auto* response =
-        static_cast<std::string*>(userData);
+    auto* response =static_cast<std::string*>(userData);
 
-    response->append(
-        data,
-        size * count
-    );
+    response->append(data, size * count);
 
     return size * count;
 }
@@ -48,11 +44,7 @@ std::string performRequest(
 
     curl_slist* headers = nullptr;
 
-    curl_easy_setopt(
-        curl,
-        CURLOPT_URL,
-        url.c_str()
-    );
+    curl_easy_setopt(curl,CURLOPT_URL,url.c_str());
 
     curl_easy_setopt(
         curl,
@@ -96,8 +88,7 @@ std::string performRequest(
     }
 
 
-    CURLcode result =
-        curl_easy_perform(curl);
+    CURLcode result = curl_easy_perform(curl);
 
 
     if (result != CURLE_OK)
@@ -127,8 +118,7 @@ std::string performRequest(
     curl_easy_cleanup(curl);
 
 
-    if (statusCode < 200 ||
-        statusCode >= 300)
+    if (statusCode < 200 || statusCode >= 300)
     {
         throw std::runtime_error(
             "Remote server returned HTTP " +
@@ -145,21 +135,14 @@ std::string performRequest(
 }
 
 
-RemoteCASClient::RemoteCASClient(
-    const std::string& baseUrl
-)
-    : baseUrl(baseUrl)
+RemoteCASClient::RemoteCASClient(const std::string& baseUrl): baseUrl(baseUrl)
 {
 }
-
-
 bool RemoteCASClient::healthCheck() const
 {
     try
     {
-        performRequest(
-            baseUrl + "/health"
-        );
+        performRequest(baseUrl + "/health");
 
         return true;
     }
@@ -186,12 +169,10 @@ RemoteCASClient::negotiateUpload(
 
     nlohmann::json requestBody;
 
-    requestBody["chunks"] =
-        objectIds;
+    requestBody["chunks"] = objectIds;
 
 
-    std::string serializedBody =
-        requestBody.dump();
+    std::string serializedBody = requestBody.dump();
 
 
     std::string responseBody =
@@ -227,6 +208,98 @@ RemoteCASClient::negotiateUpload(
 
 
     return result;
+}
+
+void RemoteCASClient::uploadObject(
+    const std::string& uploadUrl,
+    const std::string& objectData
+) const
+{
+    CURL* curl = curl_easy_init();
+
+    if (!curl)
+    {
+        throw std::runtime_error(
+            "Could not initialize HTTP client."
+        );
+    }
+
+
+    curl_easy_setopt(
+        curl,
+        CURLOPT_URL,
+        uploadUrl.c_str()
+    );
+
+
+    // Tell curl that this request is an HTTP PUT.
+    curl_easy_setopt(
+        curl,
+        CURLOPT_CUSTOMREQUEST,
+        "PUT"
+    );
+
+
+    // Give curl the actual CAS object bytes.
+    curl_easy_setopt(
+        curl,
+        CURLOPT_POSTFIELDS,
+        objectData.data()
+    );
+
+
+    // IMPORTANT:
+    // CAS objects can contain arbitrary binary bytes,
+    // including '\0'.
+    //
+    // Therefore we explicitly provide the size.
+    curl_easy_setopt(
+        curl,
+        CURLOPT_POSTFIELDSIZE_LARGE,
+        static_cast<curl_off_t>(
+            objectData.size()
+        )
+    );
+
+
+    CURLcode result =
+        curl_easy_perform(curl);
+
+
+    if (result != CURLE_OK)
+    {
+        std::string error =
+            curl_easy_strerror(result);
+
+        curl_easy_cleanup(curl);
+
+        throw std::runtime_error(
+            "Object upload failed: " +
+            error
+        );
+    }
+
+
+    long statusCode = 0;
+
+    curl_easy_getinfo(
+        curl,
+        CURLINFO_RESPONSE_CODE,
+        &statusCode
+    );
+
+
+    curl_easy_cleanup(curl);
+
+
+    if (statusCode < 200 ||
+        statusCode >= 300)
+    {
+        throw std::runtime_error(
+            "Remote object upload returned HTTP " +
+            std::to_string(statusCode)
+        );
+    }
 }
 
 }

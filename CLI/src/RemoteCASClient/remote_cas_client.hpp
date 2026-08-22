@@ -25,6 +25,11 @@ public:
     UploadNegotiation negotiateUpload(
         const std::vector<std::string>& objectIds
     ) const;
+
+    void uploadObject(
+    const std::string& uploadUrl,
+    const std::string& objectData
+) const;
 };
 
 }
