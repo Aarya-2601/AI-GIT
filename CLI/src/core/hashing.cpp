@@ -5,16 +5,9 @@
 
 using namespace std;
 
-<<<<<<< HEAD
-namespace Core
-{
-    string calcSHA256(const string& content) 
-    {
-=======
 namespace Core{
     string calcSHA256(const string& content){
         //openssl message digest context struct allocated heap in memory
->>>>>>> aaryascrazycommits
         EVP_MD_CTX* context = EVP_MD_CTX_new();
         //if ran out of memory and could not allocate context
         if (!context) return "";
@@ -32,15 +25,9 @@ namespace Core{
         EVP_MD_CTX_free(context);
 
         std::stringstream ss;
-<<<<<<< HEAD
-        for (unsigned int i = 0; i < length; ++i) 
-        {
-            ss << hex<< setfill('0') <<setw(2) << static_cast<int>(hash[i]);
-=======
         for(unsigned int i=0; i<length; ++i){
             ss<<hex<<setfill('0')<<setw(2)<<static_cast<int>(hash[i]);
             //formats the number as base 16 hexadecimal, pads single digit values with 0, formats to integer from unsigned char
->>>>>>> aaryascrazycommits
         }
         return ss.str();
     }

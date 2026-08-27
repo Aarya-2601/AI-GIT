@@ -2,7 +2,7 @@
 
 #include "object_store.hpp"
 #include "metadata_db.hpp"
-#include "chunking.hpp"
+#include "../core/chunking.hpp"
 
 #include <filesystem>
 #include <string>
@@ -31,6 +31,12 @@ public:
 
     std::string storeFile(
         const std::filesystem::path& filePath
+    );
+
+    void storeObject(
+        const std::string& objectId,
+        const std::string& data,
+        const std::string& type
     );
 
     std::string retrieveFile(

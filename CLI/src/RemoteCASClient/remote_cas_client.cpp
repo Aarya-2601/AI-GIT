@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 
 #include <stdexcept>
+#include <string>
 
 namespace Remote
 {
@@ -18,13 +19,19 @@ size_t writeCallback(
     void* userData
 )
 {
-    auto* response =static_cast<std::string*>(userData);
+    auto* response =
+        static_cast<std::string*>(userData);
 
-    response->append(data, size * count);
+    size_t totalBytes =
+        size * count;
 
-    return size * count;
+    response->append(
+        data,
+        totalBytes
+    );
+
+    return totalBytes;
 }
-
 
 std::string performRequest(
     const std::string& url,
@@ -41,10 +48,13 @@ std::string performRequest(
     }
 
     std::string responseBody;
-
     curl_slist* headers = nullptr;
 
-    curl_easy_setopt(curl,CURLOPT_URL,url.c_str());
+    curl_easy_setopt(
+        curl,
+        CURLOPT_URL,
+        url.c_str()
+    );
 
     curl_easy_setopt(
         curl,
@@ -58,15 +68,13 @@ std::string performRequest(
         &responseBody
     );
 
-
-    // If jsonBody exists,
-    // this is a POST request.
     if (jsonBody != nullptr)
     {
-        headers = curl_slist_append(
-            headers,
-            "Content-Type: application/json"
-        );
+        headers =
+            curl_slist_append(
+                headers,
+                "Content-Type: application/json"
+            );
 
         curl_easy_setopt(
             curl,
@@ -83,13 +91,20 @@ std::string performRequest(
         curl_easy_setopt(
             curl,
             CURLOPT_POSTFIELDS,
-            jsonBody->c_str()
+            jsonBody->data()
+        );
+
+        curl_easy_setopt(
+            curl,
+            CURLOPT_POSTFIELDSIZE_LARGE,
+            static_cast<curl_off_t>(
+                jsonBody->size()
+            )
         );
     }
 
-
-    CURLcode result = curl_easy_perform(curl);
-
+    CURLcode result =
+        curl_easy_perform(curl);
 
     if (result != CURLE_OK)
     {
@@ -100,10 +115,10 @@ std::string performRequest(
         curl_easy_cleanup(curl);
 
         throw std::runtime_error(
-            "HTTP request failed: " + error
+            "HTTP request failed: " +
+            error
         );
     }
-
 
     long statusCode = 0;
 
@@ -113,12 +128,13 @@ std::string performRequest(
         &statusCode
     );
 
-
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
 
-
-    if (statusCode < 200 || statusCode >= 300)
+    if (
+        statusCode < 200 ||
+        statusCode >= 300
+    )
     {
         throw std::runtime_error(
             "Remote server returned HTTP " +
@@ -128,21 +144,25 @@ std::string performRequest(
         );
     }
 
-
     return responseBody;
 }
 
 }
 
-
-RemoteCASClient::RemoteCASClient(const std::string& baseUrl): baseUrl(baseUrl)
+RemoteCASClient::RemoteCASClient(
+    const std::string& baseUrl
+)
+    : baseUrl(baseUrl)
 {
 }
+
 bool RemoteCASClient::healthCheck() const
 {
     try
     {
-        performRequest(baseUrl + "/health");
+        performRequest(
+            baseUrl + "/health"
+        );
 
         return true;
     }
@@ -152,52 +172,40 @@ bool RemoteCASClient::healthCheck() const
     }
 }
 
-
 UploadNegotiation
 RemoteCASClient::negotiateUpload(
     const std::vector<std::string>& objectIds
 ) const
 {
-    // Build:
-    //
-    // {
-    //     "chunks": [
-    //         "hash1",
-    //         "hash2"
-    //     ]
-    // }
-
     nlohmann::json requestBody;
 
-    requestBody["chunks"] = objectIds;
+    requestBody["chunks"] =
+        objectIds;
 
-
-    std::string serializedBody = requestBody.dump();
-
+    std::string serializedBody =
+        requestBody.dump();
 
     std::string responseBody =
         performRequest(
             baseUrl +
             "/api/v1/push/negotiate",
-
             &serializedBody
         );
-
 
     nlohmann::json response =
         nlohmann::json::parse(
             responseBody
         );
 
-
     UploadNegotiation result;
 
-
-    if (response.contains(
-            "upload_urls"))
+    if (
+        response.contains("upload_urls") &&
+        response["upload_urls"].is_object()
+    )
     {
         for (
-            auto& [objectId, url] :
+            const auto& [objectId, url] :
             response["upload_urls"].items()
         )
         {
@@ -205,7 +213,6 @@ RemoteCASClient::negotiateUpload(
                 url.get<std::string>();
         }
     }
-
 
     return result;
 }
@@ -224,35 +231,24 @@ void RemoteCASClient::uploadObject(
         );
     }
 
-
     curl_easy_setopt(
         curl,
         CURLOPT_URL,
         uploadUrl.c_str()
     );
 
-
-    // Tell curl that this request is an HTTP PUT.
     curl_easy_setopt(
         curl,
         CURLOPT_CUSTOMREQUEST,
         "PUT"
     );
 
-
-    // Give curl the actual CAS object bytes.
     curl_easy_setopt(
         curl,
         CURLOPT_POSTFIELDS,
         objectData.data()
     );
 
-
-    // IMPORTANT:
-    // CAS objects can contain arbitrary binary bytes,
-    // including '\0'.
-    //
-    // Therefore we explicitly provide the size.
     curl_easy_setopt(
         curl,
         CURLOPT_POSTFIELDSIZE_LARGE,
@@ -261,10 +257,8 @@ void RemoteCASClient::uploadObject(
         )
     );
 
-
     CURLcode result =
         curl_easy_perform(curl);
-
 
     if (result != CURLE_OK)
     {
@@ -279,6 +273,76 @@ void RemoteCASClient::uploadObject(
         );
     }
 
+    long statusCode = 0;
+
+    curl_easy_getinfo(
+        curl,
+        CURLINFO_RESPONSE_CODE,
+        &statusCode
+    );
+
+    curl_easy_cleanup(curl);
+
+    if (
+        statusCode < 200 ||
+        statusCode >= 300
+    )
+    {
+        throw std::runtime_error(
+            "Remote object upload returned HTTP " +
+            std::to_string(statusCode)
+        );
+    }
+}
+
+std::string RemoteCASClient::downloadObject(
+    const std::string& downloadUrl
+) const
+{
+    CURL* curl = curl_easy_init();
+
+    if (!curl)
+    {
+        throw std::runtime_error(
+            "Could not initialize HTTP client."
+        );
+    }
+
+    std::string objectData;
+
+    curl_easy_setopt(
+        curl,
+        CURLOPT_URL,
+        downloadUrl.c_str()
+    );
+
+    curl_easy_setopt(
+        curl,
+        CURLOPT_WRITEFUNCTION,
+        writeCallback
+    );
+
+    curl_easy_setopt(
+        curl,
+        CURLOPT_WRITEDATA,
+        &objectData
+    );
+
+    CURLcode result =
+        curl_easy_perform(curl);
+
+    if (result != CURLE_OK)
+    {
+        std::string error =
+            curl_easy_strerror(result);
+
+        curl_easy_cleanup(curl);
+
+        throw std::runtime_error(
+            "Object download failed: " +
+            error
+        );
+    }
 
     long statusCode = 0;
 
@@ -288,18 +352,20 @@ void RemoteCASClient::uploadObject(
         &statusCode
     );
 
-
     curl_easy_cleanup(curl);
 
-
-    if (statusCode < 200 ||
-        statusCode >= 300)
+    if (
+        statusCode < 200 ||
+        statusCode >= 300
+    )
     {
         throw std::runtime_error(
-            "Remote object upload returned HTTP " +
+            "Remote object download returned HTTP " +
             std::to_string(statusCode)
         );
     }
+
+    return objectData;
 }
 
 }
