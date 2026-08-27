@@ -68,77 +68,324 @@ static const uint64_t GEAR_MATRIX[256] = {
     0x4482828888981f44ULL, 0x5c6363222287955cULL, 0xd8d9d9dfdf8435d8ULL, 0x6ccb9a9a805f6cb1ULL
 };
 
-std::vector<Chunk> Chunking::chunkBuffer(const uint8_t* data, size_t size){
+std::vector<Chunk> Chunking::chunkBuffer(
+    const uint8_t* data,
+    size_t size
+)
+{
     std::vector<Chunk> chunks;
-    if (!data || size == 0) return chunks;
+
+    if (data == nullptr || size == 0)
+    {
+        return chunks;
+    }
 
     size_t cursor = 0;
 
-    while (cursor < size) {
-        size_t remaining = size - cursor;
+    while (cursor < size)
+    {
+        size_t remaining =
+            size - cursor;
 
-        // If remaining bytes are <= MIN_SIZE, flush as final chunk
-        if (remaining <= MIN_SIZE) {
-            std::string hash = Core::calcSHA256(
-                std::string(reinterpret_cast<const char*>(data + cursor), remaining)
+        if (remaining <= MIN_SIZE)
+        {
+            std::string chunkData(
+                reinterpret_cast<const char*>(
+                    data + cursor
+                ),
+                remaining
             );
-            chunks.push_back({cursor, remaining, hash});
+
+            std::string hash =
+                Core::calcSHA256(chunkData);
+
+            chunks.push_back(
+                {
+                    cursor,
+                    remaining,
+                    hash
+                }
+            );
+
             break;
         }
 
-        size_t maxChunk = std::min(remaining, MAX_SIZE);
-        size_t searchPos = cursor + MIN_SIZE; // Sub-chunk skipping
-        size_t splitPoint = cursor + maxChunk;
-        uint64_t fp = 0;
+        size_t maxChunk =
+            std::min(
+                remaining,
+                MAX_SIZE
+            );
 
-        // Phase 1: Scan small region [MIN_SIZE, AVG_SIZE) using stricter MASK_S
-        size_t midPoint = cursor + std::min(remaining, AVG_SIZE);
-        while (searchPos < midPoint) {
-            fp = (fp << 1) + GEAR_MATRIX[data[searchPos]];
-            if ((fp & MASK_S) == 0) {
-                splitPoint = searchPos;
+        size_t maxPosition =
+            cursor + maxChunk;
+
+        size_t midPosition =
+            cursor +
+            std::min(
+                remaining,
+                AVG_SIZE
+            );
+
+        size_t searchPosition =
+            cursor + MIN_SIZE;
+
+        size_t splitPoint =
+            maxPosition;
+
+        uint64_t fingerprint = 0;
+
+        while (
+            searchPosition < midPosition
+        )
+        {
+            fingerprint =
+                (fingerprint << 1) +
+                GEAR_MATRIX[
+                    data[searchPosition]
+                ];
+
+            if (
+                (fingerprint & MASK_S)
+                == 0
+            )
+            {
+                splitPoint =
+                    searchPosition + 1;
+
                 break;
             }
-            searchPos++;
+
+            ++searchPosition;
         }
 
-        // Phase 2: If no boundary found, scan [AVG_SIZE, MAX_SIZE) using looser MASK_L
-        if (splitPoint == cursor + maxChunk) {
-            while (searchPos < cursor + maxChunk) {
-                fp = (fp << 1) + GEAR_MATRIX[data[searchPos]];
-                if ((fp & MASK_L) == 0) {
-                    splitPoint = searchPos;
+        if (splitPoint == maxPosition)
+        {
+            while (
+                searchPosition < maxPosition
+            )
+            {
+                fingerprint =
+                    (fingerprint << 1) +
+                    GEAR_MATRIX[
+                        data[searchPosition]
+                    ];
+
+                if (
+                    (fingerprint & MASK_L)
+                    == 0
+                )
+                {
+                    splitPoint =
+                        searchPosition + 1;
+
                     break;
                 }
-                searchPos++;
+
+                ++searchPosition;
             }
         }
 
-        size_t chunkLen = splitPoint - cursor;
-        std::string chunkHash = Core::calcSHA256(
-            std::string(reinterpret_cast<const char*>(data + cursor), chunkLen)
+        size_t chunkLength =
+            splitPoint - cursor;
+
+        std::string chunkData(
+            reinterpret_cast<const char*>(
+                data + cursor
+            ),
+            chunkLength
         );
 
-        chunks.push_back({cursor, chunkLen, chunkHash});
-        cursor += chunkLen;
+        std::string chunkHash =
+            Core::calcSHA256(
+                chunkData
+            );
+
+        chunks.push_back(
+            {
+                cursor,
+                chunkLength,
+                chunkHash
+            }
+        );
+
+        cursor = splitPoint;
     }
 
     return chunks;
 }
 
-std::vector<Chunk> Chunking::chunkFile(const std::string& filePath) {
-    std::ifstream file(filePath, std::ios::binary | std::ios::ate);
-    if (!file.is_open()) {
-        throw std::runtime_error("Failed to open file for chunking: " + filePath);
+std::vector<Chunk> Chunking::chunkFile(
+    const std::string& filePath
+)
+{
+    std::ifstream file(
+        filePath,
+        std::ios::binary
+    );
+
+    if (!file.is_open())
+    {
+        throw std::runtime_error(
+            "Failed to open file for chunking: " +
+            filePath
+        );
     }
 
-    std::streamsize fileSize = file.tellg();
-    file.seekg(0, std::ios::beg);
+    std::vector<Chunk> chunks;
 
-    std::vector<uint8_t> buffer(fileSize);
-    if (!file.read(reinterpret_cast<char*>(buffer.data()), fileSize)) {
-        throw std::runtime_error("Failed to read file into memory: " + filePath);
+    size_t globalOffset = 0;
+
+    while (true)
+    {
+        std::vector<uint8_t> buffer(MAX_SIZE);
+
+        file.read(
+            reinterpret_cast<char*>(
+                buffer.data()
+            ),
+            static_cast<std::streamsize>(
+                MAX_SIZE
+            )
+        );
+
+        size_t bytesRead =
+            static_cast<size_t>(
+                file.gcount()
+            );
+
+        if (bytesRead == 0)
+        {
+            break;
+        }
+
+        buffer.resize(bytesRead);
+
+        size_t searchPosition =
+            std::min(
+                MIN_SIZE,
+                bytesRead
+            );
+
+        size_t splitPoint =
+            bytesRead;
+
+        uint64_t fingerprint = 0;
+
+        if (bytesRead > MIN_SIZE)
+        {
+            size_t midPosition =
+                std::min(
+                    AVG_SIZE,
+                    bytesRead
+                );
+
+            while (
+                searchPosition < midPosition
+            )
+            {
+                fingerprint =
+                    (fingerprint << 1) +
+                    GEAR_MATRIX[
+                        buffer[searchPosition]
+                    ];
+
+                if (
+                    (fingerprint & MASK_S)
+                    == 0
+                )
+                {
+                    splitPoint =
+                        searchPosition + 1;
+
+                    break;
+                }
+
+                ++searchPosition;
+            }
+
+            if (
+                splitPoint == bytesRead
+            )
+            {
+                while (
+                    searchPosition < bytesRead
+                )
+                {
+                    fingerprint =
+                        (fingerprint << 1) +
+                        GEAR_MATRIX[
+                            buffer[searchPosition]
+                        ];
+
+                    if (
+                        (fingerprint & MASK_L)
+                        == 0
+                    )
+                    {
+                        splitPoint =
+                            searchPosition + 1;
+
+                        break;
+                    }
+
+                    ++searchPosition;
+                }
+            }
+        }
+
+        std::string chunkData(
+            reinterpret_cast<const char*>(
+                buffer.data()
+            ),
+            splitPoint
+        );
+
+        std::string chunkHash =
+            Core::calcSHA256(
+                chunkData
+            );
+
+        chunks.push_back(
+            {
+                globalOffset,
+                splitPoint,
+                chunkHash
+            }
+        );
+
+        globalOffset +=
+            splitPoint;
+
+        if (splitPoint < bytesRead)
+        {
+            std::streamoff unusedBytes =
+                static_cast<std::streamoff>(
+                    bytesRead - splitPoint
+                );
+
+            file.clear();
+
+            file.seekg(
+                -unusedBytes,
+                std::ios::cur
+            );
+
+            if (!file)
+            {
+                throw std::runtime_error(
+                    "Failed to reposition file while chunking."
+                );
+            }
+        }
+
+        if (
+            bytesRead < MAX_SIZE &&
+            splitPoint == bytesRead
+        )
+        {
+            break;
+        }
     }
 
-    return chunkBuffer(buffer.data(), buffer.size());
+    return chunks;
 }

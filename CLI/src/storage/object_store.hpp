@@ -2,7 +2,6 @@
 
 #include <filesystem>
 #include <string>
-#include <vector>
 
 namespace Storage
 {
@@ -17,6 +16,7 @@ public:
         const std::filesystem::path& root
     );
 
+
     void initialize();
 
     bool exists(
@@ -27,6 +27,14 @@ public:
         const std::filesystem::path& filePath
     );
 
+
+    void storeObject(
+        const std::string& objectId,
+        const std::string& data
+    );
+
+    // Retrieves the raw bytes of an object
+    // using its SHA-256 object ID.
     std::string retrieve(
         const std::string& objectId
     ) const;
