@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <nlohmann/json.hpp>
+
 namespace Remote
 {
 
@@ -31,6 +31,10 @@ public:
     void uploadObject(
         const std::string& uploadUrl,
         const std::string& objectData
+    ) const;
+
+    std::string downloadObject(
+        const std::string& downloadUrl
     ) const;
 };
 
