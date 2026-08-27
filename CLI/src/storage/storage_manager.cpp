@@ -112,25 +112,28 @@ std::string StorageManager::storeFile(
 
     for (const Chunk& chunk : chunks)
     {
-        std::string chunkData =
-            readSlice(
-                filePath,
-                chunk.offset,
-                chunk.length
+        if (!objectStore.exists(chunk.sha256))
+        {
+            std::string chunkData =
+                readSlice(
+                    filePath,
+                    chunk.offset,
+                    chunk.length
+                );
+
+            objectStore.storeObject(
+                chunk.sha256,
+                chunkData
             );
 
-        objectStore.storeObject(
-            chunk.sha256,
-            chunkData
-        );
-
-        metadataDB.addObject(
-            chunk.sha256,
-            static_cast<long long>(
-                chunk.length
-            ),
-            "chunk"
-        );
+            metadataDB.addObject(
+                chunk.sha256,
+                static_cast<long long>(
+                    chunk.length
+                ),
+                "chunk"
+            );
+        }
 
         manifest["chunks"].push_back(
             {
@@ -149,18 +152,21 @@ std::string StorageManager::storeFile(
             manifestData
         );
 
-    objectStore.storeObject(
-        manifestId,
-        manifestData
-    );
+    if (!objectStore.exists(manifestId))
+    {
+        objectStore.storeObject(
+            manifestId,
+            manifestData
+        );
 
-    metadataDB.addObject(
-        manifestId,
-        static_cast<long long>(
-            manifestData.size()
-        ),
-        "manifest"
-    );
+        metadataDB.addObject(
+            manifestId,
+            static_cast<long long>(
+                manifestData.size()
+            ),
+            "manifest"
+        );
+    }
 
     return manifestId;
 }
@@ -208,10 +214,7 @@ void StorageManager::restoreFile(
     if (
         !manifest.is_discarded() &&
         manifest.is_object() &&
-        manifest.value(
-            "type",
-            ""
-        ) == "manifest"
+        manifest.value("type", "") == "manifest"
     )
     {
         if (
@@ -224,10 +227,7 @@ void StorageManager::restoreFile(
             );
         }
 
-        for (
-            const auto& chunk :
-            manifest["chunks"]
-        )
+        for (const auto& chunk : manifest["chunks"])
         {
             std::string chunkHash =
                 chunk.at("hash")
