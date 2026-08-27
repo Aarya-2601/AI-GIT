@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.12...4.3.4)
 
 project(AIGit LANGUAGES CXX)
 
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -11,27 +10,23 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY
     "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 )
 
-
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(SQLite3 REQUIRED)
-
-
+find_package(nlohmann_json CONFIG REQUIRED)
 
 set(SOURCES
 
-    # Main
     "src/main.cpp"
 
-    # Core
     "src/core/hashing.cpp"
     "src/core/compression.cpp"
     "src/core/storage.cpp"
     "src/core/config.cpp"
     "src/core/index.cpp"
     "src/core/refs.cpp"
+    "src/core/chunking.cpp"
 
-    # Commands
     "src/commands/hash_object.cpp"
     "src/commands/init.cpp"
     "src/commands/add.cpp"
@@ -41,20 +36,16 @@ set(SOURCES
     "src/commands/command_config.cpp"
     "src/commands/branch.cpp"
 
-    # Helpers
     "src/helpers/gitutils.cpp"
 
-    # Models
     "src/models/blob.cpp"
     "src/models/tree.cpp"
     "src/models/commit.cpp"
 
-    # Storage
     "src/storage/object_store.cpp"
     "src/storage/metadata_db.cpp"
     "src/storage/storage_manager.cpp"
 )
-
 
 add_executable(ai-git ${SOURCES})
 
@@ -67,9 +58,8 @@ target_link_libraries(ai-git PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
     SQLite::SQLite3
+    nlohmann_json::nlohmann_json
 )
-
-
 
 add_executable(object-store-test
     src/storage/object_store_test.cpp
@@ -91,6 +81,7 @@ add_executable(storage-manager-test
     src/storage/object_store.cpp
     src/storage/metadata_db.cpp
     src/core/hashing.cpp
+    src/core/chunking.cpp
 )
 
 target_include_directories(storage-manager-test PRIVATE
@@ -100,13 +91,13 @@ target_include_directories(storage-manager-test PRIVATE
 target_link_libraries(storage-manager-test PRIVATE
     OpenSSL::Crypto
     SQLite::SQLite3
+    nlohmann_json::nlohmann_json
 )
 
 install(
     TARGETS ai-git
     DESTINATION bin
 )
-
 
 set(CPACK_PACKAGE_NAME "AI-Git")
 

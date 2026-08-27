@@ -2,7 +2,7 @@
 
 #include "object_store.hpp"
 #include "metadata_db.hpp"
-#include "chunking.hpp"
+#include "../core/chunking.hpp"
 
 #include <filesystem>
 #include <string>
