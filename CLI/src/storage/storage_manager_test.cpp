@@ -1,115 +1,124 @@
 #include "storage_manager.hpp"
 
+#include "../core/hashing.hpp"
+
+#include <filesystem>
+#include <fstream>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 int main()
 {
     try
     {
-        Storage::StorageManager storage(
-            ".aigit/cas"
+        std::filesystem::path repoRoot = ".aigit";
+
+        Storage::StorageManager manager(repoRoot);
+        manager.initialize();
+
+        std::filesystem::path inputFile =
+            "chunk-test.bin";
+
+        std::filesystem::path outputFile =
+            "chunk-test-reconstructed.bin";
+
+        if (!std::filesystem::exists(inputFile))
+        {
+            std::cerr
+                << "Test file not found: "
+                << inputFile
+                << "\n";
+
+            return 1;
+        }
+
+        std::cout
+            << "Input file: "
+            << inputFile
+            << "\n";
+
+        std::cout
+            << "Size: "
+            << std::filesystem::file_size(inputFile)
+            << " bytes\n\n";
+
+        std::string manifestId =
+            manager.storeFile(inputFile);
+
+        std::cout
+            << "Manifest/Object ID: "
+            << manifestId
+            << "\n";
+
+        manager.restoreFile(
+            manifestId,
+            outputFile
         );
 
-        storage.initialize();
+        if (!std::filesystem::exists(outputFile))
+        {
+            throw std::runtime_error(
+                "Reconstructed file was not created."
+            );
+        }
 
-        // Store all three files
-        std::string objectId1 =
-            storage.storeFile("test.txt");
+        std::ifstream original(
+            inputFile,
+            std::ios::binary
+        );
 
-        std::string objectId2 =
-            storage.storeFile("test1.txt");
+        std::ifstream reconstructed(
+            outputFile,
+            std::ios::binary
+        );
 
-        std::string objectId3 =
-            storage.storeFile("test2.txt");
+        std::string originalData(
+            (std::istreambuf_iterator<char>(original)),
+            std::istreambuf_iterator<char>()
+        );
 
-        // Print object IDs
-        std::cout << "\n=== OBJECT IDs ===\n";
+        std::string reconstructedData(
+            (std::istreambuf_iterator<char>(reconstructed)),
+            std::istreambuf_iterator<char>()
+        );
+
+        std::string originalHash =
+            Core::calcSHA256(originalData);
+
+        std::string reconstructedHash =
+            Core::calcSHA256(reconstructedData);
 
         std::cout
-            << "test.txt: "
-            << objectId1
+            << "\nOriginal SHA-256:      "
+            << originalHash
             << "\n";
 
         std::cout
-            << "test1.txt: "
-            << objectId2
-            << "\n";
+            << "Reconstructed SHA-256: "
+            << reconstructedHash
+            << "\n\n";
+
+        if (originalHash != reconstructedHash)
+        {
+            std::cerr
+                << "FAILED: reconstructed file does not match.\n";
+
+            return 1;
+        }
 
         std::cout
-            << "test2.txt: "
-            << objectId3
-            << "\n";
+            << "SUCCESS: reconstructed file matches original.\n";
 
-        // Check deduplication
-        std::cout << "\n=== DEDUPLICATION TEST ===\n";
-
-        std::cout
-            << "test.txt == test1.txt: "
-            << (objectId1 == objectId2 ? "YES" : "NO")
-            << "\n";
-
-        std::cout
-            << "test.txt == test2.txt: "
-            << (objectId1 == objectId3 ? "YES" : "NO")
-            << "\n";
-
-        std::cout
-            << "test1.txt == test2.txt: "
-            << (objectId2 == objectId3 ? "YES" : "NO")
-            << "\n";
-
-        // Check that the objects exist
-        std::cout << "\n=== OBJECT EXISTENCE ===\n";
-
-        std::cout
-            << "test.txt object exists: "
-            << (storage.objectExists(objectId1)
-                    ? "YES"
-                    : "NO")
-            << "\n";
-
-        std::cout
-            << "test1.txt object exists: "
-            << (storage.objectExists(objectId2)
-                    ? "YES"
-                    : "NO")
-            << "\n";
-
-        std::cout
-            << "test2.txt object exists: "
-            << (storage.objectExists(objectId3)
-                    ? "YES"
-                    : "NO")
-            << "\n";
-
-        // Retrieve the files
-        std::cout << "\n=== RETRIEVAL ===\n";
-
-        std::cout
-            << "test.txt retrieved: "
-            << storage.retrieveFile(objectId1)
-            << "\n";
-
-        std::cout
-            << "test1.txt retrieved: "
-            << storage.retrieveFile(objectId2)
-            << "\n";
-
-        std::cout
-            << "test2.txt retrieved: "
-            << storage.retrieveFile(objectId3)
-            << "\n";
+        return 0;
     }
     catch (const std::exception& e)
     {
         std::cerr
-            << "Error: "
+            << "Test failed: "
             << e.what()
             << "\n";
 
         return 1;
     }
-
-    return 0;
 }

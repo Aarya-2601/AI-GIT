@@ -11,17 +11,6 @@ namespace Models
 {
 
     //parameterized constructor
-<<<<<<< HEAD
-    Blob::Blob(std::string content)
-    {
-        mcontent =std::move(content); //moves content, not copy
-    }
-
-    //convert to Git format
-    std::string Blob::serialize() const
-    {
-        std::string header= "blob "+std::to_string(mcontent.size());
-=======
     Blob::Blob(std::string content){
         mcontent=std::move(content);
     }
@@ -29,36 +18,21 @@ namespace Models
     //convert to Git format
     std::string Blob::serialize() const{
         std::string header="blob "+std::to_string(mcontent.size());
->>>>>>> aaryascrazycommits
         header.push_back('\0');
         return header+mcontent;
     }
 
     Blob Blob::deserialize(const std::string& data)
-<<<<<<< HEAD
-    {
-    size_t headerEnd = data.find('\0');
-=======
 {
     size_t headerEnd=data.find('\0');
->>>>>>> aaryascrazycommits
 
     if(headerEnd==std::string::npos)
     {
         throw std::runtime_error("Invalid blob object.");  //can throw an error only when running
     }
 
-<<<<<<< HEAD
-    std::string content =data.substr(headerEnd + 1);
-
-    return Blob(content);
-    }
-
-
-=======
     std::string content=data.substr(headerEnd+1);
 
     return Blob(content);
 }
->>>>>>> aaryascrazycommits
 } 
