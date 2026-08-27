@@ -1,4 +1,4 @@
-const Minio = require('minio');
+const Minio=require('minio');
 require('dotenv').config();
 
 const client = new Minio.Client({
