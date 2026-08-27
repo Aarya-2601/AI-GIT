@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
+#include <nlohmann/json.hpp>
 namespace Remote
 {
 
@@ -18,7 +18,9 @@ private:
     std::string baseUrl;
 
 public:
-    explicit RemoteCASClient(const std::string& baseUrl);
+    explicit RemoteCASClient(
+        const std::string& baseUrl
+    );
 
     bool healthCheck() const;
 
@@ -27,9 +29,9 @@ public:
     ) const;
 
     void uploadObject(
-    const std::string& uploadUrl,
-    const std::string& objectData
-) const;
+        const std::string& uploadUrl,
+        const std::string& objectData
+    ) const;
 };
 
 }
