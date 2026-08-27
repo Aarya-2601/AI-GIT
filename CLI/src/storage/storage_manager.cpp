@@ -121,16 +121,9 @@ std::string StorageManager::storeFile(
                     chunk.length
                 );
 
-            objectStore.storeObject(
+            storeObject(
                 chunk.sha256,
-                chunkData
-            );
-
-            metadataDB.addObject(
-                chunk.sha256,
-                static_cast<long long>(
-                    chunk.length
-                ),
+                chunkData,
                 "chunk"
             );
         }
@@ -154,21 +147,37 @@ std::string StorageManager::storeFile(
 
     if (!objectStore.exists(manifestId))
     {
-        objectStore.storeObject(
+        storeObject(
             manifestId,
-            manifestData
-        );
-
-        metadataDB.addObject(
-            manifestId,
-            static_cast<long long>(
-                manifestData.size()
-            ),
+            manifestData,
             "manifest"
         );
     }
 
     return manifestId;
+}
+
+void StorageManager::storeObject(
+    const std::string& objectId,
+    const std::string& data,
+    const std::string& type
+)
+{
+    if (!objectStore.exists(objectId))
+    {
+        objectStore.storeObject(
+            objectId,
+            data
+        );
+    }
+
+    metadataDB.addObject(
+        objectId,
+        static_cast<long long>(
+            data.size()
+        ),
+        type
+    );
 }
 
 std::string StorageManager::retrieveFile(

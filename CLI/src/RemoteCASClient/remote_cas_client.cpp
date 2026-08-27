@@ -20,9 +20,7 @@ size_t writeCallback(
 )
 {
     auto* response =
-        static_cast<std::string*>(
-            userData
-        );
+        static_cast<std::string*>(userData);
 
     size_t totalBytes =
         size * count;
@@ -40,8 +38,7 @@ std::string performRequest(
     const std::string* jsonBody = nullptr
 )
 {
-    CURL* curl =
-        curl_easy_init();
+    CURL* curl = curl_easy_init();
 
     if (!curl)
     {
@@ -225,8 +222,7 @@ void RemoteCASClient::uploadObject(
     const std::string& objectData
 ) const
 {
-    CURL* curl =
-        curl_easy_init();
+    CURL* curl = curl_easy_init();
 
     if (!curl)
     {
@@ -297,6 +293,79 @@ void RemoteCASClient::uploadObject(
             std::to_string(statusCode)
         );
     }
+}
+
+std::string RemoteCASClient::downloadObject(
+    const std::string& downloadUrl
+) const
+{
+    CURL* curl = curl_easy_init();
+
+    if (!curl)
+    {
+        throw std::runtime_error(
+            "Could not initialize HTTP client."
+        );
+    }
+
+    std::string objectData;
+
+    curl_easy_setopt(
+        curl,
+        CURLOPT_URL,
+        downloadUrl.c_str()
+    );
+
+    curl_easy_setopt(
+        curl,
+        CURLOPT_WRITEFUNCTION,
+        writeCallback
+    );
+
+    curl_easy_setopt(
+        curl,
+        CURLOPT_WRITEDATA,
+        &objectData
+    );
+
+    CURLcode result =
+        curl_easy_perform(curl);
+
+    if (result != CURLE_OK)
+    {
+        std::string error =
+            curl_easy_strerror(result);
+
+        curl_easy_cleanup(curl);
+
+        throw std::runtime_error(
+            "Object download failed: " +
+            error
+        );
+    }
+
+    long statusCode = 0;
+
+    curl_easy_getinfo(
+        curl,
+        CURLINFO_RESPONSE_CODE,
+        &statusCode
+    );
+
+    curl_easy_cleanup(curl);
+
+    if (
+        statusCode < 200 ||
+        statusCode >= 300
+    )
+    {
+        throw std::runtime_error(
+            "Remote object download returned HTTP " +
+            std::to_string(statusCode)
+        );
+    }
+
+    return objectData;
 }
 
 }
