@@ -15,8 +15,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(SQLite3 REQUIRED)
-
-
+find_package(nlohmann_json CONFIG REQUIRED)
 
 set(SOURCES
 
@@ -63,6 +62,7 @@ target_include_directories(ai-git PRIVATE
 )
 
 target_link_libraries(ai-git PRIVATE
+    nlohmann_json::nlohmann_json
     OpenSSL::SSL
     OpenSSL::Crypto
     ZLIB::ZLIB
