@@ -1,10 +1,12 @@
 #include "storage_manager.hpp"
-#include "chunking.hpp"
-#include "../core/filesystem.hpp"
+
 #include "../core/hashing.hpp"
+
+#include <nlohmann/json.hpp>
 
 #include <fstream>
 #include <stdexcept>
+#include <vector>
 
 namespace Storage
 {
@@ -29,24 +31,38 @@ std::string StorageManager::readSlice(
     size_t length
 ) const
 {
-    std::ifstream file(filePath, std::ios::binary);
+    std::ifstream file(
+        filePath,
+        std::ios::binary
+    );
+
     if (!file.is_open())
     {
         throw std::runtime_error(
-            "Failed to open file for slicing: " +
+            "Failed to open file: " +
             filePath.string()
         );
     }
 
-    file.seekg(static_cast<std::streamoff>(offset), std::ios::beg);
-    std::string buffer(length, '\0');
-    file.read(&buffer[0], static_cast<std::streamsize>(length));
+    file.seekg(
+        static_cast<std::streamoff>(offset),
+        std::ios::beg
+    );
 
-    if (static_cast<size_t>(file.gcount()) != length)
+    std::string buffer(length, '\0');
+
+    file.read(
+        buffer.data(),
+        static_cast<std::streamsize>(length)
+    );
+
+    if (
+        static_cast<size_t>(file.gcount())
+        != length
+    )
     {
         throw std::runtime_error(
-            "Failed to read complete chunk slice from: " +
-            filePath.string()
+            "Failed to read complete chunk."
         );
     }
 
@@ -65,76 +81,97 @@ std::string StorageManager::storeFile(
         );
     }
 
-    size_t totalBytes = std::filesystem::file_size(filePath);
+    size_t totalBytes =
+        std::filesystem::file_size(filePath);
 
-    // ------------------------------------------------
-    // FastCDC Chunking Branch for Large Files (> 256 KB)
-    // ------------------------------------------------
-    if (totalBytes > Chunking::MIN_SIZE)
+    if (totalBytes <= Chunking::MIN_SIZE)
     {
-        std::vector<Chunk> chunks = Chunking::chunkFile(filePath.string());
+        std::string objectId =
+            objectStore.store(filePath);
 
-        std::string manifestJson = "{\"type\":\"manifest\",\"total_size\":" +
-                                   std::to_string(totalBytes) + ",\"chunks\":[";
-
-        for (size_t i = 0; i < chunks.size(); ++i)
-        {
-            // 1. Extract raw binary slice
-            std::string chunkData = readSlice(filePath, chunks[i].offset, chunks[i].length);
-
-            // 2. Store raw chunk in CAS
-            objectStore.storeObject(chunks[i].sha256, chunkData);
-
-            // 3. Register chunk in SQLite
-            metadataDB.addObject(
-                chunks[i].sha256,
-                static_cast<long long>(chunks[i].length),
-                "chunk"
-            );
-
-            // 4. Build manifest entry
-            manifestJson += "{\"hash\":\"" + chunks[i].sha256 + "\"," +
-                            "\"size\":" + std::to_string(chunks[i].length) + "," +
-                            "\"offset\":" + std::to_string(chunks[i].offset) + "}" +
-                            (i + 1 < chunks.size() ? "," : "");
-        }
-
-        manifestJson += "]}";
-
-        // 5. Store manifest itself in CAS
-        std::string manifestId = Core::calcSHA256(manifestJson);
-        objectStore.storeObject(manifestId, manifestJson);
-
-        // 6. Record manifest metadata in SQLite
         metadataDB.addObject(
-            manifestId,
-            static_cast<long long>(manifestJson.size()),
-            "manifest"
+            objectId,
+            static_cast<long long>(totalBytes),
+            "file"
         );
 
-        return manifestId;
+        return objectId;
     }
 
-    // ------------------------------------------------
-    // Monolithic File Branch (<= 256 KB)
-    // ------------------------------------------------
-    std::string objectId =
-        objectStore.store(filePath);
+    std::vector<Chunk> chunks =
+        Chunking::chunkFile(
+            filePath.string()
+        );
 
-    metadataDB.addObject(
-        objectId,
-        static_cast<long long>(totalBytes),
-        "file"
+    nlohmann::json manifest;
+
+    manifest["type"] = "manifest";
+    manifest["total_size"] = totalBytes;
+    manifest["chunks"] =
+        nlohmann::json::array();
+
+    for (const Chunk& chunk : chunks)
+    {
+        std::string chunkData =
+            readSlice(
+                filePath,
+                chunk.offset,
+                chunk.length
+            );
+
+        objectStore.storeObject(
+            chunk.sha256,
+            chunkData
+        );
+
+        metadataDB.addObject(
+            chunk.sha256,
+            static_cast<long long>(
+                chunk.length
+            ),
+            "chunk"
+        );
+
+        manifest["chunks"].push_back(
+            {
+                {"hash", chunk.sha256},
+                {"size", chunk.length},
+                {"offset", chunk.offset}
+            }
+        );
+    }
+
+    std::string manifestData =
+        manifest.dump();
+
+    std::string manifestId =
+        Core::calcSHA256(
+            manifestData
+        );
+
+    objectStore.storeObject(
+        manifestId,
+        manifestData
     );
 
-    return objectId;
+    metadataDB.addObject(
+        manifestId,
+        static_cast<long long>(
+            manifestData.size()
+        ),
+        "manifest"
+    );
+
+    return manifestId;
 }
 
 std::string StorageManager::retrieveFile(
     const std::string& objectId
 ) const
 {
-    return objectStore.retrieve(objectId);
+    return objectStore.retrieve(
+        objectId
+    );
 }
 
 void StorageManager::restoreFile(
@@ -142,52 +179,105 @@ void StorageManager::restoreFile(
     const std::filesystem::path& destinationPath
 ) const
 {
-    std::string data = objectStore.retrieve(objectId);
+    std::string data =
+        objectStore.retrieve(
+            objectId
+        );
 
-    // If object is a manifest, assemble chunks
-    if (data.rfind("{\"type\":\"manifest\"", 0) == 0)
-    {
-        std::ofstream out(destinationPath, std::ios::binary | std::ios::trunc);
-        if (!out.is_open())
-        {
-            throw std::runtime_error(
-                "Failed to open destination file: " +
-                destinationPath.string()
-            );
-        }
+    std::ofstream output(
+        destinationPath,
+        std::ios::binary |
+        std::ios::trunc
+    );
 
-        size_t pos = 0;
-        while ((pos = data.find("\"hash\":\"", pos)) != std::string::npos)
-        {
-            pos += 8;
-            size_t endPos = data.find("\"", pos);
-            if (endPos == std::string::npos) break;
-
-            std::string chunkHash = data.substr(pos, endPos - pos);
-            std::string chunkBytes = objectStore.retrieve(chunkHash);
-            out.write(chunkBytes.data(), static_cast<std::streamsize>(chunkBytes.size()));
-            pos = endPos;
-        }
-        return;
-    }
-
-    // Monolithic file write
-    std::ofstream out(destinationPath, std::ios::binary | std::ios::trunc);
-    if (!out.is_open())
+    if (!output.is_open())
     {
         throw std::runtime_error(
             "Failed to open destination file: " +
             destinationPath.string()
         );
     }
-    out.write(data.data(), static_cast<std::streamsize>(data.size()));
+
+    nlohmann::json manifest =
+        nlohmann::json::parse(
+            data,
+            nullptr,
+            false
+        );
+
+    if (
+        !manifest.is_discarded() &&
+        manifest.is_object() &&
+        manifest.value(
+            "type",
+            ""
+        ) == "manifest"
+    )
+    {
+        if (
+            !manifest.contains("chunks") ||
+            !manifest["chunks"].is_array()
+        )
+        {
+            throw std::runtime_error(
+                "Invalid manifest."
+            );
+        }
+
+        for (
+            const auto& chunk :
+            manifest["chunks"]
+        )
+        {
+            std::string chunkHash =
+                chunk.at("hash")
+                    .get<std::string>();
+
+            std::string chunkData =
+                objectStore.retrieve(
+                    chunkHash
+                );
+
+            output.write(
+                chunkData.data(),
+                static_cast<std::streamsize>(
+                    chunkData.size()
+                )
+            );
+
+            if (!output)
+            {
+                throw std::runtime_error(
+                    "Failed while reconstructing file."
+                );
+            }
+        }
+
+        return;
+    }
+
+    output.write(
+        data.data(),
+        static_cast<std::streamsize>(
+            data.size()
+        )
+    );
+
+    if (!output)
+    {
+        throw std::runtime_error(
+            "Failed to restore file."
+        );
+    }
 }
 
 bool StorageManager::objectExists(
     const std::string& objectId
 ) const
 {
-    return objectStore.exists(objectId);
+    return objectStore.exists(
+        objectId
+    );
 }
 
 }
