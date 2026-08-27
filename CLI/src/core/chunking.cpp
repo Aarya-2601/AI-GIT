@@ -220,8 +220,7 @@ std::vector<Chunk> Chunking::chunkFile(
 {
     std::ifstream file(
         filePath,
-        std::ios::binary |
-        std::ios::ate
+        std::ios::binary
     );
 
     if (!file.is_open())
@@ -232,48 +231,161 @@ std::vector<Chunk> Chunking::chunkFile(
         );
     }
 
-    std::streamsize fileSize =
-        file.tellg();
+    std::vector<Chunk> chunks;
 
-    if (fileSize < 0)
+    size_t globalOffset = 0;
+
+    while (true)
     {
-        throw std::runtime_error(
-            "Failed to determine file size: " +
-            filePath
-        );
-    }
+        std::vector<uint8_t> buffer(MAX_SIZE);
 
-    if (fileSize == 0)
-    {
-        return {};
-    }
-
-    file.seekg(
-        0,
-        std::ios::beg
-    );
-
-    std::vector<uint8_t> buffer(
-        static_cast<size_t>(fileSize)
-    );
-
-    if (
-        !file.read(
+        file.read(
             reinterpret_cast<char*>(
                 buffer.data()
             ),
-            fileSize
-        )
-    )
-    {
-        throw std::runtime_error(
-            "Failed to read file: " +
-            filePath
+            static_cast<std::streamsize>(
+                MAX_SIZE
+            )
         );
+
+        size_t bytesRead =
+            static_cast<size_t>(
+                file.gcount()
+            );
+
+        if (bytesRead == 0)
+        {
+            break;
+        }
+
+        buffer.resize(bytesRead);
+
+        size_t searchPosition =
+            std::min(
+                MIN_SIZE,
+                bytesRead
+            );
+
+        size_t splitPoint =
+            bytesRead;
+
+        uint64_t fingerprint = 0;
+
+        if (bytesRead > MIN_SIZE)
+        {
+            size_t midPosition =
+                std::min(
+                    AVG_SIZE,
+                    bytesRead
+                );
+
+            while (
+                searchPosition < midPosition
+            )
+            {
+                fingerprint =
+                    (fingerprint << 1) +
+                    GEAR_MATRIX[
+                        buffer[searchPosition]
+                    ];
+
+                if (
+                    (fingerprint & MASK_S)
+                    == 0
+                )
+                {
+                    splitPoint =
+                        searchPosition + 1;
+
+                    break;
+                }
+
+                ++searchPosition;
+            }
+
+            if (
+                splitPoint == bytesRead
+            )
+            {
+                while (
+                    searchPosition < bytesRead
+                )
+                {
+                    fingerprint =
+                        (fingerprint << 1) +
+                        GEAR_MATRIX[
+                            buffer[searchPosition]
+                        ];
+
+                    if (
+                        (fingerprint & MASK_L)
+                        == 0
+                    )
+                    {
+                        splitPoint =
+                            searchPosition + 1;
+
+                        break;
+                    }
+
+                    ++searchPosition;
+                }
+            }
+        }
+
+        std::string chunkData(
+            reinterpret_cast<const char*>(
+                buffer.data()
+            ),
+            splitPoint
+        );
+
+        std::string chunkHash =
+            Core::calcSHA256(
+                chunkData
+            );
+
+        chunks.push_back(
+            {
+                globalOffset,
+                splitPoint,
+                chunkHash
+            }
+        );
+
+        globalOffset +=
+            splitPoint;
+
+        if (splitPoint < bytesRead)
+        {
+            std::streamoff unusedBytes =
+                static_cast<std::streamoff>(
+                    bytesRead - splitPoint
+                );
+
+            file.clear();
+
+            file.seekg(
+                -unusedBytes,
+                std::ios::cur
+            );
+
+            if (!file)
+            {
+                throw std::runtime_error(
+                    "Failed to reposition file while chunking."
+                );
+            }
+        }
+
+        if (
+            bytesRead < MAX_SIZE &&
+            splitPoint == bytesRead
+        )
+        {
+            break;
+        }
     }
 
-    return chunkBuffer(
-        buffer.data(),
-        buffer.size()
-    );
+    return chunks;
 }

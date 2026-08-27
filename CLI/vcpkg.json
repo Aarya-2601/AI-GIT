@@ -6,6 +6,7 @@
     "zlib",
     "sqlite3",
     "curl",
-     "nlohmann-json"
+    "nlohmann-json"
+    
   ]
 }
