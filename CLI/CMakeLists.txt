@@ -15,6 +15,9 @@ find_package(ZLIB REQUIRED)
 find_package(SQLite3 REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
+# NEW: RemoteCASClient uses libcurl for HTTP communication.
+find_package(CURL REQUIRED)
+
 set(SOURCES
 
     "src/main.cpp"
@@ -48,6 +51,10 @@ set(SOURCES
     "src/storage/object_store.cpp"
     "src/storage/metadata_db.cpp"
     "src/storage/storage_manager.cpp"
+
+    # NEW: Remote CAS layer
+    "src/RemoteCASClient/remote_cas_client.cpp"
+    "src/RemoteCASClient/remote_sync_manager.cpp"
 )
 
 add_executable(ai-git ${SOURCES})
@@ -62,7 +69,9 @@ target_link_libraries(ai-git PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
     SQLite::SQLite3
-    nlohmann_json::nlohmann_json
+
+    # NEW: HTTP client used by RemoteCASClient
+    CURL::libcurl
 )
 
 add_executable(object-store-test
@@ -86,6 +95,30 @@ add_executable(storage-manager-test
     src/storage/metadata_db.cpp
     src/core/hashing.cpp
     src/core/chunking.cpp
+)
+
+add_executable(remote-sync-test
+    src/RemoteCASClient/remote_sync_test.cpp
+    src/RemoteCASClient/remote_cas_client.cpp
+    src/RemoteCASClient/remote_sync_manager.cpp
+
+    src/storage/storage_manager.cpp
+    src/storage/object_store.cpp
+    src/storage/metadata_db.cpp
+
+    src/core/hashing.cpp
+    src/core/chunking.cpp
+)
+
+target_include_directories(remote-sync-test PRIVATE
+    src
+)
+
+target_link_libraries(remote-sync-test PRIVATE
+    OpenSSL::Crypto
+    SQLite::SQLite3
+    nlohmann_json::nlohmann_json
+    CURL::libcurl
 )
 
 target_include_directories(storage-manager-test PRIVATE

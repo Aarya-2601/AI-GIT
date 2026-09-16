@@ -17,57 +17,10 @@ RemoteSyncManager::RemoteSyncManager(
 {
 }
 
-void RemoteSyncManager::uploadManifest(
-    const std::string& manifestId
+void RemoteSyncManager::uploadObjects(
+    const std::vector<std::string>& objectIds
 )
 {
-    if (!storageManager.objectExists(manifestId))
-    {
-        throw std::runtime_error(
-            "Local manifest not found: " +
-            manifestId
-        );
-    }
-
-    std::string manifestData =
-        storageManager.retrieveFile(
-            manifestId
-        );
-
-    nlohmann::json manifest =
-        nlohmann::json::parse(
-            manifestData
-        );
-
-    if (
-        !manifest.is_object() ||
-        manifest.value("type", "") != "manifest" ||
-        !manifest.contains("chunks") ||
-        !manifest["chunks"].is_array()
-    )
-    {
-        throw std::runtime_error(
-            "Invalid manifest object."
-        );
-    }
-
-    std::vector<std::string> objectIds;
-
-    for (const auto& chunk : manifest["chunks"])
-    {
-        std::string chunkId =
-            chunk.at("hash")
-                .get<std::string>();
-
-        objectIds.push_back(
-            chunkId
-        );
-    }
-
-    objectIds.push_back(
-        manifestId
-    );
-
     UploadNegotiation negotiation =
         remoteClient.negotiateUpload(
             objectIds
@@ -78,11 +31,7 @@ void RemoteSyncManager::uploadManifest(
         negotiation.uploadUrls
     )
     {
-        if (
-            !storageManager.objectExists(
-                objectId
-            )
-        )
+        if (!storageManager.objectExists(objectId))
         {
             throw std::runtime_error(
                 "Local CAS object missing: " +
@@ -100,6 +49,102 @@ void RemoteSyncManager::uploadManifest(
             objectData
         );
     }
+}
+
+void RemoteSyncManager::syncObject(
+    const std::string& objectId
+)
+{
+    if (!storageManager.objectExists(objectId))
+    {
+        throw std::runtime_error(
+            "Local CAS object not found: " +
+            objectId
+        );
+    }
+
+    std::string objectData =
+        storageManager.retrieveFile(
+            objectId
+        );
+
+    nlohmann::json parsedObject;
+
+    bool isManifest = false;
+
+    try
+    {
+        parsedObject =
+            nlohmann::json::parse(
+                objectData
+            );
+
+        isManifest =
+            parsedObject.is_object() &&
+            parsedObject.value("type", "") == "manifest" &&
+            parsedObject.contains("chunks") &&
+            parsedObject["chunks"].is_array();
+    }
+    catch (const nlohmann::json::parse_error&)
+    {
+        isManifest = false;
+    }
+
+    // Normal CAS object:
+    // only this object needs to be synchronized.
+    if (!isManifest)
+    {
+        uploadObjects(
+            {objectId}
+        );
+
+        return;
+    }
+
+    // Manifest CAS object:
+    // synchronize every referenced chunk
+    // plus the manifest itself.
+    std::vector<std::string> objectIds;
+
+    for (const auto& chunk : parsedObject["chunks"])
+    {
+        if (
+            !chunk.is_object() ||
+            !chunk.contains("hash") ||
+            !chunk["hash"].is_string()
+        )
+        {
+            throw std::runtime_error(
+                "Invalid chunk entry in manifest: " +
+                objectId
+            );
+        }
+
+        std::string chunkId =
+            chunk["hash"].get<std::string>();
+
+        if (!storageManager.objectExists(chunkId))
+        {
+            throw std::runtime_error(
+                "Manifest references missing local chunk: " +
+                chunkId
+            );
+        }
+
+        objectIds.push_back(
+            chunkId
+        );
+    }
+
+    // The remote needs the manifest too,
+    // not only its chunks.
+    objectIds.push_back(
+        objectId
+    );
+
+    uploadObjects(
+        objectIds
+    );
 }
 
 }

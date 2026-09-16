@@ -12,7 +12,7 @@ int main()
 {
     try
     {
-        std::filesystem::path repoRoot = ".aigit";
+        std::filesystem::path repoRoot = ".aigit/cas";
 
         Storage::StorageManager manager(repoRoot);
         manager.initialize();
