@@ -4,6 +4,7 @@
 #include "../storage/storage_manager.hpp"
 
 #include <string>
+#include <vector>
 
 namespace Remote
 {
@@ -14,14 +15,18 @@ private:
     Storage::StorageManager& storageManager;
     RemoteCASClient& remoteClient;
 
+    void uploadObjects(
+        const std::vector<std::string>& objectIds
+    );
+
 public:
     RemoteSyncManager(
         Storage::StorageManager& storageManager,
         RemoteCASClient& remoteClient
     );
 
-    void uploadManifest(
-        const std::string& manifestId
+    void syncObject(
+        const std::string& objectId
     );
 };
 
