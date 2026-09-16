@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include "commands/commands.hpp"
+#include "commands/checkout.hpp"
+#include "commands/branch.hpp"
 
 //argument count and agrument vector ahving the number of aruments written in command line
 int main(int argc, char* argv[]) {
@@ -16,6 +18,15 @@ int main(int argc, char* argv[]) {
         std::cout<<" init: Initialize a a new repository"<<std::endl;
         std::cout<<" hash-object: Compute hash ID and optionally create a blob"<<std::endl;
         std::cout<<" status: Show working tree status"<<std::endl;
+        std::cout<<" add: Add file contents to the staging area"<<std::endl;
+        std::cout<<" commit: Record staged changes"<<std::endl;
+        std::cout<<" log: Show commit history"<<std::endl;
+        std::cout<<" branch: List or create branches"<<std::endl;
+        std::cout<<" checkout: Switch branches"<<std::endl;
+        std::cout<<" config: Get and set repository options"<<std::endl;
+        std::cout<<" push: Upload local objects to a remote"<<std::endl;
+        std::cout<<" pull: Download new objects from a remote"<<std::endl;
+        std::cout<<" clone: Clone a remote repository"<<std::endl;
         return 1;
     }
 
@@ -95,6 +106,27 @@ int main(int argc, char* argv[]) {
         }
         std::string repoName=args[2];
         return Commands::runClone(repoName);
+    }
+
+    else if(command == "checkout") {
+        // Usage: ai-git checkout <branch-name>
+        if(args.size()<3){
+            std::cerr<<"Error: 'checkout' requires a branch name."<<std::endl;
+            std::cerr<<"Usage: ai-git checkout <branch-name>"<<std::endl;
+            return 1;
+        }
+        return Commands::runCheckout(args[2]);
+    }
+
+    else if(command == "branch") {
+        // Usage: ai-git branch            (list branches)
+        //        ai-git branch <name>     (create branch)
+        if(args.size()<3){
+            Commands::listBranches();
+            return 0;
+        }
+        Commands::runBranch(args);
+        return 0;
     }
 
     else{

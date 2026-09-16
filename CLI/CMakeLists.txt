@@ -14,6 +14,7 @@ find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(SQLite3 REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(CURL REQUIRED)
 
 set(SOURCES
 
@@ -35,11 +36,13 @@ set(SOURCES
     "src/commands/log.cpp"
     "src/commands/command_config.cpp"
     "src/commands/branch.cpp"
+    "src/commands/checkout.cpp"
     "src/commands/push.cpp"
     "src/commands/pull.cpp"
     "src/commands/clone.cpp"
 
     "src/helpers/gitutils.cpp"
+    "src/helpers/curl_helpers.cpp"
 
     "src/models/blob.cpp"
     "src/models/tree.cpp"
@@ -61,8 +64,8 @@ target_link_libraries(ai-git PRIVATE
     OpenSSL::SSL
     OpenSSL::Crypto
     ZLIB::ZLIB
-    SQLite::SQLite3
-    nlohmann_json::nlohmann_json
+    SQLite3::SQLite3
+    CURL::libcurl
 )
 
 add_executable(object-store-test
@@ -94,7 +97,7 @@ target_include_directories(storage-manager-test PRIVATE
 
 target_link_libraries(storage-manager-test PRIVATE
     OpenSSL::Crypto
-    SQLite::SQLite3
+    SQLite3::SQLite3
     nlohmann_json::nlohmann_json
 )
 
