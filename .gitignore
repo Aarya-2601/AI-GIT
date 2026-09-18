@@ -1,31 +1,22 @@
-#build putputs and generated binaries
+# CMake build outputs
 build/
-bin/
-lib/
-out/
-*.exe
-*.dll
-*.so
-*.dylib
-*.lib
-*.a
-*.obj
-*.o
-*.pdb
+CLI/build/
+CLI/build-remote/
+**/bin/
+**/obj/
 
-#heavy packages
-vcpkg/
-vcpkg_installed/
 
-#vscode local settings
-.vscode/*
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/settings.json
+# Node.js dependencies
+node_modules/
+**/node_modules/
 
-#vs code cache
-.vs/
-*.user
-*.suo
-*.userosv
-*.sln.docstates
+# vcpkg generated dependencies
+CLI/vcpkg_installed/
+**/vcpkg/packages/
+**/vcpkg/installed/
+**/vcpkg/buildtrees/
+**/vcpkg/downloads/
+
+# Editor / OS caches
+.vscode/
+.DS_Store
