@@ -10,7 +10,7 @@
 #include <string>
 
 namespace Commands{
-    bool runClone(const std::string& reponame, const std::string server="http://localhost:3000");
+    bool runClone(const std::string& reponame, const std::string& server="http://localhost:3000");
 }
 
 #endif
