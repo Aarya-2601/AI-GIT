@@ -12,7 +12,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY
 
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(SQLite3 REQUIRED)
+find_package(unofficial-sqlite3 CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(CURL REQUIRED)
 
@@ -42,7 +42,6 @@ set(SOURCES
 
     "src/helpers/gitutils.cpp"
     "src/helpers/curl_helpers.cpp"
-    "src/helpers/animation_helpers.cpp"
 
     "src/models/blob.cpp"
     "src/models/tree.cpp"
