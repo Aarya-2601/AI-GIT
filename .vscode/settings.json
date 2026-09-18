@@ -3,8 +3,9 @@
     "C_Cpp.default.cppStandard": "c++17",
     "C_Cpp.default.intelliSenseMode": "windows-msvc-x64",
     "cmake.configureArgs":[
-        "-DCMAKE_TOOLCHAIN_FILE=${workspaceFolder}/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "-DCMAKE_TOOLCHAIN_FILE=${workspaceFolder}/CLI/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "-DVCPKG_TARGET_TRIPLET=x64-windows-static"
     ],
-    "cmake.sourceDirectory": "C:/Users/Keya/Desktop/AI-GIT/CLI"
+    "cmake.sourceDirectory": "${workspaceFolder}/CLI",
+    "cmake.buildDirectory": "${workspaceFolder}/CLI/build"  
 }
