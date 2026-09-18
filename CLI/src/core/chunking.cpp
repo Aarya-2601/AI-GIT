@@ -4,7 +4,9 @@
 #include <algorithm>
 #include <stdexcept>
 
+//gear hash algorithm is used for fastCDC
 // 256 64-bit random values for the Gear hashing matrix
+//mask s, mask l, min size, max size, avg size
 static const uint64_t GEAR_MATRIX[256] = {
     0x3565a0ec7b80a563ULL, 0x1f0b094602f7ff60ULL, 0xa1bf785420352ef2ULL, 0xd008dd52f75a6c38ULL,
     0x2c68e4209930f555ULL, 0x4896eec50e685f0aULL, 0x6e9f783ef2e987c9ULL, 0x93309a473f1d8c11ULL,
