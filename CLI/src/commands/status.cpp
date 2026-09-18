@@ -12,7 +12,7 @@ namespace Commands
         {
             pathStr=pathStr.substr(2);
         }
-        //carriage return will not turn into a newline character
+       
         while(!pathStr.empty() && (pathStr.back() == '\r' || pathStr.back() == '\n' || pathStr.back() == ' '))
         {
             pathStr.pop_back();
