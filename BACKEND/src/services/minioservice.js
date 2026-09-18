@@ -1,49 +1,98 @@
-//auto-generation of presigned URLs
-const client =require('../config/storage.js')
+// MinIO service functions
+const client = require('../config/storage.js');
 
-const BUCKET_NAME=process.env.MINIO_BUCKET_NAME || 'aigit-chunks';
-const EXPIRY_SECONDS=3600 //urls will remain valid for 1 hr
+const BUCKET_NAME = process.env.MINIO_BUCKET_NAME || 'aigit-chunks';
+const EXPIRY_SECONDS = 3600; // URLs remain valid for 1 hour
 
-const bucket_exists=async()=>{
-    try{
-        const exists=await client.bucketExists(BUCKET_NAME);
-        if(!exists){
+
+// Check whether the bucket exists.
+// If it does not exist, create it.
+const bucket_exists = async () => {
+    try {
+        const exists = await client.bucketExists(BUCKET_NAME);
+
+        if (!exists) {
             await client.makeBucket(BUCKET_NAME);
             console.log(`Created MinIO bucket: ${BUCKET_NAME}`);
         }
     }
-    catch(error){
+    catch (error) {
         console.error('Error verifying MinIO bucket status:', error);
         throw error;
     }
 };
 
-const upload_url=async(chunkHash)=>{
-    try{
-        return await client.presignedPutObject(BUCKET_NAME, chunkHash, EXPIRY_SECONDS);
+const object_exists = async (objectHash) => {
+    try {
+        await client.statObject(BUCKET_NAME, objectHash);
+
+        // statObject succeeded -> object exists
+        return true;
     }
-    catch(error){
-        console.error(`Failed to generate upload URL for chunk ${chunkHash}:`, error);
+    catch (error) {
+
+    
+        if (
+            error.code === 'NotFound' ||
+            error.code === 'NoSuchKey' ||
+            error.statusCode === 404
+        ) {
+            return false;
+        }
+
+        console.error(
+            `Failed to check existence of object ${objectHash}:`,
+            error
+        );
+
         throw error;
     }
 };
 
-//parameter is a string chunkHash
-//returns a promise which reolves into a string which is presigned url for the chunk
 
-const download_url=async(chunkHash)=>{
-    try{
-        return await client.presignedGetObject(BUCKET_NAME, chunkHash, EXPIRY_SECONDS);
+// Generate a presigned PUT URL for uploading an object.
+const upload_url = async (objectHash) => {
+    try {
+        return await client.presignedPutObject(
+            BUCKET_NAME,
+            objectHash,
+            EXPIRY_SECONDS
+        );
     }
-    catch(error){
-        console.error(`Failed to generate download URL for chunk ${chunkHash}:`, error);
+    catch (error) {
+        console.error(
+            `Failed to generate upload URL for object ${objectHash}:`,
+            error
+        );
+
         throw error;
     }
 };
 
-//stores as a js literal in key value pairs, where key and value are same
-module.exports={
-    bucket_exists: bucket_exists,
-    upload_url: upload_url,
-    download_url: download_url,
+
+// Generate a presigned GET URL for downloading an object.
+const download_url = async (objectHash) => {
+    try {
+        return await client.presignedGetObject(
+            BUCKET_NAME,
+            objectHash,
+            EXPIRY_SECONDS
+        );
+    }
+    catch (error) {
+        console.error(
+            `Failed to generate download URL for object ${objectHash}:`,
+            error
+        );
+
+        throw error;
+    }
+};
+
+
+module.exports = {
+    bucket_exists,
+    object_exists,
+    upload_url,
+    download_url,
 };

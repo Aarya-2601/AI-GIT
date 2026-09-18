@@ -3,7 +3,6 @@ const {
     object_exists
 } = require('../services/minioservice.js');
 
-
 const try_push = async (req, res) => {
 
     try {
@@ -28,13 +27,10 @@ const try_push = async (req, res) => {
 
 
             if (exists) {
-
-              
                 existing_chunks.push(hash);
 
                 continue;
             }
-
             upload_urls[hash] = await upload_url(hash);
         }
 
