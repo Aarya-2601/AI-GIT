@@ -6,6 +6,10 @@
 #include <stdexcept>
 #include <string>
 
+//heathcheck()
+//negotiateUpload
+//uploadObject
+//downloadObject
 namespace Remote
 {
 
@@ -38,7 +42,7 @@ std::string performRequest(
     const std::string* jsonBody = nullptr
 )
 {
-    CURL* curl = curl_easy_init();
+    CURL* curl = curl_easy_init();  //initializes curl object
 
     if (!curl)
     {
@@ -50,7 +54,7 @@ std::string performRequest(
     std::string responseBody;
     curl_slist* headers = nullptr;
 
-    curl_easy_setopt(
+    curl_easy_setopt(  //sets headers
         curl,
         CURLOPT_URL,
         url.c_str()
@@ -104,7 +108,7 @@ std::string performRequest(
     }
 
     CURLcode result =
-        curl_easy_perform(curl);
+        curl_easy_perform(curl);  //negotiates with backend
 
     if (result != CURLE_OK)
     {
@@ -136,7 +140,7 @@ std::string performRequest(
         statusCode >= 300
     )
     {
-        throw std::runtime_error(
+        throw std::runtime_error(  //checks for network failures or returns response
             "Remote server returned HTTP " +
             std::to_string(statusCode) +
             ": " +
