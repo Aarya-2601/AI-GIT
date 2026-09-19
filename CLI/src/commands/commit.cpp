@@ -35,7 +35,6 @@ buildDirectoryTree(const std::vector<Core::IndexEntry>& entries)
     for (const auto& entry : entries)
     {
         fs::path currentPath(entry.path);
-
         Models::TreeNode* current = root.get();
 
         for (auto it = currentPath.begin();
@@ -43,15 +42,12 @@ buildDirectoryTree(const std::vector<Core::IndexEntry>& entries)
              ++it)
         {
             std::string name = it->string();
-
             bool isLast =(std::next(it) == currentPath.end());
-
             auto child =current->children.find(name);
 
             if (child == current->children.end())
             {
-                current->children[name] =
-                    std::make_unique<Models::TreeNode>(name,!isLast);
+                current->children[name] =std::make_unique<Models::TreeNode>(name,!isLast);
 
                 child =current->children.find(name);
             }
