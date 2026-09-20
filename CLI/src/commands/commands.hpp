@@ -12,6 +12,7 @@ namespace Commands{  //organizational namepace box
     int runStatus();
     int runLog();
     int runConfig(const std::vector<std::string>& args);
+    int runFsck();
 
     //remote commands
     bool runPush(const std::string& server = "http://localhost:3000");

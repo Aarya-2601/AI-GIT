@@ -97,3 +97,14 @@ Deviation: none. Leftover: none. Full suite (6/6 tests) passes; golden-legacy ch
 `clone.cpp` had the exact same `downloadObjectToPath` pattern for the identical reason (same author, same bug) -- fixed it the same way for consistency, even though the design's step 8 line names only `pull.cpp`. This is the same class of fix, not a new format/ID decision, so no stop.
 
 Deviation: extended the fix to `clone.cpp` (see above). Leftover: pull/clone's actual network path against a live remote wasn't exercised (no server available in this environment, consistent with `remote-sync-test` being skipped throughout this session for the same reason) -- only build correctness, the local suite, and the golden-legacy check were verified. Full suite (6/6) + golden-legacy ID/SHA-256 check pass.
+
+### Step 9 — DONE
+Added `ObjectStore::walkAll()`: walks every file under `objects/`, calls the existing `retrieve()` on each (full hash verification, unchanged logic) and returns `{objectId, type, size}` per valid object; a bad object is reported via an optional `corruptObjectIds` out-param instead of aborting the whole walk. Gave `retrieve()` an optional `std::string* typeOut` param, set from the on-disk header's type byte when the header'd path verifies (legacy pre-header objects have no type byte, so `typeOut` is `"unknown"`) -- this is the literal "disk walk using the object header's type byte" the design line asks for, reusing `retrieve()`'s existing header-parsing/verification instead of duplicating it.
+
+`MetadataDB::rebuild(casRoot)` walks via the above, then replaces the `objects` table's contents in one transaction (`DELETE` + batched `INSERT`s, single `BEGIN`/`COMMIT`) and returns `{objectsRebuilt, corruptObjectIds}`.
+
+Wired to a new `fsck` CLI entry point (`commands/fsck.cpp`, registered in `main.cpp`): rebuilds `metadata.db` from disk and prints the corrupt-object list if any; exit 0 if clean, 1 if not. (Design step 11's gc is mark-and-sweep deletion of *unreachable* objects -- a different, larger job; fsck here is verify + repair metadata, not delete anything, so it's a distinct entry point rather than folding into step 11.)
+
+Test added: `metadata_rebuild_test.cpp` -- commits 2 blobs+tree+commit, wipes `metadata.db`, rebuilds, checks the count and that tree/commit types were read back correctly from the header; then corrupts one on-disk object and confirms rebuild reports it (not silently dropped, not aborting the rest of the walk).
+
+Deviation: none from the design line; the `fsck` entry point is new (there wasn't an existing gc/fsck command to wire into). Leftover: none. Full suite (7/7) passes; `ai-git fsck` run against a copy of the golden-legacy repo reports 38 objects verified, 0 corrupt, and the golden ID/SHA-256 check still matches exactly afterward (confirms fsck's rebuild doesn't touch object content, only metadata.db).
