@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <string>
+#include <vector>
 
 namespace Storage
 {
@@ -52,8 +53,31 @@ public:
     // SHA-256 object ID. Transparently reads both the new header'd
     // format and legacy pre-header objects (raw bytes, no header) so
     // old repositories remain readable without a migration step.
+    //
+    // If `typeOut` is non-null, it's set to the object's type as recorded
+    // in its on-disk header ("file"/"chunk"/"manifest"/"tree"/"commit"/
+    // "unknown"), or "unknown" for a legacy (pre-header) object, which
+    // carries no type byte at all.
     std::string retrieve(
-        const std::string& objectId
+        const std::string& objectId,
+        std::string* typeOut = nullptr
+    ) const;
+
+    struct ObjectRecord
+    {
+        std::string objectId;
+        std::string type;
+        long long size;
+    };
+
+    // Walks every object under objects/, verifying each one against its
+    // own ID (the same check retrieve() performs) and reading its type
+    // from the on-disk header. An object that fails verification is
+    // skipped here and its ID appended to `corruptObjectIds` instead of
+    // aborting the whole walk -- used by fsck/MetadataDB::rebuild, where
+    // one bad object on disk shouldn't hide the rest.
+    std::vector<ObjectRecord> walkAll(
+        std::vector<std::string>* corruptObjectIds = nullptr
     ) const;
 };
 
