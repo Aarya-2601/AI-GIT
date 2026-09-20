@@ -28,35 +28,6 @@ static std::vector<std::string> getLocalHashes(const Storage::MetadataDB& db)
     return db.getAllObjectIds();
 }
 
-// Parses {"status":"ok","upload_urls":{hash: url, ...}} into a map.
-static std::map<std::string, std::string> parseUploadUrls(const std::string& json)
-{
-    std::map<std::string, std::string> urlMap;
-
-    nlohmann::json parsed = nlohmann::json::parse(json, nullptr, false);
-
-    if (parsed.is_discarded() || !parsed.is_object())
-    {
-        std::cerr << "[Push] Error: Server returned malformed JSON." << std::endl;
-        return urlMap;
-    }
-
-    if (!parsed.contains("upload_urls") || !parsed["upload_urls"].is_object())
-    {
-        return urlMap;
-    }
-
-    for (const auto& [hash, url] : parsed["upload_urls"].items())
-    {
-        if (url.is_string())
-        {
-            urlMap[hash] = url.get<std::string>();
-        }
-    }
-
-    return urlMap;
-}
-
 static std::string talkWithBackend(
     const std::string& serverUrl,
     const std::vector<std::string>& hashes
@@ -65,40 +36,9 @@ static std::string talkWithBackend(
     nlohmann::json payload;
     payload["chunks"] = hashes;
 
-    std::string jsonPayload = payload.dump();
-    std::string response;
-
-    CURL* curl = curl_easy_init();
-    if (!curl)
-    {
-        return response;
-    }
-
-    struct curl_slist* headers = nullptr;
-    headers = curl_slist_append(headers, "Content-Type: application/json");
-
     std::string endpoint = serverUrl + "/api/v1/push/negotiate";
 
-    curl_easy_setopt(curl, CURLOPT_URL, endpoint.c_str());
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonPayload.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Utils::curlWriteToString);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-
-    CURLcode res = curl_easy_perform(curl);
-
-    if (res != CURLE_OK)
-    {
-        std::cerr
-            << "[Push] Network Error: Could not reach server at "
-            << endpoint << " (" << curl_easy_strerror(res) << ")"
-            << std::endl;
-    }
-
-    curl_slist_free_all(headers);
-    curl_easy_cleanup(curl);
-
-    return response;
+    return Utils::httpPostJson(endpoint, payload.dump(), "Push");
 }
 
 static bool uploadToMinIO(const std::string& presignedUrl, const std::string& rawBytes)
@@ -151,7 +91,8 @@ bool runPush(const std::string& serverUrl)
         return false;
     }
 
-    std::map<std::string, std::string> uploadUrls = parseUploadUrls(responseJson);
+    std::map<std::string, std::string> uploadUrls =
+        Utils::parseHashUrlMap(responseJson, "upload_urls", "Push");
 
     if (uploadUrls.empty())
     {

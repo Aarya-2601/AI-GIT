@@ -34,94 +34,7 @@ static std::string getManifestClone(
     std::string cloneEndpoint =
         serverUrl + "/api/v1/pull/clone/" + repoName;
 
-    std::string jsonResponse;
-
-    CURL* curl = curl_easy_init();
-    if (!curl)
-    {
-        return "";
-    }
-
-    curl_easy_setopt(curl, CURLOPT_URL, cloneEndpoint.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Utils::curlWriteToString);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &jsonResponse);
-
-    CURLcode res = curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
-
-    if (res != CURLE_OK)
-    {
-        std::cerr
-            << "[Clone] Network Error: Failed to contact backend at "
-            << cloneEndpoint << " (" << curl_easy_strerror(res) << ")"
-            << std::endl;
-        return "";
-    }
-
-    return jsonResponse;
-}
-
-static std::map<std::string, std::string> parseManifestJson(
-    const std::string& json
-)
-{
-    std::map<std::string, std::string> urlMap;
-
-    nlohmann::json parsed =
-        nlohmann::json::parse(json, nullptr, false);
-
-    if (parsed.is_discarded() || !parsed.is_object())
-    {
-        std::cerr << "[Clone] Error: Server returned malformed JSON." << std::endl;
-        return urlMap;
-    }
-
-    if (!parsed.contains("download_urls") ||
-        !parsed["download_urls"].is_object())
-    {
-        return urlMap;
-    }
-
-    for (const auto& [hash, url] : parsed["download_urls"].items())
-    {
-        if (url.is_string())
-        {
-            urlMap[hash] = url.get<std::string>();
-        }
-    }
-
-    return urlMap;
-}
-
-static bool downloadChunkClone(
-    const std::string& url,
-    const fs::path& objectPath
-)
-{
-    fs::create_directories(objectPath.parent_path());
-
-    std::ofstream fileOnDisk(objectPath, std::ios::binary);
-    if (!fileOnDisk.is_open())
-    {
-        return false;
-    }
-
-    CURL* curl = curl_easy_init();
-    if (!curl)
-    {
-        fileOnDisk.close();
-        return false;
-    }
-
-    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Utils::curlWriteToFile);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &fileOnDisk);
-
-    CURLcode result = curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
-    fileOnDisk.close();
-
-    return (result == CURLE_OK);
+    return Utils::httpGet(cloneEndpoint, "Clone");
 }
 
 bool runClone(const std::string& reponame, const std::string& server)
@@ -154,7 +67,7 @@ bool runClone(const std::string& reponame, const std::string& server)
     }
 
     std::map<std::string, std::string> downloadMap =
-        parseManifestJson(jsonResponse);
+        Utils::parseHashUrlMap(jsonResponse, "download_urls", "Clone");
 
     if (downloadMap.empty())
     {
@@ -176,10 +89,14 @@ bool runClone(const std::string& reponame, const std::string& server)
         fs::path objectPath =
             fs::path(".aigit") / "objects" / hash.substr(0, 2) / hash.substr(2);
 
-        if (downloadChunkClone(url, objectPath))
+        if (Utils::downloadObjectToPath(url, objectPath))
         {
+            // MetadataDB tracks uncompressed content size, not on-disk
+            // bytes -- go through retrieve() rather than fs::file_size()
+            // so this stays correct regardless of how the object is
+            // actually stored on disk (raw, or compressed with a header).
             long long fileSize =
-                static_cast<long long>(fs::file_size(objectPath));
+                static_cast<long long>(objectStore.retrieve(hash).size());
 
             metadataDB.addObject(hash, fileSize, "chunk");
 

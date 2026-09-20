@@ -33,6 +33,15 @@ public:
         const std::filesystem::path& filePath
     );
 
+    // Computes the object ID `storeFile` would return for `filePath`'s
+    // current on-disk content, without writing anything. Uses the exact
+    // same raw-bytes / chunk-manifest hashing storeFile does, so its
+    // result is directly comparable against an index entry's hash to
+    // detect whether a tracked file has actually changed.
+    std::string computeObjectId(
+        const std::filesystem::path& filePath
+    ) const;
+
     void storeObject(
         const std::string& objectId,
         const std::string& data,

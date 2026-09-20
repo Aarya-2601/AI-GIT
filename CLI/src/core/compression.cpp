@@ -10,13 +10,18 @@ namespace Core
     //compresses block to small string
     std::string compressString(const std::string& data)
     {
+        return compressString(data, Z_DEFAULT_COMPRESSION);
+    }
+
+    std::string compressString(const std::string& data, int level)
+    {
         //zstream is a struct of zlib
         z_stream zs;
         //set all the mem blocks to zero manually
         std::memset(&zs, 0, sizeof(zs));
 
         //if it fails to get ready for compression throw error
-        if(deflateInit(&zs, Z_DEFAULT_COMPRESSION)!= Z_OK)
+        if(deflateInit(&zs, level)!= Z_OK)
         {
             throw std::runtime_error("Failed to initialize zlib deflate stream.");
         }

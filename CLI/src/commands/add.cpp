@@ -2,6 +2,7 @@
 #include "../core/filesystem.hpp"
 #include "../core/hashing.hpp"
 #include "../storage/storage_manager.hpp"
+#include "../helpers/gitutils.hpp"
 
 //map to store filename and hash
 
@@ -12,30 +13,15 @@ using namespace std;
 // so if we modify a file, we modify its hash and remove the old hash completely.
 
 namespace Commands
-{   
-    static std::string normalizePath(const fs::path& p)
-    {
-        std::string pathStr=p.generic_string(); 
-        if(pathStr.rfind("./", 0) ==0)
-        {
-            pathStr=pathStr.substr(2);  
-           
-        }
-        return pathStr;
-    }
-
+{
     static bool processfile(const fs::path& filePath, Core::Index& indexEntries)
     {
-        std::string normPath=normalizePath(filePath);
+        std::string normPath=Utils::normalizePath(filePath);
 
-        if(normPath.find(".aigit") != std::string::npos || 
-           normPath.find("build/") != std::string::npos || 
-           normPath.find(".git") != std::string::npos || 
-           normPath.find(".vscode/") != std::string::npos || 
-           normPath.find("vcpkg/") != std::string::npos)
+        if(Utils::isIgnoredPath(normPath))
         {
             return true;
-        }  
+        }
 
         try {
             // StorageManager automatically handles FastCDC chunking for files >256KB
@@ -93,10 +79,10 @@ namespace Commands
             if(fs::is_directory(targetPath))
             {
                 for(const auto& entry : fs::recursive_directory_iterator(targetPath)){
-                    std::string pStr=entry.path().generic_string();
+                    std::string pStr=Utils::normalizePath(entry.path());
 
                     //skip aigit folder
-                    if(pStr.find(".aigit") != std::string::npos || pStr.find("build/") != std::string::npos || pStr.find(".git") != std::string::npos ||pStr.find(".vscode/") != std::string::npos || pStr.find("vcpkg/") != std::string::npos ){
+                    if(Utils::isIgnoredPath(pStr)){
                         continue;
                     }
                     //process regular files inside sub-directories
