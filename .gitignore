@@ -1,8 +1,14 @@
 # CMake build outputs
 build/
 CLI/build/
+CLI/build-remote/
 **/bin/
 **/obj/
+
+
+# Node.js dependencies
+node_modules/
+**/node_modules/
 
 # vcpkg generated dependencies
 CLI/vcpkg_installed/
