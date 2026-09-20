@@ -2,7 +2,6 @@
 #include <utility>  //provides general purpose data templates, move
 #include <string>
 #include <stdexcept>  //can be used only for runtine error
-#include "../core/storage.hpp"
 #include "../core/compression.hpp"
 
 //the purpose of this is basically making the blob object which is like a box and then serialize it so we can hash it
