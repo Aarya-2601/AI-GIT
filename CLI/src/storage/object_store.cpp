@@ -55,6 +55,19 @@ uint8_t typeToByte(const std::string& type)
     return 0; // unknown
 }
 
+std::string byteToType(uint8_t typeByte)
+{
+    switch (typeByte)
+    {
+        case 1: return "file";
+        case 2: return "chunk";
+        case 3: return "manifest";
+        case 4: return "tree";
+        case 5: return "commit";
+        default: return "unknown";
+    }
+}
+
 void appendUint64LE(std::string& out, uint64_t value)
 {
     for (int i = 0; i < 8; ++i)
@@ -317,9 +330,17 @@ void ObjectStore::storeObject(
 
 
 std::string ObjectStore::retrieve(
-    const std::string& objectId
+    const std::string& objectId,
+    std::string* typeOut
 ) const
 {
+    if (typeOut)
+    {
+        // Legacy (pre-header) objects carry no type byte on disk; only
+        // overwritten below once a header'd object actually verifies.
+        *typeOut = "unknown";
+    }
+
     if (objectId.length() < 2)
     {
         throw std::runtime_error(
@@ -416,6 +437,11 @@ std::string ObjectStore::retrieve(
         Core::calcSHA256(decoded) == objectId
     )
     {
+        if (typeOut)
+        {
+            *typeOut = byteToType(static_cast<uint8_t>(raw[4]));
+        }
+
         return decoded;
     }
 
@@ -431,6 +457,81 @@ std::string ObjectStore::retrieve(
         "Corrupt object (content does not match its ID): " +
         objectId
     );
+}
+
+std::vector<ObjectStore::ObjectRecord> ObjectStore::walkAll(
+    std::vector<std::string>* corruptObjectIds
+) const
+{
+    std::vector<ObjectRecord> records;
+
+    std::filesystem::path objectsRoot = rootPath / "objects";
+
+    if (!std::filesystem::exists(objectsRoot))
+    {
+        return records;
+    }
+
+    for (
+        const auto& dirEntry :
+        std::filesystem::directory_iterator(objectsRoot)
+    )
+    {
+        if (
+            !dirEntry.is_directory() ||
+            dirEntry.path().filename().string().size() != 2
+        )
+        {
+            continue;
+        }
+
+        std::string prefix = dirEntry.path().filename().string();
+
+        for (
+            const auto& fileEntry :
+            std::filesystem::directory_iterator(dirEntry.path())
+        )
+        {
+            if (!fileEntry.is_regular_file())
+            {
+                continue;
+            }
+
+            std::string suffix = fileEntry.path().filename().string();
+
+            // Skip orphaned .tmp* files left by an interrupted write --
+            // not a finished object, so not part of the CAS content.
+            if (suffix.find(".tmp") != std::string::npos)
+            {
+                continue;
+            }
+
+            std::string objectId = prefix + suffix;
+
+            try
+            {
+                std::string type;
+                std::string data = retrieve(objectId, &type);
+
+                records.push_back(
+                    {
+                        objectId,
+                        type,
+                        static_cast<long long>(data.size())
+                    }
+                );
+            }
+            catch (const std::exception&)
+            {
+                if (corruptObjectIds)
+                {
+                    corruptObjectIds->push_back(objectId);
+                }
+            }
+        }
+    }
+
+    return records;
 }
 
 }

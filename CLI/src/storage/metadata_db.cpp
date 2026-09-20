@@ -1,4 +1,5 @@
 #include "metadata_db.hpp"
+#include "object_store.hpp"
 
 #include <sqlite3.h>
 
@@ -411,6 +412,130 @@ std::vector<std::string> MetadataDB::getAllObjectIds() const
     sqlite3_close(db);
 
     return objectIds;
+}
+
+MetadataDB::RebuildResult MetadataDB::rebuild(
+    const std::filesystem::path& casRoot
+)
+{
+    ObjectStore objectStore(casRoot);
+
+    RebuildResult result;
+    std::vector<ObjectStore::ObjectRecord> records =
+        objectStore.walkAll(&result.corruptObjectIds);
+
+    sqlite3* db = nullptr;
+
+    int openResult = sqlite3_open(
+        dbPath.string().c_str(),
+        &db
+    );
+
+    if (openResult != SQLITE_OK)
+    {
+        std::string error =
+            db ? sqlite3_errmsg(db)
+               : "Unknown SQLite error";
+
+        if (db)
+        {
+            sqlite3_close(db);
+        }
+
+        throw std::runtime_error(
+            "Could not open SQLite database: " + error
+        );
+    }
+
+    char* errorMessage = nullptr;
+
+    auto execOrThrow = [&](const char* sql, const char* what)
+    {
+        int execResult = sqlite3_exec(db, sql, nullptr, nullptr, &errorMessage);
+
+        if (execResult != SQLITE_OK)
+        {
+            std::string error =
+                errorMessage ? errorMessage : "Unknown SQLite error";
+
+            sqlite3_free(errorMessage);
+            sqlite3_close(db);
+
+            throw std::runtime_error(
+                std::string(what) + ": " + error
+            );
+        }
+    };
+
+    // One transaction for the whole rebuild -- rewriting the table row by
+    // row via individually-committed statements would be both slow (one
+    // fsync per row) and would leave the table in a half-rebuilt state if
+    // interrupted partway through.
+    execOrThrow("BEGIN TRANSACTION;", "Could not begin rebuild transaction");
+    execOrThrow("DELETE FROM objects;", "Could not clear objects table");
+
+    const char* insertSql = R"(
+        INSERT OR IGNORE INTO objects
+        (object_id, size, type, created_at)
+        VALUES (?, ?, ?, datetime('now'));
+    )";
+
+    sqlite3_stmt* statement = nullptr;
+
+    int prepareResult = sqlite3_prepare_v2(
+        db,
+        insertSql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (prepareResult != SQLITE_OK)
+    {
+        std::string error = sqlite3_errmsg(db);
+        sqlite3_close(db);
+
+        throw std::runtime_error(
+            "Could not prepare SQLite statement: " + error
+        );
+    }
+
+    for (const ObjectStore::ObjectRecord& record : records)
+    {
+        sqlite3_bind_text(
+            statement, 1, record.objectId.c_str(), -1, SQLITE_TRANSIENT
+        );
+        sqlite3_bind_int64(statement, 2, record.size);
+        sqlite3_bind_text(
+            statement, 3, record.type.c_str(), -1, SQLITE_TRANSIENT
+        );
+
+        int stepResult = sqlite3_step(statement);
+
+        if (stepResult != SQLITE_DONE)
+        {
+            std::string error = sqlite3_errmsg(db);
+
+            sqlite3_finalize(statement);
+            sqlite3_close(db);
+
+            throw std::runtime_error(
+                "Could not insert rebuilt object metadata: " + error
+            );
+        }
+
+        sqlite3_reset(statement);
+    }
+
+    sqlite3_finalize(statement);
+
+    execOrThrow("COMMIT;", "Could not commit rebuild transaction");
+
+    sqlite3_close(db);
+
+    result.objectsRebuilt = records.size();
+
+    return result;
 }
 
 }
