@@ -5,15 +5,18 @@
 
 namespace Core{
 
-    void Index::load(const std::string& Indexpath){
+    void Index::load(const std::string& Indexpath)
+    {
         entries.clear();
         std::ifstream file(Indexpath);
         if(!file.is_open()){
             return;
         }
         std::string line;
-        while(std::getline(file,line)){
-            if(line.empty()){
+        while(std::getline(file,line))
+        {
+            if(line.empty())
+            {
                 continue;
             }
             std::istringstream stream(line);

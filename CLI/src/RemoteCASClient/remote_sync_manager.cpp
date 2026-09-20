@@ -101,9 +101,7 @@ void RemoteSyncManager::syncObject(
         return;
     }
 
-    // Manifest CAS object:
-    // synchronize every referenced chunk
-    // plus the manifest itself.
+  
     std::vector<std::string> objectIds;
 
     for (const auto& chunk : parsedObject["chunks"])
@@ -135,9 +133,6 @@ void RemoteSyncManager::syncObject(
             chunkId
         );
     }
-
-    // The remote needs the manifest too,
-    // not only its chunks.
     objectIds.push_back(
         objectId
     );
