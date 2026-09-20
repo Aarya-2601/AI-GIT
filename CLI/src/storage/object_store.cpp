@@ -68,6 +68,39 @@ std::string byteToType(uint8_t typeByte)
     }
 }
 
+// Legacy (pre-header) objects carry no type byte, so migration has to
+// guess from content. Trees/commits are unambiguous: they're wrapped in
+// a literal "tree <n>\0"/"commit <n>\0" prefix (see Models::Tree/Commit
+// ::serialize). Manifests are JSON with a "type":"manifest" field. A
+// blob and a chunk are byte-for-byte indistinguishable raw content, so
+// both fall back to "unknown" -- harmless, since MetadataDB already
+// records the real type separately whenever an object is written through
+// the normal add/commit path; this header byte is only ever a disk-walk
+// hint (rebuild/fsck), never load-bearing for retrieval.
+std::string sniffLegacyType(const std::string& data)
+{
+    if (data.rfind("tree ", 0) == 0)
+    {
+        return "tree";
+    }
+
+    if (data.rfind("commit ", 0) == 0)
+    {
+        return "commit";
+    }
+
+    if (
+        data.size() < 1024 * 1024 &&
+        data.find("\"type\"") != std::string::npos &&
+        data.find("\"manifest\"") != std::string::npos
+    )
+    {
+        return "manifest";
+    }
+
+    return "unknown";
+}
+
 void appendUint64LE(std::string& out, uint64_t value)
 {
     for (int i = 0; i < 8; ++i)
@@ -222,7 +255,16 @@ void ObjectStore::storeObject(
         return;
     }
 
+    writeObjectFileAtomic(objectPath, data, type, level);
+}
 
+void ObjectStore::writeObjectFileAtomic(
+    const std::filesystem::path& objectPath,
+    const std::string& data,
+    const std::string& type,
+    int level
+)
+{
     std::filesystem::create_directories(
         objectPath.parent_path()
     );
@@ -532,6 +574,123 @@ std::vector<ObjectStore::ObjectRecord> ObjectStore::walkAll(
     }
 
     return records;
+}
+
+ObjectStore::MigrationResult ObjectStore::migrateLegacyObjects(int level)
+{
+    MigrationResult result{};
+
+    std::filesystem::path objectsRoot = rootPath / "objects";
+
+    if (!std::filesystem::exists(objectsRoot))
+    {
+        return result;
+    }
+
+    for (
+        const auto& dirEntry :
+        std::filesystem::directory_iterator(objectsRoot)
+    )
+    {
+        if (
+            !dirEntry.is_directory() ||
+            dirEntry.path().filename().string().size() != 2
+        )
+        {
+            continue;
+        }
+
+        std::string prefix = dirEntry.path().filename().string();
+
+        for (
+            const auto& fileEntry :
+            std::filesystem::directory_iterator(dirEntry.path())
+        )
+        {
+            if (!fileEntry.is_regular_file())
+            {
+                continue;
+            }
+
+            std::string suffix = fileEntry.path().filename().string();
+
+            if (suffix.find(".tmp") != std::string::npos)
+            {
+                continue;
+            }
+
+            std::string objectId = prefix + suffix;
+            std::filesystem::path objectPath = fileEntry.path();
+
+            std::string raw;
+
+            try
+            {
+                raw = Core::readFileToString(objectPath);
+            }
+            catch (const std::exception&)
+            {
+                result.failedObjectIds.push_back(objectId);
+                continue;
+            }
+
+            // Already header'd for this ID (same disambiguation retrieve()
+            // uses: magic prefix alone isn't proof, only a hash match is).
+            bool alreadyCurrent = false;
+
+            if (
+                raw.size() >= kHeaderSize &&
+                std::memcmp(raw.data(), kMagic.data(), kMagic.size()) == 0
+            )
+            {
+                uint8_t flags = static_cast<uint8_t>(raw[5]);
+                uint64_t uncompressedSize = readUint64LE(raw.data() + 6);
+                std::string headerPayload = raw.substr(kHeaderSize);
+
+                std::string decoded = (flags & kFlagCompressed)
+                    ? Core::decompressData(headerPayload)
+                    : headerPayload;
+
+                if (
+                    decoded.size() == uncompressedSize &&
+                    Core::calcSHA256(decoded) == objectId
+                )
+                {
+                    alreadyCurrent = true;
+                }
+            }
+
+            if (alreadyCurrent)
+            {
+                ++result.objectsAlreadyCurrent;
+                continue;
+            }
+
+            // Not (validly) header'd -- must be a legacy object. Get its
+            // verified canonical bytes the same way any other reader
+            // would (retrieve() already knows how to interpret both
+            // legacy raw and legacy zlib-wrapped content).
+            std::string data;
+
+            try
+            {
+                data = retrieve(objectId);
+            }
+            catch (const std::exception&)
+            {
+                result.failedObjectIds.push_back(objectId);
+                continue;
+            }
+
+            std::string type = sniffLegacyType(data);
+
+            writeObjectFileAtomic(objectPath, data, type, level);
+
+            ++result.objectsMigrated;
+        }
+    }
+
+    return result;
 }
 
 }
