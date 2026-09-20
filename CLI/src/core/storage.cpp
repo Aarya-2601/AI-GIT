@@ -1,4 +1,5 @@
 #include "storage.hpp"
+#include "filesystem.hpp"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -75,19 +76,14 @@ namespace Core
                 return "";
             }
 
-            //open a stream for data exchange named inFile in binary mode
-            std::ifstream inFile(objectFile, std::ios::binary);
-            if (!inFile.is_open()) 
+            try
+            {
+                return Core::readFileToString(objectFile);
+            }
+            catch(const std::exception&)
             {
                 std::cerr<< "Storage Error: Failed to acquire stream handle for object: "<< objectFile<< std::endl;
                 return "";
             }
-
-            //put data in RAM buffer using stringstream and in the read mode of buffer
-            std::stringstream buffer;
-            buffer<< inFile.rdbuf();
-            inFile.close();
-
-            return buffer.str();
         }
 }

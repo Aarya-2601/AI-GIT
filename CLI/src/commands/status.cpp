@@ -1,65 +1,30 @@
 #include "status.hpp"
+#include "../core/object_io.hpp"
+#include "../helpers/gitutils.hpp"
+#include "../storage/storage_manager.hpp"
 
 namespace fs=std::filesystem;
 
 namespace Commands
-{   
-    static std::string normalizePath(const fs::path& p){
-        std::string pathStr=p.generic_string();
-        std::replace(pathStr.begin(), pathStr.end(), '\\', '/');
-
-        if(pathStr.rfind("./", 0) == 0)
-        {
-            pathStr=pathStr.substr(2);
-        }
-        //carriage return will not turn into a newline character
-        while(!pathStr.empty() && (pathStr.back() == '\r' || pathStr.back() == '\n' || pathStr.back() == ' '))
-        {
-            pathStr.pop_back();
-        }
-        return pathStr;
-    }
-
+{
     static void collectHeadEntries(const std::string& treeHash, const std::string& currentPrefix, std::unordered_map<std::string, std::string>& headEntries){
         if(treeHash.empty()) return;
 
-        std::string compressedTree=Core::Storage::readObject(treeHash);
-        if(compressedTree.empty()) return;
+        Models::Tree tree;
+        try {
+            tree = Core::loadTree(treeHash);
+        } catch (const std::exception&) {
+            return;
+        }
 
-        std::string rawTree=Core::decompressData(compressedTree);
-        if(rawTree.empty()) return;
+        for(const auto& entry : tree.getEntries()){
+            std::string fullPath=currentPrefix.empty() ? entry.name : currentPrefix+"/"+entry.name;
 
-        size_t nullPos=rawTree.find('\0');
-        if(nullPos == std::string::npos) return;
-
-        std::string body=rawTree.substr(nullPos + 1);
-        size_t i=0;
-        while(i < body.size()){
-            size_t spacePos=body.find(' ', i);
-            if(spacePos == std::string::npos) break;
-            std::string mode=body.substr(i, spacePos-i);
-
-            size_t nullEntryPos=body.find('\0', spacePos+1);
-            if (nullEntryPos == std::string::npos) break;
-            std::string name=body.substr(spacePos+1, nullEntryPos-(spacePos + 1));
-
-            if(nullEntryPos+1+32 > body.size()) break;
-            std::string binaryHash=body.substr(nullEntryPos+1, 32);
-            i=nullEntryPos+1+32;
-
-            std::stringstream ss;
-            for(unsigned char c : binaryHash){
-                ss<<std::hex<<std::setw(2)<<std::setfill('0')<<static_cast<int>(c);
+            if(entry.isSubtree){
+                collectHeadEntries(entry.hash, fullPath, headEntries);
             }
-            std::string hexHash=ss.str();
-
-            std::string fullPath=currentPrefix.empty() ? name : currentPrefix+"/"+name;
-
-            if(mode == "040000"){
-                collectHeadEntries(hexHash, fullPath, headEntries);
-            } 
             else{
-                headEntries[fullPath]=hexHash;
+                headEntries[fullPath]=entry.hash;
             }
         }
     }
@@ -67,52 +32,17 @@ namespace Commands
     static std::unordered_map<std::string, std::string> getHeadCommitEntries()
     {
         std::unordered_map<std::string, std::string> headEntries;
-        if(!fs::exists(".aigit/HEAD")) return headEntries;
 
-        std::ifstream headFile(".aigit/HEAD");
-        if(!headFile.is_open()) return headEntries;
-
-        std::string refLine;
-        std::getline(headFile, refLine);
-        headFile.close();
-
-        while(!refLine.empty() && (refLine.back()=='\r' || refLine.back()=='\n' || refLine.back()==' ')){
-            refLine.pop_back();
-        }
-
-        if(refLine.rfind("ref: ", 0) != 0) return headEntries;
-
-        std::string refPath = ".aigit/"+refLine.substr(5);
-        if(!fs::exists(refPath)) return headEntries;
-
-        std::ifstream branchFile(refPath);
-        if(!branchFile.is_open()) return headEntries;
-
-        std::string commitHash;
-        std::getline(branchFile, commitHash);
-        branchFile.close();
-
-        while(!commitHash.empty() && (commitHash.back() == '\r' || commitHash.back() == '\n' || commitHash.back() == ' ')){
-            commitHash.pop_back();
-        }
-
+        std::string commitHash = Utils::getCurrentCommitHash();
         if(commitHash.empty()) return headEntries;
 
-        std::string compressedCommit=Core::Storage::readObject(commitHash);
-        if(compressedCommit.empty()) return headEntries;
-
-        std::string rawCommit=Core::decompressData(compressedCommit);
-        if(rawCommit.empty()) return headEntries;
-
-        size_t treePos = rawCommit.find("tree ");
-        if(treePos != std::string::npos){
-            size_t start = treePos + 5;
-            size_t end = rawCommit.find_first_of("\r\n", start);
-            if(end != std::string::npos){
-                std::string rootTreeHash = rawCommit.substr(start, end - start);
-                collectHeadEntries(rootTreeHash, "", headEntries);
-            }
+        try {
+            Models::Commit commit = Core::loadCommit(commitHash);
+            collectHeadEntries(commit.getTreeHash(), "", headEntries);
+        } catch (const std::exception&) {
+            return headEntries;
         }
+
         return headEntries;
     }
 
@@ -149,15 +79,15 @@ namespace Commands
         {      
             if (!entry.is_regular_file()) continue;
 
-            std::string pStr = normalizePath(entry.path().generic_string());
-            
+            std::string pStr = Utils::normalizePath(entry.path());
+
             // Skip repository metadata & build output folders
-            if (pStr.find(".aigit") != std::string::npos || pStr.find("build/") != std::string::npos || pStr.find(".git") != std::string::npos || pStr.find(".vscode/") != std::string::npos || pStr.find("vcpkg/") != std::string::npos)
+            if (Utils::isIgnoredPath(pStr))
             {
                 continue;
             }
 
-            std::string filePath = normalizePath(entry.path());
+            std::string filePath = pStr;
             seenDiskFiles.insert(filePath);
 
             const auto& indexMap = index.getEntries();
@@ -167,30 +97,22 @@ namespace Commands
             {
                 untrackedFiles.push_back(filePath);
             }
-            else 
+            else
             {
-                std::ifstream inFile(entry.path(), std::ios::binary);
-                if (inFile.is_open()) {
-                    std::stringstream buffer;
-                    buffer << inFile.rdbuf();
-                    std::string fileContent = buffer.str();
-                    inFile.close();
+                try {
+                    // Must match the object ID `add` would compute for
+                    // this file's current content, not a different
+                    // hashing scheme, or every tracked file would show
+                    // as modified.
+                    Storage::StorageManager storageManager(".aigit");
+                    std::string objectId = storageManager.computeObjectId(entry.path());
 
-                    Models::Blob blobObject(fileContent);
-                    std::string storePayload = blobObject.serialize();
-                    std::string sha256Hash = Core::calcSHA256(storePayload);
-
-                    if (sha256Hash.empty()) {
-                        std::cerr << "Error: Cryptographic hashing mechanism failed." << std::endl;
-                        return 1; 
-                    }
-
-                    if (sha256Hash != idxIt->second.hash)
+                    if (objectId != idxIt->second.hash)
                     {
                         modifiedFiles.push_back(filePath);
                     }
                 }
-                else {
+                catch (const std::exception&) {
                     std::cerr << "Error: Failed to open file for reading: " << filePath << std::endl;
                 }
             }

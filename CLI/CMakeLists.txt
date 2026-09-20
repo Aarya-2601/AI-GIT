@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_MSVC_RUNTIME_LIBRARY
-    "MultiThreaded\(<\):Debug>"
+    "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 )
 
 find_package(OpenSSL REQUIRED)
@@ -24,8 +24,9 @@ set(SOURCES
     "src/core/storage.cpp"
     "src/core/config.cpp"
     "src/core/index.cpp"
-    "src/core/refs.cpp"
     "src/core/chunking.cpp"
+    "src/core/object_io.cpp"
+    "src/core/filesystem.cpp"
 
     "src/commands/hash_object.cpp"
     "src/commands/init.cpp"
@@ -75,6 +76,8 @@ add_executable(object-store-test
     src/storage/object_store_test.cpp
     src/storage/object_store.cpp
     src/core/hashing.cpp
+    src/core/filesystem.cpp
+    src/core/compression.cpp
 )
 
 target_include_directories(object-store-test PRIVATE
@@ -83,6 +86,7 @@ target_include_directories(object-store-test PRIVATE
 
 target_link_libraries(object-store-test PRIVATE
     OpenSSL::Crypto
+    ZLIB::ZLIB
 )
 
 add_executable(storage-manager-test
@@ -92,6 +96,8 @@ add_executable(storage-manager-test
     src/storage/metadata_db.cpp
     src/core/hashing.cpp
     src/core/chunking.cpp
+    src/core/filesystem.cpp
+    src/core/compression.cpp
 )
 
 add_executable(remote-sync-test
@@ -105,6 +111,8 @@ add_executable(remote-sync-test
 
     src/core/hashing.cpp
     src/core/chunking.cpp
+    src/core/filesystem.cpp
+    src/core/compression.cpp
 )
 
 target_include_directories(remote-sync-test PRIVATE
@@ -113,9 +121,127 @@ target_include_directories(remote-sync-test PRIVATE
 
 target_link_libraries(remote-sync-test PRIVATE
     OpenSSL::Crypto
+    ZLIB::ZLIB
     unofficial::sqlite3::sqlite3
     nlohmann_json::nlohmann_json
     CURL::libcurl
+)
+
+add_executable(push-metadata-test
+    src/storage/push_metadata_test.cpp
+
+    src/commands/init.cpp
+    src/commands/add.cpp
+    src/commands/commit.cpp
+
+    src/core/hashing.cpp
+    src/core/compression.cpp
+    src/core/storage.cpp
+    src/core/config.cpp
+    src/core/index.cpp
+    src/core/chunking.cpp
+    src/core/object_io.cpp
+    src/core/filesystem.cpp
+
+    src/storage/object_store.cpp
+    src/storage/metadata_db.cpp
+    src/storage/storage_manager.cpp
+
+    src/models/blob.cpp
+    src/models/tree.cpp
+    src/models/commit.cpp
+
+    src/helpers/gitutils.cpp
+)
+
+target_include_directories(push-metadata-test PRIVATE
+    src
+)
+
+target_link_libraries(push-metadata-test PRIVATE
+    OpenSSL::Crypto
+    ZLIB::ZLIB
+    unofficial::sqlite3::sqlite3
+    nlohmann_json::nlohmann_json
+)
+
+add_executable(status-clean-test
+    src/storage/status_clean_test.cpp
+
+    src/commands/init.cpp
+    src/commands/add.cpp
+    src/commands/commit.cpp
+    src/commands/status.cpp
+
+    src/core/hashing.cpp
+    src/core/compression.cpp
+    src/core/storage.cpp
+    src/core/config.cpp
+    src/core/index.cpp
+    src/core/chunking.cpp
+    src/core/object_io.cpp
+    src/core/filesystem.cpp
+
+    src/storage/object_store.cpp
+    src/storage/metadata_db.cpp
+    src/storage/storage_manager.cpp
+
+    src/models/blob.cpp
+    src/models/tree.cpp
+    src/models/commit.cpp
+
+    src/helpers/gitutils.cpp
+)
+
+target_include_directories(status-clean-test PRIVATE
+    src
+)
+
+target_link_libraries(status-clean-test PRIVATE
+    OpenSSL::Crypto
+    ZLIB::ZLIB
+    unofficial::sqlite3::sqlite3
+    nlohmann_json::nlohmann_json
+)
+
+add_executable(checkout-index-sync-test
+    src/storage/checkout_index_sync_test.cpp
+
+    src/commands/init.cpp
+    src/commands/add.cpp
+    src/commands/commit.cpp
+    src/commands/branch.cpp
+    src/commands/checkout.cpp
+
+    src/core/hashing.cpp
+    src/core/compression.cpp
+    src/core/storage.cpp
+    src/core/config.cpp
+    src/core/index.cpp
+    src/core/chunking.cpp
+    src/core/object_io.cpp
+    src/core/filesystem.cpp
+
+    src/storage/object_store.cpp
+    src/storage/metadata_db.cpp
+    src/storage/storage_manager.cpp
+
+    src/models/blob.cpp
+    src/models/tree.cpp
+    src/models/commit.cpp
+
+    src/helpers/gitutils.cpp
+)
+
+target_include_directories(checkout-index-sync-test PRIVATE
+    src
+)
+
+target_link_libraries(checkout-index-sync-test PRIVATE
+    OpenSSL::Crypto
+    ZLIB::ZLIB
+    unofficial::sqlite3::sqlite3
+    nlohmann_json::nlohmann_json
 )
 
 target_include_directories(storage-manager-test PRIVATE
@@ -124,6 +250,45 @@ target_include_directories(storage-manager-test PRIVATE
 
 target_link_libraries(storage-manager-test PRIVATE
     OpenSSL::Crypto
+    ZLIB::ZLIB
+    unofficial::sqlite3::sqlite3
+    nlohmann_json::nlohmann_json
+)
+
+add_executable(hash-object-parity-test
+    src/storage/hash_object_parity_test.cpp
+
+    src/commands/init.cpp
+    src/commands/add.cpp
+    src/commands/hash_object.cpp
+
+    src/core/hashing.cpp
+    src/core/compression.cpp
+    src/core/storage.cpp
+    src/core/config.cpp
+    src/core/index.cpp
+    src/core/chunking.cpp
+    src/core/object_io.cpp
+    src/core/filesystem.cpp
+
+    src/storage/object_store.cpp
+    src/storage/metadata_db.cpp
+    src/storage/storage_manager.cpp
+
+    src/models/blob.cpp
+    src/models/tree.cpp
+    src/models/commit.cpp
+
+    src/helpers/gitutils.cpp
+)
+
+target_include_directories(hash-object-parity-test PRIVATE
+    src
+)
+
+target_link_libraries(hash-object-parity-test PRIVATE
+    OpenSSL::Crypto
+    ZLIB::ZLIB
     unofficial::sqlite3::sqlite3
     nlohmann_json::nlohmann_json
 )

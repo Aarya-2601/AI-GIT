@@ -1,12 +1,12 @@
 #include "../models/object.hpp"
 #include "../core/index.hpp"
 #include "../core/config.hpp"
-#include "../core/storage.hpp"
 #include "../models/tree.hpp"
 #include "../models/commit.hpp"
 #include "../core/hashing.hpp"
-#include "../core/compression.hpp"
 #include "../core/filesystem.hpp"
+#include "../helpers/gitutils.hpp"
+#include "../storage/storage_manager.hpp"
 # include "../commands/commit.hpp"
 using namespace std;
 #include <filesystem>
@@ -101,12 +101,11 @@ std::string writeTree(Models::TreeNode* node)
         throw std::runtime_error("Failed to hash tree object.");
     }
 
-    std::string compressedObject = Core::compressString(payload);
-
-    if (!Core::Storage::writeObject(treeHash, compressedObject))
-    {
-        throw std::runtime_error("Failed to store tree object.");
-    }
+    // ID stays SHA-256 of the full serialized payload (including its
+    // "tree <n>\0" wrapper) exactly as before -- only the storage backend
+    // changes here, so existing tree hashes are unaffected.
+    Storage::StorageManager storageManager(".aigit");
+    storageManager.storeObject(treeHash, payload, "tree");
 
     node->hash = treeHash;
 
@@ -115,33 +114,7 @@ std::string writeTree(Models::TreeNode* node)
 
 std::string writeCommit(const std::string& rootTreeHash,const std::string& message)
 {
-    std::string parentHash;
-
-    std::ifstream headFile(".aigit/HEAD");
-
-    if (!headFile.is_open())
-    {
-        throw std::runtime_error("Failed to open HEAD.");
-    }
-
-    std::string refLine;
-    std::getline(headFile, refLine);
-    headFile.close();
-
-    if (refLine.substr(0, 5) != "ref: ")
-    {
-        throw std::runtime_error("Invalid HEAD.");
-    }
-
-    std::string refPath = refLine.substr(5);
-
-    std::ifstream branchFile(".aigit/" + refPath);
-
-    if (branchFile.is_open())
-    {
-        std::getline(branchFile, parentHash);
-        branchFile.close();
-    }
+    std::string parentHash = Utils::getCurrentCommitHash();
 
     Core::Config config;
     config.load(".aigit/config");
@@ -183,52 +156,24 @@ std::string writeCommit(const std::string& rootTreeHash,const std::string& messa
         throw std::runtime_error("Failed to hash commit object.");
     }
 
-    std::string compressedObject = Core::compressString(uncompressedObject);
-
-    if (!Core::Storage::writeObject(commitHash, compressedObject))
-    {
-        throw std::runtime_error("Failed to store commit object.");
-    }
+    // Same ID scheme as before (SHA-256 of the wrapper+body payload);
+    // only the storage backend changes.
+    Storage::StorageManager storageManager(".aigit");
+    storageManager.storeObject(commitHash, uncompressedObject, "commit");
 
     return commitHash;
 }
 
 void updateHEAD(const std::string& commitHash)
 {
-    std::ifstream headFile(".aigit/HEAD");
+    std::string branchName = Utils::getCurrentBranchName();
 
-    if (!headFile.is_open())
-    {
-        throw std::runtime_error("Failed to open HEAD.");
-    }
-
-    std::string refLine;
-    std::getline(headFile, refLine);
-    headFile.close();
-
-    while (!refLine.empty() && (refLine.back() == '\r' || refLine.back() == '\n' || refLine.back() == ' '))
-    {
-        refLine.pop_back();
-    }
-    
-    if (refLine.substr(0, 5) != "ref: ")
+    if (branchName.empty())
     {
         throw std::runtime_error("Invalid HEAD format.");
     }
 
-    std::string refPath = refLine.substr(5);
-
-    std::ofstream branchFile(".aigit/" + refPath,
-                             std::ios::trunc);
-
-    if (!branchFile.is_open())
-    {
-        throw std::runtime_error("Failed to update branch.");
-    }
-
-    branchFile << commitHash;
-
-    branchFile.close();
+    Utils::writeBranchRef(branchName, commitHash);
 }
 
 }

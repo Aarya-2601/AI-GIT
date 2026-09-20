@@ -28,13 +28,30 @@ public:
     );
 
 
+    // `type` is one of "file", "chunk", "manifest", "tree", "commit"
+    // (matching MetadataDB's type strings); anything else is stored as
+    // "unknown". It's recorded in the object's on-disk header for future
+    // use (e.g. rebuilding MetadataDB from disk) and never affects the
+    // object ID. `level` is the zlib compression level (1-9); the design
+    // targets 1-3 for CAS objects.
+    //
+    // Compresses `data` and writes it with a small header (magic, type,
+    // compressed flag, uncompressed size). If compression saves less than
+    // 5% (or `data` is empty), the object is stored raw instead, with the
+    // compressed flag cleared. Existing objects already on disk (written
+    // before this header existed) are left untouched -- retrieve() below
+    // still reads them correctly.
     void storeObject(
         const std::string& objectId,
-        const std::string& data
+        const std::string& data,
+        const std::string& type = "",
+        int level = 2
     );
 
-    // Retrieves the raw bytes of an object
-    // using its SHA-256 object ID.
+    // Retrieves the raw (decompressed) bytes of an object using its
+    // SHA-256 object ID. Transparently reads both the new header'd
+    // format and legacy pre-header objects (raw bytes, no header) so
+    // old repositories remain readable without a migration step.
     std::string retrieve(
         const std::string& objectId
     ) const;

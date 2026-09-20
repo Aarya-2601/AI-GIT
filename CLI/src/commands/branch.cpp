@@ -38,17 +38,7 @@ void runBranch(const std::vector<std::string>& args)
         return;
     }
 
-    std::ofstream branchFile(".aigit/refs/heads/" + branchName);
-
-    if(!branchFile)
-    {
-        std::cout << "Unable to create branch.\n";
-        return;
-    }
-
-    branchFile << currentCommit;
-
-    branchFile.close();
+    Utils::writeBranchRef(branchName, currentCommit);
 
     std::cout << "Created branch '" << branchName << "'\n";
 }

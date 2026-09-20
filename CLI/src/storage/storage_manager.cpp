@@ -157,6 +157,55 @@ std::string StorageManager::storeFile(
     return manifestId;
 }
 
+std::string StorageManager::computeObjectId(
+    const std::filesystem::path& filePath
+) const
+{
+    if (!std::filesystem::exists(filePath))
+    {
+        throw std::runtime_error(
+            "File does not exist: " +
+            filePath.string()
+        );
+    }
+
+    size_t totalBytes =
+        std::filesystem::file_size(filePath);
+
+    if (totalBytes <= Chunking::MIN_SIZE)
+    {
+        std::string fileData =
+            readSlice(filePath, 0, totalBytes);
+
+        return Core::calcSHA256(fileData);
+    }
+
+    std::vector<Chunk> chunks =
+        Chunking::chunkFile(
+            filePath.string()
+        );
+
+    nlohmann::json manifest;
+
+    manifest["type"] = "manifest";
+    manifest["total_size"] = totalBytes;
+    manifest["chunks"] =
+        nlohmann::json::array();
+
+    for (const Chunk& chunk : chunks)
+    {
+        manifest["chunks"].push_back(
+            {
+                {"hash", chunk.sha256},
+                {"size", chunk.length},
+                {"offset", chunk.offset}
+            }
+        );
+    }
+
+    return Core::calcSHA256(manifest.dump());
+}
+
 void StorageManager::storeObject(
     const std::string& objectId,
     const std::string& data,
@@ -167,7 +216,8 @@ void StorageManager::storeObject(
     {
         objectStore.storeObject(
             objectId,
-            data
+            data,
+            type
         );
     }
 
