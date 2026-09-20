@@ -30,13 +30,11 @@ std::vector<Core::IndexEntry> readIndex()
 std::unique_ptr<Models::TreeNode>
 buildDirectoryTree(const std::vector<Core::IndexEntry>& entries)
 {
-    auto root =
-        std::make_unique<Models::TreeNode>("", true);
+    auto root =std::make_unique<Models::TreeNode>("", true);
 
     for (const auto& entry : entries)
     {
         fs::path currentPath(entry.path);
-
         Models::TreeNode* current = root.get();
 
         for (auto it = currentPath.begin();
@@ -44,22 +42,14 @@ buildDirectoryTree(const std::vector<Core::IndexEntry>& entries)
              ++it)
         {
             std::string name = it->string();
-
-            bool isLast =
-                (std::next(it) == currentPath.end());
-
-            auto child =
-                current->children.find(name);
+            bool isLast =(std::next(it) == currentPath.end());
+            auto child =current->children.find(name);
 
             if (child == current->children.end())
             {
-                current->children[name] =
-                    std::make_unique<Models::TreeNode>(
-                        name,
-                        !isLast);
+                current->children[name] =std::make_unique<Models::TreeNode>(name,!isLast);
 
-                child =
-                    current->children.find(name);
+                child =current->children.find(name);
             }
 
             if (isLast)
@@ -91,7 +81,8 @@ std::string writeTree(Models::TreeNode* node)
 
             treeObj.addEntry(def);
         }
-        else{
+        else
+        {
             Models::TreeDef def;
             def.mode = "100644";
             def.name = child.second->name;
@@ -122,8 +113,7 @@ std::string writeTree(Models::TreeNode* node)
     return treeHash;
 }
 
-std::string writeCommit(const std::string& rootTreeHash,
-                        const std::string& message)
+std::string writeCommit(const std::string& rootTreeHash,const std::string& message)
 {
     std::string parentHash;
 
@@ -159,7 +149,8 @@ std::string writeCommit(const std::string& rootTreeHash,
     long long timestamp = static_cast<long long>(std::time(nullptr));
     std::string timezone = "+0000";
 
-    Models::CommitMsg author{
+    Models::CommitMsg author
+    {
         config.getAuthorName(),
         config.getAuthorEmail(),
         timestamp,
