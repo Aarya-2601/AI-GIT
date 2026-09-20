@@ -1,13 +1,111 @@
 #include "object_store.hpp"
 
 #include "../core/hashing.hpp"
+#include "../core/filesystem.hpp"
+#include "../core/compression.hpp"
 
+#include <array>
+#include <chrono>
+#include <cstdint>
+#include <cstring>
 #include <fstream>
+#include <random>
 #include <sstream>
 #include <stdexcept>
+#include <thread>
 
 namespace Storage
 {
+
+namespace
+{
+
+// 4-byte magic marks the new header'd format so retrieve() can tell it
+// apart from a legacy object (pre-header, raw bytes, no magic) without
+// ambiguity -- a legacy blob/chunk happening to start with these exact
+// four bytes is not realistically possible.
+constexpr std::array<char, 4> kMagic = {'A', 'G', 'C', '1'};
+
+constexpr size_t kHeaderSize =
+    4 +  // magic
+    1 +  // type
+    1 +  // flags
+    8;   // uncompressed size (uint64, little-endian)
+
+constexpr uint8_t kFlagCompressed = 0x01;
+
+// Below this size, compressing a full chunk/file is cheap enough that
+// there's no need to pre-check with a sample.
+constexpr size_t kBigInputThreshold = 256 * 1024;
+
+constexpr size_t kSampleSize = 64 * 1024;
+
+// If the compressed size isn't at least this fraction smaller than the
+// original, it isn't worth storing compressed.
+constexpr double kMinSavingsFraction = 0.05;
+
+uint8_t typeToByte(const std::string& type)
+{
+    if (type == "file")     return 1;
+    if (type == "chunk")    return 2;
+    if (type == "manifest") return 3;
+    if (type == "tree")     return 4;
+    if (type == "commit")   return 5;
+
+    return 0; // unknown
+}
+
+void appendUint64LE(std::string& out, uint64_t value)
+{
+    for (int i = 0; i < 8; ++i)
+    {
+        out.push_back(
+            static_cast<char>((value >> (8 * i)) & 0xFF)
+        );
+    }
+}
+
+uint64_t readUint64LE(const char* bytes)
+{
+    uint64_t value = 0;
+
+    for (int i = 0; i < 8; ++i)
+    {
+        value |=
+            static_cast<uint64_t>(
+                static_cast<unsigned char>(bytes[i])
+            ) << (8 * i);
+    }
+
+    return value;
+}
+
+bool looksSufficientlyCompressible(
+    const std::string& sampleOrWhole,
+    const std::string& compressed
+)
+{
+    return static_cast<double>(compressed.size()) <
+        static_cast<double>(sampleOrWhole.size()) *
+        (1.0 - kMinSavingsFraction);
+}
+
+// A suffix for temp files that's unique enough to avoid collisions
+// between concurrent writers of different objects (each call gets its
+// own tmp path, so no two writers ever share one).
+std::string uniqueTmpSuffix()
+{
+    static thread_local std::mt19937_64 rng(
+        std::hash<std::thread::id>{}(std::this_thread::get_id()) ^
+        static_cast<uint64_t>(
+            std::chrono::steady_clock::now().time_since_epoch().count()
+        )
+    );
+
+    return std::to_string(rng());
+}
+
+}
 
 ObjectStore::ObjectStore(
     const std::filesystem::path& root
@@ -52,24 +150,8 @@ std::string ObjectStore::store(
     const std::filesystem::path& filePath
 )
 {
-    std::ifstream input(
-        filePath,
-        std::ios::binary
-    );
-
-    if (!input.is_open())
-    {
-        throw std::runtime_error(
-            "Could not open file: " +
-            filePath.string()
-        );
-    }
-
-    std::stringstream buffer;
-    buffer << input.rdbuf();
-
     std::string fileData =
-        buffer.str();
+        Core::readFileToString(filePath);
 
 
     // Calculate SHA-256 of the raw bytes.
@@ -90,7 +172,8 @@ std::string ObjectStore::store(
 
     storeObject(
         objectId,
-        fileData
+        fileData,
+        "file"
     );
 
 
@@ -100,7 +183,9 @@ std::string ObjectStore::store(
 
 void ObjectStore::storeObject(
     const std::string& objectId,
-    const std::string& data
+    const std::string& data,
+    const std::string& type,
+    int level
 )
 {
     if (objectId.length() < 2)
@@ -130,39 +215,104 @@ void ObjectStore::storeObject(
     );
 
 
-    // Open the CAS object in binary mode.
+    // Decide whether compressing is worth it. For big inputs, first
+    // compress just a 64KB sample -- if that alone doesn't clear the
+    // savings bar, skip compressing the whole thing (cheap insurance
+    // against paying full deflate cost on already-incompressible data).
 
-    std::ofstream output(
-        objectPath,
-        std::ios::binary
-    );
+    bool attemptFullCompression = !data.empty();
 
-
-    if (!output.is_open())
+    if (attemptFullCompression && data.size() > kBigInputThreshold)
     {
+        std::string sample = data.substr(0, kSampleSize);
+        std::string sampleCompressed = Core::compressString(sample, level);
+
+        if (!looksSufficientlyCompressible(sample, sampleCompressed))
+        {
+            attemptFullCompression = false;
+        }
+    }
+
+    bool compressed = false;
+    const std::string* payload = &data;
+    std::string compressedData;
+
+    if (attemptFullCompression)
+    {
+        compressedData = Core::compressString(data, level);
+
+        if (looksSufficientlyCompressible(data, compressedData))
+        {
+            compressed = true;
+            payload = &compressedData;
+        }
+    }
+
+    std::string header;
+    header.reserve(kHeaderSize);
+    header.append(kMagic.data(), kMagic.size());
+    header.push_back(static_cast<char>(typeToByte(type)));
+    header.push_back(
+        static_cast<char>(compressed ? kFlagCompressed : 0)
+    );
+    appendUint64LE(header, static_cast<uint64_t>(data.size()));
+
+
+    // Write to a temp file in the same directory, then rename it into
+    // place. A crash or interruption mid-write leaves only an orphaned
+    // .tmp file, never a torn object at the final path -- readers never
+    // see a partially-written object.
+
+    std::filesystem::path tmpPath = objectPath;
+    tmpPath += ".tmp";
+    tmpPath += uniqueTmpSuffix();
+
+    {
+        std::ofstream output(
+            tmpPath,
+            std::ios::binary | std::ios::trunc
+        );
+
+        if (!output.is_open())
+        {
+            throw std::runtime_error(
+                "Could not create CAS object: " +
+                objectPath.string()
+            );
+        }
+
+        output.write(header.data(), static_cast<std::streamsize>(header.size()));
+
+        output.write(
+            payload->data(),
+            static_cast<std::streamsize>(
+                payload->size()
+            )
+        );
+
+        if (!output)
+        {
+            output.close();
+            std::filesystem::remove(tmpPath);
+
+            throw std::runtime_error(
+                "Failed to write CAS object."
+            );
+        }
+    }
+
+    std::error_code renameEc;
+    std::filesystem::rename(tmpPath, objectPath, renameEc);
+
+    if (renameEc)
+    {
+        std::filesystem::remove(tmpPath);
+
         throw std::runtime_error(
-            "Could not create CAS object: " +
+            "Failed to finalize CAS object: " +
             objectPath.string()
         );
     }
-
-    output.write(
-        data.data(),
-        static_cast<std::streamsize>(
-            data.size()
-        )
-    );
-
-
-    if (!output)
-    {
-        throw std::runtime_error(
-            "Failed to write CAS object."
-        );
-    }
-
-
-    output.close();
 }
 
 
@@ -195,26 +345,92 @@ std::string ObjectStore::retrieve(
     }
 
 
-    std::ifstream input(
-        objectPath,
-        std::ios::binary
-    );
+    std::string raw = Core::readFileToString(objectPath);
 
+    // Legacy object: too short to even hold a header, or doesn't start
+    // with the magic at all. Two legacy writers exist: blobs/chunks/
+    // manifests written by the pre-step-2 ObjectStore (raw bytes on disk,
+    // ID = SHA-256(raw) -- step 1's scheme), and trees/commits written by
+    // the old Core::Storage path (zlib-compressed on disk, ID = SHA-256 of
+    // the *uncompressed* payload). Try the cheap raw-match first, since
+    // it covers the common case; only pay for a decompress attempt if
+    // that fails. Only throw "corrupt" if neither interpretation matches.
 
-    if (!input.is_open())
+    if (
+        raw.size() < kHeaderSize ||
+        std::memcmp(raw.data(), kMagic.data(), kMagic.size()) != 0
+    )
     {
+        if (Core::calcSHA256(raw) == objectId)
+        {
+            return raw;
+        }
+
+        std::string decompressed = Core::decompressData(raw);
+
+        if (!decompressed.empty() && Core::calcSHA256(decompressed) == objectId)
+        {
+            return decompressed;
+        }
+
         throw std::runtime_error(
-            "Could not open object: " +
+            "Corrupt object (content does not match its ID): " +
             objectId
         );
     }
 
+    // The file starts with the magic bytes, but that alone doesn't prove
+    // it's actually a new-format object -- a legacy (pre-header) object's
+    // raw content could coincidentally start with "AGC1". Content
+    // addressing gives us a way to tell the two apart unambiguously: try
+    // decoding it as a new-format object, and only trust that decoding
+    // if the result actually hashes to objectId. If it doesn't, fall
+    // back to treating the whole file as legacy raw content; if *that*
+    // doesn't hash to objectId either, the object is genuinely corrupt.
 
-    std::stringstream buffer;
-    buffer << input.rdbuf();
+    uint8_t flags = static_cast<uint8_t>(raw[5]);
+    uint64_t uncompressedSize = readUint64LE(raw.data() + 6);
 
+    std::string headerPayload = raw.substr(kHeaderSize);
 
-    return buffer.str();
+    bool decodedOk = true;
+    std::string decoded;
+
+    if (flags & kFlagCompressed)
+    {
+        decoded = Core::decompressData(headerPayload);
+
+        if (decoded.empty() && !headerPayload.empty())
+        {
+            decodedOk = false;
+        }
+    }
+    else
+    {
+        decoded = headerPayload;
+    }
+
+    if (
+        decodedOk &&
+        decoded.size() == uncompressedSize &&
+        Core::calcSHA256(decoded) == objectId
+    )
+    {
+        return decoded;
+    }
+
+    // Not a valid new-format object for this ID. Check whether it's a
+    // legacy object whose raw bytes just happen to start with "AGC1".
+
+    if (Core::calcSHA256(raw) == objectId)
+    {
+        return raw;
+    }
+
+    throw std::runtime_error(
+        "Corrupt object (content does not match its ID): " +
+        objectId
+    );
 }
 
 }

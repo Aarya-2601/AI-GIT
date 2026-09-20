@@ -1,6 +1,8 @@
 #include "checkout.hpp"
 #include "../core/storage.hpp"
 #include "../core/compression.hpp"
+#include "../core/object_io.hpp"
+#include "../core/index.hpp"
 #include "../models/tree.hpp"
 #include "../models/blob.hpp"
 #include "../models/commit.hpp"
@@ -15,37 +17,8 @@
 
 namespace fs = std::filesystem;
 
-namespace 
+namespace
 {
-
-Models::Commit readCommit(const std::string& commitHash)
-{
-    std::string compressedObject =
-        Core::Storage::readObject(commitHash);
-
-    if (compressedObject.empty())
-    {
-        throw std::runtime_error("Failed to read commit object.");
-    }
-
-    std::string objectData = Core::decompressData(compressedObject);
-
-    return Models::Commit::deserialize(objectData);
-}
-
-Models::Tree readTree(const std::string& treeHash)
-{
-    std::string compressedObject = Core::Storage::readObject(treeHash);
-
-    if (compressedObject.empty())
-    {
-        throw std::runtime_error("Failed to read tree object: " + treeHash);
-    }
-
-    std::string treeData = Core::decompressData(compressedObject);
-
-    return Models::Tree::deserialize(treeData);
-}
 
 void restoreTree(
     const Models::Tree& tree,
@@ -64,7 +37,7 @@ void restoreTree(
             fs::create_directories(targetPath);
 
             Models::Tree subtree =
-                readTree(entry.hash);
+                Core::loadTree(entry.hash);
 
             restoreTree(subtree, targetPath);
         }
@@ -90,7 +63,7 @@ void collectTrackedFiles(
         if (entry.isSubtree)
         {
             Models::Tree subtree =
-                readTree(entry.hash);
+                Core::loadTree(entry.hash);
 
             collectTrackedFiles(
                 subtree,
@@ -124,24 +97,38 @@ void removeTrackedFiles(
     }
 }
 
-void updateHEAD(const std::string& branchName)
+// Rebuilds .aigit/index to exactly match `tree`, so the staging area
+// reflects the branch just checked out rather than whatever was staged
+// on the branch we switched away from.
+void syncIndexToTree(
+    const Models::Tree& tree,
+    const fs::path& currentPath,
+    Core::Index& index
+)
 {
-    std::ofstream headFile(
-        ".aigit/HEAD",
-        std::ios::trunc
-    );
-
-    if (!headFile.is_open())
+    for (const auto& entry : tree.getEntries())
     {
-        throw std::runtime_error(
-            "Failed to open HEAD for writing."
-        );
+        fs::path targetPath =
+            currentPath / entry.name;
+
+        if (entry.isSubtree)
+        {
+            Models::Tree subtree =
+                Core::loadTree(entry.hash);
+
+            syncIndexToTree(subtree, targetPath, index);
+        }
+        else
+        {
+            index.addEntry(
+                Core::IndexEntry(
+                    Utils::normalizePath(targetPath),
+                    entry.hash,
+                    entry.mode
+                )
+            );
+        }
     }
-
-    headFile << "ref: refs/heads/"
-             << branchName;
-
-    headFile.close();
 }
 
 }
@@ -166,20 +153,8 @@ int runCheckout(const std::string& branchName)
         }
 
         // 2. Read target branch reference
-        std::ifstream branchFile(
-            ".aigit/refs/heads/" + branchName
-        );
-
-        if (!branchFile.is_open())
-        {
-            throw std::runtime_error(
-                "Failed to open branch reference."
-            );
-        }
-
-        std::string targetCommitHash;
-        std::getline(branchFile, targetCommitHash);
-        branchFile.close();
+        std::string targetCommitHash =
+            Utils::getBranchCommitHash(branchName);
 
         if (targetCommitHash.empty())
         {
@@ -190,7 +165,7 @@ int runCheckout(const std::string& branchName)
 
         // 3. Read target commit
         Models::Commit targetCommit =
-            readCommit(targetCommitHash);
+            Core::loadCommit(targetCommitHash);
 
         // 4. Get target root tree
         std::string targetTreeHash =
@@ -198,7 +173,7 @@ int runCheckout(const std::string& branchName)
 
         // 5. Read target tree
         Models::Tree targetTree =
-            readTree(targetTreeHash);
+            Core::loadTree(targetTreeHash);
 
         // 6. Get current commit
         std::string currentCommitHash =
@@ -208,13 +183,13 @@ int runCheckout(const std::string& branchName)
         if (!currentCommitHash.empty())
         {
             Models::Commit currentCommit =
-                readCommit(currentCommitHash);
+                Core::loadCommit(currentCommitHash);
 
             std::string currentTreeHash =
                 currentCommit.getTreeHash();
 
             Models::Tree currentTree =
-                readTree(currentTreeHash);
+                Core::loadTree(currentTreeHash);
 
             std::vector<fs::path> currentFiles;
 
@@ -233,7 +208,13 @@ int runCheckout(const std::string& branchName)
             "."
         );
 
-        updateHEAD(branchName);
+        // 9. Sync the index to the branch we just checked out, so
+        // whatever was staged on the previous branch doesn't linger.
+        Core::Index newIndex;
+        syncIndexToTree(targetTree, ".", newIndex);
+        newIndex.save(".aigit/index");
+
+        Utils::setHeadToBranch(branchName);
 
         std::cout
             << "Checked out branch '"

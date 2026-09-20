@@ -1,146 +1,14 @@
 #include "log.hpp"
+#include "../core/object_io.hpp"
+#include "../helpers/gitutils.hpp"
 
 namespace fs=std::filesystem;
 using namespace std;
 
-//theres no input in this everythings from head and refs folders 
+//theres no input in this everythings from head and refs folders
 
 namespace
-{   
-    // first thing is to know where the latest pointer is at (which branch) and get the latest commit hash
-    std::string getCurrentBranchRef()
 {
-    std::ifstream headFile(".aigit/HEAD");
-
-    if (!headFile.is_open())
-    {
-        throw std::runtime_error("Failed to open HEAD.");
-    }
-
-    std::string refLine;
-    std::getline(headFile, refLine);
-    headFile.close();
-
-    while (!refLine.empty() && (refLine.back() == '\r' || refLine.back() == '\n' || refLine.back() == ' '))
-    {
-        refLine.pop_back();
-    }
-
-    if (refLine.substr(0, 5) != "ref: ")
-    {
-        throw std::runtime_error("Invalid HEAD format.");
-    }
-
-    return refLine.substr(5);
-}
-
-//latest commit hash from the current branch
-std::string getCurrentCommitHash(const std::string& branchRef)
-{   
-    fs::path refPath = fs::path(".aigit") / branchRef;
-
-    if (!fs::exists(refPath))
-    {
-        return "";
-    }
-
-    std::ifstream branchFile(refPath);
-
-    if (!branchFile.is_open())
-    {
-        throw std::runtime_error("Failed to open branch.");
-    }
-
-    std::string commitHash;
-    std::getline(branchFile, commitHash);
-
-    branchFile.close();
-
-    return commitHash;
-}
-
-Models::Commit loadCommit(const std::string& hash)
-{
-    Models::Commit commit;
-
-    // Split hash into folder and filename & open commit object and read entire object
-    std::string compressedData = Core::Storage::readObject(hash);
-    if (compressedData.empty())
-    {
-        throw std::runtime_error("Failed to read commit object from storage: " + hash);
-    }
-
-    std::string rawObject = Core::decompressData(compressedData);
-
-    if (rawObject.empty())
-    {
-        throw std::runtime_error("Failed to decompress commit object: " + hash);
-    }
-
-    // Find end of header ("commit <size>\0")
-    size_t nullPos = rawObject.find('\0');
-
-    if (nullPos == std::string::npos)
-    {
-        throw std::runtime_error("Invalid commit object payload.");
-    }
-
-    //remove header and parse payload
-    std::string payload = rawObject.substr(nullPos + 1);
-    std::stringstream ss(payload);
-    std::string line;
-
-    while (std::getline(ss, line))
-    {
-        while (!line.empty() && (line.back() == '\r' || line.back() == '\n'))
-        {
-            line.pop_back();
-        }
-
-        if (line.empty())
-        {
-            break; //Header section end
-        }
-
-        if (line.rfind("tree ", 0) == 0)
-        {
-            commit.setTreeHash(line.substr(5));
-        }
-        else if (line.rfind("parent ", 0) == 0)
-        {
-            commit.addParentHash(line.substr(7));
-        }
-        else if (line.rfind("author ", 0) == 0)
-        {
-            commit.setAuthor(Models::parseCommitMsg(line.substr(7)));
-        }
-        else if (line.rfind("committer ", 0) == 0)
-        {
-            commit.setCommitter(Models::parseCommitMsg(line.substr(10)));
-        }
-    }
-
-    std::string message;
-    while (std::getline(ss, line))
-    {
-        while (!line.empty() && line.back() == '\r')
-        {
-            line.pop_back();
-        }
-        message += line + "\n";
-    }
-
-    while (!message.empty() && (message.back() == '\n' || message.back() == '\r'))
-    {
-        message.pop_back();
-    }
-
-    commit.setMessage(message);
-
-    return commit;
-
-}
-
 void printCommit(const Models::Commit& commit, const std::string& commitHash)
 {
    std::cout << "Commit: "
@@ -204,16 +72,13 @@ int runLog()
             std::cerr << "fatal: not an ai-git repository (or any of the parent directories): .aigit" << std::endl;
             return 1;
         }
-        // Find current branch
-        std::string branchRef = getCurrentBranchRef();
-
-        // Get latest commit on that branch
-        std::string commitHash = getCurrentCommitHash(branchRef);
+        // Find current branch's latest commit
+        std::string commitHash = Utils::getCurrentCommitHash();
 
         // Traverse commit history
         while (!commitHash.empty())
         {
-            Models::Commit commit = loadCommit(commitHash);
+            Models::Commit commit = Core::loadCommit(commitHash);
 
             printCommit(commit, commitHash);
 
