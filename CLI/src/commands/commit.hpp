@@ -10,7 +10,6 @@
 #include "commands.hpp"
 #include "../core/index.hpp"
 #include "../core/config.hpp"
-#include "../core/storage.hpp"
 #include "../core/compression.hpp"
 #include "../core/hashing.hpp"
 #include "../models/object.hpp"

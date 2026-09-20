@@ -1,5 +1,4 @@
 #include "checkout.hpp"
-#include "../core/storage.hpp"
 #include "../core/compression.hpp"
 #include "../core/object_io.hpp"
 #include "../core/index.hpp"
