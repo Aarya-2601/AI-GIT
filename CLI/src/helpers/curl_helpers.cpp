@@ -166,4 +166,27 @@ bool downloadObjectToPath(
     return (result == CURLE_OK);
 }
 
+bool downloadObjectToString(
+    const std::string& url,
+    std::string& out
+)
+{
+    out.clear();
+
+    CURL* curl = curl_easy_init();
+    if (!curl)
+    {
+        return false;
+    }
+
+    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteToString);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &out);
+
+    CURLcode result = curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
+
+    return (result == CURLE_OK);
+}
+
 }

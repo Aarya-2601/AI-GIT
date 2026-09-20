@@ -12,6 +12,7 @@
 #include "../storage/object_store.hpp"
 #include "../core/config.hpp"
 #include "../core/filesystem.hpp"
+#include "../core/hashing.hpp"
 #include "../helpers/curl_helpers.hpp"
 
 #include <curl/curl.h>
@@ -86,19 +87,24 @@ bool runClone(const std::string& reponame, const std::string& server)
 
     for (const auto& [hash, url] : downloadMap)
     {
-        fs::path objectPath =
-            fs::path(".aigit") / "objects" / hash.substr(0, 2) / hash.substr(2);
+        std::string data;
 
-        if (Utils::downloadObjectToPath(url, objectPath))
+        if (
+            Utils::downloadObjectToString(url, data) &&
+            Core::calcSHA256(data) == hash
+        )
         {
-            // MetadataDB tracks uncompressed content size, not on-disk
-            // bytes -- go through retrieve() rather than fs::file_size()
-            // so this stays correct regardless of how the object is
-            // actually stored on disk (raw, or compressed with a header).
-            long long fileSize =
-                static_cast<long long>(objectStore.retrieve(hash).size());
+            // Write through ObjectStore::storeObject (atomic tmp+rename,
+            // header/compression) instead of a raw direct file write, so
+            // downloaded chunks land on disk the same way locally-added
+            // ones do.
+            objectStore.storeObject(hash, data, "chunk");
 
-            metadataDB.addObject(hash, fileSize, "chunk");
+            metadataDB.addObject(
+                hash,
+                static_cast<long long>(data.size()),
+                "chunk"
+            );
 
             std::cout
                 << "Downloaded chunk: " << hash.substr(0, 8) << "..."
