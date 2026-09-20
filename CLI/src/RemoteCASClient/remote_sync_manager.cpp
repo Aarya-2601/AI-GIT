@@ -8,46 +8,33 @@
 namespace Remote
 {
 
-RemoteSyncManager::RemoteSyncManager(
-    Storage::StorageManager& storageManager,
-    RemoteCASClient& remoteClient
-)
+RemoteSyncManager::RemoteSyncManager(Storage::StorageManager& storageManager,RemoteCASClient& remoteClient)
     : storageManager(storageManager),
       remoteClient(remoteClient)
 {
 }
-
-void RemoteSyncManager::uploadObjects(
-    const std::vector<std::string>& objectIds
-)
+void RemoteSyncManager::uploadObjects(const std::vector<std::string>& objectIds)
 {
     UploadNegotiation negotiation =
         remoteClient.negotiateUpload(
             objectIds
         );
-
-    for (
+        for 
+    (
         const auto& [objectId, uploadUrl] :
         negotiation.uploadUrls
     )
     {
         if (!storageManager.objectExists(objectId))
         {
-            throw std::runtime_error(
+            throw std::runtime_error
+            (
                 "Local CAS object missing: " +
                 objectId
             );
         }
-
-        std::string objectData =
-            storageManager.retrieveFile(
-                objectId
-            );
-
-        remoteClient.uploadObject(
-            uploadUrl,
-            objectData
-        );
+        std::string objectData =storageManager.retrieveFile(objectId);
+        remoteClient.uploadObject(uploadUrl,objectData);
     }
 }
 
@@ -57,19 +44,12 @@ void RemoteSyncManager::syncObject(
 {
     if (!storageManager.objectExists(objectId))
     {
-        throw std::runtime_error(
-            "Local CAS object not found: " +
-            objectId
-        );
+        throw std::runtime_error("Local CAS object not found: " +objectId);
     }
 
-    std::string objectData =
-        storageManager.retrieveFile(
-            objectId
-        );
+    std::string objectData =storageManager.retrieveFile(objectId);
 
     nlohmann::json parsedObject;
-
     bool isManifest = false;
 
     try
@@ -89,9 +69,6 @@ void RemoteSyncManager::syncObject(
     {
         isManifest = false;
     }
-
-    // Normal CAS object:
-    // only this object needs to be synchronized.
     if (!isManifest)
     {
         uploadObjects(
@@ -100,8 +77,6 @@ void RemoteSyncManager::syncObject(
 
         return;
     }
-
-  
     std::vector<std::string> objectIds;
 
     for (const auto& chunk : parsedObject["chunks"])
@@ -129,17 +104,10 @@ void RemoteSyncManager::syncObject(
             );
         }
 
-        objectIds.push_back(
-            chunkId
-        );
+        objectIds.push_back( chunkId);
     }
-    objectIds.push_back(
-        objectId
-    );
-
-    uploadObjects(
-        objectIds
-    );
+    objectIds.push_back(objectId);
+    uploadObjects(objectIds);
 }
 
 }
