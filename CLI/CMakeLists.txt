@@ -21,7 +21,6 @@ set(SOURCES
 
     "src/core/hashing.cpp"
     "src/core/compression.cpp"
-    "src/core/storage.cpp"
     "src/core/config.cpp"
     "src/core/index.cpp"
     "src/core/chunking.cpp"
@@ -136,7 +135,6 @@ add_executable(push-metadata-test
 
     src/core/hashing.cpp
     src/core/compression.cpp
-    src/core/storage.cpp
     src/core/config.cpp
     src/core/index.cpp
     src/core/chunking.cpp
@@ -175,7 +173,6 @@ add_executable(status-clean-test
 
     src/core/hashing.cpp
     src/core/compression.cpp
-    src/core/storage.cpp
     src/core/config.cpp
     src/core/index.cpp
     src/core/chunking.cpp
@@ -215,7 +212,6 @@ add_executable(checkout-index-sync-test
 
     src/core/hashing.cpp
     src/core/compression.cpp
-    src/core/storage.cpp
     src/core/config.cpp
     src/core/index.cpp
     src/core/chunking.cpp
@@ -264,7 +260,6 @@ add_executable(hash-object-parity-test
 
     src/core/hashing.cpp
     src/core/compression.cpp
-    src/core/storage.cpp
     src/core/config.cpp
     src/core/index.cpp
     src/core/chunking.cpp
