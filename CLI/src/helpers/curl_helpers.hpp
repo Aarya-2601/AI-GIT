@@ -69,4 +69,15 @@ namespace Utils
         const std::string& url,
         const std::filesystem::path& objectPath
     );
+
+    // Downloads one object from a presigned URL into memory. Used instead
+    // of downloadObjectToPath when the caller needs to write the bytes
+    // through ObjectStore::storeObject (atomic tmp+rename, header/
+    // compression) rather than straight to a raw file -- safe to buffer
+    // in memory since remote objects here are individual chunks, bounded
+    // by Chunking::MAX_SIZE, not whole files.
+    bool downloadObjectToString(
+        const std::string& url,
+        std::string& out
+    );
 }
