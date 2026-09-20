@@ -57,6 +57,16 @@ int main()
 {
     try
     {
+        // Unlike the other test binaries, this one never used a fresh
+        // temp directory -- it wrote straight into ".aigit/cas" in the
+        // CWD and relied on storeObject's "already exists, skip" no-op
+        // to make re-runs harmless. That's fine for the ID-based checks
+        // above, but the migration count assertions below need a clean
+        // slate: an object left over from an earlier run would inflate
+        // migrateLegacyObjects()'s counts.
+        std::error_code cleanEc;
+        std::filesystem::remove_all(".aigit/cas", cleanEc);
+
         Storage::ObjectStore store(".aigit/cas");
 
         store.initialize();
@@ -511,6 +521,98 @@ int main()
             << "SUCCESS: a legacy zlib-compressed tree-style object "
             << "round-trips through ObjectStore::retrieve() via the "
             << "decompress-then-hash fallback.\n";
+
+        // --- Step 10: one-time legacy migration ---------------------------
+        //
+        // Legacy objects created above: legacyId, legacyLookAlikeId,
+        // legacyCommitId, legacyTreeId (4 valid legacy objects). Also on
+        // disk but genuinely corrupt: corruptId (header'd, tampered) and
+        // legacyCorruptId (legacy, tampered) -- migration must leave both
+        // alone and report them, not crash or silently "fix" them.
+
+        Storage::ObjectStore::MigrationResult migration =
+            store.migrateLegacyObjects();
+
+        if (migration.objectsMigrated != 4)
+        {
+            std::cerr
+                << "FAILED: expected 4 legacy objects migrated, got "
+                << migration.objectsMigrated << ".\n";
+
+            return 1;
+        }
+
+        if (migration.failedObjectIds.size() != 2)
+        {
+            std::cerr
+                << "FAILED: expected 2 unmigratable (corrupt) objects, "
+                << "got " << migration.failedObjectIds.size() << ".\n";
+
+            return 1;
+        }
+
+        // Content must be byte-for-byte unchanged after migration -- only
+        // the on-disk encoding changed, never what retrieve() returns.
+
+        if (
+            store.retrieve(legacyId) != legacyData ||
+            store.retrieve(legacyLookAlikeId) != legacyLookAlike ||
+            store.retrieve(legacyCommitId) != legacyCommitPayload ||
+            store.retrieve(legacyTreeId) != legacyTreePayload
+        )
+        {
+            std::cerr
+                << "FAILED: a migrated object's content changed after "
+                << "migration.\n";
+
+            return 1;
+        }
+
+        // Migrated objects must now actually be header'd on disk (not
+        // just readable) -- confirms migration wrote the new format
+        // rather than a no-op.
+
+        std::string migratedRaw =
+            readWholeFile(onDiskPathFor(".aigit/cas", legacyCommitId));
+
+        if (
+            migratedRaw.size() < 4 ||
+            migratedRaw.compare(0, 4, "AGC1") != 0
+        )
+        {
+            std::cerr
+                << "FAILED: migrated legacy commit object is not "
+                << "header'd on disk.\n";
+
+            return 1;
+        }
+
+        // Re-running migration must be idempotent: nothing left to
+        // migrate, the same 2 objects still unreadable (untouched, not
+        // silently dropped), everything else now "already current".
+
+        Storage::ObjectStore::MigrationResult secondPass =
+            store.migrateLegacyObjects();
+
+        if (
+            secondPass.objectsMigrated != 0 ||
+            secondPass.failedObjectIds.size() != 2
+        )
+        {
+            std::cerr
+                << "FAILED: re-running migration was not idempotent "
+                << "(migrated " << secondPass.objectsMigrated
+                << ", failed " << secondPass.failedObjectIds.size()
+                << ").\n";
+
+            return 1;
+        }
+
+        std::cout
+            << "SUCCESS: migrateLegacyObjects() rewrites legacy objects "
+            << "into the header'd format with unchanged IDs/content, "
+            << "leaves corrupt objects alone and reported, and is "
+            << "idempotent on re-run.\n";
     }
     catch (const std::exception& e)
     {

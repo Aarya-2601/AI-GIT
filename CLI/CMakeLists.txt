@@ -40,6 +40,7 @@ set(SOURCES
     "src/commands/pull.cpp"
     "src/commands/clone.cpp"
     "src/commands/fsck.cpp"
+    "src/commands/migrate.cpp"
 
     "src/helpers/gitutils.cpp"
     "src/helpers/curl_helpers.cpp"

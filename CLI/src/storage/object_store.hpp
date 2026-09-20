@@ -12,6 +12,13 @@ class ObjectStore
 private:
     std::filesystem::path rootPath;
 
+    void writeObjectFileAtomic(
+        const std::filesystem::path& objectPath,
+        const std::string& data,
+        const std::string& type,
+        int level
+    );
+
 public:
     explicit ObjectStore(
         const std::filesystem::path& root
@@ -79,6 +86,28 @@ public:
     std::vector<ObjectRecord> walkAll(
         std::vector<std::string>* corruptObjectIds = nullptr
     ) const;
+
+    struct MigrationResult
+    {
+        std::size_t objectsMigrated;
+        std::size_t objectsAlreadyCurrent;
+        std::vector<std::string> failedObjectIds;
+    };
+
+    // One-time migration for pre-existing legacy-format repos: rewrites
+    // every legacy (pre-header) object in place into the current
+    // header'd/compressed format, preserving its ID exactly (the header
+    // only changes on-disk bytes, never what's hashed). Already-current
+    // objects are left untouched. An object that fails verification is
+    // left as-is and its ID appended to `failedObjectIds` rather than
+    // aborting the migration -- corrupt objects are an fsck concern, not
+    // something migration should paper over by rewriting garbage.
+    //
+    // Safe to interrupt: each object is rewritten via the same
+    // tmp+rename atomic write storeObject uses, so a crash mid-migration
+    // leaves some objects already-migrated, some still legacy, and none
+    // torn -- re-running the migration finishes the rest.
+    MigrationResult migrateLegacyObjects(int level = 2);
 };
 
 }
