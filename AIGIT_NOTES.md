@@ -133,3 +133,10 @@ Deviation: none. Leftover: none. Full suite (8/8) passes. Golden-legacy check: `
 
 ### Pre-verification fix: stale .tmp cleanup
 The crash-safety item in the final verification spec requires "fsck/gc must clean stale .tmp files," which nothing did yet (`walkAll` skips `.tmp*` files but never removes them). Added `ObjectStore::cleanupStaleTmpFiles()` (removes any leftover `.tmp*` under `objects/` -- safe any time in this single-process CLI, there's no concurrent writer to race) and wired it into `fsck`, run before the rebuild. Full suite (8/8) still passes.
+
+### Test-quality fixes found during item-8 mutation testing
+Mutation-tested the 5 most critical properties (hash verify, atomic write, legacy read, gc reachability, dedup): broke each mechanism, confirmed the relevant test failed, restored it, confirmed the test passed again. Two real coverage gaps found and fixed along the way (kept, not reverted):
+- `gc_test.cpp` only asserted the orphan was deleted and the staged blob survived -- it never asserted that blobs reachable through a commit's tree (current *or* historical) survive gc. Disabling `markTree()`'s call in `gc.cpp` passed the test unchanged. Added assertions for both the current commit's blob and the first commit's (history-only) blob; re-ran the mutation, now correctly fails; restored the code, test passes.
+- `storage_manager_test.cpp` had no dedup coverage at all. Added a check that storing a near-identical second file (small edit, same chunk boundaries elsewhere) grows the store by far less than the second file's own size. Mutation-tested by salting the chunk hash per `chunkFile()` call (a realistic bug shape); caught immediately via the existing verify-on-read check cascading into a "corrupt object" error, confirming end-to-end hash-integrity coverage; restored, test passes.
+
+Full suite (8/8) passes after both fixes.

@@ -40,6 +40,12 @@ int main()
         file << "gc fixture: committed file a";
     }
 
+    // The first commit's blob for a.txt (small file, raw-bytes hash --
+    // same scheme StorageManager::storeFile uses for content under
+    // Chunking::MIN_SIZE).
+    std::string firstBlobId =
+        Core::calcSHA256("gc fixture: committed file a");
+
     Commands::runAdd(std::vector<std::string>{"a.txt"});
 
     if (Commands::runCommit("first commit") != 0)
@@ -55,6 +61,9 @@ int main()
         std::ofstream file("a.txt");
         file << "gc fixture: committed file a, modified";
     }
+
+    std::string secondBlobId =
+        Core::calcSHA256("gc fixture: committed file a, modified");
 
     Commands::runAdd(std::vector<std::string>{"a.txt"});
 
@@ -145,10 +154,28 @@ int main()
         return 1;
     }
 
+    // The whole point of mark-and-sweep: content reachable through a
+    // ref's commit tree (current tree AND older history) must survive.
+    if (!objectStore.exists(secondBlobId))
+    {
+        std::cerr
+            << "FAILED: gc deleted a blob reachable through the "
+            << "current commit's tree.\n";
+        return 1;
+    }
+
+    if (!objectStore.exists(firstBlobId))
+    {
+        std::cerr
+            << "FAILED: gc deleted a blob only reachable through an "
+            << "older commit's tree (history), not the current tree.\n";
+        return 1;
+    }
+
     std::cout
         << "SUCCESS: gc removed the unreachable orphan object and its "
         << "metadata row, while keeping the staged-but-uncommitted "
-        << "blob.\n";
+        << "blob and every blob reachable through commit history.\n";
 
     return 0;
 }
