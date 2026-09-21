@@ -1,5 +1,6 @@
 #include "fsck.hpp"
 #include "../storage/metadata_db.hpp"
+#include "../storage/object_store.hpp"
 
 #include <filesystem>
 #include <iostream>
@@ -15,6 +16,18 @@ int runFsck()
     {
         std::cerr << "Error: Not an AI-Git repository." << std::endl;
         return 1;
+    }
+
+    Storage::ObjectStore objectStore(".aigit");
+
+    std::size_t staleTmpRemoved = objectStore.cleanupStaleTmpFiles();
+
+    if (staleTmpRemoved > 0)
+    {
+        std::cout
+            << "Removed " << staleTmpRemoved
+            << " stale .tmp file(s) left by an interrupted write."
+            << std::endl;
     }
 
     Storage::MetadataDB metadataDB(".aigit/metadata.db");

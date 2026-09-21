@@ -117,6 +117,14 @@ public:
     // leaves some objects already-migrated, some still legacy, and none
     // torn -- re-running the migration finishes the rest.
     MigrationResult migrateLegacyObjects(int level = 2);
+
+    // Removes any leftover ".tmp*" files under objects/ -- orphaned by a
+    // storeObject/migrateLegacyObjects call that was interrupted (crash,
+    // kill) between creating the tmp file and renaming it into place.
+    // Safe at any time in this single-process CLI (there's no concurrent
+    // writer to race with); returns the number of files removed. Used by
+    // fsck as routine cleanup.
+    std::size_t cleanupStaleTmpFiles();
 };
 
 }
