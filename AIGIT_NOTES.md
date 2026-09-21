@@ -130,3 +130,6 @@ Wired to a new `ai-git gc` command. Test added: `gc_test.cpp` -- two commits (so
 Deviation: none. Leftover: none. Full suite (8/8) passes. Golden-legacy check: `gc` against a copy of the golden-legacy repo (all 3 branches, so all 38 objects are reachable from *some* ref) reports 38 reachable / 0 removed, `fsck` afterward still shows 38 verified / 0 corrupt, and the full commit/tree-hash + file SHA-256 check across all 3 branches still matches the baseline exactly (confirms gc didn't touch anything it shouldn't have).
 
 **All 11 design steps are now done.** Proceeding to the final verification pass (golden-repo re-check, e2e, corruption, crash, scale, edge cases, test-quality mutation checks, greps) per the user's instructions.
+
+### Pre-verification fix: stale .tmp cleanup
+The crash-safety item in the final verification spec requires "fsck/gc must clean stale .tmp files," which nothing did yet (`walkAll` skips `.tmp*` files but never removes them). Added `ObjectStore::cleanupStaleTmpFiles()` (removes any leftover `.tmp*` under `objects/` -- safe any time in this single-process CLI, there's no concurrent writer to race) and wired it into `fsck`, run before the rebuild. Full suite (8/8) still passes.

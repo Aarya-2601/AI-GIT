@@ -713,4 +713,49 @@ ObjectStore::MigrationResult ObjectStore::migrateLegacyObjects(int level)
     return result;
 }
 
+std::size_t ObjectStore::cleanupStaleTmpFiles()
+{
+    std::size_t removed = 0;
+
+    std::filesystem::path objectsRoot = rootPath / "objects";
+
+    if (!std::filesystem::exists(objectsRoot))
+    {
+        return removed;
+    }
+
+    for (
+        const auto& dirEntry :
+        std::filesystem::directory_iterator(objectsRoot)
+    )
+    {
+        if (!dirEntry.is_directory())
+        {
+            continue;
+        }
+
+        for (
+            const auto& fileEntry :
+            std::filesystem::directory_iterator(dirEntry.path())
+        )
+        {
+            if (
+                fileEntry.is_regular_file() &&
+                fileEntry.path().filename().string().find(".tmp") !=
+                    std::string::npos
+            )
+            {
+                std::error_code ec;
+
+                if (std::filesystem::remove(fileEntry.path(), ec))
+                {
+                    ++removed;
+                }
+            }
+        }
+    }
+
+    return removed;
+}
+
 }
