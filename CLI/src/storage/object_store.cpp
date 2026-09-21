@@ -192,6 +192,26 @@ bool ObjectStore::exists(
 }
 
 
+bool ObjectStore::remove(
+    const std::string& objectId
+)
+{
+    if (objectId.length() < 2)
+    {
+        return false;
+    }
+
+    std::filesystem::path objectPath =
+        rootPath /
+        "objects" /
+        objectId.substr(0, 2) /
+        objectId.substr(2);
+
+    std::error_code ec;
+    return std::filesystem::remove(objectPath, ec);
+}
+
+
 std::string ObjectStore::store(
     const std::filesystem::path& filePath
 )

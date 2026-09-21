@@ -35,6 +35,12 @@ public:
         const std::string& objectId
     ) const;
 
+    // Removes one object's row. Used only by gc, after the corresponding
+    // on-disk object has already been deleted via ObjectStore::remove.
+    void removeObject(
+        const std::string& objectId
+    );
+
     ObjectMetadata getObject(
         const std::string& objectId
     ) const;
