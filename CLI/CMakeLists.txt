@@ -41,6 +41,7 @@ set(SOURCES
     "src/commands/clone.cpp"
     "src/commands/fsck.cpp"
     "src/commands/migrate.cpp"
+    "src/commands/gc.cpp"
 
     "src/helpers/gitutils.cpp"
     "src/helpers/curl_helpers.cpp"
@@ -321,6 +322,44 @@ target_include_directories(metadata-rebuild-test PRIVATE
 )
 
 target_link_libraries(metadata-rebuild-test PRIVATE
+    OpenSSL::Crypto
+    ZLIB::ZLIB
+    unofficial::sqlite3::sqlite3
+    nlohmann_json::nlohmann_json
+)
+
+add_executable(gc-test
+    src/storage/gc_test.cpp
+
+    src/commands/init.cpp
+    src/commands/add.cpp
+    src/commands/commit.cpp
+    src/commands/gc.cpp
+
+    src/core/hashing.cpp
+    src/core/compression.cpp
+    src/core/config.cpp
+    src/core/index.cpp
+    src/core/chunking.cpp
+    src/core/object_io.cpp
+    src/core/filesystem.cpp
+
+    src/storage/object_store.cpp
+    src/storage/metadata_db.cpp
+    src/storage/storage_manager.cpp
+
+    src/models/blob.cpp
+    src/models/tree.cpp
+    src/models/commit.cpp
+
+    src/helpers/gitutils.cpp
+)
+
+target_include_directories(gc-test PRIVATE
+    src
+)
+
+target_link_libraries(gc-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
     unofficial::sqlite3::sqlite3
