@@ -31,6 +31,15 @@ public:
         const std::string& objectId
     ) const;
 
+    // Permanently deletes the on-disk object for `objectId`, if present.
+    // Returns true if a file was removed. Used only by gc, after mark-
+    // and-sweep has determined the object is unreachable from any ref
+    // or the index -- never called on a whim, since this is the one
+    // operation in this class that actually destroys user data.
+    bool remove(
+        const std::string& objectId
+    );
+
     std::string store(
         const std::filesystem::path& filePath
     );

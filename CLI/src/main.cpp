@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
         std::cout<<" clone: Clone a remote repository"<<std::endl;
         std::cout<<" fsck: Verify every object on disk and rebuild metadata.db"<<std::endl;
         std::cout<<" migrate: Rewrite legacy objects into the current on-disk format"<<std::endl;
+        std::cout<<" gc: Delete objects unreachable from any ref or the index"<<std::endl;
         return 1;
     }
 
@@ -137,6 +138,10 @@ int main(int argc, char* argv[]) {
 
     else if(command == "migrate") {
         return Commands::runMigrate();
+    }
+
+    else if(command == "gc") {
+        return Commands::runGc();
     }
 
     else{

@@ -246,6 +246,82 @@ bool MetadataDB::objectExists(
     return exists;
 }
 
+void MetadataDB::removeObject(
+    const std::string& objectId
+)
+{
+    sqlite3* db = nullptr;
+
+    int result = sqlite3_open(
+        dbPath.string().c_str(),
+        &db
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::string error =
+            db ? sqlite3_errmsg(db)
+               : "Unknown SQLite error";
+
+        if (db)
+        {
+            sqlite3_close(db);
+        }
+
+        throw std::runtime_error(
+            "Could not open SQLite database: " + error
+        );
+    }
+
+    const char* sql = "DELETE FROM objects WHERE object_id = ?;";
+
+    sqlite3_stmt* statement = nullptr;
+
+    result = sqlite3_prepare_v2(
+        db,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::string error = sqlite3_errmsg(db);
+
+        sqlite3_close(db);
+
+        throw std::runtime_error(
+            "Could not prepare SQLite statement: " + error
+        );
+    }
+
+    sqlite3_bind_text(
+        statement,
+        1,
+        objectId.c_str(),
+        -1,
+        SQLITE_TRANSIENT
+    );
+
+    result = sqlite3_step(statement);
+
+    if (result != SQLITE_DONE)
+    {
+        std::string error = sqlite3_errmsg(db);
+
+        sqlite3_finalize(statement);
+        sqlite3_close(db);
+
+        throw std::runtime_error(
+            "Could not delete object metadata: " + error
+        );
+    }
+
+    sqlite3_finalize(statement);
+    sqlite3_close(db);
+}
+
 ObjectMetadata MetadataDB::getObject(
     const std::string& objectId
 ) const
