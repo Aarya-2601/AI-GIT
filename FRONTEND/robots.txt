@@ -1,6 +1,0 @@
-# Replace https://www.example.com with the production domain before launch.
-User-agent: *
-Allow: /
-Disallow: /dashboard.html
-
-Sitemap: https://www.example.com/sitemap.xml
