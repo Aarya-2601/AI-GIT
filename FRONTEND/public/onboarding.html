@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+>
+
+<title>Set Up Your Profile</title>
+
+<link
+    rel="stylesheet"
+    href="onboarding.css"
+>
+
+</head>
+
+<body>
+
+<main class="page">
+
+    <div class="header">
+
+        <div class="eyebrow">
+            PROFILE SETUP
+        </div>
+
+        <h1>
+            Build your profile.
+        </h1>
+
+        <p>
+            These details will be used to generate
+            your GitHub profile README and your
+            Overview page.
+        </p>
+
+    </div>
+
+    <form id="profileForm">
+
+        <section class="card">
+
+            <h2>
+                Identity
+            </h2>
+
+            <div class="grid">
+
+                <label>
+                    GitHub username
+
+                    <input
+                        id="username"
+                        readonly
+                    >
+                </label>
+
+                <label>
+                    Display name
+
+                    <input
+                        id="displayName"
+                        placeholder="Your name"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Avatar URL
+
+                    <input
+                        id="avatar"
+                        type="url"
+                        placeholder="https://..."
+                    >
+                </label>
+
+                <label>
+                    Location
+
+                    <input
+                        id="location"
+                        placeholder="Mumbai, India"
+                    >
+                </label>
+
+            </div>
+
+        </section>
+
+        <section class="card">
+
+            <h2>
+                About you
+            </h2>
+
+            <label>
+                Bio
+
+                <textarea
+                    id="bio"
+                    placeholder="Tell people about yourself..."
+                ></textarea>
+
+            </label>
+
+            <div class="grid">
+
+                <label>
+                    Headline
+
+                    <input
+                        id="headline1"
+                        placeholder="code, coffee, college clubs & curiosity"
+                    >
+                </label>
+
+                <label>
+                    Second headline
+
+                    <input
+                        id="headline2"
+                        placeholder="Building things that matter"
+                    >
+                </label>
+
+            </div>
+
+        </section>
+
+        <section class="card">
+
+            <h2>
+                What are you doing?
+            </h2>
+
+            <div class="grid">
+
+                <label>
+                    🔭 Currently working on
+
+                    <input
+                        id="workingOn"
+                    >
+                </label>
+
+                <label>
+                    🌱 Currently learning
+
+                    <input
+                        id="learning"
+                    >
+                </label>
+
+                <label>
+                    👯 Looking to collaborate on
+
+                    <input
+                        id="collaborate"
+                    >
+                </label>
+
+                <label>
+                    🤔 Looking for help with
+
+                    <input
+                        id="help"
+                    >
+                </label>
+
+                <label>
+                    💬 Ask me about
+
+                    <input
+                        id="askMe"
+                    >
+                </label>
+
+                <label>
+                    😄 Pronouns
+
+                    <input
+                        id="pronouns"
+                    >
+                </label>
+
+                <label>
+                    ⚡ Fun fact
+
+                    <input
+                        id="funFact"
+                    >
+                </label>
+
+            </div>
+
+        </section>
+
+        <section class="card">
+
+            <h2>
+                Tech stack
+            </h2>
+
+            <div
+                id="techStack"
+                class="tech-grid"
+            >
+
+                <label>
+                    <input type="checkbox" value="JavaScript">
+                    JavaScript
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Python">
+                    Python
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Java">
+                    Java
+                </label>
+
+                <label>
+                    <input type="checkbox" value="C++">
+                    C++
+                </label>
+
+                <label>
+                    <input type="checkbox" value="C">
+                    C
+                </label>
+
+                <label>
+                    <input type="checkbox" value="HTML5">
+                    HTML5
+                </label>
+
+                <label>
+                    <input type="checkbox" value="CSS3">
+                    CSS3
+                </label>
+
+                <label>
+                    <input type="checkbox" value="React">
+                    React
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Node.js">
+                    Node.js
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Git">
+                    Git
+                </label>
+
+                <label>
+                    <input type="checkbox" value="GitHub">
+                    GitHub
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Docker">
+                    Docker
+                </label>
+
+                <label>
+                    <input type="checkbox" value="SQL">
+                    SQL
+                </label>
+
+                <label>
+                    <input type="checkbox" value="MongoDB">
+                    MongoDB
+                </label>
+
+                <label>
+                    <input type="checkbox" value="NumPy">
+                    NumPy
+                </label>
+
+            </div>
+
+        </section>
+
+        <section class="card">
+
+            <h2>
+                Connect
+            </h2>
+
+            <div class="grid">
+
+                <label>
+                    Portfolio
+
+                    <input
+                        id="portfolio"
+                        type="url"
+                    >
+                </label>
+
+                <label>
+                    LinkedIn
+
+                    <input
+                        id="linkedin"
+                        type="url"
+                    >
+                </label>
+
+                <label>
+                    Instagram
+
+                    <input
+                        id="instagram"
+                        type="url"
+                    >
+                </label>
+
+                <label>
+                    Email
+
+                    <input
+                        id="email"
+                        type="email"
+                    >
+                </label>
+
+            </div>
+
+        </section>
+
+        <section class="next">
+
+            <div id="status"></div>
+
+            <button
+                type="submit"
+                id="continueBtn"
+            >
+                Create my GitHub profile →
+            </button>
+
+        </section>
+
+    </form>
+
+</main>
+
+<script src="onboarding.js"></script>
+
+</body>
+
+</html>
