@@ -33,8 +33,8 @@ CMAKE_AR:FILEPATH=C:/msys64/ucrt64/bin/ar.exe
 // MinSizeRel ...
 CMAKE_BUILD_TYPE:STRING=
 
-//CXX compiler
-CMAKE_CXX_COMPILER:STRING=C:/msys64/ucrt64/bin/g++.exe
+//No help, variable specified on the command line.
+CMAKE_CXX_COMPILER:UNINITIALIZED=C:/msys64/ucrt64/bin/g++.exe
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -237,6 +237,9 @@ CMAKE_STRIP:FILEPATH=C:/msys64/ucrt64/bin/strip.exe
 //Path to a program.
 CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 
+//No help, variable specified on the command line.
+CMAKE_TOOLCHAIN_FILE:UNINITIALIZED=
+
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
 // during the make.  This is useful for debugging only. With Visual
@@ -287,6 +290,9 @@ nlohmann_json_DIR:PATH=C:/msys64/ucrt64/share/cmake/nlohmann_json
 
 //Path to a library.
 pkgcfg_lib_PC_SQLite3_sqlite3:FILEPATH=C:/msys64/ucrt64/lib/libsqlite3.dll.a
+
+//Path to a library.
+pkgcfg_lib_SQLITE3_sqlite3:FILEPATH=C:/msys64/ucrt64/lib/libsqlite3.dll.a
 
 //The directory containing a CMake configuration file for unofficial-sqlite3.
 unofficial-sqlite3_DIR:PATH=unofficial-sqlite3_DIR-NOTFOUND
@@ -446,6 +452,8 @@ CURL_DIR-ADVANCED:INTERNAL=1
 FIND_PACKAGE_MESSAGE_DETAILS_CURL:INTERNAL=[C:/msys64/ucrt64/lib/cmake/CURL/CURLConfig.cmake][ ][v8.15.0()]
 //Details about finding OpenSSL
 FIND_PACKAGE_MESSAGE_DETAILS_OpenSSL:INTERNAL=[C:/msys64/ucrt64/lib/libcrypto.dll.a][C:/msys64/ucrt64/include][ ][v3.5.2()]
+//Details about finding PkgConfig
+FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[C:/msys64/ucrt64/bin/pkg-config.exe][v2.5.1()]
 //Details about finding SQLite3
 FIND_PACKAGE_MESSAGE_DETAILS_SQLite3:INTERNAL=[C:/msys64/ucrt64/lib/libsqlite3.dll.a][C:/msys64/ucrt64/include][v3.50.4()]
 //Details about finding ZLIB
@@ -495,6 +503,41 @@ PC_SQLite3_sqlite3_VERSION:INTERNAL=
 PKG_CONFIG_ARGN-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
 PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
+SQLITE3_CFLAGS:INTERNAL=-IC:/msys64/ucrt64/include
+SQLITE3_CFLAGS_I:INTERNAL=
+SQLITE3_CFLAGS_OTHER:INTERNAL=
+SQLITE3_FOUND:INTERNAL=1
+SQLITE3_INCLUDEDIR:INTERNAL=C:/msys64/ucrt64/include
+SQLITE3_INCLUDE_DIRS:INTERNAL=C:/msys64/ucrt64/include
+SQLITE3_LDFLAGS:INTERNAL=-LC:/msys64/ucrt64/lib;-lsqlite3
+SQLITE3_LDFLAGS_OTHER:INTERNAL=
+SQLITE3_LIBDIR:INTERNAL=C:/msys64/ucrt64/lib
+SQLITE3_LIBRARIES:INTERNAL=sqlite3
+SQLITE3_LIBRARY_DIRS:INTERNAL=C:/msys64/ucrt64/lib
+SQLITE3_LIBS:INTERNAL=
+SQLITE3_LIBS_L:INTERNAL=
+SQLITE3_LIBS_OTHER:INTERNAL=
+SQLITE3_LIBS_PATHS:INTERNAL=
+SQLITE3_MODULE_NAME:INTERNAL=sqlite3
+SQLITE3_PREFIX:INTERNAL=C:/msys64/ucrt64
+SQLITE3_STATIC_CFLAGS:INTERNAL=-IC:/msys64/ucrt64/include
+SQLITE3_STATIC_CFLAGS_I:INTERNAL=
+SQLITE3_STATIC_CFLAGS_OTHER:INTERNAL=
+SQLITE3_STATIC_INCLUDE_DIRS:INTERNAL=C:/msys64/ucrt64/include
+SQLITE3_STATIC_LDFLAGS:INTERNAL=-LC:/msys64/ucrt64/lib;-lsqlite3;-lz
+SQLITE3_STATIC_LDFLAGS_OTHER:INTERNAL=
+SQLITE3_STATIC_LIBDIR:INTERNAL=
+SQLITE3_STATIC_LIBRARIES:INTERNAL=sqlite3;z
+SQLITE3_STATIC_LIBRARY_DIRS:INTERNAL=C:/msys64/ucrt64/lib
+SQLITE3_STATIC_LIBS:INTERNAL=
+SQLITE3_STATIC_LIBS_L:INTERNAL=
+SQLITE3_STATIC_LIBS_OTHER:INTERNAL=
+SQLITE3_STATIC_LIBS_PATHS:INTERNAL=
+SQLITE3_VERSION:INTERNAL=3.50.4
+SQLITE3_sqlite3_INCLUDEDIR:INTERNAL=
+SQLITE3_sqlite3_LIBDIR:INTERNAL=
+SQLITE3_sqlite3_PREFIX:INTERNAL=
+SQLITE3_sqlite3_VERSION:INTERNAL=
 //ADVANCED property for variable: SQLite3_INCLUDE_DIR
 SQLite3_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: SQLite3_LIBRARY
@@ -508,8 +551,12 @@ ZLIB_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: ZLIB_LIBRARY_RELEASE
 ZLIB_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 __pkg_config_arguments_PC_SQLite3:INTERNAL=QUIET;sqlite3
+__pkg_config_arguments_SQLITE3:INTERNAL=REQUIRED;IMPORTED_TARGET;sqlite3
 __pkg_config_checked_PC_SQLite3:INTERNAL=1
+__pkg_config_checked_SQLITE3:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_PC_SQLite3_sqlite3
 pkgcfg_lib_PC_SQLite3_sqlite3-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_SQLITE3_sqlite3
+pkgcfg_lib_SQLITE3_sqlite3-ADVANCED:INTERNAL=1
 prefix_result:INTERNAL=C:/msys64/ucrt64/lib
 

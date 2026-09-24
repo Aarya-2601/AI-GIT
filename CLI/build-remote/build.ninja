@@ -65,13 +65,6 @@ build CMakeFiles/ai-git.dir/src/core/compression.cpp.obj: CXX_COMPILER__ai-git_u
   OBJECT_DIR = CMakeFiles\ai-git.dir
   OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\core
 
-build CMakeFiles/ai-git.dir/src/core/storage.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/storage.cpp || cmake_object_order_depends_target_ai-git
-  DEP_FILE = CMakeFiles\ai-git.dir\src\core\storage.cpp.obj.d
-  FLAGS = -std=c++17
-  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
-  OBJECT_DIR = CMakeFiles\ai-git.dir
-  OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\core
-
 build CMakeFiles/ai-git.dir/src/core/config.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/config.cpp || cmake_object_order_depends_target_ai-git
   DEP_FILE = CMakeFiles\ai-git.dir\src\core\config.cpp.obj.d
   FLAGS = -std=c++17
@@ -86,15 +79,22 @@ build CMakeFiles/ai-git.dir/src/core/index.cpp.obj: CXX_COMPILER__ai-git_unscann
   OBJECT_DIR = CMakeFiles\ai-git.dir
   OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\core
 
-build CMakeFiles/ai-git.dir/src/core/refs.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/refs.cpp || cmake_object_order_depends_target_ai-git
-  DEP_FILE = CMakeFiles\ai-git.dir\src\core\refs.cpp.obj.d
+build CMakeFiles/ai-git.dir/src/core/chunking.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/chunking.cpp || cmake_object_order_depends_target_ai-git
+  DEP_FILE = CMakeFiles\ai-git.dir\src\core\chunking.cpp.obj.d
   FLAGS = -std=c++17
   INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
   OBJECT_DIR = CMakeFiles\ai-git.dir
   OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\core
 
-build CMakeFiles/ai-git.dir/src/core/chunking.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/chunking.cpp || cmake_object_order_depends_target_ai-git
-  DEP_FILE = CMakeFiles\ai-git.dir\src\core\chunking.cpp.obj.d
+build CMakeFiles/ai-git.dir/src/core/object_io.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/object_io.cpp || cmake_object_order_depends_target_ai-git
+  DEP_FILE = CMakeFiles\ai-git.dir\src\core\object_io.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\ai-git.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\core
+
+build CMakeFiles/ai-git.dir/src/core/filesystem.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/filesystem.cpp || cmake_object_order_depends_target_ai-git
+  DEP_FILE = CMakeFiles\ai-git.dir\src\core\filesystem.cpp.obj.d
   FLAGS = -std=c++17
   INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
   OBJECT_DIR = CMakeFiles\ai-git.dir
@@ -156,6 +156,13 @@ build CMakeFiles/ai-git.dir/src/commands/branch.cpp.obj: CXX_COMPILER__ai-git_un
   OBJECT_DIR = CMakeFiles\ai-git.dir
   OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\commands
 
+build CMakeFiles/ai-git.dir/src/commands/checkout.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/checkout.cpp || cmake_object_order_depends_target_ai-git
+  DEP_FILE = CMakeFiles\ai-git.dir\src\commands\checkout.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\ai-git.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\commands
+
 build CMakeFiles/ai-git.dir/src/commands/push.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/push.cpp || cmake_object_order_depends_target_ai-git
   DEP_FILE = CMakeFiles\ai-git.dir\src\commands\push.cpp.obj.d
   FLAGS = -std=c++17
@@ -177,8 +184,36 @@ build CMakeFiles/ai-git.dir/src/commands/clone.cpp.obj: CXX_COMPILER__ai-git_uns
   OBJECT_DIR = CMakeFiles\ai-git.dir
   OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\commands
 
+build CMakeFiles/ai-git.dir/src/commands/fsck.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/fsck.cpp || cmake_object_order_depends_target_ai-git
+  DEP_FILE = CMakeFiles\ai-git.dir\src\commands\fsck.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\ai-git.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\commands
+
+build CMakeFiles/ai-git.dir/src/commands/migrate.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/migrate.cpp || cmake_object_order_depends_target_ai-git
+  DEP_FILE = CMakeFiles\ai-git.dir\src\commands\migrate.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\ai-git.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\commands
+
+build CMakeFiles/ai-git.dir/src/commands/gc.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/gc.cpp || cmake_object_order_depends_target_ai-git
+  DEP_FILE = CMakeFiles\ai-git.dir\src\commands\gc.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\ai-git.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\commands
+
 build CMakeFiles/ai-git.dir/src/helpers/gitutils.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/helpers/gitutils.cpp || cmake_object_order_depends_target_ai-git
   DEP_FILE = CMakeFiles\ai-git.dir\src\helpers\gitutils.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\ai-git.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai-git.dir\src\helpers
+
+build CMakeFiles/ai-git.dir/src/helpers/curl_helpers.cpp.obj: CXX_COMPILER__ai-git_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/helpers/curl_helpers.cpp || cmake_object_order_depends_target_ai-git
+  DEP_FILE = CMakeFiles\ai-git.dir\src\helpers\curl_helpers.cpp.obj.d
   FLAGS = -std=c++17
   INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
   OBJECT_DIR = CMakeFiles\ai-git.dir
@@ -248,8 +283,8 @@ build CMakeFiles/ai-git.dir/src/RemoteCASClient/remote_sync_manager.cpp.obj: CXX
 #############################################
 # Link the executable ai-git.exe
 
-build ai-git.exe: CXX_EXECUTABLE_LINKER__ai-git_ CMakeFiles/ai-git.dir/src/main.cpp.obj CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj CMakeFiles/ai-git.dir/src/core/compression.cpp.obj CMakeFiles/ai-git.dir/src/core/storage.cpp.obj CMakeFiles/ai-git.dir/src/core/config.cpp.obj CMakeFiles/ai-git.dir/src/core/index.cpp.obj CMakeFiles/ai-git.dir/src/core/refs.cpp.obj CMakeFiles/ai-git.dir/src/core/chunking.cpp.obj CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj CMakeFiles/ai-git.dir/src/commands/init.cpp.obj CMakeFiles/ai-git.dir/src/commands/add.cpp.obj CMakeFiles/ai-git.dir/src/commands/status.cpp.obj CMakeFiles/ai-git.dir/src/commands/commit.cpp.obj CMakeFiles/ai-git.dir/src/commands/log.cpp.obj CMakeFiles/ai-git.dir/src/commands/command_config.cpp.obj CMakeFiles/ai-git.dir/src/commands/branch.cpp.obj CMakeFiles/ai-git.dir/src/commands/push.cpp.obj CMakeFiles/ai-git.dir/src/commands/pull.cpp.obj CMakeFiles/ai-git.dir/src/commands/clone.cpp.obj CMakeFiles/ai-git.dir/src/helpers/gitutils.cpp.obj CMakeFiles/ai-git.dir/src/models/blob.cpp.obj CMakeFiles/ai-git.dir/src/models/tree.cpp.obj CMakeFiles/ai-git.dir/src/models/commit.cpp.obj CMakeFiles/ai-git.dir/src/storage/object_store.cpp.obj CMakeFiles/ai-git.dir/src/storage/metadata_db.cpp.obj CMakeFiles/ai-git.dir/src/storage/storage_manager.cpp.obj CMakeFiles/ai-git.dir/src/RemoteCASClient/remote_cas_client.cpp.obj CMakeFiles/ai-git.dir/src/RemoteCASClient/remote_sync_manager.cpp.obj | C$:/msys64/ucrt64/lib/libssl.dll.a C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a C$:/msys64/ucrt64/lib/libcurl.dll.a
-  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libssl.dll.a  C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  C:/msys64/ucrt64/lib/libcurl.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+build ai-git.exe: CXX_EXECUTABLE_LINKER__ai-git_ CMakeFiles/ai-git.dir/src/main.cpp.obj CMakeFiles/ai-git.dir/src/core/hashing.cpp.obj CMakeFiles/ai-git.dir/src/core/compression.cpp.obj CMakeFiles/ai-git.dir/src/core/config.cpp.obj CMakeFiles/ai-git.dir/src/core/index.cpp.obj CMakeFiles/ai-git.dir/src/core/chunking.cpp.obj CMakeFiles/ai-git.dir/src/core/object_io.cpp.obj CMakeFiles/ai-git.dir/src/core/filesystem.cpp.obj CMakeFiles/ai-git.dir/src/commands/hash_object.cpp.obj CMakeFiles/ai-git.dir/src/commands/init.cpp.obj CMakeFiles/ai-git.dir/src/commands/add.cpp.obj CMakeFiles/ai-git.dir/src/commands/status.cpp.obj CMakeFiles/ai-git.dir/src/commands/commit.cpp.obj CMakeFiles/ai-git.dir/src/commands/log.cpp.obj CMakeFiles/ai-git.dir/src/commands/command_config.cpp.obj CMakeFiles/ai-git.dir/src/commands/branch.cpp.obj CMakeFiles/ai-git.dir/src/commands/checkout.cpp.obj CMakeFiles/ai-git.dir/src/commands/push.cpp.obj CMakeFiles/ai-git.dir/src/commands/pull.cpp.obj CMakeFiles/ai-git.dir/src/commands/clone.cpp.obj CMakeFiles/ai-git.dir/src/commands/fsck.cpp.obj CMakeFiles/ai-git.dir/src/commands/migrate.cpp.obj CMakeFiles/ai-git.dir/src/commands/gc.cpp.obj CMakeFiles/ai-git.dir/src/helpers/gitutils.cpp.obj CMakeFiles/ai-git.dir/src/helpers/curl_helpers.cpp.obj CMakeFiles/ai-git.dir/src/models/blob.cpp.obj CMakeFiles/ai-git.dir/src/models/tree.cpp.obj CMakeFiles/ai-git.dir/src/models/commit.cpp.obj CMakeFiles/ai-git.dir/src/storage/object_store.cpp.obj CMakeFiles/ai-git.dir/src/storage/metadata_db.cpp.obj CMakeFiles/ai-git.dir/src/storage/storage_manager.cpp.obj CMakeFiles/ai-git.dir/src/RemoteCASClient/remote_cas_client.cpp.obj CMakeFiles/ai-git.dir/src/RemoteCASClient/remote_sync_manager.cpp.obj | C$:/msys64/ucrt64/lib/libssl.dll.a C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a C$:/msys64/ucrt64/lib/libcurl.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a
+  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libssl.dll.a  C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  C:/msys64/ucrt64/lib/libcurl.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\ai-git.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -287,6 +322,20 @@ build CMakeFiles/object-store-test.dir/src/core/hashing.cpp.obj: CXX_COMPILER__o
   OBJECT_DIR = CMakeFiles\object-store-test.dir
   OBJECT_FILE_DIR = CMakeFiles\object-store-test.dir\src\core
 
+build CMakeFiles/object-store-test.dir/src/core/filesystem.cpp.obj: CXX_COMPILER__object-store-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/filesystem.cpp || cmake_object_order_depends_target_object-store-test
+  DEP_FILE = CMakeFiles\object-store-test.dir\src\core\filesystem.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\object-store-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\object-store-test.dir\src\core
+
+build CMakeFiles/object-store-test.dir/src/core/compression.cpp.obj: CXX_COMPILER__object-store-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/compression.cpp || cmake_object_order_depends_target_object-store-test
+  DEP_FILE = CMakeFiles\object-store-test.dir\src\core\compression.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\object-store-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\object-store-test.dir\src\core
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target object-store-test
@@ -295,8 +344,8 @@ build CMakeFiles/object-store-test.dir/src/core/hashing.cpp.obj: CXX_COMPILER__o
 #############################################
 # Link the executable object-store-test.exe
 
-build object-store-test.exe: CXX_EXECUTABLE_LINKER__object-store-test_ CMakeFiles/object-store-test.dir/src/storage/object_store_test.cpp.obj CMakeFiles/object-store-test.dir/src/storage/object_store.cpp.obj CMakeFiles/object-store-test.dir/src/core/hashing.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a
-  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+build object-store-test.exe: CXX_EXECUTABLE_LINKER__object-store-test_ CMakeFiles/object-store-test.dir/src/storage/object_store_test.cpp.obj CMakeFiles/object-store-test.dir/src/storage/object_store.cpp.obj CMakeFiles/object-store-test.dir/src/core/hashing.cpp.obj CMakeFiles/object-store-test.dir/src/core/filesystem.cpp.obj CMakeFiles/object-store-test.dir/src/core/compression.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a
+  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\object-store-test.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -355,6 +404,20 @@ build CMakeFiles/storage-manager-test.dir/src/core/chunking.cpp.obj: CXX_COMPILE
   OBJECT_DIR = CMakeFiles\storage-manager-test.dir
   OBJECT_FILE_DIR = CMakeFiles\storage-manager-test.dir\src\core
 
+build CMakeFiles/storage-manager-test.dir/src/core/filesystem.cpp.obj: CXX_COMPILER__storage-manager-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/filesystem.cpp || cmake_object_order_depends_target_storage-manager-test
+  DEP_FILE = CMakeFiles\storage-manager-test.dir\src\core\filesystem.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\storage-manager-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\storage-manager-test.dir\src\core
+
+build CMakeFiles/storage-manager-test.dir/src/core/compression.cpp.obj: CXX_COMPILER__storage-manager-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/compression.cpp || cmake_object_order_depends_target_storage-manager-test
+  DEP_FILE = CMakeFiles\storage-manager-test.dir\src\core\compression.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\storage-manager-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\storage-manager-test.dir\src\core
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target storage-manager-test
@@ -363,8 +426,8 @@ build CMakeFiles/storage-manager-test.dir/src/core/chunking.cpp.obj: CXX_COMPILE
 #############################################
 # Link the executable storage-manager-test.exe
 
-build storage-manager-test.exe: CXX_EXECUTABLE_LINKER__storage-manager-test_ CMakeFiles/storage-manager-test.dir/src/storage/storage_manager_test.cpp.obj CMakeFiles/storage-manager-test.dir/src/storage/storage_manager.cpp.obj CMakeFiles/storage-manager-test.dir/src/storage/object_store.cpp.obj CMakeFiles/storage-manager-test.dir/src/storage/metadata_db.cpp.obj CMakeFiles/storage-manager-test.dir/src/core/hashing.cpp.obj CMakeFiles/storage-manager-test.dir/src/core/chunking.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a
-  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+build storage-manager-test.exe: CXX_EXECUTABLE_LINKER__storage-manager-test_ CMakeFiles/storage-manager-test.dir/src/storage/storage_manager_test.cpp.obj CMakeFiles/storage-manager-test.dir/src/storage/storage_manager.cpp.obj CMakeFiles/storage-manager-test.dir/src/storage/object_store.cpp.obj CMakeFiles/storage-manager-test.dir/src/storage/metadata_db.cpp.obj CMakeFiles/storage-manager-test.dir/src/core/hashing.cpp.obj CMakeFiles/storage-manager-test.dir/src/core/chunking.cpp.obj CMakeFiles/storage-manager-test.dir/src/core/filesystem.cpp.obj CMakeFiles/storage-manager-test.dir/src/core/compression.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a
+  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\storage-manager-test.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -437,6 +500,20 @@ build CMakeFiles/remote-sync-test.dir/src/core/chunking.cpp.obj: CXX_COMPILER__r
   OBJECT_DIR = CMakeFiles\remote-sync-test.dir
   OBJECT_FILE_DIR = CMakeFiles\remote-sync-test.dir\src\core
 
+build CMakeFiles/remote-sync-test.dir/src/core/filesystem.cpp.obj: CXX_COMPILER__remote-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/filesystem.cpp || cmake_object_order_depends_target_remote-sync-test
+  DEP_FILE = CMakeFiles\remote-sync-test.dir\src\core\filesystem.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\remote-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\remote-sync-test.dir\src\core
+
+build CMakeFiles/remote-sync-test.dir/src/core/compression.cpp.obj: CXX_COMPILER__remote-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/compression.cpp || cmake_object_order_depends_target_remote-sync-test
+  DEP_FILE = CMakeFiles\remote-sync-test.dir\src\core\compression.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\remote-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\remote-sync-test.dir\src\core
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target remote-sync-test
@@ -445,14 +522,954 @@ build CMakeFiles/remote-sync-test.dir/src/core/chunking.cpp.obj: CXX_COMPILER__r
 #############################################
 # Link the executable remote-sync-test.exe
 
-build remote-sync-test.exe: CXX_EXECUTABLE_LINKER__remote-sync-test_ CMakeFiles/remote-sync-test.dir/src/RemoteCASClient/remote_sync_test.cpp.obj CMakeFiles/remote-sync-test.dir/src/RemoteCASClient/remote_cas_client.cpp.obj CMakeFiles/remote-sync-test.dir/src/RemoteCASClient/remote_sync_manager.cpp.obj CMakeFiles/remote-sync-test.dir/src/storage/storage_manager.cpp.obj CMakeFiles/remote-sync-test.dir/src/storage/object_store.cpp.obj CMakeFiles/remote-sync-test.dir/src/storage/metadata_db.cpp.obj CMakeFiles/remote-sync-test.dir/src/core/hashing.cpp.obj CMakeFiles/remote-sync-test.dir/src/core/chunking.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a C$:/msys64/ucrt64/lib/libcurl.dll.a
-  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  C:/msys64/ucrt64/lib/libcurl.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+build remote-sync-test.exe: CXX_EXECUTABLE_LINKER__remote-sync-test_ CMakeFiles/remote-sync-test.dir/src/RemoteCASClient/remote_sync_test.cpp.obj CMakeFiles/remote-sync-test.dir/src/RemoteCASClient/remote_cas_client.cpp.obj CMakeFiles/remote-sync-test.dir/src/RemoteCASClient/remote_sync_manager.cpp.obj CMakeFiles/remote-sync-test.dir/src/storage/storage_manager.cpp.obj CMakeFiles/remote-sync-test.dir/src/storage/object_store.cpp.obj CMakeFiles/remote-sync-test.dir/src/storage/metadata_db.cpp.obj CMakeFiles/remote-sync-test.dir/src/core/hashing.cpp.obj CMakeFiles/remote-sync-test.dir/src/core/chunking.cpp.obj CMakeFiles/remote-sync-test.dir/src/core/filesystem.cpp.obj CMakeFiles/remote-sync-test.dir/src/core/compression.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a C$:/msys64/ucrt64/lib/libcurl.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a
+  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  C:/msys64/ucrt64/lib/libcurl.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\remote-sync-test.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
   TARGET_FILE = remote-sync-test.exe
   TARGET_IMPLIB = libremote-sync-test.dll.a
   TARGET_PDB = remote-sync-test.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target push-metadata-test
+
+
+#############################################
+# Order-only phony target for push-metadata-test
+
+build cmake_object_order_depends_target_push-metadata-test: phony || .
+
+build CMakeFiles/push-metadata-test.dir/src/storage/push_metadata_test.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/push_metadata_test.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\storage\push_metadata_test.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\storage
+
+build CMakeFiles/push-metadata-test.dir/src/commands/init.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/init.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\commands\init.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\commands
+
+build CMakeFiles/push-metadata-test.dir/src/commands/add.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/add.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\commands\add.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\commands
+
+build CMakeFiles/push-metadata-test.dir/src/commands/commit.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/commit.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\commands\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\commands
+
+build CMakeFiles/push-metadata-test.dir/src/core/hashing.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/hashing.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\core\hashing.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\core
+
+build CMakeFiles/push-metadata-test.dir/src/core/compression.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/compression.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\core\compression.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\core
+
+build CMakeFiles/push-metadata-test.dir/src/core/config.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/config.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\core\config.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\core
+
+build CMakeFiles/push-metadata-test.dir/src/core/index.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/index.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\core\index.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\core
+
+build CMakeFiles/push-metadata-test.dir/src/core/chunking.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/chunking.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\core\chunking.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\core
+
+build CMakeFiles/push-metadata-test.dir/src/core/object_io.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/object_io.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\core\object_io.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\core
+
+build CMakeFiles/push-metadata-test.dir/src/core/filesystem.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/filesystem.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\core\filesystem.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\core
+
+build CMakeFiles/push-metadata-test.dir/src/storage/object_store.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/object_store.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\storage\object_store.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\storage
+
+build CMakeFiles/push-metadata-test.dir/src/storage/metadata_db.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/metadata_db.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\storage\metadata_db.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\storage
+
+build CMakeFiles/push-metadata-test.dir/src/storage/storage_manager.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/storage_manager.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\storage\storage_manager.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\storage
+
+build CMakeFiles/push-metadata-test.dir/src/models/blob.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/blob.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\models\blob.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\models
+
+build CMakeFiles/push-metadata-test.dir/src/models/tree.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/tree.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\models\tree.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\models
+
+build CMakeFiles/push-metadata-test.dir/src/models/commit.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/commit.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\models\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\models
+
+build CMakeFiles/push-metadata-test.dir/src/helpers/gitutils.cpp.obj: CXX_COMPILER__push-metadata-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/helpers/gitutils.cpp || cmake_object_order_depends_target_push-metadata-test
+  DEP_FILE = CMakeFiles\push-metadata-test.dir\src\helpers\gitutils.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\push-metadata-test.dir\src\helpers
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target push-metadata-test
+
+
+#############################################
+# Link the executable push-metadata-test.exe
+
+build push-metadata-test.exe: CXX_EXECUTABLE_LINKER__push-metadata-test_ CMakeFiles/push-metadata-test.dir/src/storage/push_metadata_test.cpp.obj CMakeFiles/push-metadata-test.dir/src/commands/init.cpp.obj CMakeFiles/push-metadata-test.dir/src/commands/add.cpp.obj CMakeFiles/push-metadata-test.dir/src/commands/commit.cpp.obj CMakeFiles/push-metadata-test.dir/src/core/hashing.cpp.obj CMakeFiles/push-metadata-test.dir/src/core/compression.cpp.obj CMakeFiles/push-metadata-test.dir/src/core/config.cpp.obj CMakeFiles/push-metadata-test.dir/src/core/index.cpp.obj CMakeFiles/push-metadata-test.dir/src/core/chunking.cpp.obj CMakeFiles/push-metadata-test.dir/src/core/object_io.cpp.obj CMakeFiles/push-metadata-test.dir/src/core/filesystem.cpp.obj CMakeFiles/push-metadata-test.dir/src/storage/object_store.cpp.obj CMakeFiles/push-metadata-test.dir/src/storage/metadata_db.cpp.obj CMakeFiles/push-metadata-test.dir/src/storage/storage_manager.cpp.obj CMakeFiles/push-metadata-test.dir/src/models/blob.cpp.obj CMakeFiles/push-metadata-test.dir/src/models/tree.cpp.obj CMakeFiles/push-metadata-test.dir/src/models/commit.cpp.obj CMakeFiles/push-metadata-test.dir/src/helpers/gitutils.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a
+  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\push-metadata-test.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = push-metadata-test.exe
+  TARGET_IMPLIB = libpush-metadata-test.dll.a
+  TARGET_PDB = push-metadata-test.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target status-clean-test
+
+
+#############################################
+# Order-only phony target for status-clean-test
+
+build cmake_object_order_depends_target_status-clean-test: phony || .
+
+build CMakeFiles/status-clean-test.dir/src/storage/status_clean_test.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/status_clean_test.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\storage\status_clean_test.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\storage
+
+build CMakeFiles/status-clean-test.dir/src/commands/init.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/init.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\commands\init.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\commands
+
+build CMakeFiles/status-clean-test.dir/src/commands/add.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/add.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\commands\add.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\commands
+
+build CMakeFiles/status-clean-test.dir/src/commands/commit.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/commit.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\commands\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\commands
+
+build CMakeFiles/status-clean-test.dir/src/commands/status.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/status.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\commands\status.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\commands
+
+build CMakeFiles/status-clean-test.dir/src/core/hashing.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/hashing.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\core\hashing.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\core
+
+build CMakeFiles/status-clean-test.dir/src/core/compression.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/compression.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\core\compression.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\core
+
+build CMakeFiles/status-clean-test.dir/src/core/config.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/config.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\core\config.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\core
+
+build CMakeFiles/status-clean-test.dir/src/core/index.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/index.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\core\index.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\core
+
+build CMakeFiles/status-clean-test.dir/src/core/chunking.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/chunking.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\core\chunking.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\core
+
+build CMakeFiles/status-clean-test.dir/src/core/object_io.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/object_io.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\core\object_io.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\core
+
+build CMakeFiles/status-clean-test.dir/src/core/filesystem.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/filesystem.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\core\filesystem.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\core
+
+build CMakeFiles/status-clean-test.dir/src/storage/object_store.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/object_store.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\storage\object_store.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\storage
+
+build CMakeFiles/status-clean-test.dir/src/storage/metadata_db.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/metadata_db.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\storage\metadata_db.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\storage
+
+build CMakeFiles/status-clean-test.dir/src/storage/storage_manager.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/storage_manager.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\storage\storage_manager.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\storage
+
+build CMakeFiles/status-clean-test.dir/src/models/blob.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/blob.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\models\blob.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\models
+
+build CMakeFiles/status-clean-test.dir/src/models/tree.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/tree.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\models\tree.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\models
+
+build CMakeFiles/status-clean-test.dir/src/models/commit.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/commit.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\models\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\models
+
+build CMakeFiles/status-clean-test.dir/src/helpers/gitutils.cpp.obj: CXX_COMPILER__status-clean-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/helpers/gitutils.cpp || cmake_object_order_depends_target_status-clean-test
+  DEP_FILE = CMakeFiles\status-clean-test.dir\src\helpers\gitutils.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\status-clean-test.dir\src\helpers
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target status-clean-test
+
+
+#############################################
+# Link the executable status-clean-test.exe
+
+build status-clean-test.exe: CXX_EXECUTABLE_LINKER__status-clean-test_ CMakeFiles/status-clean-test.dir/src/storage/status_clean_test.cpp.obj CMakeFiles/status-clean-test.dir/src/commands/init.cpp.obj CMakeFiles/status-clean-test.dir/src/commands/add.cpp.obj CMakeFiles/status-clean-test.dir/src/commands/commit.cpp.obj CMakeFiles/status-clean-test.dir/src/commands/status.cpp.obj CMakeFiles/status-clean-test.dir/src/core/hashing.cpp.obj CMakeFiles/status-clean-test.dir/src/core/compression.cpp.obj CMakeFiles/status-clean-test.dir/src/core/config.cpp.obj CMakeFiles/status-clean-test.dir/src/core/index.cpp.obj CMakeFiles/status-clean-test.dir/src/core/chunking.cpp.obj CMakeFiles/status-clean-test.dir/src/core/object_io.cpp.obj CMakeFiles/status-clean-test.dir/src/core/filesystem.cpp.obj CMakeFiles/status-clean-test.dir/src/storage/object_store.cpp.obj CMakeFiles/status-clean-test.dir/src/storage/metadata_db.cpp.obj CMakeFiles/status-clean-test.dir/src/storage/storage_manager.cpp.obj CMakeFiles/status-clean-test.dir/src/models/blob.cpp.obj CMakeFiles/status-clean-test.dir/src/models/tree.cpp.obj CMakeFiles/status-clean-test.dir/src/models/commit.cpp.obj CMakeFiles/status-clean-test.dir/src/helpers/gitutils.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a
+  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\status-clean-test.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = status-clean-test.exe
+  TARGET_IMPLIB = libstatus-clean-test.dll.a
+  TARGET_PDB = status-clean-test.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target checkout-index-sync-test
+
+
+#############################################
+# Order-only phony target for checkout-index-sync-test
+
+build cmake_object_order_depends_target_checkout-index-sync-test: phony || .
+
+build CMakeFiles/checkout-index-sync-test.dir/src/storage/checkout_index_sync_test.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/checkout_index_sync_test.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\storage\checkout_index_sync_test.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\storage
+
+build CMakeFiles/checkout-index-sync-test.dir/src/commands/init.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/init.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\commands\init.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\commands
+
+build CMakeFiles/checkout-index-sync-test.dir/src/commands/add.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/add.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\commands\add.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\commands
+
+build CMakeFiles/checkout-index-sync-test.dir/src/commands/commit.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/commit.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\commands\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\commands
+
+build CMakeFiles/checkout-index-sync-test.dir/src/commands/branch.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/branch.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\commands\branch.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\commands
+
+build CMakeFiles/checkout-index-sync-test.dir/src/commands/checkout.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/checkout.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\commands\checkout.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\commands
+
+build CMakeFiles/checkout-index-sync-test.dir/src/core/hashing.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/hashing.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\core\hashing.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\core
+
+build CMakeFiles/checkout-index-sync-test.dir/src/core/compression.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/compression.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\core\compression.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\core
+
+build CMakeFiles/checkout-index-sync-test.dir/src/core/config.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/config.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\core\config.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\core
+
+build CMakeFiles/checkout-index-sync-test.dir/src/core/index.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/index.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\core\index.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\core
+
+build CMakeFiles/checkout-index-sync-test.dir/src/core/chunking.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/chunking.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\core\chunking.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\core
+
+build CMakeFiles/checkout-index-sync-test.dir/src/core/object_io.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/object_io.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\core\object_io.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\core
+
+build CMakeFiles/checkout-index-sync-test.dir/src/core/filesystem.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/filesystem.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\core\filesystem.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\core
+
+build CMakeFiles/checkout-index-sync-test.dir/src/storage/object_store.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/object_store.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\storage\object_store.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\storage
+
+build CMakeFiles/checkout-index-sync-test.dir/src/storage/metadata_db.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/metadata_db.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\storage\metadata_db.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\storage
+
+build CMakeFiles/checkout-index-sync-test.dir/src/storage/storage_manager.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/storage_manager.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\storage\storage_manager.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\storage
+
+build CMakeFiles/checkout-index-sync-test.dir/src/models/blob.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/blob.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\models\blob.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\models
+
+build CMakeFiles/checkout-index-sync-test.dir/src/models/tree.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/tree.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\models\tree.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\models
+
+build CMakeFiles/checkout-index-sync-test.dir/src/models/commit.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/commit.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\models\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\models
+
+build CMakeFiles/checkout-index-sync-test.dir/src/helpers/gitutils.cpp.obj: CXX_COMPILER__checkout-index-sync-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/helpers/gitutils.cpp || cmake_object_order_depends_target_checkout-index-sync-test
+  DEP_FILE = CMakeFiles\checkout-index-sync-test.dir\src\helpers\gitutils.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\checkout-index-sync-test.dir\src\helpers
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target checkout-index-sync-test
+
+
+#############################################
+# Link the executable checkout-index-sync-test.exe
+
+build checkout-index-sync-test.exe: CXX_EXECUTABLE_LINKER__checkout-index-sync-test_ CMakeFiles/checkout-index-sync-test.dir/src/storage/checkout_index_sync_test.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/commands/init.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/commands/add.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/commands/commit.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/commands/branch.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/commands/checkout.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/core/hashing.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/core/compression.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/core/config.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/core/index.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/core/chunking.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/core/object_io.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/core/filesystem.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/storage/object_store.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/storage/metadata_db.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/storage/storage_manager.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/models/blob.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/models/tree.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/models/commit.cpp.obj CMakeFiles/checkout-index-sync-test.dir/src/helpers/gitutils.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a
+  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\checkout-index-sync-test.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = checkout-index-sync-test.exe
+  TARGET_IMPLIB = libcheckout-index-sync-test.dll.a
+  TARGET_PDB = checkout-index-sync-test.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target hash-object-parity-test
+
+
+#############################################
+# Order-only phony target for hash-object-parity-test
+
+build cmake_object_order_depends_target_hash-object-parity-test: phony || .
+
+build CMakeFiles/hash-object-parity-test.dir/src/storage/hash_object_parity_test.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/hash_object_parity_test.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\storage\hash_object_parity_test.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\storage
+
+build CMakeFiles/hash-object-parity-test.dir/src/commands/init.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/init.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\commands\init.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\commands
+
+build CMakeFiles/hash-object-parity-test.dir/src/commands/add.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/add.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\commands\add.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\commands
+
+build CMakeFiles/hash-object-parity-test.dir/src/commands/hash_object.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/hash_object.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\commands\hash_object.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\commands
+
+build CMakeFiles/hash-object-parity-test.dir/src/core/hashing.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/hashing.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\core\hashing.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\core
+
+build CMakeFiles/hash-object-parity-test.dir/src/core/compression.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/compression.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\core\compression.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\core
+
+build CMakeFiles/hash-object-parity-test.dir/src/core/config.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/config.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\core\config.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\core
+
+build CMakeFiles/hash-object-parity-test.dir/src/core/index.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/index.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\core\index.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\core
+
+build CMakeFiles/hash-object-parity-test.dir/src/core/chunking.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/chunking.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\core\chunking.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\core
+
+build CMakeFiles/hash-object-parity-test.dir/src/core/object_io.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/object_io.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\core\object_io.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\core
+
+build CMakeFiles/hash-object-parity-test.dir/src/core/filesystem.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/filesystem.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\core\filesystem.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\core
+
+build CMakeFiles/hash-object-parity-test.dir/src/storage/object_store.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/object_store.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\storage\object_store.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\storage
+
+build CMakeFiles/hash-object-parity-test.dir/src/storage/metadata_db.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/metadata_db.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\storage\metadata_db.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\storage
+
+build CMakeFiles/hash-object-parity-test.dir/src/storage/storage_manager.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/storage_manager.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\storage\storage_manager.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\storage
+
+build CMakeFiles/hash-object-parity-test.dir/src/models/blob.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/blob.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\models\blob.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\models
+
+build CMakeFiles/hash-object-parity-test.dir/src/models/tree.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/tree.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\models\tree.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\models
+
+build CMakeFiles/hash-object-parity-test.dir/src/models/commit.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/commit.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\models\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\models
+
+build CMakeFiles/hash-object-parity-test.dir/src/helpers/gitutils.cpp.obj: CXX_COMPILER__hash-object-parity-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/helpers/gitutils.cpp || cmake_object_order_depends_target_hash-object-parity-test
+  DEP_FILE = CMakeFiles\hash-object-parity-test.dir\src\helpers\gitutils.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\hash-object-parity-test.dir\src\helpers
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target hash-object-parity-test
+
+
+#############################################
+# Link the executable hash-object-parity-test.exe
+
+build hash-object-parity-test.exe: CXX_EXECUTABLE_LINKER__hash-object-parity-test_ CMakeFiles/hash-object-parity-test.dir/src/storage/hash_object_parity_test.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/commands/init.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/commands/add.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/commands/hash_object.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/core/hashing.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/core/compression.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/core/config.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/core/index.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/core/chunking.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/core/object_io.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/core/filesystem.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/storage/object_store.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/storage/metadata_db.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/storage/storage_manager.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/models/blob.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/models/tree.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/models/commit.cpp.obj CMakeFiles/hash-object-parity-test.dir/src/helpers/gitutils.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a
+  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\hash-object-parity-test.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = hash-object-parity-test.exe
+  TARGET_IMPLIB = libhash-object-parity-test.dll.a
+  TARGET_PDB = hash-object-parity-test.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target metadata-rebuild-test
+
+
+#############################################
+# Order-only phony target for metadata-rebuild-test
+
+build cmake_object_order_depends_target_metadata-rebuild-test: phony || .
+
+build CMakeFiles/metadata-rebuild-test.dir/src/storage/metadata_rebuild_test.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/metadata_rebuild_test.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\storage\metadata_rebuild_test.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\storage
+
+build CMakeFiles/metadata-rebuild-test.dir/src/commands/init.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/init.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\commands\init.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\commands
+
+build CMakeFiles/metadata-rebuild-test.dir/src/commands/add.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/add.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\commands\add.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\commands
+
+build CMakeFiles/metadata-rebuild-test.dir/src/commands/commit.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/commit.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\commands\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\commands
+
+build CMakeFiles/metadata-rebuild-test.dir/src/core/hashing.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/hashing.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\core\hashing.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\core
+
+build CMakeFiles/metadata-rebuild-test.dir/src/core/compression.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/compression.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\core\compression.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\core
+
+build CMakeFiles/metadata-rebuild-test.dir/src/core/config.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/config.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\core\config.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\core
+
+build CMakeFiles/metadata-rebuild-test.dir/src/core/index.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/index.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\core\index.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\core
+
+build CMakeFiles/metadata-rebuild-test.dir/src/core/chunking.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/chunking.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\core\chunking.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\core
+
+build CMakeFiles/metadata-rebuild-test.dir/src/core/object_io.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/object_io.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\core\object_io.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\core
+
+build CMakeFiles/metadata-rebuild-test.dir/src/core/filesystem.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/filesystem.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\core\filesystem.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\core
+
+build CMakeFiles/metadata-rebuild-test.dir/src/storage/object_store.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/object_store.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\storage\object_store.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\storage
+
+build CMakeFiles/metadata-rebuild-test.dir/src/storage/metadata_db.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/metadata_db.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\storage\metadata_db.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\storage
+
+build CMakeFiles/metadata-rebuild-test.dir/src/storage/storage_manager.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/storage_manager.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\storage\storage_manager.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\storage
+
+build CMakeFiles/metadata-rebuild-test.dir/src/models/blob.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/blob.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\models\blob.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\models
+
+build CMakeFiles/metadata-rebuild-test.dir/src/models/tree.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/tree.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\models\tree.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\models
+
+build CMakeFiles/metadata-rebuild-test.dir/src/models/commit.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/commit.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\models\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\models
+
+build CMakeFiles/metadata-rebuild-test.dir/src/helpers/gitutils.cpp.obj: CXX_COMPILER__metadata-rebuild-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/helpers/gitutils.cpp || cmake_object_order_depends_target_metadata-rebuild-test
+  DEP_FILE = CMakeFiles\metadata-rebuild-test.dir\src\helpers\gitutils.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\metadata-rebuild-test.dir\src\helpers
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target metadata-rebuild-test
+
+
+#############################################
+# Link the executable metadata-rebuild-test.exe
+
+build metadata-rebuild-test.exe: CXX_EXECUTABLE_LINKER__metadata-rebuild-test_ CMakeFiles/metadata-rebuild-test.dir/src/storage/metadata_rebuild_test.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/commands/init.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/commands/add.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/commands/commit.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/core/hashing.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/core/compression.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/core/config.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/core/index.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/core/chunking.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/core/object_io.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/core/filesystem.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/storage/object_store.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/storage/metadata_db.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/storage/storage_manager.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/models/blob.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/models/tree.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/models/commit.cpp.obj CMakeFiles/metadata-rebuild-test.dir/src/helpers/gitutils.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a
+  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\metadata-rebuild-test.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = metadata-rebuild-test.exe
+  TARGET_IMPLIB = libmetadata-rebuild-test.dll.a
+  TARGET_PDB = metadata-rebuild-test.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target gc-test
+
+
+#############################################
+# Order-only phony target for gc-test
+
+build cmake_object_order_depends_target_gc-test: phony || .
+
+build CMakeFiles/gc-test.dir/src/storage/gc_test.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/gc_test.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\storage\gc_test.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\storage
+
+build CMakeFiles/gc-test.dir/src/commands/init.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/init.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\commands\init.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\commands
+
+build CMakeFiles/gc-test.dir/src/commands/add.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/add.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\commands\add.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\commands
+
+build CMakeFiles/gc-test.dir/src/commands/commit.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/commit.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\commands\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\commands
+
+build CMakeFiles/gc-test.dir/src/commands/gc.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/commands/gc.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\commands\gc.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\commands
+
+build CMakeFiles/gc-test.dir/src/core/hashing.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/hashing.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\core\hashing.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\core
+
+build CMakeFiles/gc-test.dir/src/core/compression.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/compression.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\core\compression.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\core
+
+build CMakeFiles/gc-test.dir/src/core/config.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/config.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\core\config.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\core
+
+build CMakeFiles/gc-test.dir/src/core/index.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/index.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\core\index.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\core
+
+build CMakeFiles/gc-test.dir/src/core/chunking.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/chunking.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\core\chunking.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\core
+
+build CMakeFiles/gc-test.dir/src/core/object_io.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/object_io.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\core\object_io.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\core
+
+build CMakeFiles/gc-test.dir/src/core/filesystem.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/core/filesystem.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\core\filesystem.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\core
+
+build CMakeFiles/gc-test.dir/src/storage/object_store.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/object_store.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\storage\object_store.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\storage
+
+build CMakeFiles/gc-test.dir/src/storage/metadata_db.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/metadata_db.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\storage\metadata_db.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\storage
+
+build CMakeFiles/gc-test.dir/src/storage/storage_manager.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/storage/storage_manager.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\storage\storage_manager.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\storage
+
+build CMakeFiles/gc-test.dir/src/models/blob.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/blob.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\models\blob.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\models
+
+build CMakeFiles/gc-test.dir/src/models/tree.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/tree.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\models\tree.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\models
+
+build CMakeFiles/gc-test.dir/src/models/commit.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/models/commit.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\models\commit.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\models
+
+build CMakeFiles/gc-test.dir/src/helpers/gitutils.cpp.obj: CXX_COMPILER__gc-test_unscanned_ C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/src/helpers/gitutils.cpp || cmake_object_order_depends_target_gc-test
+  DEP_FILE = CMakeFiles\gc-test.dir\src\helpers\gitutils.cpp.obj.d
+  FLAGS = -std=c++17
+  INCLUDES = -I"C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/src"
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\gc-test.dir\src\helpers
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target gc-test
+
+
+#############################################
+# Link the executable gc-test.exe
+
+build gc-test.exe: CXX_EXECUTABLE_LINKER__gc-test_ CMakeFiles/gc-test.dir/src/storage/gc_test.cpp.obj CMakeFiles/gc-test.dir/src/commands/init.cpp.obj CMakeFiles/gc-test.dir/src/commands/add.cpp.obj CMakeFiles/gc-test.dir/src/commands/commit.cpp.obj CMakeFiles/gc-test.dir/src/commands/gc.cpp.obj CMakeFiles/gc-test.dir/src/core/hashing.cpp.obj CMakeFiles/gc-test.dir/src/core/compression.cpp.obj CMakeFiles/gc-test.dir/src/core/config.cpp.obj CMakeFiles/gc-test.dir/src/core/index.cpp.obj CMakeFiles/gc-test.dir/src/core/chunking.cpp.obj CMakeFiles/gc-test.dir/src/core/object_io.cpp.obj CMakeFiles/gc-test.dir/src/core/filesystem.cpp.obj CMakeFiles/gc-test.dir/src/storage/object_store.cpp.obj CMakeFiles/gc-test.dir/src/storage/metadata_db.cpp.obj CMakeFiles/gc-test.dir/src/storage/storage_manager.cpp.obj CMakeFiles/gc-test.dir/src/models/blob.cpp.obj CMakeFiles/gc-test.dir/src/models/tree.cpp.obj CMakeFiles/gc-test.dir/src/models/commit.cpp.obj CMakeFiles/gc-test.dir/src/helpers/gitutils.cpp.obj | C$:/msys64/ucrt64/lib/libcrypto.dll.a C$:/msys64/ucrt64/lib/libz.dll.a C$:/msys64/ucrt64/lib/libsqlite3.dll.a
+  LINK_LIBRARIES = C:/msys64/ucrt64/lib/libcrypto.dll.a  C:/msys64/ucrt64/lib/libz.dll.a  C:/msys64/ucrt64/lib/libsqlite3.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\gc-test.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = gc-test.exe
+  TARGET_IMPLIB = libgc-test.dll.a
+  TARGET_PDB = gc-test.exe.dbg
 
 
 #############################################
@@ -548,9 +1565,21 @@ build install/strip: phony CMakeFiles/install/strip.util
 
 build ai-git: phony ai-git.exe
 
+build checkout-index-sync-test: phony checkout-index-sync-test.exe
+
+build gc-test: phony gc-test.exe
+
+build hash-object-parity-test: phony hash-object-parity-test.exe
+
+build metadata-rebuild-test: phony metadata-rebuild-test.exe
+
 build object-store-test: phony object-store-test.exe
 
+build push-metadata-test: phony push-metadata-test.exe
+
 build remote-sync-test: phony remote-sync-test.exe
+
+build status-clean-test: phony status-clean-test.exe
 
 build storage-manager-test: phony storage-manager-test.exe
 
@@ -569,7 +1598,7 @@ build codegen: phony
 #############################################
 # Folder: C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/build-remote
 
-build all: phony ai-git.exe object-store-test.exe storage-manager-test.exe remote-sync-test.exe
+build all: phony ai-git.exe object-store-test.exe storage-manager-test.exe remote-sync-test.exe push-metadata-test.exe status-clean-test.exe checkout-index-sync-test.exe hash-object-parity-test.exe metadata-rebuild-test.exe gc-test.exe
 
 # =============================================================================
 # Built-in targets
@@ -578,14 +1607,14 @@ build all: phony ai-git.exe object-store-test.exe storage-manager-test.exe remot
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/build-remote/cmake_install.cmake: RERUN_CMAKE | C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/CMakeLists.txt C$:/msys64/ucrt64/lib/cmake/CURL/CURLConfig.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLConfigVersion.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLTargets-release.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLTargets.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeCXXInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeCommonLanguageInclude.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeFindDependencyMacro.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeGenericSystem.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeInitializeConfigs.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeLanguageInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeRCInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake C$:/msys64/ucrt64/share/cmake/Modules/CPack.cmake C$:/msys64/ucrt64/share/cmake/Modules/CPackComponent.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindCURL.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindOpenSSL.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPackageHandleStandardArgs.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPackageMessage.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPkgConfig.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindSQLite3.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindZLIB.cmake C$:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/Linker/GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Linker/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-Initialize.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-windres.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/WindowsPaths.cmake C$:/msys64/ucrt64/share/cmake/Modules/SelectLibraryConfigurations.cmake C$:/msys64/ucrt64/share/cmake/Templates/CPackConfig.cmake.in C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonConfigVersion.cmake C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonTargets.cmake CMakeCache.txt CMakeFiles/4.1.0/CMakeCXXCompiler.cmake CMakeFiles/4.1.0/CMakeRCCompiler.cmake CMakeFiles/4.1.0/CMakeSystem.cmake
+build build.ninja C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/build-remote/cmake_install.cmake: RERUN_CMAKE | C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/CMakeLists.txt C$:/msys64/ucrt64/lib/cmake/CURL/CURLConfig.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLConfigVersion.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLTargets-release.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLTargets.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeCXXInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeCommonLanguageInclude.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeFindDependencyMacro.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeGenericSystem.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeInitializeConfigs.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeLanguageInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeRCInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake C$:/msys64/ucrt64/share/cmake/Modules/CPack.cmake C$:/msys64/ucrt64/share/cmake/Modules/CPackComponent.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindCURL.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindOpenSSL.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPackageHandleStandardArgs.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPackageMessage.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPkgConfig.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindZLIB.cmake C$:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/Linker/GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Linker/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-Initialize.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-windres.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/WindowsPaths.cmake C$:/msys64/ucrt64/share/cmake/Modules/SelectLibraryConfigurations.cmake C$:/msys64/ucrt64/share/cmake/Templates/CPackConfig.cmake.in C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonConfigVersion.cmake C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonTargets.cmake CMakeCache.txt CMakeFiles/4.1.0/CMakeCXXCompiler.cmake CMakeFiles/4.1.0/CMakeRCCompiler.cmake CMakeFiles/4.1.0/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/CMakeLists.txt C$:/msys64/ucrt64/lib/cmake/CURL/CURLConfig.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLConfigVersion.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLTargets-release.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLTargets.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeCXXInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeCommonLanguageInclude.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeFindDependencyMacro.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeGenericSystem.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeInitializeConfigs.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeLanguageInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeRCInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake C$:/msys64/ucrt64/share/cmake/Modules/CPack.cmake C$:/msys64/ucrt64/share/cmake/Modules/CPackComponent.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindCURL.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindOpenSSL.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPackageHandleStandardArgs.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPackageMessage.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPkgConfig.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindSQLite3.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindZLIB.cmake C$:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/Linker/GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Linker/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-Initialize.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-windres.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/WindowsPaths.cmake C$:/msys64/ucrt64/share/cmake/Modules/SelectLibraryConfigurations.cmake C$:/msys64/ucrt64/share/cmake/Templates/CPackConfig.cmake.in C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonConfigVersion.cmake C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonTargets.cmake CMakeCache.txt CMakeFiles/4.1.0/CMakeCXXCompiler.cmake CMakeFiles/4.1.0/CMakeRCCompiler.cmake CMakeFiles/4.1.0/CMakeSystem.cmake: phony
+build C$:/Users/Abhijit$ Naik/OneDrive/Desktop/ProjectX/AI$ GIT-$ rep/AI-GIT/CLI/CMakeLists.txt C$:/msys64/ucrt64/lib/cmake/CURL/CURLConfig.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLConfigVersion.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLTargets-release.cmake C$:/msys64/ucrt64/lib/cmake/CURL/CURLTargets.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeCXXInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeCommonLanguageInclude.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeFindDependencyMacro.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeGenericSystem.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeInitializeConfigs.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeLanguageInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeRCInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake C$:/msys64/ucrt64/share/cmake/Modules/CPack.cmake C$:/msys64/ucrt64/share/cmake/Modules/CPackComponent.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindCURL.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindOpenSSL.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPackageHandleStandardArgs.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPackageMessage.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindPkgConfig.cmake C$:/msys64/ucrt64/share/cmake/Modules/FindZLIB.cmake C$:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/msys64/ucrt64/share/cmake/Modules/Linker/GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Linker/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-Initialize.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-windres.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/Windows.cmake C$:/msys64/ucrt64/share/cmake/Modules/Platform/WindowsPaths.cmake C$:/msys64/ucrt64/share/cmake/Modules/SelectLibraryConfigurations.cmake C$:/msys64/ucrt64/share/cmake/Templates/CPackConfig.cmake.in C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonConfigVersion.cmake C$:/msys64/ucrt64/share/cmake/nlohmann_json/nlohmann_jsonTargets.cmake CMakeCache.txt CMakeFiles/4.1.0/CMakeCXXCompiler.cmake CMakeFiles/4.1.0/CMakeRCCompiler.cmake CMakeFiles/4.1.0/CMakeSystem.cmake: phony
 
 
 #############################################
