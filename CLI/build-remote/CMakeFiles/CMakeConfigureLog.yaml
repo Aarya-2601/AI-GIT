@@ -3577,3 +3577,249 @@ events:
         - "C:/msys64/ucrt64"
         - "C:/Program Files (x86)/AIGit"
 ...
+
+---
+events:
+  -
+    kind: "find_package-v1"
+    backtrace:
+      - "CMakeLists.txt:15 (find_package)"
+    name: "unofficial-sqlite3"
+    configs:
+      -
+        filename: "unofficial-sqlite3Config.cmake"
+        kind: "cmake"
+      -
+        filename: "unofficial-sqlite3-config.cmake"
+        kind: "cmake"
+    version_request:
+      exact: false
+    settings:
+      required: "required_explicit"
+      quiet: false
+      global: false
+      policy_scope: true
+      bypass_provider: false
+      names:
+        - "unofficial-sqlite3"
+      path_suffixes:
+        - ""
+      paths:
+        CMAKE_FIND_USE_CMAKE_PATH: true
+        CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+        CMAKE_FIND_USE_INSTALL_PREFIX: true
+        CMAKE_FIND_USE_PACKAGE_ROOT_PATH: true
+        CMAKE_FIND_USE_CMAKE_PACKAGE_REGISTRY: true
+        CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY: true
+        CMAKE_FIND_ROOT_PATH_MODE: "BOTH"
+    candidates:
+      -
+        path: "C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/build-remote/CMakeFiles/pkgRedirects/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/OneDrive/Desktop/ProjectX/AI GIT- rep/AI-GIT/CLI/build-remote/CMakeFiles/pkgRedirects/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/msys64/ucrt64/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/msys64/ucrt64/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Common Files/Oracle/Java/javapath/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Common Files/Oracle/Java/javapath/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files (x86)/Common Files/Oracle/Java/java8path/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/wbem/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/wbem/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/WindowsPowerShell/v1.0/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/WindowsPowerShell/v1.0/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/OpenSSH/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/OpenSSH/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/cmd/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/cmd/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/nodejs/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/nodejs/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Programs/Python/Python312/Scripts/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Programs/Python/Python312/Scripts/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Programs/Python/Python312/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Programs/Python/Python312/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Programs/Python/Launcher/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Programs/Python/Launcher/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Microsoft/WindowsApps/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Microsoft/WindowsApps/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Programs/Microsoft VS Code/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Programs/Microsoft VS Code/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Roaming/npm/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Roaming/npm/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Programs/DockerDesktop/resources/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/Abhijit Naik/AppData/Local/Programs/DockerDesktop/resources/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files (x86)/unofficial-sqlite3Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files (x86)/unofficial-sqlite3-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+    found: null
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "C:/msys64/ucrt64"
+      ENV{PATH}:
+        - "c:\\Users\\Abhijit Naik\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
+        - "c:\\Users\\Abhijit Naik\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
+        - "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\java8path"
+        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\nodejs\\"
+        - "C:\\msys64\\ucrt64\\bin"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Programs\\Python\\Python312\\"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Programs\\Python\\Launcher\\"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Roaming\\npm"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/AIGit"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "C:/Program Files"
+        - "C:/Program Files (x86)"
+        - "C:/msys64/ucrt64"
+        - "C:/Program Files (x86)/AIGit"
+...

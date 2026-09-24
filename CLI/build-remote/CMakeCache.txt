@@ -288,6 +288,9 @@ nlohmann_json_DIR:PATH=C:/msys64/ucrt64/share/cmake/nlohmann_json
 //Path to a library.
 pkgcfg_lib_PC_SQLite3_sqlite3:FILEPATH=C:/msys64/ucrt64/lib/libsqlite3.dll.a
 
+//The directory containing a CMake configuration file for unofficial-sqlite3.
+unofficial-sqlite3_DIR:PATH=unofficial-sqlite3_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries
