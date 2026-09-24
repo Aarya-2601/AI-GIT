@@ -10,11 +10,25 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY
     "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 )
 
+# ------------------------------------------------------------
+# Dependencies
+# ------------------------------------------------------------
+
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(unofficial-sqlite3 CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(CURL REQUIRED)
+
+# SQLite on the current MSYS2/UCRT64 environment.
+# The previous CMake file used unofficial-sqlite3, which is the
+# vcpkg package/config name and does not exist in this environment.
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(SQLITE3 REQUIRED IMPORTED_TARGET sqlite3)
+
+
+# ------------------------------------------------------------
+# Main AI-Git CLI
+# ------------------------------------------------------------
 
 set(SOURCES
     "src/main.cpp"
@@ -54,7 +68,6 @@ set(SOURCES
     "src/storage/metadata_db.cpp"
     "src/storage/storage_manager.cpp"
 
-    # NEW: Remote CAS layer
     "src/RemoteCASClient/remote_cas_client.cpp"
     "src/RemoteCASClient/remote_sync_manager.cpp"
 )
@@ -70,9 +83,14 @@ target_link_libraries(ai-git PRIVATE
     OpenSSL::SSL
     OpenSSL::Crypto
     ZLIB::ZLIB
-    unofficial::sqlite3::sqlite3
+    PkgConfig::SQLITE3
     CURL::libcurl
 )
+
+
+# ------------------------------------------------------------
+# Object Store Test
+# ------------------------------------------------------------
 
 add_executable(object-store-test
     src/storage/object_store_test.cpp
@@ -91,6 +109,11 @@ target_link_libraries(object-store-test PRIVATE
     ZLIB::ZLIB
 )
 
+
+# ------------------------------------------------------------
+# Storage Manager Test
+# ------------------------------------------------------------
+
 add_executable(storage-manager-test
     src/storage/storage_manager_test.cpp
     src/storage/storage_manager.cpp
@@ -101,6 +124,22 @@ add_executable(storage-manager-test
     src/core/filesystem.cpp
     src/core/compression.cpp
 )
+
+target_include_directories(storage-manager-test PRIVATE
+    src
+)
+
+target_link_libraries(storage-manager-test PRIVATE
+    OpenSSL::Crypto
+    ZLIB::ZLIB
+    PkgConfig::SQLITE3
+    nlohmann_json::nlohmann_json
+)
+
+
+# ------------------------------------------------------------
+# Remote Sync Test
+# ------------------------------------------------------------
 
 add_executable(remote-sync-test
     src/RemoteCASClient/remote_sync_test.cpp
@@ -124,10 +163,15 @@ target_include_directories(remote-sync-test PRIVATE
 target_link_libraries(remote-sync-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    unofficial::sqlite3::sqlite3
+    PkgConfig::SQLITE3
     nlohmann_json::nlohmann_json
     CURL::libcurl
 )
+
+
+# ------------------------------------------------------------
+# Push Metadata Test
+# ------------------------------------------------------------
 
 add_executable(push-metadata-test
     src/storage/push_metadata_test.cpp
@@ -162,9 +206,14 @@ target_include_directories(push-metadata-test PRIVATE
 target_link_libraries(push-metadata-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    unofficial::sqlite3::sqlite3
+    PkgConfig::SQLITE3
     nlohmann_json::nlohmann_json
 )
+
+
+# ------------------------------------------------------------
+# Status Clean Test
+# ------------------------------------------------------------
 
 add_executable(status-clean-test
     src/storage/status_clean_test.cpp
@@ -200,9 +249,14 @@ target_include_directories(status-clean-test PRIVATE
 target_link_libraries(status-clean-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    unofficial::sqlite3::sqlite3
+    PkgConfig::SQLITE3
     nlohmann_json::nlohmann_json
 )
+
+
+# ------------------------------------------------------------
+# Checkout Index Sync Test
+# ------------------------------------------------------------
 
 add_executable(checkout-index-sync-test
     src/storage/checkout_index_sync_test.cpp
@@ -239,20 +293,14 @@ target_include_directories(checkout-index-sync-test PRIVATE
 target_link_libraries(checkout-index-sync-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    unofficial::sqlite3::sqlite3
+    PkgConfig::SQLITE3
     nlohmann_json::nlohmann_json
 )
 
-target_include_directories(storage-manager-test PRIVATE
-    src
-)
 
-target_link_libraries(storage-manager-test PRIVATE
-    OpenSSL::Crypto
-    ZLIB::ZLIB
-    unofficial::sqlite3::sqlite3
-    nlohmann_json::nlohmann_json
-)
+# ------------------------------------------------------------
+# Hash Object Parity Test
+# ------------------------------------------------------------
 
 add_executable(hash-object-parity-test
     src/storage/hash_object_parity_test.cpp
@@ -287,9 +335,14 @@ target_include_directories(hash-object-parity-test PRIVATE
 target_link_libraries(hash-object-parity-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    unofficial::sqlite3::sqlite3
+    PkgConfig::SQLITE3
     nlohmann_json::nlohmann_json
 )
+
+
+# ------------------------------------------------------------
+# Metadata Rebuild Test
+# ------------------------------------------------------------
 
 add_executable(metadata-rebuild-test
     src/storage/metadata_rebuild_test.cpp
@@ -324,9 +377,14 @@ target_include_directories(metadata-rebuild-test PRIVATE
 target_link_libraries(metadata-rebuild-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    unofficial::sqlite3::sqlite3
+    PkgConfig::SQLITE3
     nlohmann_json::nlohmann_json
 )
+
+
+# ------------------------------------------------------------
+# Garbage Collection Test
+# ------------------------------------------------------------
 
 add_executable(gc-test
     src/storage/gc_test.cpp
@@ -362,9 +420,14 @@ target_include_directories(gc-test PRIVATE
 target_link_libraries(gc-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    unofficial::sqlite3::sqlite3
+    PkgConfig::SQLITE3
     nlohmann_json::nlohmann_json
 )
+
+
+# ------------------------------------------------------------
+# Installation / Packaging
+# ------------------------------------------------------------
 
 install(
     TARGETS ai-git
@@ -373,10 +436,15 @@ install(
 
 set(CPACK_PACKAGE_NAME "AI-Git")
 set(CPACK_PACKAGE_VENDOR "The AI-Git Team")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "High-Performance Standalone VCS for AI & ML Models")
+set(
+    CPACK_PACKAGE_DESCRIPTION_SUMMARY
+    "High-Performance Standalone VCS for AI & ML Models"
+)
+
 set(CPACK_PACKAGE_VERSION_MAJOR "1")
 set(CPACK_PACKAGE_VERSION_MINOR "0")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
+
 set(CPACK_NSIS_MODIFY_PATH ON)
 
 if(WIN32)

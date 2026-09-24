@@ -10,7 +10,6 @@ const REPOS_DIR = path.join(
 );
 
 
-// Make sure the repository metadata directory exists.
 const ensureRepoDirectory = () => {
     fs.mkdirSync(REPOS_DIR, {
         recursive: true
@@ -18,7 +17,6 @@ const ensureRepoDirectory = () => {
 };
 
 
-// Prevent repository names from escaping BACKEND/data/repos.
 const validateRepoName = (repoName) => {
     if (
         !repoName ||
@@ -30,7 +28,6 @@ const validateRepoName = (repoName) => {
 };
 
 
-// Return the metadata file used for one remote repository.
 const getRepoPath = (repoName) => {
     validateRepoName(repoName);
 
@@ -41,22 +38,26 @@ const getRepoPath = (repoName) => {
 };
 
 
-// Save the authoritative remote state of a repository.
 const saveRepository = async (
     repoName,
     head,
-    refs
+    refs,
+    objects
 ) => {
     ensureRepoDirectory();
 
-    const repoPath = getRepoPath(repoName);
+    const repoPath =
+        getRepoPath(repoName);
+
 
     const repository = {
         name: repoName,
         head: head,
         refs: refs,
+        objects: objects,
         updated_at: new Date().toISOString()
     };
+
 
     fs.writeFileSync(
         repoPath,
@@ -64,25 +65,29 @@ const saveRepository = async (
         'utf8'
     );
 
+
     return repository;
 };
 
 
-// Load repository metadata.
-// Returns null when the requested repository does not exist.
 const getRepository = async (repoName) => {
     ensureRepoDirectory();
 
-    const repoPath = getRepoPath(repoName);
+    const repoPath =
+        getRepoPath(repoName);
+
 
     if (!fs.existsSync(repoPath)) {
         return null;
     }
 
-    const contents = fs.readFileSync(
-        repoPath,
-        'utf8'
-    );
+
+    const contents =
+        fs.readFileSync(
+            repoPath,
+            'utf8'
+        );
+
 
     return JSON.parse(contents);
 };

@@ -7,14 +7,23 @@ const {
     saveRepository
 } = require('../services/repositoryservice.js');
 
+
+// ------------------------------------------------------------
+// PHASE 1: NEGOTIATE
+//
+// Client sends all local object hashes.
+// Backend returns upload URLs only for objects missing in MinIO.
+// ------------------------------------------------------------
+
 const try_push = async (req, res) => {
 
     try {
 
         const { chunks } = req.body;
 
-        if (!chunks || !Array.isArray(chunks))
-        {
+
+        if (!chunks || !Array.isArray(chunks)) {
+
             return res.status(400).send({
                 status: 'error',
                 message: 'Chunks are required and should be an array'
@@ -27,39 +36,75 @@ const try_push = async (req, res) => {
 
 
         for (const hash of chunks) {
-            const exists = await object_exists(hash);
-            if (exists)
-            {
+
+            const exists =
+                await object_exists(hash);
+
+
+            if (exists) {
+
                 existing_chunks.push(hash);
+
                 continue;
             }
-            upload_urls[hash] = await upload_url(hash);
+
+
+            upload_urls[hash] =
+                await upload_url(hash);
         }
 
 
         return res.status(200).send({
 
             status: 'ok',
-            existing_chunks: existing_chunks,
-            upload_urls: upload_urls
+
+            existing_chunks:
+                existing_chunks,
+
+            upload_urls:
+                upload_urls
 
         });
 
     }
     catch (error) {
 
-        console.error('Error in try_push:', error);
+        console.error(
+            'Error in try_push:',
+            error
+        );
+
 
         return res.status(500).send({
 
             status: 'error',
-            message: 'Failed to negotiate upload',
-            error: error.message
+
+            message:
+                'Failed to negotiate upload',
+
+            error:
+                error.message
 
         });
     }
 };
 
+
+// ------------------------------------------------------------
+// PHASE 2: FINALIZE
+//
+// Called only after all missing objects have been uploaded.
+//
+// Stores:
+//
+// repo
+//   ├── HEAD
+//   ├── refs
+//   └── complete object catalogue
+//
+// Clone/pull can later use this catalogue to determine exactly
+// which content-addressed objects belong to this repository.
+// ------------------------------------------------------------
 
 const finalize_push = async (req, res) => {
 
@@ -68,7 +113,8 @@ const finalize_push = async (req, res) => {
         const {
             repo,
             head,
-            refs
+            refs,
+            objects
         } = req.body;
 
 
@@ -79,7 +125,8 @@ const finalize_push = async (req, res) => {
 
             return res.status(400).send({
                 status: 'error',
-                message: 'Repository name is required'
+                message:
+                    'Repository name is required'
             });
         }
 
@@ -91,7 +138,8 @@ const finalize_push = async (req, res) => {
 
             return res.status(400).send({
                 status: 'error',
-                message: 'HEAD reference is required'
+                message:
+                    'HEAD reference is required'
             });
         }
 
@@ -104,7 +152,21 @@ const finalize_push = async (req, res) => {
 
             return res.status(400).send({
                 status: 'error',
-                message: 'Repository refs are required'
+                message:
+                    'Repository refs are required'
+            });
+        }
+
+
+        if (
+            !objects ||
+            !Array.isArray(objects)
+        ) {
+
+            return res.status(400).send({
+                status: 'error',
+                message:
+                    'Repository object catalogue is required'
             });
         }
 
@@ -118,12 +180,15 @@ const finalize_push = async (req, res) => {
 
             return res.status(400).send({
                 status: 'error',
-                message: 'HEAD must point to a supplied ref'
+                message:
+                    'HEAD must point to a supplied ref'
             });
         }
 
 
-        const commitHash = refs[head];
+        const commitHash =
+            refs[head];
+
 
         if (
             !commitHash ||
@@ -132,21 +197,55 @@ const finalize_push = async (req, res) => {
 
             return res.status(400).send({
                 status: 'error',
-                message: 'HEAD ref must contain a commit hash'
+                message:
+                    'HEAD ref must contain a commit hash'
             });
         }
-        const commitExists =
-            await object_exists(commitHash);
 
 
-        if (!commitExists) {
+        /*
+         * HEAD's commit should itself be part of the catalogue.
+         */
+        if (!objects.includes(commitHash)) {
 
-            return res.status(409).send({
+            return res.status(400).send({
                 status: 'error',
                 message:
-                    'Cannot finalize push because the HEAD commit is missing from remote storage',
-                missing_object: commitHash
+                    'HEAD commit is missing from repository object catalogue'
             });
+        }
+
+
+        /*
+         * Most important consistency check:
+         *
+         * Before publishing repository state, verify that EVERY object
+         * advertised by the repository actually exists remotely.
+         *
+         * Otherwise clone could receive metadata for an incomplete
+         * repository.
+         */
+
+        for (const objectId of objects) {
+
+            const exists =
+                await object_exists(objectId);
+
+
+            if (!exists) {
+
+                return res.status(409).send({
+
+                    status: 'error',
+
+                    message:
+                        'Cannot finalize an incomplete repository',
+
+                    missing_object:
+                        objectId
+
+                });
+            }
         }
 
 
@@ -154,7 +253,8 @@ const finalize_push = async (req, res) => {
             await saveRepository(
                 repo,
                 head,
-                refs
+                refs,
+                objects
             );
 
 
@@ -162,9 +262,11 @@ const finalize_push = async (req, res) => {
 
             status: 'ok',
 
-            message: 'Push finalized successfully',
+            message:
+                'Push finalized successfully',
 
-            repository: repository
+            repository:
+                repository
 
         });
 
@@ -184,7 +286,8 @@ const finalize_push = async (req, res) => {
 
             return res.status(400).send({
                 status: 'error',
-                message: error.message
+                message:
+                    error.message
             });
         }
 
@@ -193,9 +296,11 @@ const finalize_push = async (req, res) => {
 
             status: 'error',
 
-            message: 'Failed to finalize push',
+            message:
+                'Failed to finalize push',
 
-            error: error.message
+            error:
+                error.message
 
         });
     }
