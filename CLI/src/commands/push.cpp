@@ -1,11 +1,15 @@
-// Push flow:
-// 1. Read every local object hash tracked by MetadataDB.
-// 2. Ask the backend which objects are missing.
-// 3. Upload only the missing objects to MinIO.
-// 4. Read the repository's HEAD and refs.
-// 5. Finalize the push so the backend knows which commit belongs to this repo.
+// AI-Git remote push.
+//
+// Flow:
+// 1. Read all locally tracked CAS/VCS object IDs from MetadataDB.
+// 2. Ask the backend which objects are missing remotely.
+// 3. Upload only those missing objects.
+// 4. Read local HEAD + branch refs.
+// 5. Finalize the push by publishing repository state and the
+//    repository object catalogue.
 
 #include "push.hpp"
+
 #include "../storage/metadata_db.hpp"
 #include "../storage/object_store.hpp"
 #include "../helpers/curl_helpers.hpp"
@@ -25,6 +29,11 @@ namespace Commands
 
 namespace fs = std::filesystem;
 
+
+// ------------------------------------------------------------
+// Local object catalogue
+// ------------------------------------------------------------
+
 static std::vector<std::string> getLocalHashes(
     const Storage::MetadataDB& db
 )
@@ -32,6 +41,10 @@ static std::vector<std::string> getLocalHashes(
     return db.getAllObjectIds();
 }
 
+
+// ------------------------------------------------------------
+// Small text-file helper
+// ------------------------------------------------------------
 
 static std::string readTextFile(
     const fs::path& path
@@ -45,11 +58,18 @@ static std::string readTextFile(
     }
 
     std::string value;
-    std::getline(file, value);
+
+    std::getline(
+        file,
+        value
+    );
 
     while (
         !value.empty() &&
-        (value.back() == '\r' || value.back() == '\n')
+        (
+            value.back() == '\r' ||
+            value.back() == '\n'
+        )
     )
     {
         value.pop_back();
@@ -59,27 +79,62 @@ static std::string readTextFile(
 }
 
 
+// ------------------------------------------------------------
+// Repository identity
+//
+// For the current prototype, the remote repository name is the
+// current working-directory name.
+// ------------------------------------------------------------
+
 static std::string getRepositoryName()
 {
-    return fs::current_path().filename().string();
+    return fs::current_path()
+        .filename()
+        .string();
 }
 
 
+// ------------------------------------------------------------
+// Read symbolic HEAD.
+//
+// .aigit/HEAD:
+//
+//     ref: refs/heads/main
+//
+// returns:
+//
+//     refs/heads/main
+// ------------------------------------------------------------
+
 static std::string getHeadRef()
 {
-    std::string head =
+    const std::string head =
         readTextFile(".aigit/HEAD");
 
-    const std::string prefix = "ref: ";
+    const std::string prefix =
+        "ref: ";
 
     if (head.rfind(prefix, 0) != 0)
     {
         return "";
     }
 
-    return head.substr(prefix.size());
+    return head.substr(
+        prefix.size()
+    );
 }
 
+
+// ------------------------------------------------------------
+// Read all local branches.
+//
+// Produces JSON such as:
+//
+// {
+//     "refs/heads/main": "<commit>",
+//     "refs/heads/dev":  "<commit>"
+// }
+// ------------------------------------------------------------
 
 static nlohmann::json getLocalRefs()
 {
@@ -89,6 +144,7 @@ static nlohmann::json getLocalRefs()
     const fs::path headsDir =
         ".aigit/refs/heads";
 
+
     if (!fs::exists(headsDir))
     {
         return refs;
@@ -97,7 +153,9 @@ static nlohmann::json getLocalRefs()
 
     for (
         const auto& entry :
-        fs::recursive_directory_iterator(headsDir)
+        fs::recursive_directory_iterator(
+            headsDir
+        )
     )
     {
         if (!entry.is_regular_file())
@@ -106,19 +164,21 @@ static nlohmann::json getLocalRefs()
         }
 
 
-        fs::path relative =
+        const fs::path relative =
             fs::relative(
                 entry.path(),
                 ".aigit"
             );
 
 
-        std::string refName =
+        const std::string refName =
             relative.generic_string();
 
 
-        std::string commitHash =
-            readTextFile(entry.path());
+        const std::string commitHash =
+            readTextFile(
+                entry.path()
+            );
 
 
         if (!commitHash.empty())
@@ -133,14 +193,19 @@ static nlohmann::json getLocalRefs()
 }
 
 
-static std::string talkWithBackend(
+// ------------------------------------------------------------
+// Phase 1: negotiate remote deduplication
+// ------------------------------------------------------------
+
+static std::string negotiatePush(
     const std::string& serverUrl,
     const std::vector<std::string>& hashes
 )
 {
     nlohmann::json payload;
 
-    payload["chunks"] = hashes;
+    payload["chunks"] =
+        hashes;
 
 
     const std::string endpoint =
@@ -156,6 +221,13 @@ static std::string talkWithBackend(
 }
 
 
+// ------------------------------------------------------------
+// Upload one object through a MinIO presigned PUT URL.
+//
+// ObjectStore::retrieve() returns the logical/raw object bytes,
+// even if the local on-disk representation is compressed.
+// ------------------------------------------------------------
+
 static bool uploadToMinIO(
     const std::string& presignedUrl,
     const std::string& rawBytes
@@ -163,6 +235,7 @@ static bool uploadToMinIO(
 {
     CURL* curl =
         curl_easy_init();
+
 
     if (!curl)
     {
@@ -206,18 +279,19 @@ static bool uploadToMinIO(
 
     curl_easy_setopt(
         curl,
-        CURLOPT_POSTFIELDSIZE,
-        static_cast<long>(
+        CURLOPT_POSTFIELDSIZE_LARGE,
+        static_cast<curl_off_t>(
             rawBytes.size()
         )
     );
 
 
-    CURLcode result =
+    const CURLcode result =
         curl_easy_perform(curl);
 
 
     long responseCode = 0;
+
 
     curl_easy_getinfo(
         curl,
@@ -226,8 +300,13 @@ static bool uploadToMinIO(
     );
 
 
-    curl_slist_free_all(headers);
-    curl_easy_cleanup(curl);
+    curl_slist_free_all(
+        headers
+    );
+
+    curl_easy_cleanup(
+        curl
+    );
 
 
     return (
@@ -238,15 +317,24 @@ static bool uploadToMinIO(
 }
 
 
+// ------------------------------------------------------------
+// Phase 2: publish repository state.
+//
+// This happens AFTER every requested object upload succeeds.
+// ------------------------------------------------------------
+
 static bool finalizePush(
-    const std::string& serverUrl
+    const std::string& serverUrl,
+    const std::vector<std::string>& hashes
 )
 {
     const std::string repoName =
         getRepositoryName();
 
+
     const std::string headRef =
         getHeadRef();
+
 
     const nlohmann::json refs =
         getLocalRefs();
@@ -265,7 +353,7 @@ static bool finalizePush(
     if (headRef.empty())
     {
         std::cerr
-            << "[Push] Invalid or detached HEAD."
+            << "[Push] HEAD is invalid or detached."
             << std::endl;
 
         return false;
@@ -275,7 +363,8 @@ static bool finalizePush(
     if (!refs.contains(headRef))
     {
         std::cerr
-            << "[Push] HEAD points to a branch with no commit."
+            << "[Push] HEAD points to a branch "
+               "that has no commit."
             << std::endl;
 
         return false;
@@ -283,6 +372,7 @@ static bool finalizePush(
 
 
     nlohmann::json payload;
+
 
     payload["repo"] =
         repoName;
@@ -292,6 +382,9 @@ static bool finalizePush(
 
     payload["refs"] =
         refs;
+
+    payload["objects"] =
+        hashes;
 
 
     const std::string endpoint =
@@ -311,6 +404,10 @@ static bool finalizePush(
 }
 
 
+// ------------------------------------------------------------
+// Public push command
+// ------------------------------------------------------------
+
 bool runPush(
     const std::string& serverUrl
 )
@@ -324,13 +421,16 @@ bool runPush(
         ".aigit/metadata.db"
     );
 
+
     Storage::ObjectStore objectStore(
         ".aigit"
     );
 
 
-    std::vector<std::string> hashes =
-        getLocalHashes(metadataDB);
+    const std::vector<std::string> hashes =
+        getLocalHashes(
+            metadataDB
+        );
 
 
     if (hashes.empty())
@@ -339,14 +439,15 @@ bool runPush(
             << "[Push] Nothing to push."
             << std::endl;
 
+
         curl_global_cleanup();
 
         return true;
     }
 
 
-    std::string responseJson =
-        talkWithBackend(
+    const std::string responseJson =
+        negotiatePush(
             serverUrl,
             hashes
         );
@@ -360,7 +461,7 @@ bool runPush(
     }
 
 
-    std::map<std::string, std::string>
+    const std::map<std::string, std::string>
         uploadUrls =
             Utils::parseHashUrlMap(
                 responseJson,
@@ -372,15 +473,19 @@ bool runPush(
     if (uploadUrls.empty())
     {
         std::cout
-            << "[Push] All objects already exist remotely."
+            << "[Push] Remote already has all "
+            << hashes.size()
+            << " object(s)."
             << std::endl;
     }
     else
     {
         std::cout
-            << "[Push] Uploading "
+            << "[Push] Remote is missing "
             << uploadUrls.size()
-            << " object(s)..."
+            << " of "
+            << hashes.size()
+            << " object(s)."
             << std::endl;
 
 
@@ -389,8 +494,32 @@ bool runPush(
             uploadUrls
         )
         {
-            std::string rawBytes =
-                objectStore.retrieve(hash);
+            std::string rawBytes;
+
+
+            try
+            {
+                rawBytes =
+                    objectStore.retrieve(
+                        hash
+                    );
+            }
+            catch (
+                const std::exception& e
+            )
+            {
+                std::cerr
+                    << "[Push] Could not read local object "
+                    << hash
+                    << ": "
+                    << e.what()
+                    << std::endl;
+
+
+                curl_global_cleanup();
+
+                return false;
+            }
 
 
             if (
@@ -413,18 +542,32 @@ bool runPush(
 
 
             std::cout
-                << "[Push] Uploaded: "
+                << "[Push] Uploaded "
                 << hash.substr(0, 8)
                 << "..."
                 << std::endl;
         }
     }
 
-    if (!finalizePush(serverUrl))
+
+    /*
+     * Do NOT return early when uploadUrls is empty.
+     *
+     * MinIO may already contain every object while this repository's
+     * HEAD has changed. Repository state must therefore be finalized
+     * independently of object deduplication.
+     */
+
+    if (
+        !finalizePush(
+            serverUrl,
+            hashes
+        )
+    )
     {
         std::cerr
-            << "[Push] Objects uploaded, but repository "
-               "state could not be finalized."
+            << "[Push] Object transfer completed, "
+               "but repository state could not be finalized."
             << std::endl;
 
 

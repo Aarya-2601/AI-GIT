@@ -3823,3 +3823,65 @@ events:
         - "C:/msys64/ucrt64"
         - "C:/Program Files (x86)/AIGit"
 ...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "C:/msys64/ucrt64/share/cmake/Modules/FindPkgConfig.cmake:307 (find_library)"
+      - "C:/msys64/ucrt64/share/cmake/Modules/FindPkgConfig.cmake:357 (_pkg_find_libs)"
+      - "C:/msys64/ucrt64/share/cmake/Modules/FindPkgConfig.cmake:695 (_pkg_recalculate)"
+      - "C:/msys64/ucrt64/share/cmake/Modules/FindPkgConfig.cmake:867 (_pkg_check_modules_internal)"
+      - "CMakeLists.txt:26 (pkg_check_modules)"
+    mode: "library"
+    variable: "pkgcfg_lib_SQLITE3_sqlite3"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "sqlite3"
+    candidate_directories:
+      - "C:/msys64/ucrt64/lib/"
+    found: "C:/msys64/ucrt64/lib/libsqlite3.dll.a"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "C:/msys64/ucrt64"
+      ENV{PATH}:
+        - "c:\\Users\\Abhijit Naik\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
+        - "c:\\Users\\Abhijit Naik\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
+        - "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\java8path"
+        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\nodejs\\"
+        - "C:\\msys64\\ucrt64\\bin"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Programs\\Python\\Python312\\"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Programs\\Python\\Launcher\\"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Roaming\\npm"
+        - "C:\\Users\\Abhijit Naik\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/AIGit"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "C:/Program Files"
+        - "C:/Program Files (x86)"
+        - "C:/msys64/ucrt64"
+        - "C:/Program Files (x86)/AIGit"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "C:/Program Files (x86)/AIGit/bin"
+        - "C:/msys64/ucrt64/bin"
+        - "/bin"
+...

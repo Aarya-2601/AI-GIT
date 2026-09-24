@@ -8,16 +8,30 @@ const {
 } = require('../services/repositoryservice.js');
 
 
-// Return the remote repository state together with download URLs
-// for every object currently stored in the repository.
+// ------------------------------------------------------------
+// Clone repository
 //
-// For the presentation prototype, the client will use these objects
-// to rebuild the local CAS/VCS state.
+// Returns:
+//
+// repository:
+//   name
+//   HEAD
+//   refs
+//
+// download_urls:
+//   objectHash -> presigned MinIO GET URL
+//
+// The backend does NOT reconstruct files.
+// The CLI downloads the CAS/VCS objects and then uses the existing
+// checkout + StorageManager reconstruction machinery.
+// ------------------------------------------------------------
+
 const try_clone = async (req, res) => {
 
     try {
 
-        const { repoName } = req.params;
+        const { repoName } =
+            req.params;
 
 
         if (
@@ -26,7 +40,8 @@ const try_clone = async (req, res) => {
         ) {
             return res.status(400).send({
                 status: 'error',
-                message: 'Repository name is required'
+                message:
+                    'Repository name is required'
             });
         }
 
@@ -36,70 +51,129 @@ const try_clone = async (req, res) => {
 
 
         if (!repository) {
+
             return res.status(404).send({
                 status: 'error',
-                message: `Repository '${repoName}' was not found`
+                message:
+                    `Repository '${repoName}' was not found`
             });
         }
 
 
-        /*
-         * repositoryservice stores the root VCS state:
-         *
-         * HEAD -> branch -> commit
-         *
-         * At minimum verify that the published HEAD commit still
-         * exists in MinIO before advertising the repository.
-         */
-        const headRef =
-            repository.head;
+        // ----------------------------------------------------
+        // Validate repository metadata
+        // ----------------------------------------------------
 
-        const headCommit =
-            repository.refs?.[headRef];
-
-
-        if (!headCommit) {
-            return res.status(500).send({
-                status: 'error',
-                message: 'Remote repository metadata is invalid'
-            });
-        }
-
-
-        const headExists =
-            await object_exists(headCommit);
-
-
-        if (!headExists) {
+        if (
+            !repository.head ||
+            !repository.refs ||
+            !Array.isArray(repository.objects)
+        ) {
             return res.status(500).send({
                 status: 'error',
                 message:
-                    'Remote repository is incomplete: HEAD commit is missing'
+                    'Remote repository metadata is incomplete'
             });
         }
 
 
-        /*
-         * We cannot yet derive the complete reachable object graph
-         * server-side because MinIO stores opaque content-addressed
-         * objects.
-         *
-         * The next CLI step will therefore request/download objects
-         * using the remote object catalogue supplied by the backend.
-         *
-         * For now this endpoint establishes the repository identity
-         * and VCS root state needed by clone/pull.
-         */
+        const headCommit =
+            repository.refs[
+                repository.head
+            ];
+
+
+        if (!headCommit) {
+
+            return res.status(500).send({
+                status: 'error',
+                message:
+                    'Remote HEAD does not point to a valid ref'
+            });
+        }
+
+
+        if (
+            !repository.objects.includes(
+                headCommit
+            )
+        ) {
+            return res.status(500).send({
+                status: 'error',
+                message:
+                    'Remote HEAD commit is missing from the repository catalogue'
+            });
+        }
+
+
+        // ----------------------------------------------------
+        // Generate GET URLs for every object belonging to
+        // this repository.
+        // ----------------------------------------------------
+
+        const download_urls = {};
+
+
+        for (
+            const objectId
+            of repository.objects
+        ) {
+
+            const exists =
+                await object_exists(
+                    objectId
+                );
+
+
+            if (!exists) {
+
+                return res.status(500).send({
+
+                    status: 'error',
+
+                    message:
+                        'Remote repository is incomplete',
+
+                    missing_object:
+                        objectId
+
+                });
+            }
+
+
+            download_urls[objectId] =
+                await download_url(
+                    objectId
+                );
+        }
+
+
+        // ----------------------------------------------------
+        // Complete clone manifest
+        // ----------------------------------------------------
+
         return res.status(200).send({
 
             status: 'ok',
 
             repository: {
-                name: repository.name,
-                head: repository.head,
-                refs: repository.refs,
-                updated_at: repository.updated_at
-            }
+
+                name:
+                    repository.name,
+
+                head:
+                    repository.head,
+
+                refs:
+                    repository.refs,
+
+                updated_at:
+                    repository.updated_at
+
+            },
+
+            download_urls:
+                download_urls
 
         });
 
@@ -116,17 +190,25 @@ const try_clone = async (req, res) => {
             error.message ===
             'Invalid repository name'
         ) {
+
             return res.status(400).send({
                 status: 'error',
-                message: error.message
+                message:
+                    error.message
             });
         }
 
 
         return res.status(500).send({
+
             status: 'error',
-            message: 'Failed to initiate clone',
-            error: error.message
+
+            message:
+                'Failed to initiate clone',
+
+            error:
+                error.message
+
         });
     }
 };
