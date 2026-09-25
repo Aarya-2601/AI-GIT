@@ -27,9 +27,7 @@ static std::string getRemoteRepository(
 )
 {
     // Current backend contract used by clone as well.
-    const std::string endpoint =
-        serverUrl + "/api/v1/clone/" + repoName;
-
+    const std::string endpoint =serverUrl + "/api/v1/clone/" + repoName;
     return Utils::httpGet(endpoint, "Pull");
 }
 
@@ -196,11 +194,9 @@ bool runPull(
         return false;
     }
 
-    const std::string remoteHead =
-        repository["head"].get<std::string>();
+    const std::string remoteHead =repository["head"].get<std::string>();
 
-    const std::string branchName =
-        branchNameFromHead(remoteHead);
+    const std::string branchName =branchNameFromHead(remoteHead);
 
     if (branchName.empty())
     {
