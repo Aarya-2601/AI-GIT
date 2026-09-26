@@ -1,0 +1,75 @@
+[
+  {
+    "id": "DISC-201",
+    "category": "Model Architecture",
+    "title": "How FastCDC Deduplication Cuts Storage Costs by 75% for Iterative Checkpoints",
+    "author": "aarya-ml",
+    "upvotes": 48,
+    "repliesCount": 12,
+    "createdAt": "Yesterday",
+    "tags": [
+      "FastCDC",
+      "Storage-Optimization",
+      "CAS",
+      "Cost-Savings"
+    ],
+    "content": "Traditional Git LFS stores duplicate 15 GB checkpoints for every epoch. With AI-GIT's content-defined chunking (Gear Matrix + dynamic boundaries between 256KB and 4MB), only weights whose gradient updates shifted beyond threshold generate new chunk IDs. Here are our exact benchmarks from Llama-3-8B fine-tuning.",
+    "replies": [
+      {
+        "author": "sophia_ml",
+        "time": "18 hours ago",
+        "text": "This is a game changer for our cluster. We were burning 500 GB every training run on S3."
+      },
+      {
+        "author": "marcus_ai",
+        "time": "12 hours ago",
+        "text": "Are you planning to support differential quantization masks on top of FastCDC?"
+      }
+    ]
+  },
+  {
+    "id": "DISC-202",
+    "category": "Fine-Tuning & LoRA",
+    "title": "Optimal Learning Rate & Weight Decay for Llama-3-8B Instruct Fine-Tuning",
+    "author": "marcus_ai",
+    "upvotes": 31,
+    "repliesCount": 7,
+    "createdAt": "3 days ago",
+    "tags": [
+      "Llama3",
+      "Hyperparameters",
+      "CosineAnnealing"
+    ],
+    "content": "Sharing our hyperparameter ablation study: 2e-5 initial LR with Cosine decay down to 2e-6, warmup ratio 0.05, batch size 64 with gradient accumulation gives minimal loss divergence.",
+    "replies": [
+      {
+        "author": "aarya-ml",
+        "time": "2 days ago",
+        "text": "Agreed. That matches our findings in checkpoint `epoch_18_best.safetensors`."
+      }
+    ]
+  },
+  {
+    "id": "DISC-203",
+    "category": "Quantization & Edge Inference",
+    "title": "SafeTensors vs GGUF: Choosing the right format for production serving",
+    "author": "elena_vision",
+    "upvotes": 27,
+    "repliesCount": 9,
+    "createdAt": "5 days ago",
+    "tags": [
+      "SafeTensors",
+      "GGUF",
+      "Deployment",
+      "vLLM"
+    ],
+    "content": "We benchmarked memory-mapped zero-copy deserialization in SafeTensors against GGUF for edge inference on Apple Silicon and NVIDIA RTX 4090s. Here is what we found...",
+    "replies": [
+      {
+        "author": "david_speech",
+        "time": "4 days ago",
+        "text": "Great breakdown! SafeTensors is ideal for server-side vLLM, while GGUF shines on llama.cpp edge devices."
+      }
+    ]
+  }
+]
