@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Kaushan+Script&family=Satisfy&display=swap');
 /* =========================================================
    AI-GIT MODEL HUB & DASHBOARD STYLES
    Accents: Electric Blue (#38bdf8), Cyber Purple (#a855f7), Neon Pink (#f43f5e)
@@ -16,165 +17,131 @@
   position: relative;
 }
 
-/* Charcoal Black Left Panel */
+
+/* =========================================================
+   SEAMLESS LEFT PANEL & HUGE TOP NODES HEADING
+========================================================= */
+
+/* Left Panel: No box distinction, blends seamlessly with the rest of dashboard */
 .modelhub-left-panel {
-  width: 320px;
-  min-width: 320px;
-  max-width: 320px;
-  background-color: #0d1117; /* Charcoal Black */
-  border-right: 1px solid #21262d;
+  width: 360px;
+  min-width: 360px;
+  max-width: 360px;
+  background: transparent; /* Even with rest of the dashboard */
+  border-right: none; /* No dividing border distinction */
   display: flex;
   flex-direction: column;
   height: calc(100vh - var(--topbar-height, 64px));
   position: sticky;
   top: var(--topbar-height, 64px);
-  padding: 16px 14px 0 16px;
+  padding: 24px 20px 0 28px;
   box-sizing: border-box;
   z-index: 10;
 }
 
-/* User Account Header at Top of Left Panel */
-.panel-user-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 8px;
-  border-radius: 6px;
-  color: #c9d1d9;
-  cursor: pointer;
-  margin-bottom: 14px;
-  transition: background 0.15s ease;
-}
-
-.panel-user-header:hover {
-  background: rgba(110, 118, 129, 0.1);
-}
-
-.panel-user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.panel-user-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #38bdf8, #a855f7);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  box-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
-}
-
-.panel-user-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #e6edf3;
-  letter-spacing: -0.2px;
-}
-
-/* Section Header: Top Nodes & Green New Button */
+/* Huge Top nodes Header occupying 2/3rd of panel space */
 .top-nodes-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 4px;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
+  gap: 14px;
 }
 
-/* "Top nodes" in purple with a slight glow */
 .top-nodes-title {
-  font-size: 14.5px;
+  font-family: 'Kaushan Script', 'Satisfy', 'Caveat', 'Brush Script MT', cursive;
+  font-size: 38px;
   font-weight: 700;
-  color: #c084fc;
-  text-shadow: 0 0 12px rgba(192, 132, 252, 0.5), 0 0 24px rgba(168, 85, 247, 0.3);
-  letter-spacing: -0.3px;
+  font-style: italic;
+  color: #d8b4fe;
+  text-shadow: 0 0 18px rgba(192, 132, 252, 0.85), 0 0 34px rgba(168, 85, 247, 0.5), 0 0 50px rgba(244, 114, 182, 0.3);
+  letter-spacing: 0.8px;
+  line-height: 1.15;
   margin: 0;
+  flex: 2; /* Occupies 2/3rd of space */
   display: flex;
   align-items: center;
+  user-select: none;
 }
 
-/* Green "New" Button with circular node icon */
+/* Purple "New" Button with Neural Network Triangle */
+/* Chameleon Green "New" Button with Neural Network Triangle */
 .btn-new-node {
-  background-color: #238636;
-  border: 1px solid rgba(240, 246, 252, 0.1);
+  background: linear-gradient(135deg, #10b981 0%, #059669 55%, #047857 100%);
+  border: 1px solid rgba(110, 231, 183, 0.45);
   color: #ffffff;
-  padding: 4px 10px;
-  font-size: 12px;
+  padding: 6px 14px;
+  font-size: 13.5px;
   font-weight: 600;
-  border-radius: 6px;
+  border-radius: 9999px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   cursor: pointer;
-  transition: all 0.15s ease;
-  box-shadow: 0 1px 0 rgba(27, 31, 36, 0.1);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.45), 0 0 28px rgba(52, 211, 153, 0.25), 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .btn-new-node:hover {
-  background-color: #2ea043;
-  border-color: rgba(240, 246, 252, 0.2);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #34d399 0%, #10b981 60%, #059669 100%);
+  border-color: rgba(167, 243, 208, 0.7);
+  box-shadow: 0 0 22px rgba(52, 211, 153, 0.75), 0 0 38px rgba(16, 185, 129, 0.45), 0 4px 14px rgba(0, 0, 0, 0.5);
+  transform: translateY(-1px) scale(1.02);
 }
 
 .btn-new-node:active {
-  background-color: #238636;
+  background: #047857;
   transform: translateY(0);
 }
 
-.node-circle-icon {
-  flex-shrink: 0;
-  color: #ffffff;
-}
-
-/* Tree Nodes List & Straight Line Connectors */
+/* Tree Nodes List */
 .nodes-tree-container {
   display: flex;
   flex-direction: column;
   padding-left: 2px;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nodes-tree-container.scrollable {
-  max-height: 380px;
+  max-height: 440px;
   overflow-y: auto;
-  padding-right: 4px;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: #a855f7 transparent;
 }
 
 .nodes-tree-container::-webkit-scrollbar {
   width: 5px;
 }
-.nodes-tree-container::-webkit-scrollbar-track {
-  background: transparent;
-}
 .nodes-tree-container::-webkit-scrollbar-thumb {
-  background: #30363d;
+  background: #a855f7;
   border-radius: 4px;
 }
-.nodes-tree-container::-webkit-scrollbar-thumb:hover {
-  background: #8b949e;
-}
 
-/* Tree Item Row */
+/* Enlarged & Stylized Tree Item Row */
 .node-tree-item {
   display: flex;
   align-items: center;
-  height: 34px;
+  min-height: 46px;
   position: relative;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.15s ease;
+  border-radius: 6px;
+}
+
+.node-tree-item:hover {
+  background: rgba(244, 114, 182, 0.08);
 }
 
 .node-tree-item.hidden-node {
   display: none !important;
 }
 
+/* Enlarged & Stylized Connector with Glowing Arrow */
 .node-branch-connector {
-  width: 28px;
-  height: 34px;
+  width: 38px;
+  height: 46px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -182,85 +149,129 @@
 
 .node-branch-svg {
   display: block;
+  overflow: visible;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
 }
 
-/* Repo Name in subtle pink */
+/* Stylized Repo Link & Text */
 .node-repo-link {
   display: inline-flex;
   align-items: center;
+  justify-content: space-between;
   text-decoration: none;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 4px 6px;
-  border-radius: 4px;
-  transition: all 0.18s ease;
-  max-width: calc(100% - 30px);
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  width: calc(100% - 38px);
 }
 
 .node-repo-text {
   color: #f472b6; /* Subtle Pink */
-  font-size: 13px;
+  font-size: 14.5px; /* Larger, readable size */
   font-weight: 500;
   font-family: var(--font-sans);
-  letter-spacing: -0.1px;
+  letter-spacing: -0.2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: all 0.18s ease;
+  transition: all 0.2s ease;
+}
+
+.node-repo-caret {
+  color: #8b949e;
+  font-size: 11px;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.2s ease;
+  margin-left: 6px;
+  flex-shrink: 0;
 }
 
 .node-tree-item:hover .node-repo-text {
   color: #fbcfe8;
-  text-shadow: 0 0 10px rgba(244, 114, 182, 0.45);
-  transform: translateX(2px);
+  text-shadow: 0 0 12px rgba(244, 114, 182, 0.6);
+  transform: translateX(3px);
 }
 
+.node-tree-item:hover .node-repo-caret {
+  opacity: 1;
+  color: #f472b6;
+  transform: translateX(0);
+}
+
+/* Stylized Show More / Dropdown Toggle */
 .nodes-show-more-wrap {
-  padding-left: 28px;
-  margin-top: 6px;
-  margin-bottom: 12px;
+  padding-left: 36px;
+  margin-top: 10px;
+  margin-bottom: 16px;
 }
 
 .btn-show-more-nodes {
-  background: none;
-  border: none;
-  color: #8b949e;
-  font-size: 12px;
-  font-weight: 500;
+  background: rgba(192, 132, 252, 0.08);
+  border: 1px solid rgba(192, 132, 252, 0.25);
+  border-radius: 6px;
+  color: #c084fc;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  padding: 4px 0;
+  padding: 6px 12px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  transition: color 0.15s ease;
+  gap: 8px;
+  transition: all 0.2s ease;
+  outline: none;
 }
 
 .btn-show-more-nodes:hover {
-  color: #c084fc;
-  text-decoration: underline;
+  background: rgba(192, 132, 252, 0.18);
+  border-color: #c084fc;
+  color: #f8fafc;
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.4);
 }
 
+.dropdown-chevron-icon {
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  color: currentColor;
+}
+
+.btn-show-more-nodes.expanded .dropdown-chevron-icon {
+  transform: rotate(180deg);
+}
+
+/* Seamless Search Footer at Bottom */
 .panel-search-footer {
   margin-top: auto;
-  padding: 14px 0 16px 0;
-  background: #0d1117;
-  border-top: 1px solid #21262d;
+  padding: 16px 0 20px 0;
+  background: transparent; /* Seamless with dashboard */
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.nodes-search-box {
-  position: relative;
-  display: flex;
-  align-items: center;
+.nodes-search-box input {
   width: 100%;
+  padding: 8px 12px 8px 36px;
+  background: rgba(13, 17, 23, 0.85);
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  color: #f0f6fc;
+  font-size: 13.5px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.nodes-search-box input:focus {
+  border-color: #c084fc;
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.35);
+  background: #161b22;
 }
 
 .nodes-search-box .search-icon {
-  position: absolute;
-  left: 10px;
-  color: #7d8590;
-  pointer-events: none;
+  left: 12px;
+  color: #8b949e;
 }
+
 
 .nodes-search-box input {
   width: 100%;
@@ -704,4 +715,1321 @@
   font-size: 11.5px;
   color: var(--text-muted);
   margin-top: 3px;
+}
+
+
+
+/* =========================================================
+   MYSPACE INTERACTION & CENTER FEED CONTRACTION
+   When .myspace-open is active:
+   - Center main area contracts to exactly 1/3 viewport width (33.33vw)
+   - Feed items stack into compact responsive column
+   - MySpace panel opens on the right side taking remaining space
+========================================================= */
+
+.modelhub-shell {
+  display: flex;
+  min-height: calc(100vh - var(--topbar-height, 64px));
+  background-color: var(--bg-canvas, #090d16);
+  position: relative;
+  overflow-x: hidden;
+  transition: all 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modelhub-main-area {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  transition: all 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Center Feed Contracts to 1/3 Viewport Width */
+.modelhub-shell.myspace-open .modelhub-main-area {
+  flex: 0 0 33.33vw !important;
+  width: 33.33vw !important;
+  max-width: 33.33vw !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+}
+
+.modelhub-shell.myspace-open .dashboard-container {
+  padding: 20px 16px 60px !important;
+}
+
+.modelhub-shell.myspace-open .dash-hero {
+  padding: 20px 18px !important;
+  margin-bottom: 20px !important;
+}
+
+.modelhub-shell.myspace-open .dash-hero h1 {
+  font-size: 19px !important;
+}
+
+.modelhub-shell.myspace-open .hero-stats {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  margin-top: 14px !important;
+}
+
+.modelhub-shell.myspace-open .dash-grid {
+  grid-template-columns: 1fr !important;
+  gap: 20px !important;
+}
+
+/* =========================================================
+   MYSPACE PANEL (GitHub-Style Overview)
+========================================================= */
+
+.modelhub-myspace-panel {
+  display: none;
+  flex: 1;
+  min-width: 380px;
+  height: calc(100vh - var(--topbar-height, 64px));
+  position: sticky;
+  top: var(--topbar-height, 64px);
+  overflow-y: auto;
+  background: rgba(11, 16, 27, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 24px 28px 48px;
+  box-sizing: border-box;
+  z-index: 20;
+  animation: myspaceSlideIn 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.modelhub-shell.myspace-open .modelhub-myspace-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes myspaceSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* MySpace Top Header */
+.myspace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+/* Cursive Stylized MySpace Heading (Matches Top nodes style) */
+.myspace-title {
+  font-family: 'Kaushan Script', 'Satisfy', 'Caveat', 'Brush Script MT', cursive;
+  font-size: 38px;
+  font-weight: 700;
+  font-style: italic;
+  color: #d8b4fe;
+  text-shadow: 0 0 18px rgba(192, 132, 252, 0.85), 0 0 34px rgba(168, 85, 247, 0.5), 0 0 50px rgba(244, 114, 182, 0.3);
+  letter-spacing: 0.8px;
+  line-height: 1.15;
+  margin: 0;
+  user-select: none;
+}
+
+.btn-close-myspace {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.btn-close-myspace:hover {
+  background: rgba(244, 63, 94, 0.15);
+  color: #f43f5e;
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
+/* Profile Card with Huge Circular PFP */
+.myspace-profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 16px 20px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.myspace-avatar-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+/* Huge Circular PFP */
+.myspace-avatar-huge {
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3.5px solid rgba(192, 132, 252, 0.85);
+  box-shadow: 0 0 25px rgba(192, 132, 252, 0.6), 0 0 50px rgba(56, 189, 248, 0.35);
+  display: block;
+}
+
+.myspace-status-indicator {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 3px solid #0b101b;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+}
+
+.myspace-user-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 4px;
+}
+
+.myspace-user-handle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #c084fc;
+  margin-bottom: 8px;
+}
+
+.myspace-user-role {
+  font-size: 13px;
+  color: #38bdf8;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.myspace-user-bio {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #94a3b8;
+  max-width: 360px;
+  margin: 0 0 20px;
+}
+
+/* Customize MySpace Button (Leads to Profile Studio) */
+.btn-customize-myspace {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(56, 189, 248, 0.15) 100%);
+  border: 1px solid rgba(192, 132, 252, 0.45);
+  color: #f8fafc;
+  padding: 10px 22px;
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: 9999px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+}
+
+.btn-customize-myspace:hover {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(56, 189, 248, 0.3) 100%);
+  border-color: #c084fc;
+  color: #ffffff;
+  box-shadow: 0 0 24px rgba(192, 132, 252, 0.6), 0 0 36px rgba(56, 189, 248, 0.3);
+  transform: translateY(-1.5px);
+}
+
+/* Stats Row */
+.myspace-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.myspace-stat-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #8b949e;
+  margin-top: 2px;
+}
+
+/* Sections */
+.myspace-section-group {
+  margin-bottom: 24px;
+}
+
+.myspace-section-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #c084fc;
+  margin-bottom: 12px;
+}
+
+.myspace-pinned-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.myspace-pinned-card {
+  display: block;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.myspace-pinned-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(192, 132, 252, 0.4);
+  transform: translateY(-1px);
+}
+
+.pinned-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.pinned-repo-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #58a6ff;
+}
+
+.pinned-pill {
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #8b949e;
+}
+
+.pinned-desc {
+  font-size: 12px;
+  color: #8b949e;
+  line-height: 1.4;
+  margin: 0 0 10px;
+}
+
+.pinned-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.pinned-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.lang-color {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.lang-python { background: #3572A5; }
+.lang-safetensors { background: #c084fc; }
+
+/* Activity Heatmap Grid */
+.myspace-heatgrid {
+  display: grid;
+  grid-template-columns: repeat(28, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 4px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.heat-cell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.heat-cell.l1 { background: rgba(16, 185, 129, 0.3); }
+.heat-cell.l2 { background: rgba(16, 185, 129, 0.6); }
+.heat-cell.l3 { background: rgba(52, 211, 153, 0.85); box-shadow: 0 0 4px rgba(52, 211, 153, 0.4); }
+.heat-cell.l4 { background: #c084fc; box-shadow: 0 0 6px rgba(192, 132, 252, 0.6); }
+
+
+
+/* =========================================================
+   AUTHENTIC GITHUB OVERVIEW STYLES (MATCHING USER SCREENSHOT)
+   - Pinned Repositories: AI-GIT (C++) and gaming-arcade (CSS)
+   - 316 contributions calendar heatmap with months & days
+   - Contribution activity: Created 121 commits in 3 repos with green bars
+========================================================= */
+
+.git-overview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 8px;
+}
+
+/* Pinned Section */
+.git-pinned-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.git-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.git-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f0f6fc;
+}
+
+.git-header-link {
+  font-size: 12px;
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.git-header-link:hover {
+  text-decoration: underline;
+}
+
+.git-pinned-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.git-pinned-card {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.git-pinned-card:hover {
+  border-color: #8b949e;
+  background: #111620;
+}
+
+.git-repo-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.git-repo-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.git-repo-name:hover {
+  text-decoration: underline;
+}
+
+.git-badge-public {
+  font-size: 11px;
+  color: #8b949e;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 0 7px;
+  line-height: 18px;
+  font-weight: 500;
+}
+
+.git-drag-dots {
+  margin-left: auto;
+  color: #6e7681;
+  font-size: 14px;
+  letter-spacing: -2px;
+  cursor: grab;
+  user-select: none;
+}
+
+.git-repo-desc {
+  font-size: 12px;
+  color: #8b949e;
+  line-height: 1.45;
+  margin: 0 0 14px;
+}
+
+.git-repo-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.git-lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.git-lang-dot.cpp {
+  background: #f43f5e; /* Pink / reddish C++ dot */
+}
+
+.git-lang-dot.css {
+  background: #a855f7; /* Purple CSS dot */
+}
+
+/* Contributions Section */
+.git-contributions-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.git-contrib-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.git-contrib-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #f0f6fc;
+}
+
+.git-contrib-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-contrib-settings {
+  background: transparent;
+  border: none;
+  color: #8b949e;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 3px 6px;
+}
+
+.btn-contrib-settings:hover {
+  color: #58a6ff;
+}
+
+.btn-year-badge {
+  background: #1f6feb;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Calendar Card */
+.git-calendar-card {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 14px 16px 12px;
+}
+
+.calendar-months-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: #8b949e;
+  padding-left: 28px;
+  padding-right: 4px;
+  margin-bottom: 6px;
+  user-select: none;
+}
+
+.calendar-body-wrap {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.calendar-days-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 9.5px;
+  color: #8b949e;
+  height: 84px;
+  width: 22px;
+  padding-top: 2px;
+  user-select: none;
+}
+
+.calendar-squares-grid {
+  display: grid;
+  grid-template-columns: repeat(48, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  gap: 2.5px;
+  flex: 1;
+  height: 84px;
+}
+
+.cal-cell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: #161b22;
+  transition: transform 0.12s ease;
+}
+
+.cal-cell:hover {
+  transform: scale(1.3);
+  outline: 1px solid #fff;
+  z-index: 5;
+}
+
+/* Heatmap intensity levels matching GitHub */
+.cal-cell.lvl-0 { background: #161b22; }
+.cal-cell.lvl-1 { background: #0e4429; }
+.cal-cell.lvl-2 { background: #006d32; }
+.cal-cell.lvl-3 { background: #26a641; }
+.cal-cell.lvl-4 { background: #39d353; box-shadow: 0 0 3px rgba(57, 211, 83, 0.4); }
+
+.calendar-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #8b949e;
+  margin-top: 12px;
+  padding-top: 6px;
+}
+
+.calendar-learn-link {
+  color: #8b949e;
+  text-decoration: none;
+  font-size: 11px;
+}
+
+.calendar-learn-link:hover {
+  color: #58a6ff;
+  text-decoration: underline;
+}
+
+.calendar-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-box {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.legend-box.lvl-0 { background: #161b22; }
+.legend-box.lvl-1 { background: #0e4429; }
+.legend-box.lvl-2 { background: #006d32; }
+.legend-box.lvl-3 { background: #26a641; }
+.legend-box.lvl-4 { background: #39d353; }
+
+/* Contribution Activity */
+.git-activity-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.git-activity-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #f0f6fc;
+  margin: 0 0 14px;
+}
+
+.git-month-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.git-month-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f0f6fc;
+  white-space: nowrap;
+}
+
+.git-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #21262d;
+}
+
+.git-activity-timeline-item {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 14px;
+}
+
+.git-timeline-icon {
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #161b22;
+  border: 1px solid #30363d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8b949e;
+}
+
+.git-activity-box {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.git-activity-left {
+  flex: 1;
+}
+
+.git-activity-header {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #f0f6fc;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.git-activity-grip {
+  color: #6e7681;
+  font-size: 13px;
+  letter-spacing: -2px;
+  user-select: none;
+}
+
+.git-activity-repos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.git-activity-repo-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.git-activity-repo-link {
+  color: #58a6ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.git-activity-repo-link:hover {
+  text-decoration: underline;
+}
+
+.git-activity-repo-commits {
+  color: #8b949e;
+  font-size: 11.5px;
+}
+
+.git-activity-bars-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-end;
+  padding-top: 32px;
+  padding-left: 16px;
+}
+
+.git-activity-bar {
+  height: 6px;
+  background: #26a641;
+  border-radius: 3px;
+}
+
+.git-show-more-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #58a6ff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-top: 4px;
+  outline: none;
+}
+
+.git-show-more-btn:hover {
+  background: #21262d;
+  border-color: #8b949e;
+  text-decoration: none;
+}
+
+/* Responsive adjustment for compact MySpace view */
+@media (max-width: 900px) {
+  .git-pinned-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* =========================================================
+   "RECENTLY IN THE WORLD OF AI/ML" SECTION STYLES
+   - Live Pulse header with filter tabs
+   - Auto-expanding composer input with image/video attachments
+   - Real-time article cards with rich previews & tags
+========================================================= */
+
+
+/* =========================================================
+   CLEAN EDITORIAL NEWS & COMMUNITY SECTION
+   - Large prominent heading (32px)
+   - Natural, un-AI-stylized GitHub / Linear developer feed aesthetics
+   - Clean solid borders (#30363d), no artificial neon glows
+========================================================= */
+
+.ai-news-hub-section {
+  margin-top: 8px;
+  margin-bottom: 40px;
+}
+
+.ai-news-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #21262d;
+}
+
+.ai-news-title-wrap {
+  display: flex;
+  align-items: center;
+}
+
+/* Increased font size for heading: Bold, clean, prominent (32px), no neon shadow */
+.ai-news-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #f0f6fc;
+  letter-spacing: -0.6px;
+  line-height: 1.2;
+  margin: 0;
+  text-shadow: none !important;
+}
+
+/* Minimalist, Clean Filter Tabs (Standard GitHub / Linear segment control) */
+.ai-news-filter-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #161b22;
+  border: 1px solid #30363d;
+  padding: 3px;
+  border-radius: 6px;
+}
+
+.news-tab-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #8b949e;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.news-tab-btn:hover {
+  color: #f0f6fc;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.news-tab-btn.active {
+  background: #21262d;
+  color: #f0f6fc;
+  font-weight: 600;
+  border-color: #38424d;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Clean Post Composer Card: Natural developer UI */
+.ai-post-composer-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: border-color 0.15s ease;
+}
+
+.ai-post-composer-card:focus-within {
+  border-color: #58a6ff;
+  box-shadow: 0 0 0 1px #58a6ff;
+}
+
+.composer-header-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.composer-user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #30363d;
+  flex-shrink: 0;
+  box-shadow: none !important;
+}
+
+.composer-field-wrap {
+  flex: 1;
+}
+
+/* Auto-expanding Textarea */
+.composer-auto-expand-input {
+  width: 100%;
+  min-height: 48px;
+  max-height: 280px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f0f6fc;
+  font-size: 15px;
+  line-height: 1.5;
+  font-family: inherit;
+  resize: none;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 6px 0 0 0;
+}
+
+.composer-auto-expand-input::placeholder {
+  color: #8b949e;
+  font-size: 14.5px;
+}
+
+/* Previews for Attached Media */
+.composer-attachments-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #21262d;
+}
+
+.preview-chip {
+  position: relative;
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  overflow: hidden;
+  max-width: 180px;
+}
+
+.preview-chip img,
+.preview-chip video {
+  display: block;
+  max-height: 110px;
+  width: auto;
+  object-fit: cover;
+}
+
+.btn-remove-attachment {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(13, 17, 23, 0.85);
+  border: 1px solid #30363d;
+  color: #f0f6fc;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.15s ease;
+}
+
+.btn-remove-attachment:hover {
+  background: #da3633;
+  border-color: #da3633;
+  color: #ffffff;
+}
+
+/* Composer Toolbar */
+.composer-toolbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #21262d;
+}
+
+.composer-media-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-composer-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #8b949e;
+  font-size: 13px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-composer-tool:hover {
+  background: #21262d;
+  border-color: #30363d;
+  color: #f0f6fc;
+}
+
+.composer-submit-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.composer-char-count {
+  font-size: 12px;
+  color: #8b949e;
+}
+
+/* Clean Primary Action Button: Solid GitHub Green, no neon glow */
+.btn-publish-update {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #238636;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  box-shadow: none !important;
+}
+
+.btn-publish-update:hover {
+  background: #2ea043;
+}
+
+.btn-publish-update:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Feed Container */
+.ai-news-feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.news-feed-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 0;
+  color: #8b949e;
+  font-size: 13.5px;
+}
+
+.news-loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #58a6ff;
+  border-radius: 50%;
+  animation: spinNews 0.8s linear infinite;
+}
+
+@keyframes spinNews {
+  to { transform: rotate(360deg); }
+}
+
+/* Feed Item Card: Clean developer article & community card */
+.feed-item-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 18px 20px;
+  transition: border-color 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: none !important;
+}
+
+.feed-item-card:hover {
+  border-color: #8b949e;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Header */
+.feed-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.feed-author-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.feed-author-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #30363d;
+}
+
+.feed-author-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f0f6fc;
+}
+
+.feed-author-handle {
+  font-size: 12.5px;
+  color: #8b949e;
+  margin-left: 4px;
+}
+
+.feed-item-time {
+  font-size: 12px;
+  color: #8b949e;
+}
+
+/* Subtle, neutral source tag */
+.feed-source-pill {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #21262d;
+  color: #8b949e;
+  border: 1px solid #30363d;
+}
+
+.feed-source-pill.community {
+  background: #21262d;
+  color: #a371f7;
+  border-color: #38424d;
+}
+
+/* Content */
+.feed-card-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #f0f6fc;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.feed-card-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.feed-card-title a:hover {
+  color: #58a6ff;
+  text-decoration: underline;
+}
+
+.feed-card-desc {
+  font-size: 14px;
+  color: #8b949e;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Media preview in feed card */
+.feed-card-media {
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #30363d;
+  max-height: 340px;
+  background: #0d1117;
+}
+
+.feed-card-media img,
+.feed-card-media video {
+  width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Tags */
+.feed-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.feed-tag {
+  font-size: 11.5px;
+  color: #58a6ff;
+  background: #21262d;
+  padding: 2px 8px;
+  border-radius: 12px;
+  border: 1px solid #30363d;
+  font-family: inherit;
+}
+
+/* Card Footer Actions */
+.feed-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid #21262d;
+  margin-top: 2px;
+}
+
+.feed-card-reactions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.feed-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  color: #8b949e;
+  font-size: 12.5px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.feed-action-btn:hover {
+  color: #f0f6fc;
+  background: #21262d;
+}
+
+.feed-action-btn.liked {
+  color: #f85149;
+}
+
+.feed-open-link {
+  font-size: 12.5px;
+  color: #58a6ff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.feed-open-link:hover {
+  text-decoration: underline;
 }

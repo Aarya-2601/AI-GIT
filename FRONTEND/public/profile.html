@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Researcher Profile Studio &amp; Overview · AI-GIT</title>
-  <link rel="stylesheet" href="profile.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'><circle cx='12' cy='12' r='10'/></svg>">
+  <title>Profile Studio · AI-GIT</title>
+  <link rel="stylesheet" href="nav.css?v=2.6">
+  <link rel="stylesheet" href="profile.css?v=3.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff7eb6'><circle cx='12' cy='12' r='10'/></svg>">
 </head>
 <body>
 
@@ -27,8 +28,8 @@
       </div>
 
       <div style="font-size: 12.5px; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
-        <span class="pill-badge badge-purple" style="font-size: 11px;">Researcher Mode</span>
-        <span id="navUserBadge" style="color: var(--accent-blue); font-weight: 600;">@aarya-ml</span>
+        <span class="pill-badge" style="background:rgba(255,126,182,0.15);color:#ff7eb6;border:1px solid rgba(255,126,182,0.3);font-size:11px;">Cutesy Profile</span>
+        <span id="navUserBadge" style="color: var(--accent-blue); font-weight: 600;">@Aarya-2601</span>
       </div>
     </div>
   </nav>
@@ -39,80 +40,223 @@
     <aside class="side">
       <div class="avatar" id="avatarLetter">A</div>
       <h2 id="dName">Aarya Doshi</h2>
-      <div class="handle-line" id="dUser">@aarya-ml</div>
-      <div class="role-badge" id="dRole">Lead AI Researcher &amp; Systems Architect</div>
-      <p id="dBio">Training multi-billion parameter diffusion models &amp; building decentralized content-addressed VCS for large neural weights.</p>
+      <div class="handle-line" id="dUser">@Aarya-2601</div>
+      <div class="role-badge" id="dRole">Building things that matter</div>
+      <p id="dBio">Passionate software builder and creative developer. Love turning ideas into interactive digital experiences!</p>
 
-      <button type="button" class="btn btn-secondary btn-sm" id="editProfileBtn" style="margin-top: 6px;">
+      <button type="button" class="btn btn-secondary btn-sm" id="editProfileBtn" style="margin-top: 10px; width: 100%;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         <span>Customize in Studio</span>
       </button>
 
-      <!-- FastCDC Storage Savings Box -->
-      <div class="side-stats-card">
+      <div class="side-stats-card" style="margin-top: 18px;">
         <div style="font-size: 12px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.5px;">
-          FastCDC Storage Metrics
+          Profile Details
         </div>
         <div class="side-stat-row">
-          <span>Space Saved</span>
-          <strong style="color: var(--accent-pink);">106.6 GB (74.6%)</strong>
+          <span>Location</span>
+          <strong style="color: #f8fafc;">Mumbai, India</strong>
         </div>
         <div class="side-stat-row">
-          <span>Deduplication Rate</span>
-          <strong style="color: #4ade80;">89.2% chunks</strong>
+          <span>Followers</span>
+          <strong style="color: #4ade80;">128</strong>
         </div>
         <div class="side-stat-row">
-          <span>Models Tracked</span>
-          <strong>5 Repositories</strong>
+          <span>Following</span>
+          <strong style="color: #38bdf8;">89</strong>
         </div>
         <div class="side-stat-row">
-          <span>Compression Ratio</span>
-          <strong style="color: var(--accent-blue);">3.4x</strong>
+          <span>Repositories</span>
+          <strong style="color: #ff7eb6;">8 Public</strong>
         </div>
-      </div>
-
-      <div style="margin-top: 10px;">
-        <h3 style="font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">Tracked Repositories</h3>
-        <ul class="repos" id="repoList" style="list-style: none; padding: 0; margin: 0;"></ul>
       </div>
     </aside>
 
-    <!-- Right Canvas Area -->
+    <!-- Right Canvas Area: Cutesy README Box -->
     <section class="canvas">
-      <!-- Readme Box -->
-      <div class="readme" id="homeReadme"></div>
-
-      <!-- Pinned Models -->
-      <div class="canvas-section-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-pink);"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-        <span>Pinned AI-GIT Model Repositories</span>
-      </div>
-      <div class="pins" id="pinnedModelsGrid"></div>
-
-      <!-- Heatmap -->
-      <div class="canvas-section-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-purple);"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <span>289 Neural Checkpoint Commits in 2026</span>
-      </div>
-      <div class="box">
-        <div class="heat" id="heatCanvas"></div>
-        <div class="legend">
-          <span>Less</span>
-          <i class="c0"></i>
-          <i class="c1"></i>
-          <i class="c2"></i>
-          <i class="c3"></i>
-          <i class="c4"></i>
-          <span>More Checkpoints</span>
+      <div class="readme-card-wrap">
+        <div class="readme-card-head">
+          <div style="font-size: 13px; font-weight: 600; color: #8b949e;">
+            <strong style="color: #fff;">Aarya-2601</strong> / README.md
+          </div>
+          <span style="font-size: 11px; color: #ff7eb6;">🌸 Cutesy Theme</span>
         </div>
+        <div class="readme" id="homeReadme"></div>
       </div>
 
-      <!-- Checkpoint Activity Bars -->
-      <div class="canvas-section-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-blue);"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span>Checkpoint Commit Activity by Architecture</span>
+      <!-- EXACT GITHUB OVERVIEW FROM ATTACHED SCREENSHOT -->
+      <div class="git-overview-container" style="margin-top: 28px;">
+        
+        <!-- 1. PINNED SECTION -->
+        <div class="git-pinned-section">
+          <div class="git-section-header">
+            <span class="git-section-title">Pinned</span>
+            <a href="#studio" class="git-header-link" id="customizePinsLink">Customize your pins</a>
+          </div>
+
+          <div class="git-pinned-grid">
+            <!-- Pinned Card 1: AI-GIT -->
+            <div class="git-pinned-card">
+              <div class="git-card-top">
+                <div class="git-repo-title-row">
+                  <a href="repository.html?repo=AI-GIT" class="git-repo-name">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <span>AI-GIT</span>
+                  </a>
+                  <span class="git-badge-public">Public</span>
+                  <span class="git-drag-dots" title="Drag to reorder">⋮⋮</span>
+                </div>
+                <p class="git-repo-desc">
+                  This is a repository created for the execution of AI-GIT, a standalone version control system designed to store large AI/ML models.
+                </p>
+              </div>
+              <div class="git-repo-meta">
+                <span class="git-lang-dot cpp"></span>
+                <span>C++</span>
+              </div>
+            </div>
+
+            <!-- Pinned Card 2: gaming-arcade -->
+            <div class="git-pinned-card">
+              <div class="git-card-top">
+                <div class="git-repo-title-row">
+                  <a href="repository.html?repo=gaming-arcade" class="git-repo-name">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <span>gaming-arcade</span>
+                  </a>
+                  <span class="git-badge-public">Public</span>
+                  <span class="git-drag-dots" title="Drag to reorder">⋮⋮</span>
+                </div>
+                <p class="git-repo-desc" style="color: transparent;">
+                  Interactive browser games collection.
+                </p>
+              </div>
+              <div class="git-repo-meta">
+                <span class="git-lang-dot css"></span>
+                <span>CSS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. COMMIT HEATMAP SECTION (316 contributions in the last year) -->
+        <div class="git-contributions-section">
+          <div class="git-contrib-header">
+            <span class="git-contrib-title">316 contributions in the last year</span>
+            <div class="git-contrib-controls">
+              <button type="button" class="btn-contrib-settings">Contribution settings ▾</button>
+              <button type="button" class="btn-year-badge">2026</button>
+            </div>
+          </div>
+
+          <!-- Calendar Heatmap Card -->
+          <div class="git-calendar-card">
+            <!-- Months Header -->
+            <div class="calendar-months-row">
+              <span>Sep</span>
+              <span>Oct</span>
+              <span>Nov</span>
+              <span>Dec</span>
+              <span>Jan</span>
+              <span>Feb</span>
+              <span>Mar</span>
+              <span>Apr</span>
+              <span>May</span>
+              <span>Jun</span>
+              <span>Jul</span>
+              <span>Aug</span>
+              <span>Sep</span>
+            </div>
+
+            <!-- Calendar Grid with Days on left -->
+            <div class="calendar-body-wrap">
+              <div class="calendar-days-col">
+                <span></span>
+                <span>Mon</span>
+                <span></span>
+                <span>Wed</span>
+                <span></span>
+                <span>Fri</span>
+                <span></span>
+              </div>
+              <div class="calendar-squares-grid" id="profileGitCalendarGrid"></div>
+            </div>
+
+            <!-- Heatmap Footer -->
+            <div class="calendar-footer-row">
+              <a href="https://docs.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile" target="_blank" class="calendar-learn-link">
+                Learn how we count contributions
+              </a>
+              <div class="calendar-legend">
+                <span>Less</span>
+                <span class="legend-box lvl-0"></span>
+                <span class="legend-box lvl-1"></span>
+                <span class="legend-box lvl-2"></span>
+                <span class="legend-box lvl-3"></span>
+                <span class="legend-box lvl-4"></span>
+                <span>More</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. CONTRIBUTION ACTIVITY SECTION -->
+        <div class="git-activity-section">
+          <h3 class="git-activity-title">Contribution activity</h3>
+
+          <!-- September 2026 Divider -->
+          <div class="git-month-divider">
+            <span class="git-month-label">September 2026</span>
+            <div class="git-divider-line"></div>
+          </div>
+
+          <!-- Activity Box: Created 121 commits in 3 repositories -->
+          <div class="git-activity-timeline-item">
+            <div class="git-timeline-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4"/>
+                <line x1="12" y1="2" x2="12" y2="8"/>
+                <line x1="12" y1="16" x2="12" y2="22"/>
+              </svg>
+            </div>
+
+            <div class="git-activity-box">
+              <div class="git-activity-left">
+                <div class="git-activity-header">
+                  <span>Created 121 commits in 3 repositories</span>
+                  <span class="git-activity-grip">⋮⋮</span>
+                </div>
+                <div class="git-activity-repos-list">
+                  <div class="git-activity-repo-item">
+                    <a href="repository.html?repo=PixelPlot" class="git-activity-repo-link">rushil23shah-hue/PixelPlot</a>
+                    <span class="git-activity-repo-commits">58 commits</span>
+                  </div>
+                  <div class="git-activity-repo-item">
+                    <a href="repository.html?repo=sagar-mitra-2.0" class="git-activity-repo-link">chaitijain593-prog/sagar-mitra-2.0</a>
+                    <span class="git-activity-repo-commits">32 commits</span>
+                  </div>
+                  <div class="git-activity-repo-item">
+                    <a href="repository.html?repo=AI-GIT" class="git-activity-repo-link">Aarya-2601/AI-GIT</a>
+                    <span class="git-activity-repo-commits">31 commits</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Green comparison visualizer bars on right -->
+              <div class="git-activity-bars-col">
+                <div class="git-activity-bar" style="width: 72px;"></div>
+                <div class="git-activity-bar" style="width: 40px;"></div>
+                <div class="git-activity-bar" style="width: 38px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="git-show-more-btn" id="btnShowMoreActivityProfile">
+            Show more activity
+          </button>
+        </div>
+
       </div>
-      <div class="box act" id="activityBox"></div>
     </section>
   </main>
 
@@ -120,66 +264,47 @@
   <main class="studio" id="studioView" hidden>
     <!-- Left Configuration Pane -->
     <section class="pane left">
-      <!-- 1-Click Automation Callout -->
-      <div class="automation-banner">
-        <div class="automation-banner-text">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          <div>
-            <strong>Automate Profile Studio</strong>
-            <div style="font-size: 12px; color: var(--text-muted);">Populate verified FastCDC metrics, real models, and deep learning badges in one click.</div>
-          </div>
-        </div>
-        <button type="button" class="btn btn-primary btn-sm" id="btnAutomateProfile">
-          ⚡ 1-Click Automate
-        </button>
-      </div>
-
       <div class="stepper" id="stepper"></div>
 
-      <!-- Step 1: Identity -->
+      <!-- Step 1: Identity & Headlines -->
       <div class="step" data-s="1">
-        <h2>Researcher Identity</h2>
-        <label>Display Name<input data-k="header" placeholder="Aarya Doshi"></label>
-        <label>Handle / Username<input data-k="gh" placeholder="aarya-ml"></label>
-        <label>Professional Role<input data-k="headline" placeholder="Lead AI Researcher &amp; Systems Architect"></label>
-        <label>Status / Mood<input data-k="status" placeholder="🚀 Training Llama-3-8B with FastCDC deduplication"></label>
+        <h2>Identity &amp; Headlines</h2>
+        <label>Display Name<input data-k="displayName" placeholder="Aarya Doshi"></label>
+        <label>GitHub Username<input data-k="username" placeholder="Aarya-2601"></label>
+        <label>Profile Avatar URL<input data-k="avatar" placeholder="https://..."></label>
+        <label>Location<input data-k="location" placeholder="Mumbai, India"></label>
+        <label>Headline 1<input data-k="headline1" placeholder="code, coffee, college clubs & curio"></label>
+        <label>Headline 2<input data-k="headline2" placeholder="Building things that matter"></label>
       </div>
 
-      <!-- Step 2: About -->
+      <!-- Step 2: About Me (Cutesy Fields) -->
       <div class="step" data-s="2" hidden>
-        <h2>About &amp; Research Focus</h2>
-        <label>Bio<textarea data-k="bio" rows="4" placeholder="Detail your machine learning research, architecture scaling, or model systems experience..."></textarea></label>
-        <label>Currently Training<input data-k="working" placeholder="Diffusion UNet &amp; FastCDC rolling-hash chunker"></label>
-        <label>Currently Exploring<input data-k="learning" placeholder="Rotary Position Embeddings &amp; FlashAttention-3"></label>
-        <label>Looking to Collaborate On<input data-k="collab" placeholder="Decentralized CAS model repositories"></label>
-        <label>Benchmark / Fun Fact<input data-k="fun" placeholder="Reduced S3 checkpoint storage by 74.6%"></label>
+        <h2>About Me &amp; Fun Facts</h2>
+        <label>Bio<textarea data-k="bio" rows="3" placeholder="Tell people a little about yourself..."></textarea></label>
+        <label>🔭 Currently working on<input data-k="workingOn" placeholder="Awesome web apps & AI tools"></label>
+        <label>🌱 Currently learning<input data-k="learning" placeholder="Creative frontend & systems design"></label>
+        <label>👯 Looking to collaborate on<input data-k="collaborate" placeholder="Open source tools & creative projects"></label>
+        <label>🤔 Looking for help with<input data-k="help" placeholder="UI animations & visualizer graphics"></label>
+        <label>💬 Ask me about<input data-k="askMe" placeholder="JavaScript, Python, CSS styling"></label>
+        <label>😄 Pronouns<input data-k="pronouns" placeholder="she/her"></label>
+        <label>⚡ Fun fact<input data-k="funFact" placeholder="I can spot a 1px misalignment from across the room 🌸"></label>
       </div>
 
-      <!-- Step 3: Deep Learning Stack -->
+      <!-- Step 3: Tech Stack -->
       <div class="step" data-s="3" hidden>
-        <h2>Deep Learning &amp; Systems Stack</h2>
-        <p class="muted" style="font-size: 13px; margin-bottom: 12px;">Select the technologies and frameworks to display as shields.io badges in your README.</p>
-        <div class="grid" id="stackGrid"></div>
+        <h2>Tech Stack Badges</h2>
+        <p class="muted" style="font-size: 13px; margin-bottom: 12px;">Click technologies to include as colorful badges in your README.</p>
+        <div class="stack-badge-grid" id="stackGrid"></div>
       </div>
 
-      <!-- Step 4: AI-GIT Add-ons & Metrics -->
+      <!-- Step 4: Socials & Connect -->
       <div class="step" data-s="4" hidden>
-        <h2>AI-GIT Metrics &amp; Add-ons</h2>
-        <p class="muted" style="font-size: 13px; margin-bottom: 12px;">Automate adding real-time deduplication and checkpoint statistics to your profile.</p>
-        <label class="switch"><span>Include FastCDC Storage Savings (74.6%)</span><input type="checkbox" data-k="stats" checked><i></i></label>
-        <label class="switch"><span>Include Neural Architecture Badges</span><input type="checkbox" data-k="langs" checked><i></i></label>
-        <label class="switch"><span>Include Checkpoint Contribution Graph</span><input type="checkbox" data-k="graph" checked><i></i></label>
-      </div>
-
-      <!-- Step 5: Socials & Contact -->
-      <div class="step" data-s="5" hidden>
-        <h2>Community &amp; Social Links</h2>
-        <label>Hugging Face<input data-k="huggingface" placeholder="username or URL"></label>
-        <label>GitHub<input data-k="github" placeholder="handle"></label>
-        <label>X / Twitter<input data-k="twitter" placeholder="handle"></label>
-        <label>LinkedIn<input data-k="linkedin" placeholder="username or URL"></label>
-        <label>ArXiv / Scholar<input data-k="arxiv" placeholder="URL"></label>
-        <label>Email<input data-k="email" type="email" placeholder="researcher@ai-git.org"></label>
+        <h2>Connect &amp; Social Links</h2>
+        <label>Portfolio Website<input data-k="portfolio" placeholder="https://aaryadoshi.dev"></label>
+        <label>LinkedIn URL<input data-k="linkedin" placeholder="https://linkedin.com/in/aarya-doshi"></label>
+        <label>Instagram URL<input data-k="instagram" placeholder="https://instagram.com/aarya_ai"></label>
+        <label>GitHub URL<input data-k="github" placeholder="https://github.com/Aarya-2601"></label>
+        <label>Email Address<input data-k="email" type="email" placeholder="aaryadoshi7@gmail.com"></label>
       </div>
 
       <div class="btns">
@@ -201,7 +326,7 @@
         <div class="acts">
           <button type="button" class="btn btn-secondary btn-sm" id="btnDownloadReadme">Download README.md</button>
           <button type="button" class="btn btn-secondary btn-sm" id="btnCopyReadme">Copy Markdown</button>
-          <button type="button" class="btn btn-primary btn-sm" id="btnSaveProfile">Save to Profile</button>
+          <button type="button" class="btn btn-primary btn-sm" id="btnSaveProfile">Save Profile</button>
         </div>
       </div>
     </section>
@@ -209,7 +334,7 @@
 
   <div class="toast" id="toast" hidden></div>
 
-  <script src="nav.js?v=2.3"></script>
-  <script src="profile.js"></script>
+  <script src="nav.js?v=2.7"></script>
+  <script src="profile.js?v=3.0"></script>
 </body>
 </html>
