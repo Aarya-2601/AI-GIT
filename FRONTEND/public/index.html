@@ -1,237 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>GitHub Profile Studio</title>
-
-<style>
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-    margin:0;
-    min-height:100vh;
-    background:#0d1117;
-    color:#f0f6fc;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.container{
-    width:min(900px,92%);
-    text-align:center;
-}
-
-.logo{
-    font-size:52px;
-    margin-bottom:15px;
-}
-
-h1{
-    font-size:48px;
-    margin:0;
-}
-
-p{
-    color:#8b949e;
-    font-size:17px;
-    line-height:1.7;
-    max-width:650px;
-    margin:20px auto;
-}
-
-.login{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-
-    margin-top:20px;
-
-    padding:13px 22px;
-
-    background:#238636;
-
-    border:1px solid #2ea043;
-
-    border-radius:7px;
-
-    color:white;
-
-    font-size:15px;
-    font-weight:600;
-
-    text-decoration:none;
-}
-
-.login:hover{
-    background:#2ea043;
-}
-
-.flow{
-    margin-top:60px;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:12px;
-}
-
-.step{
-    padding:20px 12px;
-
-    border:1px solid #30363d;
-
-    border-radius:8px;
-
-    background:#161b22;
-}
-
-.step-number{
-    color:#58a6ff;
-    font-weight:700;
-}
-
-.step-title{
-    margin-top:7px;
-    font-weight:600;
-}
-
-.step-text{
-    margin-top:5px;
-    color:#8b949e;
-    font-size:12px;
-}
-
-@media(max-width:700px){
-
-    h1{
-        font-size:35px;
-    }
-
-    .flow{
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in · AI-GIT (Decentralized AI Model VCS)</title>
+  <link rel="stylesheet" href="auth.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'><circle cx='12' cy='12' r='10'/></svg>">
 </head>
+<body class="auth-page">
+  <div class="auth-glow-orb-1"></div>
+  <div class="auth-glow-orb-2"></div>
 
-<body>
-
-<div class="container">
-
-    <div class="logo">
-        ◉
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-logo">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a4 4 0 0 1 4 4c0 1.1-.5 2.1-1.3 2.8L17 12h3a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-3l-2.3 3.2c.8.7 1.3 1.7 1.3 2.8a4 4 0 1 1-8 0c0-1.1.5-2.1 1.3-2.8L7 18H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h3l2.3-3.2C8.5 8.1 8 7.1 8 6a4 4 0 0 1 4-4z"/>
+          <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
+          <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
+        </svg>
+      </div>
+      <h1 class="auth-title">Welcome to AI-GIT</h1>
+      <p class="auth-subtitle">Standalone Content-Addressed Version Control for AI/ML Models</p>
     </div>
 
-    <h1>
-        Build your GitHub profile.
-    </h1>
+    <!-- Alert Message Container -->
+    <div id="authAlert" class="auth-alert" style="display: none;" role="alert"></div>
 
-    <p>
-        Connect your GitHub account, create your
-        profile repository automatically, build your
-        README, and get a polished profile overview.
+    <!-- Tabs: Sign In / Sign Up -->
+    <div class="auth-tabs">
+      <button class="auth-tab-btn active" id="tabSignIn" type="button">Sign In</button>
+      <button class="auth-tab-btn" id="tabSignUp" type="button">Create Account</button>
+    </div>
+
+    <!-- Sign In Form -->
+    <form id="formSignIn">
+      <div class="auth-mode-seg">
+        <button type="button" class="mode-btn active" id="modePw">Username + Password</button>
+        <button type="button" class="mode-btn" id="modeOtp">Email + OTP Code</button>
+      </div>
+
+      <div id="inPwFields">
+        <div class="form-group">
+          <label class="form-label" for="inUser">Username or Email</label>
+          <input type="text" class="form-input" id="inUser" placeholder="e.g. aarya-ml or aaryadoshi7@gmail.com" autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inPass">Password</label>
+          <input type="password" class="form-input" id="inPass" placeholder="••••••••" autocomplete="current-password">
+        </div>
+      </div>
+
+      <div id="inOtpFields" style="display: none;">
+        <div class="form-group">
+          <label class="form-label" for="inEmail">Research Email Address</label>
+          <div class="row-with-btn">
+            <input type="email" class="form-input" id="inEmail" placeholder="yourname@research.org" autocomplete="email">
+            <button type="button" class="btn-send-otp" id="btnSendOtpIn">Send OTP</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inOtp">6-Digit Verification Code</label>
+          <input type="text" class="form-input" id="inOtp" maxlength="6" inputmode="numeric" placeholder="6-digit code">
+        </div>
+      </div>
+
+      <button type="submit" class="btn-auth-submit">Sign In to AI-GIT</button>
+    </form>
+
+    <!-- Sign Up Form -->
+    <form id="formSignUp" style="display: none;">
+      <div class="form-group">
+        <label class="form-label" for="upName">Full Name</label>
+        <input type="text" class="form-input" id="upName" placeholder="Dr. Jane Doe" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="upUser">Username</label>
+        <input type="text" class="form-input" id="upUser" placeholder="janedoe-ai" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="upEmail">Email Address</label>
+        <div class="row-with-btn">
+          <input type="email" class="form-input" id="upEmail" placeholder="jane@institute.org" autocomplete="email">
+          <button type="button" class="btn-send-otp" id="btnSendOtpUp">Send OTP</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="upOtp">Verification Code (Optional if local)</label>
+        <input type="text" class="form-input" id="upOtp" maxlength="6" inputmode="numeric" placeholder="6-digit code">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="upPass">Password</label>
+        <input type="password" class="form-input" id="upPass" placeholder="At least 6 characters" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="upPass2">Confirm Password</label>
+        <input type="password" class="form-input" id="upPass2" placeholder="Re-enter password" autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn-auth-submit">Create AI-GIT Account</button>
+    </form>
+
+    <div class="auth-divider">OR INSTANT TESTING</div>
+
+    <button type="button" class="btn-demo-login" id="btnDemoLogin">
+      <span>⚡ Instant 1-Click Researcher Demo Sign In</span>
+    </button>
+
+    <p class="auth-footer">
+      Demo account: <code>aarya-ml</code> / <code>demo1234</code><br>
+      <a href="dashboard.html" style="display: inline-block; margin-top: 8px; color: var(--text-muted); font-size: 11.5px;">&rarr; Skip directly to Dashboard as Guest</a>
     </p>
+  </div>
 
-    <a
-        class="login"
-        href="/auth/github"
-    >
-        Continue with GitHub
-    </a>
-
-    <div class="flow">
-
-        <div class="step">
-
-            <div class="step-number">
-                01
-            </div>
-
-            <div class="step-title">
-                Connect
-            </div>
-
-            <div class="step-text">
-                Sign in with GitHub
-            </div>
-
-        </div>
-
-        <div class="step">
-
-            <div class="step-number">
-                02
-            </div>
-
-            <div class="step-title">
-                Customize
-            </div>
-
-            <div class="step-text">
-                Enter your profile details
-            </div>
-
-        </div>
-
-        <div class="step">
-
-            <div class="step-number">
-                03
-            </div>
-
-            <div class="step-title">
-                Publish
-            </div>
-
-            <div class="step-text">
-                Create your profile repository
-            </div>
-
-        </div>
-
-        <div class="step">
-
-            <div class="step-number">
-                04
-            </div>
-
-            <div class="step-title">
-                Overview
-            </div>
-
-            <div class="step-text">
-                See your GitHub-style profile
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
+  <script src="auth.js"></script>
 </body>
-
 </html>
