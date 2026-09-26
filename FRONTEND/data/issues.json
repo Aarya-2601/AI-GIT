@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ISSUE-101",
+    "repoId": "llama-3-8b-instruct",
+    "title": "FP16 precision overflow in Attention Projection weights on Epoch 18",
+    "author": "marcus_ai",
+    "status": "open",
+    "createdAt": "3 hours ago",
+    "labels": [
+      "precision",
+      "fp16",
+      "loss-divergence"
+    ],
+    "commentsCount": 4,
+    "description": "During evaluation of epoch 18 weights on CUDA compute capability 8.9, attention logits periodically produce NaN when prompt exceeds 4k tokens. Investigating bfloat16 clamping.",
+    "comments": [
+      {
+        "author": "aarya-ml",
+        "time": "2 hours ago",
+        "text": "We verified this is caused by lack of scaling factor in RoPE frequency base. FastCDC chunk #412 isolates the attention weights; updating."
+      }
+    ]
+  },
+  {
+    "id": "ISSUE-102",
+    "repoId": "stable-diffusion-xl-base",
+    "title": "UNet chunk manifest hash mismatch on Windows checkout",
+    "author": "elena_vision",
+    "status": "open",
+    "createdAt": "1 day ago",
+    "labels": [
+      "windows",
+      "fastcdc",
+      "manifest"
+    ],
+    "commentsCount": 2,
+    "description": "Running `ai-git checkout main` inside PowerShell triggers a checksum retry on `diffusion_pytorch_model.safetensors` due to CRLF stream reading in index parser.",
+    "comments": [
+      {
+        "author": "aarya-ml",
+        "time": "18 hours ago",
+        "text": "Fixed in binary stream mode. The content-addressed hash now matches bit-for-bit."
+      }
+    ]
+  },
+  {
+    "id": "ISSUE-103",
+    "repoId": "whisper-large-v3",
+    "title": "Support INT8 quantization in GGUF export script",
+    "author": "david_speech",
+    "status": "closed",
+    "createdAt": "4 days ago",
+    "labels": [
+      "quantization",
+      "gguf",
+      "enhancement"
+    ],
+    "commentsCount": 5,
+    "description": "Requesting an automated export pipeline to quantize the encoder into Q8_0 while keeping the autoregressive decoder in FP16.",
+    "comments": [
+      {
+        "author": "aarya-ml",
+        "time": "3 days ago",
+        "text": "Merged and pushed in commit `c5e7d0a9b8d3`. Reduces model size by 48% with zero WER degradation."
+      }
+    ]
+  }
+]

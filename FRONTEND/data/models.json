@@ -1,0 +1,537 @@
+[
+  {
+    "id": "llama-3-8b-instruct",
+    "name": "llama-3-8b-instruct",
+    "description": "Meta Llama 3 8B fine-tuned for high-performance instruction following, dialogue, and code synthesis.",
+    "family": "Large Language Model",
+    "framework": "SafeTensors",
+    "precision": "bfloat16",
+    "parameters": "8.03B",
+    "contextLength": "8,192 tokens",
+    "architecture": "LlamaForCausalLM (32 Layers, 4096 Hidden Dim, 32 Heads)",
+    "epoch": "Epoch 18 / 20",
+    "valLoss": "1.142",
+    "stars": 342,
+    "forks": 89,
+    "updatedAt": "2 hours ago",
+    "author": "aarya-ml",
+    "tags": [
+      "LLM",
+      "SafeTensors",
+      "Instruction-Tuned",
+      "PyTorch",
+      "FastCDC"
+    ],
+    "metrics": {
+      "rawSizeBytes": 17244160000,
+      "casSizeBytes": 4939212000,
+      "spaceSavedBytes": 12304948000,
+      "savingsPercentage": 71.4,
+      "totalChunks": 3840,
+      "deduplicatedChunks": 2740,
+      "compressionRatio": "3.5x"
+    },
+    "tree": [
+      {
+        "name": "checkpoints",
+        "type": "directory",
+        "size": "15.8 GB",
+        "children": [
+          {
+            "name": "epoch_18_best.safetensors",
+            "type": "file",
+            "size": "4.82 GB",
+            "chunks": 1140,
+            "deduped": 890,
+            "hash": "0742431d714208b339813c68158c171a119133f70e72169ee4432e16d473d18c",
+            "epoch": "18",
+            "loss": "1.142"
+          },
+          {
+            "name": "epoch_15.safetensors",
+            "type": "file",
+            "size": "4.82 GB",
+            "chunks": 1140,
+            "deduped": 1020,
+            "hash": "109df5378cc6675359146c1a331293be7f238f874867498427a20294b386d21c",
+            "epoch": "15",
+            "loss": "1.198"
+          },
+          {
+            "name": "epoch_10.safetensors",
+            "type": "file",
+            "size": "4.82 GB",
+            "chunks": 1140,
+            "deduped": 830,
+            "hash": "3df1aee7d468df0b1a3f259baef8a9448ab69201a598a547aeebc98aea0d9927",
+            "epoch": "10",
+            "loss": "1.284"
+          },
+          {
+            "name": "checkpoint_manifest.json",
+            "type": "file",
+            "size": "128 KB",
+            "chunks": 1,
+            "deduped": 0,
+            "hash": "497467d24740c08a58fb0d1b70a4f9862bdbee330c74f759c1c14c069e2b5b5c"
+          }
+        ]
+      },
+      {
+        "name": "configs",
+        "type": "directory",
+        "size": "42 KB",
+        "children": [
+          {
+            "name": "config.json",
+            "type": "file",
+            "size": "4.2 KB",
+            "chunks": 1,
+            "deduped": 0,
+            "hash": "683a47e3e1630d19b2e069555d8879aa3bf77609d320d7c5d0ad80b12371bfa9"
+          },
+          {
+            "name": "generation_config.json",
+            "type": "file",
+            "size": "1.8 KB",
+            "chunks": 1,
+            "deduped": 0,
+            "hash": "844730bdc7dce7cf9e4331999d4ece051df3d4b5f3f72f4e64766837ea8ab329"
+          },
+          {
+            "name": "hyperparameters.yaml",
+            "type": "file",
+            "size": "36 KB",
+            "chunks": 1,
+            "deduped": 0,
+            "hash": "88402a6933ca84b63f8f6e6cea244a452a2e8c6deaa10b20eedeb1f595dd8d64"
+          }
+        ]
+      },
+      {
+        "name": "tokenizer.json",
+        "type": "file",
+        "size": "1.84 MB",
+        "chunks": 2,
+        "deduped": 1,
+        "hash": "c7dd71e5dcee2bf5e76314f9efdf9f9cc6599a554797baa3f141ab558fb87c24"
+      },
+      {
+        "name": "tokenizer_config.json",
+        "type": "file",
+        "size": "12.4 KB",
+        "chunks": 1,
+        "deduped": 0,
+        "hash": "dcb22345bc735eac3c3cfe2a68fc741361c711dd61d51f57410834310e1aaa9f"
+      },
+      {
+        "name": "README.md",
+        "type": "file",
+        "size": "8.6 KB",
+        "chunks": 1,
+        "deduped": 0,
+        "hash": "ea09635eb007798102deb9a9373f8fcb48dc9f126f1fe25c8444491e4bef1a36"
+      }
+    ],
+    "commits": [
+      {
+        "hash": "c7dd71e5dcee",
+        "fullHash": "c7dd71e5dcee2bf5e76314f9efdf9f9cc6599a554797baa3f141ab558fb87c24",
+        "branch": "main",
+        "epoch": "Epoch 18",
+        "valLoss": "1.142",
+        "message": "checkpoint: Epoch 18 best model weights; validation perplexity drops to 3.13",
+        "author": "Aarya Doshi",
+        "date": "2 hours ago",
+        "parents": [
+          "844730bdc7dc"
+        ],
+        "newChunks": 250,
+        "reusedChunks": 890
+      },
+      {
+        "hash": "844730bdc7dc",
+        "fullHash": "844730bdc7dce7cf9e4331999d4ece051df3d4b5f3f72f4e64766837ea8ab329",
+        "branch": "main",
+        "epoch": "Epoch 15",
+        "valLoss": "1.198",
+        "message": "train: Epoch 15 checkpoint saved with CosineAnnealingLR decay",
+        "author": "Aarya Doshi",
+        "date": "1 day ago",
+        "parents": [
+          "683a47e3e163"
+        ],
+        "newChunks": 120,
+        "reusedChunks": 1020
+      },
+      {
+        "hash": "683a47e3e163",
+        "fullHash": "683a47e3e1630d19b2e069555d8879aa3bf77609d320d7c5d0ad80b12371bfa9",
+        "branch": "lora-finetune",
+        "epoch": "Epoch 12",
+        "valLoss": "1.240",
+        "message": "experiment: Merge LoRA rank-64 adapter into base weights",
+        "author": "Elena Rostova",
+        "date": "3 days ago",
+        "parents": [
+          "3df1aee7d468"
+        ],
+        "newChunks": 95,
+        "reusedChunks": 1045
+      },
+      {
+        "hash": "3df1aee7d468",
+        "fullHash": "3df1aee7d468df0b1a3f259baef8a9448ab69201a598a547aeebc98aea0d9927",
+        "branch": "main",
+        "epoch": "Epoch 10",
+        "valLoss": "1.284",
+        "message": "checkpoint: Initial baseline fine-tuning weights for Llama-3-8B",
+        "author": "Aarya Doshi",
+        "date": "5 days ago",
+        "parents": [
+          "0742431d7142"
+        ],
+        "newChunks": 310,
+        "reusedChunks": 830
+      },
+      {
+        "hash": "0742431d7142",
+        "fullHash": "0742431d714208b339813c68158c171a119133f70e72169ee4432e16d473d18c",
+        "branch": "main",
+        "epoch": "Init",
+        "valLoss": "N/A",
+        "message": "init: Import base Llama-3 model architecture, tokenizer & FastCDC manifests",
+        "author": "Aarya Doshi",
+        "date": "1 week ago",
+        "parents": [],
+        "newChunks": 1140,
+        "reusedChunks": 0
+      }
+    ]
+  },
+  {
+    "id": "stable-diffusion-xl-base",
+    "name": "stable-diffusion-xl-base",
+    "description": "High-resolution latent diffusion model for photorealistic text-to-image synthesis with dual text encoders.",
+    "family": "Computer Vision / Diffusion",
+    "framework": "SafeTensors",
+    "precision": "fp16",
+    "parameters": "3.5B",
+    "contextLength": "1024x1024 px",
+    "architecture": "SDXL-UNet (3.1B) + OpenCLIP-ViT/bigG + CLIP-ViT/L (812M)",
+    "epoch": "Epoch 45 / 50",
+    "valLoss": "0.082",
+    "stars": 289,
+    "forks": 64,
+    "updatedAt": "4 hours ago",
+    "author": "aarya-ml",
+    "tags": [
+      "Diffusion",
+      "Text-to-Image",
+      "SafeTensors",
+      "PyTorch",
+      "Vision"
+    ],
+    "metrics": {
+      "rawSizeBytes": 14925000000,
+      "casSizeBytes": 3950000000,
+      "spaceSavedBytes": 10975000000,
+      "savingsPercentage": 73.5,
+      "totalChunks": 3200,
+      "deduplicatedChunks": 2350,
+      "compressionRatio": "3.8x"
+    },
+    "tree": [
+      {
+        "name": "unet",
+        "type": "directory",
+        "size": "5.14 GB",
+        "children": [
+          {
+            "name": "diffusion_pytorch_model.safetensors",
+            "type": "file",
+            "size": "5.14 GB",
+            "chunks": 1250,
+            "deduped": 950,
+            "hash": "a1f5d6e3e3b0c442a1f5d6e3e3b0c442a1f5d6e3e3b0c442a1f5d6e3e3b0c442"
+          },
+          {
+            "name": "config.json",
+            "type": "file",
+            "size": "3.8 KB",
+            "chunks": 1,
+            "deduped": 0,
+            "hash": "b2f6e7d4f4c1d553b2f6e7d4f4c1d553b2f6e7d4f4c1d553b2f6e7d4f4c1d553"
+          }
+        ]
+      },
+      {
+        "name": "vae",
+        "type": "directory",
+        "size": "335 MB",
+        "children": [
+          {
+            "name": "diffusion_pytorch_model.safetensors",
+            "type": "file",
+            "size": "335 MB",
+            "chunks": 82,
+            "deduped": 82,
+            "hash": "c3e8a9d1b0c4e7f2c3e8a9d1b0c4e7f2c3e8a9d1b0c4e7f2c3e8a9d1b0c4e7f2"
+          }
+        ]
+      },
+      {
+        "name": "text_encoder_2",
+        "type": "directory",
+        "size": "1.39 GB",
+        "children": [
+          {
+            "name": "model.safetensors",
+            "type": "file",
+            "size": "1.39 GB",
+            "chunks": 340,
+            "deduped": 290,
+            "hash": "d4f9b0c2e1d5a8e3d4f9b0c2e1d5a8e3d4f9b0c2e1d5a8e3d4f9b0c2e1d5a8e3"
+          }
+        ]
+      },
+      {
+        "name": "model_index.json",
+        "type": "file",
+        "size": "1.2 KB",
+        "chunks": 1,
+        "deduped": 0,
+        "hash": "e5a0c1d3f2e6b9f4e5a0c1d3f2e6b9f4e5a0c1d3f2e6b9f4e5a0c1d3f2e6b9f4"
+      }
+    ],
+    "commits": [
+      {
+        "hash": "9b0c2e1d5a8e",
+        "fullHash": "9b0c2e1d5a8e3d4f9b0c2e1d5a8e3d4f9b0c2e1d5a8e3d4f9b0c2e1d5a8e3d4f",
+        "branch": "main",
+        "epoch": "Epoch 45",
+        "valLoss": "0.082",
+        "message": "checkpoint: Fine-tuned UNet for photorealistic lighting & eye clarity",
+        "author": "Aarya Doshi",
+        "date": "4 hours ago",
+        "parents": [
+          "e3b0c442a1f5"
+        ],
+        "newChunks": 300,
+        "reusedChunks": 950
+      },
+      {
+        "hash": "e3b0c442a1f5",
+        "fullHash": "e3b0c442a1f5d6e3e3b0c442a1f5d6e3e3b0c442a1f5d6e3e3b0c442a1f5d6e3",
+        "branch": "main",
+        "epoch": "Epoch 30",
+        "valLoss": "0.098",
+        "message": "train: Checkpoint after 30 epochs on Laion-HD subset",
+        "author": "Aarya Doshi",
+        "date": "2 days ago",
+        "parents": [],
+        "newChunks": 1250,
+        "reusedChunks": 0
+      }
+    ]
+  },
+  {
+    "id": "whisper-large-v3",
+    "name": "whisper-large-v3",
+    "description": "Multilingual automatic speech recognition and speech translation model robust against background noise.",
+    "family": "Audio / Speech",
+    "framework": "PyTorch",
+    "precision": "fp16",
+    "parameters": "1.55B",
+    "contextLength": "30s chunks",
+    "architecture": "Encoder-Decoder Audio Transformer (32 Layers, 1280 Hidden Dim)",
+    "epoch": "Epoch 12 / 12",
+    "valLoss": "0.194",
+    "stars": 198,
+    "forks": 41,
+    "updatedAt": "1 day ago",
+    "author": "aarya-ml",
+    "tags": [
+      "Speech",
+      "ASR",
+      "Multilingual",
+      "PyTorch",
+      "Audio"
+    ],
+    "metrics": {
+      "rawSizeBytes": 6625000000,
+      "casSizeBytes": 2050000000,
+      "spaceSavedBytes": 4575000000,
+      "savingsPercentage": 69.1,
+      "totalChunks": 1480,
+      "deduplicatedChunks": 1020,
+      "compressionRatio": "3.2x"
+    },
+    "tree": [
+      {
+        "name": "model.safetensors",
+        "type": "file",
+        "size": "3.08 GB",
+        "chunks": 760,
+        "deduped": 540,
+        "hash": "f6b1d2e4a3c5b8e7f6b1d2e4a3c5b8e7f6b1d2e4a3c5b8e7f6b1d2e4a3c5b8e7"
+      },
+      {
+        "name": "preprocessor_config.json",
+        "type": "file",
+        "size": "336 B",
+        "chunks": 1,
+        "deduped": 0,
+        "hash": "a7c2e3f5b4d6c9f8a7c2e3f5b4d6c9f8a7c2e3f5b4d6c9f8a7c2e3f5b4d6c9f8"
+      },
+      {
+        "name": "tokenizer.json",
+        "type": "file",
+        "size": "2.41 MB",
+        "chunks": 3,
+        "deduped": 2,
+        "hash": "b8d3f4a6c5e7d0a9b8d3f4a6c5e7d0a9b8d3f4a6c5e7d0a9b8d3f4a6c5e7d0a9"
+      }
+    ],
+    "commits": [
+      {
+        "hash": "c5e7d0a9b8d3",
+        "fullHash": "c5e7d0a9b8d3f4a6c5e7d0a9b8d3f4a6c5e7d0a9b8d3f4a6c5e7d0a9b8d3f4a6",
+        "branch": "main",
+        "epoch": "Epoch 12",
+        "valLoss": "0.194",
+        "message": "release: Final multilingual whisper weights, WER 7.2% on CommonVoice",
+        "author": "Aarya Doshi",
+        "date": "1 day ago",
+        "parents": [],
+        "newChunks": 220,
+        "reusedChunks": 540
+      }
+    ]
+  },
+  {
+    "id": "deepseek-coder-6.7b",
+    "name": "deepseek-coder-6.7b",
+    "description": "State-of-the-art open code LLM trained from scratch on 2 trillion tokens of 87 programming languages.",
+    "family": "Code Intelligence",
+    "framework": "GGUF",
+    "precision": "int4 / Q4_K_M",
+    "parameters": "6.7B",
+    "contextLength": "16,384 tokens",
+    "architecture": "Decoder-only Transformer with RoPE embeddings & SwiGLU activations",
+    "epoch": "Epoch 8 / 10",
+    "valLoss": "0.942",
+    "stars": 412,
+    "forks": 110,
+    "updatedAt": "2 days ago",
+    "author": "aarya-ml",
+    "tags": [
+      "Code",
+      "GGUF",
+      "Quantized",
+      "LLM",
+      "C++",
+      "Python"
+    ],
+    "metrics": {
+      "rawSizeBytes": 14350000000,
+      "casSizeBytes": 4210000000,
+      "spaceSavedBytes": 10140000000,
+      "savingsPercentage": 70.7,
+      "totalChunks": 3120,
+      "deduplicatedChunks": 2210,
+      "compressionRatio": "3.4x"
+    },
+    "tree": [
+      {
+        "name": "deepseek-coder-6.7b.Q4_K_M.gguf",
+        "type": "file",
+        "size": "4.08 GB",
+        "chunks": 980,
+        "deduped": 710,
+        "hash": "d0a9b8d3f4a6c5e7d0a9b8d3f4a6c5e7d0a9b8d3f4a6c5e7d0a9b8d3f4a6c5e7"
+      },
+      {
+        "name": "tokenizer.model",
+        "type": "file",
+        "size": "1.37 MB",
+        "chunks": 2,
+        "deduped": 1,
+        "hash": "e1b0c9a8d7f6e5d4e1b0c9a8d7f6e5d4e1b0c9a8d7f6e5d4e1b0c9a8d7f6e5d4"
+      }
+    ],
+    "commits": [
+      {
+        "hash": "d7f6e5d4e1b0",
+        "fullHash": "d7f6e5d4e1b0c9a8d7f6e5d4e1b0c9a8d7f6e5d4e1b0c9a8d7f6e5d4e1b0c9a8",
+        "branch": "main",
+        "epoch": "Epoch 8",
+        "valLoss": "0.942",
+        "message": "quant: Export FastCDC chunked GGUF format for llama.cpp edge inference",
+        "author": "Marcus Chen",
+        "date": "2 days ago",
+        "parents": [],
+        "newChunks": 270,
+        "reusedChunks": 710
+      }
+    ]
+  },
+  {
+    "id": "aigit-e2e-test",
+    "name": "aigit-e2e-test",
+    "description": "Internal end-to-end integration test repository tracking synthetic 10 MB neural network weights and FastCDC chunk parity.",
+    "family": "Test / Benchmark",
+    "framework": "Raw Binary",
+    "precision": "int8",
+    "parameters": "10M",
+    "contextLength": "Flat Binary",
+    "architecture": "Synthetic Matrix Weights (.bin)",
+    "epoch": "Epoch 1 / 1",
+    "valLoss": "0.000",
+    "stars": 12,
+    "forks": 3,
+    "updatedAt": "2 days ago",
+    "author": "aarya-ml",
+    "tags": [
+      "Test",
+      "E2E",
+      "FastCDC",
+      "Benchmark",
+      "MinIO"
+    ],
+    "metrics": {
+      "rawSizeBytes": 10318894,
+      "casSizeBytes": 10318894,
+      "spaceSavedBytes": 0,
+      "savingsPercentage": 0,
+      "totalChunks": 10,
+      "deduplicatedChunks": 0,
+      "compressionRatio": "1.0x"
+    },
+    "tree": [
+      {
+        "name": "model.bin",
+        "type": "file",
+        "size": "10.3 MB",
+        "chunks": 10,
+        "deduped": 0,
+        "hash": "0742431d714208b339813c68158c171a119133f70e72169ee4432e16d473d18c"
+      }
+    ],
+    "commits": [
+      {
+        "hash": "c7dd71e5dcee",
+        "fullHash": "c7dd71e5dcee2bf5e76314f9efdf9f9cc6599a554797baa3f141ab558fb87c24",
+        "branch": "main",
+        "epoch": "Init",
+        "valLoss": "0.000",
+        "message": "test: Initial E2E push of 10MB synthetic neural weights to MinIO",
+        "author": "Aarya Doshi",
+        "date": "2 days ago",
+        "parents": [],
+        "newChunks": 10,
+        "reusedChunks": 0
+      }
+    ]
+  }
+]
