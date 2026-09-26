@@ -1,6 +1,7 @@
 [
   {
     "id": "llama-3-8b-instruct",
+    "casRepoName": "aigit-e2e-test",
     "name": "llama-3-8b-instruct",
     "description": "Meta Llama 3 8B fine-tuned for high-performance instruction following, dialogue, and code synthesis.",
     "family": "Large Language Model",

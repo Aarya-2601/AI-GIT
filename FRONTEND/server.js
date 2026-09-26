@@ -9,6 +9,7 @@ const crypto = require("crypto");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3000';
 
 const USERS_FILE = path.join(__dirname, "data", "users.json");
 const REPOS_FILE = path.join(__dirname, "data", "models.json");
@@ -120,6 +121,7 @@ function getDefaultModels() {
     return [
         {
             id: "llama-3-8b-instruct",
+            casRepoName: "aigit-demo",
             name: "llama-3-8b-instruct",
             description: "Meta Llama 3 8B fine-tuned for high-performance instruction following, dialogue, and code synthesis.",
             family: "Large Language Model",
@@ -1134,6 +1136,34 @@ app.get("/api/news/ai", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: "Failed to fetch AI news", details: err.message });
     }
+});
+
+app.get('/api/backend/health', async (req, res) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/health`);
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    res.status(503).json({
+      status: "error",
+      message: "AI-Git CAS backend is unreachable",
+      detail: err.message
+    });
+  }
+});
+
+app.get('/api/backend/repos/:repoName', async (req, res) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/v1/repos/${encodeURIComponent(req.params.repoName)}`);
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    res.status(503).json({
+      status: "error",
+      message: "AI-Git CAS backend is unreachable",
+      detail: err.message
+    });
+  }
 });
 
 app.listen(PORT, () => {
