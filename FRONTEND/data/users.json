@@ -1,0 +1,23 @@
+{
+  "aarya-ml": {
+    "name": "Aarya Doshi",
+    "username": "aarya-ml",
+    "email": "aaryadoshi7@gmail.com",
+    "role": "Lead AI Researcher & Systems Architect",
+    "bio": "Training multi-billion parameter diffusion models & building decentralized content-addressed VCS for large neural weights.",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+    "skills": [
+      "PyTorch",
+      "FastCDC",
+      "CUDA",
+      "SafeTensors",
+      "Distributed Training",
+      "JAX",
+      "C++17"
+    ],
+    "organization": "AI-GIT Foundation",
+    "location": "San Francisco, CA",
+    "website": "https://github.com/Aarya-2601/AI-GIT",
+    "passwordHash": "c5cfff14616d82d0ce1850f674060f3a:0f63f9137890857394f269bdc5ef79a88066350ed4fd0920b937d89f0323670be58770ae57162556faa70ff76cd14ffa8e652ee54c4c3d2a518d6180b6c2a23f"
+  }
+}
