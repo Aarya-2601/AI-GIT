@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Researcher Profile Studio &amp; Overview · AI-GIT</title>
+  <link rel="stylesheet" href="profile.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'><circle cx='12' cy='12' r='10'/></svg>">
+</head>
+<body>
+
+  <!-- Top Global Navigation Placeholder -->
+  <div id="aigitTopNav"></div>
+
+  <!-- Sub-Navigation Bar -->
+  <nav class="profile-subnav">
+    <div class="profile-subnav-inner">
+      <div class="profile-tabs-group" role="tablist">
+        <button type="button" class="profile-tab-btn active" id="tabBtnHome" role="tab">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Overview / Public Profile</span>
+        </button>
+        <button type="button" class="profile-tab-btn" id="tabBtnStudio" role="tab">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span>Profile Studio &amp; README Generator</span>
+        </button>
+      </div>
+
+      <div style="font-size: 12.5px; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+        <span class="pill-badge badge-purple" style="font-size: 11px;">Researcher Mode</span>
+        <span id="navUserBadge" style="color: var(--accent-blue); font-weight: 600;">@aarya-ml</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- VIEW 1: OVERVIEW / PUBLIC PROFILE -->
+  <main class="dash" id="homeView">
+    <!-- Left Sidebar -->
+    <aside class="side">
+      <div class="avatar" id="avatarLetter">A</div>
+      <h2 id="dName">Aarya Doshi</h2>
+      <div class="handle-line" id="dUser">@aarya-ml</div>
+      <div class="role-badge" id="dRole">Lead AI Researcher &amp; Systems Architect</div>
+      <p id="dBio">Training multi-billion parameter diffusion models &amp; building decentralized content-addressed VCS for large neural weights.</p>
+
+      <button type="button" class="btn btn-secondary btn-sm" id="editProfileBtn" style="margin-top: 6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <span>Customize in Studio</span>
+      </button>
+
+      <!-- FastCDC Storage Savings Box -->
+      <div class="side-stats-card">
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.5px;">
+          FastCDC Storage Metrics
+        </div>
+        <div class="side-stat-row">
+          <span>Space Saved</span>
+          <strong style="color: var(--accent-pink);">106.6 GB (74.6%)</strong>
+        </div>
+        <div class="side-stat-row">
+          <span>Deduplication Rate</span>
+          <strong style="color: #4ade80;">89.2% chunks</strong>
+        </div>
+        <div class="side-stat-row">
+          <span>Models Tracked</span>
+          <strong>5 Repositories</strong>
+        </div>
+        <div class="side-stat-row">
+          <span>Compression Ratio</span>
+          <strong style="color: var(--accent-blue);">3.4x</strong>
+        </div>
+      </div>
+
+      <div style="margin-top: 10px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">Tracked Repositories</h3>
+        <ul class="repos" id="repoList" style="list-style: none; padding: 0; margin: 0;"></ul>
+      </div>
+    </aside>
+
+    <!-- Right Canvas Area -->
+    <section class="canvas">
+      <!-- Readme Box -->
+      <div class="readme" id="homeReadme"></div>
+
+      <!-- Pinned Models -->
+      <div class="canvas-section-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-pink);"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        <span>Pinned AI-GIT Model Repositories</span>
+      </div>
+      <div class="pins" id="pinnedModelsGrid"></div>
+
+      <!-- Heatmap -->
+      <div class="canvas-section-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-purple);"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>289 Neural Checkpoint Commits in 2026</span>
+      </div>
+      <div class="box">
+        <div class="heat" id="heatCanvas"></div>
+        <div class="legend">
+          <span>Less</span>
+          <i class="c0"></i>
+          <i class="c1"></i>
+          <i class="c2"></i>
+          <i class="c3"></i>
+          <i class="c4"></i>
+          <span>More Checkpoints</span>
+        </div>
+      </div>
+
+      <!-- Checkpoint Activity Bars -->
+      <div class="canvas-section-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-blue);"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Checkpoint Commit Activity by Architecture</span>
+      </div>
+      <div class="box act" id="activityBox"></div>
+    </section>
+  </main>
+
+  <!-- VIEW 2: PROFILE STUDIO & README GENERATOR -->
+  <main class="studio" id="studioView" hidden>
+    <!-- Left Configuration Pane -->
+    <section class="pane left">
+      <!-- 1-Click Automation Callout -->
+      <div class="automation-banner">
+        <div class="automation-banner-text">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <div>
+            <strong>Automate Profile Studio</strong>
+            <div style="font-size: 12px; color: var(--text-muted);">Populate verified FastCDC metrics, real models, and deep learning badges in one click.</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" id="btnAutomateProfile">
+          ⚡ 1-Click Automate
+        </button>
+      </div>
+
+      <div class="stepper" id="stepper"></div>
+
+      <!-- Step 1: Identity -->
+      <div class="step" data-s="1">
+        <h2>Researcher Identity</h2>
+        <label>Display Name<input data-k="header" placeholder="Aarya Doshi"></label>
+        <label>Handle / Username<input data-k="gh" placeholder="aarya-ml"></label>
+        <label>Professional Role<input data-k="headline" placeholder="Lead AI Researcher &amp; Systems Architect"></label>
+        <label>Status / Mood<input data-k="status" placeholder="🚀 Training Llama-3-8B with FastCDC deduplication"></label>
+      </div>
+
+      <!-- Step 2: About -->
+      <div class="step" data-s="2" hidden>
+        <h2>About &amp; Research Focus</h2>
+        <label>Bio<textarea data-k="bio" rows="4" placeholder="Detail your machine learning research, architecture scaling, or model systems experience..."></textarea></label>
+        <label>Currently Training<input data-k="working" placeholder="Diffusion UNet &amp; FastCDC rolling-hash chunker"></label>
+        <label>Currently Exploring<input data-k="learning" placeholder="Rotary Position Embeddings &amp; FlashAttention-3"></label>
+        <label>Looking to Collaborate On<input data-k="collab" placeholder="Decentralized CAS model repositories"></label>
+        <label>Benchmark / Fun Fact<input data-k="fun" placeholder="Reduced S3 checkpoint storage by 74.6%"></label>
+      </div>
+
+      <!-- Step 3: Deep Learning Stack -->
+      <div class="step" data-s="3" hidden>
+        <h2>Deep Learning &amp; Systems Stack</h2>
+        <p class="muted" style="font-size: 13px; margin-bottom: 12px;">Select the technologies and frameworks to display as shields.io badges in your README.</p>
+        <div class="grid" id="stackGrid"></div>
+      </div>
+
+      <!-- Step 4: AI-GIT Add-ons & Metrics -->
+      <div class="step" data-s="4" hidden>
+        <h2>AI-GIT Metrics &amp; Add-ons</h2>
+        <p class="muted" style="font-size: 13px; margin-bottom: 12px;">Automate adding real-time deduplication and checkpoint statistics to your profile.</p>
+        <label class="switch"><span>Include FastCDC Storage Savings (74.6%)</span><input type="checkbox" data-k="stats" checked><i></i></label>
+        <label class="switch"><span>Include Neural Architecture Badges</span><input type="checkbox" data-k="langs" checked><i></i></label>
+        <label class="switch"><span>Include Checkpoint Contribution Graph</span><input type="checkbox" data-k="graph" checked><i></i></label>
+      </div>
+
+      <!-- Step 5: Socials & Contact -->
+      <div class="step" data-s="5" hidden>
+        <h2>Community &amp; Social Links</h2>
+        <label>Hugging Face<input data-k="huggingface" placeholder="username or URL"></label>
+        <label>GitHub<input data-k="github" placeholder="handle"></label>
+        <label>X / Twitter<input data-k="twitter" placeholder="handle"></label>
+        <label>LinkedIn<input data-k="linkedin" placeholder="username or URL"></label>
+        <label>ArXiv / Scholar<input data-k="arxiv" placeholder="URL"></label>
+        <label>Email<input data-k="email" type="email" placeholder="researcher@ai-git.org"></label>
+      </div>
+
+      <div class="btns">
+        <button type="button" class="btn btn-secondary btn-sm" id="btnBackStep">&larr; Back</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnNextStep">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- Right Preview Pane -->
+    <section class="pane right">
+      <div class="readme" id="visualPreview"></div>
+      <textarea class="raw" id="rawMarkdown" readonly spellcheck="false" aria-label="Markdown source" hidden></textarea>
+      
+      <div class="bar">
+        <div class="toggle">
+          <button type="button" class="tg active" id="tgVisual">Visual Preview</button>
+          <button type="button" class="tg" id="tgRaw">&lt;&gt; Markdown Raw</button>
+        </div>
+        <div class="acts">
+          <button type="button" class="btn btn-secondary btn-sm" id="btnDownloadReadme">Download README.md</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnCopyReadme">Copy Markdown</button>
+          <button type="button" class="btn btn-primary btn-sm" id="btnSaveProfile">Save to Profile</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="nav.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>
