@@ -13,6 +13,12 @@ const pushRoutes =
 const cloneRoutes =
     require('./routes/clone.routes.js').router;
 
+const pullRoutes =
+    require('./routes/pull.routes.js').router;
+
+const reposRoutes =
+    require('./routes/repos.routes.js').router;
+
 
 const app = express();
 
@@ -43,6 +49,16 @@ app.use(
 app.use(
     '/api/v1/clone',
     cloneRoutes
+);
+
+app.use(
+    '/api/v1/pull',
+    pullRoutes
+);
+
+app.use(
+    '/api/v1/repos',
+    reposRoutes
 );
 
 
