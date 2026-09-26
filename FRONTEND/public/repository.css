@@ -1,326 +1,1311 @@
+
 /* =========================================================
-   AI-GIT SINGLE MODEL REPOSITORY & VISUAL COMMIT GRAPH STYLES
-   Accents: Electric Blue (#38bdf8), Cyber Purple (#a855f7), Neon Pink (#f43f5e)
+   LIGHT BLUE SUBNAV TABS & SMOOTH SLIDING INDICATOR BAR
+   Requested: code=artifacts, pull requests=convergences,
+   issues=divergences, projects=pipelines,
+   security&quality=guardrails, settings=config
 ========================================================= */
 
-@import url("./nav.css");
+.node-tabs-wrapper {
+  background: #0d1117;
+  border-bottom: 1px solid #21262d;
+  padding: 0 32px;
+  position: relative;
+  overflow-x: auto;
+}
 
-.repo-detail-container {
-  max-width: 1320px;
+.node-tabs-container {
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 28px 24px 60px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.node-tab-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #8b949e;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+  outline: none;
+}
+
+/* Light blue color palette */
+.node-tab-item:hover {
+  color: #7dd3fc; /* Light electric blue */
+  text-shadow: 0 0 8px rgba(125, 211, 252, 0.4);
+}
+
+.node-tab-item.active {
+  color: #38bdf8; /* Vibrant light blue */
+  font-weight: 600;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+}
+
+.node-tab-item svg {
+  transition: transform 0.2s ease, stroke 0.2s ease;
+  flex-shrink: 0;
+}
+
+.node-tab-item:hover svg,
+.node-tab-item.active svg {
+  stroke: currentColor;
+  transform: translateY(-1px);
+}
+
+.tab-counter-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  color: #7dd3fc;
+  background-color: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 9999px;
+}
+
+/* SMOOTH MOVING SLIDER BAR */
+.node-tabs-slider-bar {
+  position: absolute;
+  bottom: 0;
+  height: 2.5px;
+  background: linear-gradient(90deg, #38bdf8 0%, #7dd3fc 100%);
+  border-radius: 9999px;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.8), 0 0 20px rgba(56, 189, 248, 0.4);
+  transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1), width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* PANES FOR THE 6 TABS */
+.tab-pane-content {
+  animation: fadeInPane 0.2s ease;
+}
+
+@keyframes fadeInPane {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.placeholder-pane-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 32px 28px;
+}
+
+
+/* =========================================================
+   MAIN LAYOUT CONTAINER
+========================================================= */
+.node-main-layout {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 32px 64px;
 }
 
 /* =========================================================
-   REPOSITORY HEADER & ACTION BAR
+   NODE HEADER ROW (Avatar, Title, Unpin, Watch, Fork, Star)
 ========================================================= */
-
-.repo-header {
-  margin-bottom: 24px;
-}
-
-.repo-breadcrumb-row {
+.node-header-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
-.repo-breadcrumb {
+.node-title-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+}
+
+.node-avatar-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.node-name-text {
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
+  font-weight: 600;
+  color: #f0f6fc;
+  margin: 0;
+  letter-spacing: -0.2px;
 }
 
-.repo-breadcrumb a {
-  color: var(--accent-blue);
-}
-
-.repo-breadcrumb a:hover {
-  color: var(--accent-purple);
-}
-
-.repo-header-actions {
+.node-actions-right {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.btn-clone-group {
-  display: flex;
-  align-items: center;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm);
-  padding: 4px 10px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--accent-blue);
   gap: 8px;
 }
 
-.btn-clone-copy {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
+.btn-github-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #c9d1d9;
+  background-color: #21262d;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  border-radius: 6px;
   cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 4px;
   transition: all 0.15s ease;
 }
 
-.btn-clone-copy:hover {
-  color: #fff;
-  background: var(--bg-muted);
+.btn-github-action:hover {
+  background-color: #30363d;
+  border-color: #8b949e;
+  color: #f0f6fc;
+}
+
+.btn-github-action.active-star {
+  color: #e3b341;
+}
+
+.action-count {
+  display: inline-block;
+  padding: 0 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c9d1d9;
+  background-color: rgba(110, 118, 129, 0.3);
+  border-radius: 9999px;
+  margin-left: 2px;
 }
 
 /* =========================================================
-   REPO SUB-NAVIGATION TABS
+   CONTROLS BAR (Branch selector, Tags, Go to file, Code)
 ========================================================= */
-
-.repo-tabs-bar {
+.node-controls-bar {
   display: flex;
   align-items: center;
-  gap: 6px;
-  border-bottom: 1px solid var(--border-default);
-  margin-bottom: 24px;
-  overflow-x: auto;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.repo-tab-link {
+.controls-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.branch-selector-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  font-size: 13.5px;
+  color: #c9d1d9;
+  background-color: #21262d;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.branch-meta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #8b949e;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 400;
+  transition: color 0.15s ease;
+}
+
+.branch-meta-link:hover {
+  color: #58a6ff;
+}
+
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-github-subtle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  font-size: 13px;
+  color: #c9d1d9;
+  background-color: #21262d;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-github-subtle:hover {
+  background-color: #30363d;
+}
+
+.kbd-hint {
+  display: inline-block;
+  padding: 0 4px;
+  font-size: 10px;
+  color: #8b949e;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+}
+
+.btn-code-green {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #238636;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-code-green:hover {
+  background-color: #2ea043;
+}
+
+/* =========================================================
+   TWO COLUMN GRID (FILES LEFT, ABOUT RIGHT)
+========================================================= */
+.node-columns-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 296px;
+  gap: 28px;
+}
+
+@media (max-width: 992px) {
+  .node-columns-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   LATEST COMMIT BAR & FILES TABLE
+========================================================= */
+.latest-commit-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-size: 13px;
+}
+
+.commit-author-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author-avatar-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #38bdf8;
+  color: #0d1117;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.commit-author-name {
+  font-weight: 600;
+  color: #f0f6fc;
+}
+
+.commit-message-preview {
+  color: #8b949e;
+}
+
+.commit-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.commit-hash-link {
+  color: #58a6ff;
+  font-family: ui-monospace, monospace;
+}
+
+.commit-time {
+  color: #8b949e;
+}
+
+.commit-count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #c9d1d9;
+}
+
+.files-table-card {
+  border: 1px solid #30363d;
+  border-top: none;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  background-color: #0d1117;
+  margin-bottom: 24px;
+}
+
+.file-row {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 110px;
+  align-items: center;
+  padding: 8px 16px;
+  border-top: 1px solid #21262d;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.file-row:hover {
+  background-color: #161b22;
+}
+
+.file-name-part {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-name {
+  color: #e6edf3;
+  font-weight: 500;
+}
+
+.file-row:hover .file-name {
+  color: #58a6ff;
+  text-decoration: underline;
+}
+
+.file-commit-part {
+  color: #8b949e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 12px;
+}
+
+.file-time-part {
+  color: #8b949e;
+  text-align: right;
+  font-size: 12px;
+}
+
+/* =========================================================
+   README BOX (IMAGE REFERENCE)
+========================================================= */
+.node-readme-box {
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  background-color: #0d1117;
+  overflow: hidden;
+}
+
+.readme-box-header {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
+  background-color: #161b22;
+  border-bottom: 1px solid #30363d;
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--text-secondary);
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
+  color: #e6edf3;
 }
 
-.repo-tab-link:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.02);
+.readme-box-body {
+  padding: 28px 32px;
+  line-height: 1.6;
 }
 
-.repo-tab-link.active {
-  color: var(--text-primary);
-  border-bottom-color: var(--accent-pink);
-  background: rgba(168, 85, 247, 0.08);
+.readme-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #f0f6fc;
+  border-bottom: 1px solid #21262d;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
 }
 
-.repo-tab-link.active svg {
-  color: var(--accent-pink);
+.readme-lead {
+  font-size: 15px;
+  color: #c9d1d9;
+  margin-bottom: 20px;
+}
+
+.cli-pre {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 14px 18px;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  color: #38bdf8;
+  margin-bottom: 20px;
+  overflow-x: auto;
 }
 
 /* =========================================================
-   VISUAL COMMIT GRAPH SECTION (INTERACTIVE DAG)
+   RIGHT SIDEBAR: ABOUT, RELEASES, PACKAGES (IMAGE REFERENCE)
 ========================================================= */
+.node-sidebar-col {
+  display: flex;
+  flex-direction: column;
+}
 
-.graph-view-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  padding: 26px;
-  margin-bottom: 28px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+.sidebar-section {
+  padding: 4px 0 16px;
+}
+
+.sidebar-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.sidebar-title {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: #f0f6fc;
+  margin: 0;
+}
+
+.sidebar-gear-btn {
+  background: transparent;
+  border: none;
+  color: #8b949e;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.sidebar-gear-btn:hover {
+  color: #58a6ff;
+}
+
+.sidebar-desc {
+  font-size: 13.5px;
+  color: #c9d1d9;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.sidebar-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #8b949e;
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: color 0.15s ease;
+}
+
+.sidebar-link:hover {
+  color: #58a6ff;
+}
+
+.sidebar-link strong {
+  color: #f0f6fc;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background-color: #21262d;
+  margin: 12px 0;
+}
+
+.sidebar-subtext {
+  font-size: 13px;
+  color: #8b949e;
+  margin-bottom: 8px;
+}
+
+.sidebar-action-link {
+  font-size: 13px;
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.sidebar-action-link:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   VISUAL COMMIT GRAPH & DEDUP TABS
+========================================================= */
+.graph-view-card, .dedup-stats-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 24px;
 }
 
 .graph-header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .graph-title {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f0f6fc;
 }
 
 .graph-legend {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   font-size: 12px;
-  color: var(--text-secondary);
+  color: #8b949e;
 }
 
 .legend-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
   display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
 }
 
 .graph-viewport {
-  position: relative;
-  background: #060911;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  padding: 30px 20px;
-  min-height: 280px;
+  width: 100%;
   overflow-x: auto;
+  background: #0d1117;
+  border: 1px solid #21262d;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
 }
 
 .graph-svg-canvas {
   width: 100%;
-  min-width: 720px;
-  height: 220px;
+  min-height: 200px;
 }
 
-.graph-node-circle {
-  cursor: pointer;
-  transition: all 0.2s ease;
+.stats-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
 }
 
-.graph-node-circle:hover {
-  filter: drop-shadow(0 0 10px #f43f5e);
-  transform: scale(1.15);
-}
-
-.graph-node-label {
-  font-size: 11px;
-  font-family: var(--font-mono);
-  fill: var(--text-secondary);
-  cursor: pointer;
-}
-
-/* Commit Details Drawer */
-.commit-inspect-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  padding: 20px;
-  margin-top: 20px;
+.stat-box {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
-.inspect-commit-header {
-  display: flex;
+.stat-number {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #8b949e;
+  margin-top: 4px;
+}
+
+
+/* =========================================================
+   VIEW MODE TOGGLE: REPO VIEW vs TREE VIEW
+========================================================= */
+
+.view-mode-toggle {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.btn-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #8b949e;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.btn-view-toggle:hover {
+  color: #7dd3fc;
+}
+
+.btn-view-toggle.active {
+  background: #21262d;
+  color: #38bdf8;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+  border: 1px solid rgba(56, 189, 248, 0.4);
 }
 
 /* =========================================================
-   FILE BROWSER & README STYLES
+   SUBFOLDER BUBBLES SECTION (REPO VIEW)
 ========================================================= */
 
-.file-browser-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  margin-bottom: 28px;
+.subfolder-bubbles-section {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
 }
 
-.file-browser-top {
+.subfolder-bubbles-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 18px;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-default);
-  font-size: 13px;
+  margin-bottom: 10px;
 }
 
-.file-item-row {
-  display: grid;
-  grid-template-columns: 2fr 3fr 1fr 1fr;
+.bubbles-title-wrap {
+  display: flex;
   align-items: center;
-  padding: 11px 18px;
-  border-bottom: 1px solid var(--border-subtle);
-  font-size: 13px;
-  transition: background 0.15s ease;
+  gap: 8px;
 }
 
-.file-item-row:hover {
-  background: var(--bg-card-hover);
+.bubbles-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #38bdf8;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 }
 
-.file-name-cell {
+.bubbles-hint {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.bubbles-scroll-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-bubble-scroll {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #30363d;
+  background: #0d1117;
+  color: #8b949e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  transition: all 0.15s ease;
+}
+
+.btn-bubble-scroll:hover {
+  color: #f0f6fc;
+  border-color: #38bdf8;
+}
+
+/* Horizontal Scroll Track for Bubbles */
+.folder-bubbles-scroll-track {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 500;
-  color: var(--text-primary);
-  cursor: pointer;
+  overflow-x: auto;
+  padding: 6px 4px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #30363d transparent;
+  scroll-behavior: smooth;
 }
 
-.file-msg-cell {
-  color: var(--text-muted);
+.folder-bubbles-scroll-track::-webkit-scrollbar {
+  height: 5px;
+}
+
+.folder-bubbles-scroll-track::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 4px;
+}
+
+.folder-bubbles-scroll-track::-webkit-scrollbar-thumb:hover {
+  background: #38bdf8;
+}
+
+/* Individual Folder Bubble */
+.folder-bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 9999px;
+  color: #e6edf3;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.folder-bubble:hover {
+  background: #1c263e;
+  border-color: #38bdf8;
+  color: #7dd3fc;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+}
+
+.folder-bubble.active-bubble {
+  border-color: #c084fc;
+  background: rgba(192, 132, 252, 0.12);
+  color: #c084fc;
+}
+
+.folder-bubble .bubble-icon {
+  font-size: 13px;
+}
+
+.folder-bubble .bubble-meta {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  font-family: monospace;
+}
+
+/* =========================================================
+   HIERARCHICAL TREE VIEW
+========================================================= */
+
+.tree-view-wrapper {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 28px 24px 36px;
+  overflow-x: auto;
+}
+
+.tree-view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.tree-canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 900px;
+  position: relative;
+}
+
+/* Root Node at Top */
+.tree-root-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px;
+  background: #0d1117;
+  border: 2px solid #a855f7;
+  border-radius: 9999px;
+  color: #f0f6fc;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.45), inset 0 0 12px rgba(168, 85, 247, 0.2);
+  margin-bottom: 28px;
+  position: relative;
+}
+
+/* Branching connectors */
+.tree-branch-svg {
+  width: 100%;
+  max-width: 950px;
+  height: 48px;
+  overflow: visible;
+  margin-bottom: 8px;
+}
+
+/* Level 1 Grid of Folders */
+.tree-level1-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.tree-folder-card {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tree-folder-card:hover {
+  border-color: #38bdf8;
+  transform: translateY(-3px);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+}
+
+.tree-card-icon {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.tree-card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f0f6fc;
+  margin-bottom: 4px;
+}
+
+.tree-card-meta {
+  font-size: 11px;
+  color: #8b949e;
+  margin-bottom: 10px;
+}
+
+/* Sub-items in tree card */
+.tree-subitems-list {
+  width: 100%;
+  border-top: 1px solid #21262d;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.tree-subitem-pill {
+  font-size: 11px;
+  padding: 3px 8px;
+  background: #161b22;
+  border: 1px solid #21262d;
+  border-radius: 4px;
+  color: #c9d1d9;
+  font-family: monospace;
+  text-align: left;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  transition: all 0.15s ease;
 }
 
-.file-size-cell {
-  font-family: var(--font-mono);
-  color: var(--text-secondary);
-  text-align: right;
-  font-size: 12px;
+.tree-subitem-pill:hover {
+  color: #38bdf8;
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
 }
 
-.file-time-cell {
-  color: var(--text-muted);
-  text-align: right;
-  font-size: 12px;
+/* =========================================================
+   METRICS PANEL (IN SIDEBAR)
+========================================================= */
+
+.sidebar-metrics-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeInPane 0.25s ease;
 }
 
-/* README Preview Box */
-.readme-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  padding: 28px;
+.metric-widget-box {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px;
 }
 
-.readme-header {
+.metric-widget-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.metric-widget-title {
+  font-size: 12px;
   font-weight: 700;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border-subtle);
-  margin-bottom: 20px;
-  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #38bdf8;
 }
 
-.readme-content {
-  font-size: 14px;
-  line-height: 1.7;
-  color: #cbd5e1;
+/* 1. Circular Percentage Graph */
+.circular-graph-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 10px 0;
 }
 
-.readme-content h1, .readme-content h2, .readme-content h3 {
-  color: var(--text-primary);
-  margin: 18px 0 10px;
+.circular-svg {
+  transform: rotate(-90deg);
 }
 
-.readme-content code {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  padding: 2px 6px;
+.circular-bg-ring {
+  fill: none;
+  stroke: #21262d;
+  stroke-width: 10;
+}
+
+.circular-progress-ring {
+  fill: none;
+  stroke: url(#cyanEmeraldGlow);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 377;
+  stroke-dashoffset: 81; /* 78.4% filled */
+  transition: stroke-dashoffset 1s ease;
+}
+
+.circular-center-text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.circular-percent-val {
+  font-size: 26px;
+  font-weight: 800;
+  color: #10b981;
+  text-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+}
+
+.circular-percent-label {
+  font-size: 10.5px;
+  color: #8b949e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric-subcaption {
+  font-size: 12px;
+  color: #8b949e;
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* 2. Compression Ratio Graph */
+.compression-bar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.comp-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comp-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+}
+
+.comp-bar-track {
+  height: 8px;
+  background: #21262d;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.comp-bar-fill-raw {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+  border-radius: 9999px;
+}
+
+.comp-bar-fill-dedup {
+  width: 21.6%;
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8, #10b981);
+  border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+}
+
+/* 3. Chunks Metric Stats */
+.chunks-count-display {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.chunks-big-number {
+  font-size: 28px;
+  font-weight: 800;
+  color: #c084fc;
+  text-shadow: 0 0 14px rgba(192, 132, 252, 0.5);
+  font-family: monospace;
+}
+
+.chunks-ratio-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-top: 1px solid #21262d;
+  font-size: 12px;
+}
+
+/* =========================================================
+   BOTTOM CHECKPOINT COMMIT GRAPH PANEL
+========================================================= */
+
+.bottom-checkpoint-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0d1117;
+  border-top: 2px solid #38bdf8;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(56, 189, 248, 0.2);
+  z-index: 2000;
+  display: none;
+  animation: slideUpPanel 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bottom-checkpoint-panel.open {
+  display: block;
+}
+
+@keyframes slideUpPanel {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.checkpoint-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 28px;
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+}
+
+.checkpoint-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkpoint-panel-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #f0f6fc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.current-focus-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 9999px;
+  font-family: monospace;
+}
+
+.btn-close-checkpoint-panel {
+  background: transparent;
+  border: none;
+  color: #8b949e;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
   border-radius: 4px;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
+}
+
+.btn-close-checkpoint-panel:hover {
+  color: #f0f6fc;
+  background: #21262d;
+}
+
+.checkpoint-timeline-wrapper {
+  padding: 16px 28px 20px;
+  position: relative;
+}
+
+/* Horizontal scrollable commit strip */
+.checkpoint-sideways-track {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 10px 10px 16px;
+  scrollbar-width: thin;
+  scrollbar-color: #38bdf8 #161b22;
+  scroll-behavior: smooth;
+}
+
+.checkpoint-sideways-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.checkpoint-sideways-track::-webkit-scrollbar-thumb {
+  background: #38bdf8;
+  border-radius: 4px;
+}
+
+/* Individual Commit Card in Sideways Timeline */
+.commit-card-node {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px 16px;
+  min-width: 220px;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.commit-card-node:hover {
+  border-color: #7dd3fc;
+  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+}
+
+.commit-card-node.focused-current {
+  border-color: #38bdf8;
+  background: #1c263e;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(56, 189, 248, 0.2);
+}
+
+.commit-card-node.focused-current::before {
+  content: 'FOCUS / CURRENT';
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #0d1117;
+  background: #38bdf8;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.commit-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.commit-epoch-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.commit-hash-pill {
+  font-family: monospace;
+  font-size: 11.5px;
+  color: #58a6ff;
+  font-weight: 600;
+}
+
+.commit-card-msg {
+  font-size: 12px;
+  color: #f0f6fc;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.commit-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #8b949e;
 }
