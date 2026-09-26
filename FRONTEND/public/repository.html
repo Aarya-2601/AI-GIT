@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Repository · AI-GIT</title>
+  <link rel="stylesheet" href="repository.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'><circle cx='12' cy='12' r='10'/></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation Placeholder -->
+  <div id="aigitTopNav"></div>
+
+  <main class="repo-detail-container">
+    <!-- REPOSITORY HEADER -->
+    <header class="repo-header">
+      <div class="repo-breadcrumb-row">
+        <div class="repo-breadcrumb">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-purple);">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+          </svg>
+          <a href="repositories.html">models</a>
+          <span style="color: var(--text-muted);">/</span>
+          <span id="repoTitleText" style="color: var(--text-primary);">Loading model...</span>
+          <span class="pill-badge badge-blue">Public Weight Repo</span>
+        </div>
+
+        <div class="repo-header-actions">
+          <div class="btn-clone-group">
+            <span style="color: var(--text-muted);">$</span>
+            <span id="cloneCmdText">ai-git clone model</span>
+            <button class="btn-clone-copy" id="btnCopyClone" title="Copy CLI Clone Command">Copy</button>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnStarRepo">
+            <span>☆ Star</span>
+            <span class="pill-badge badge-purple" style="font-size: 11px;">142</span>
+          </button>
+        </div>
+      </div>
+
+      <p id="repoDescText" style="font-size: 14.5px; color: var(--text-secondary); max-width: 900px; margin-bottom: 16px; line-height: 1.5;"></p>
+    </header>
+
+    <!-- REPO NAVIGATION TABS -->
+    <nav class="repo-tabs-bar" role="tablist">
+      <button type="button" class="repo-tab-link active" data-tab="files" role="tab">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>Files &amp; Weights</span>
+      </button>
+
+      <button type="button" class="repo-tab-link" data-tab="graph" role="tab">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>
+        <span>Visual Commit Graph (DAG)</span>
+      </button>
+
+      <button type="button" class="repo-tab-link" data-tab="specs" role="tab">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Architecture &amp; Specs</span>
+      </button>
+
+      <button type="button" class="repo-tab-link" data-tab="dedup" role="tab">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>FastCDC Deduplication</span>
+      </button>
+    </nav>
+
+    <!-- TAB VIEW 1: FILES & WEIGHTS BROWSER -->
+    <section id="tabViewFiles" class="tab-view-content">
+      <div class="file-browser-card">
+        <div class="file-browser-top">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+            <span style="font-weight: 600; color: var(--text-primary);">main</span>
+            <span style="color: var(--text-muted); font-size: 12px;">(tracking latest epoch checkpoint)</span>
+          </div>
+          <div style="color: var(--text-muted); font-size: 12px;">
+            Content-Addressed Tree via <strong style="color: var(--accent-purple);">FastCDC</strong>
+          </div>
+        </div>
+
+        <div id="fileBrowserList">
+          <div style="padding: 24px; text-align: center; color: var(--text-muted);">
+            Loading files and chunk metadata...
+          </div>
+        </div>
+      </div>
+
+      <!-- Markdown README Box -->
+      <article class="readme-box">
+        <div class="readme-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>README.md &middot; AI Model Specification</span>
+        </div>
+        <div class="readme-content" id="readmeContent">
+          <h2>Quickstart with AI-GIT</h2>
+          <p>This model repository tracks machine learning weights with chunk-level deduplication. Instead of storing multi-gigabyte safetensors redundantly across training checkpoints, AI-GIT's FastCDC engine slices weights dynamically into cryptographic chunks.</p>
+          
+          <h3>Clone &amp; Pull Checkpoint</h3>
+          <pre><code># Clone repo weights metadata
+ai-git clone llama-3-8b-instruct
+
+# Pull raw safetensors with zero-copy deduplication
+ai-git pull origin main --weights</code></pre>
+
+          <h3>FastCDC Storage Savings</h3>
+          <p>Training runs typically modify only a fraction of attention heads and MLP layers. AI-GIT automatically detects unmodified byte boundaries and reuses existing chunks in MinIO / S3, yielding <strong>70%+ storage reduction</strong>.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- TAB VIEW 2: VISUAL COMMIT GRAPH (INTERACTIVE DAG) -->
+    <section id="tabViewGraph" class="tab-view-content" style="display: none;">
+      <div class="graph-view-card">
+        <div class="graph-header-row">
+          <div class="graph-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-pink);"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>
+            <span>Interactive Training Commit Graph (DAG)</span>
+          </div>
+          <div class="graph-legend">
+            <span><span class="legend-dot" style="background: #f43f5e;"></span> Head / Latest Epoch</span>
+            <span><span class="legend-dot" style="background: #38bdf8;"></span> Main Pre-training Run</span>
+            <span><span class="legend-dot" style="background: #c084fc;"></span> LoRA / Fine-tune Branch</span>
+          </div>
+        </div>
+
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+          Click on any epoch node in the DAG below to inspect validation loss, checkpoint hash, branch refs, and FastCDC chunk deltas.
+        </p>
+
+        <div class="graph-viewport">
+          <svg id="commitGraphSvg" class="graph-svg-canvas"></svg>
+        </div>
+
+        <!-- Dynamic Commit Inspection Drawer -->
+        <div id="commitDetailsDrawer" class="commit-inspect-card">
+          <div style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 12px;">
+            Select a commit node above to view detailed metrics.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB VIEW 3: ARCHITECTURE & SPECS -->
+    <section id="tabViewSpecs" class="tab-view-content" style="display: none;">
+      <!-- Populated dynamically by repository.js -->
+    </section>
+
+    <!-- TAB VIEW 4: FASTCDC DEDUPLICATION STATS -->
+    <section id="tabViewDedup" class="tab-view-content" style="display: none;">
+      <!-- Populated dynamically by repository.js -->
+    </section>
+  </main>
+
+  <script src="nav.js"></script>
+  <script src="repository.js"></script>
+</body>
+</html>
