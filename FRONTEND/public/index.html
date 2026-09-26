@@ -3,115 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign in · AI-GIT (Decentralized AI Model VCS)</title>
-  <link rel="stylesheet" href="auth.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'><circle cx='12' cy='12' r='10'/></svg>">
+  <title>Sign in · AI-GIT Model Hub</title>
+  <link rel="stylesheet" href="auth.css?v=2.1">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2338bdf8'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3C/svg%3E">
 </head>
 <body class="auth-page">
-  <div class="auth-glow-orb-1"></div>
-  <div class="auth-glow-orb-2"></div>
 
-  <div class="auth-card">
-    <div class="auth-header">
-      <div class="auth-logo">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2a4 4 0 0 1 4 4c0 1.1-.5 2.1-1.3 2.8L17 12h3a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-3l-2.3 3.2c.8.7 1.3 1.7 1.3 2.8a4 4 0 1 1-8 0c0-1.1.5-2.1 1.3-2.8L7 18H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h3l2.3-3.2C8.5 8.1 8 7.1 8 6a4 4 0 0 1 4-4z"/>
-          <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
-          <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
-        </svg>
-      </div>
-      <h1 class="auth-title">Welcome to AI-GIT</h1>
-      <p class="auth-subtitle">Standalone Content-Addressed Version Control for AI/ML Models</p>
+  <!-- Claude-style Top Left Wordmark -->
+  <a href="index.html" class="claude-brand-mark" title="AI-GIT">
+    <span class="claude-brand-text">AI-GIT</span>
+  </a>
+
+  <div class="auth-page-container">
+    <!-- Left Hero Typography with Typewriter Cursor -->
+    <div class="auth-hero-left">
+      <h1 class="hero-slogan-editorial">
+        <span id="typewriterText"></span><span class="typewriter-cursor"></span>
+      </h1>
+      <p class="hero-subtext-editorial">
+        Decentralized, content-addressed version control for multi-gigabyte foundation models and training weights.
+      </p>
     </div>
 
-    <!-- Alert Message Container -->
-    <div id="authAlert" class="auth-alert" style="display: none;" role="alert"></div>
+    <!-- Right Offset Transparent Glass Card -->
+    <div class="auth-card-right">
+      <div class="auth-card">
+        <!-- Center Chameleon Logo -->
+        <img src="chameleon-logo.png" alt="AI-GIT Logo" class="auth-logo-center">
 
-    <!-- Tabs: Sign In / Sign Up -->
-    <div class="auth-tabs">
-      <button class="auth-tab-btn active" id="tabSignIn" type="button">Sign In</button>
-      <button class="auth-tab-btn" id="tabSignUp" type="button">Create Account</button>
-    </div>
-
-    <!-- Sign In Form -->
-    <form id="formSignIn">
-      <div class="auth-mode-seg">
-        <button type="button" class="mode-btn active" id="modePw">Username + Password</button>
-        <button type="button" class="mode-btn" id="modeOtp">Email + OTP Code</button>
-      </div>
-
-      <div id="inPwFields">
-        <div class="form-group">
-          <label class="form-label" for="inUser">Username or Email</label>
-          <input type="text" class="form-input" id="inUser" placeholder="e.g. aarya-ml or aaryadoshi7@gmail.com" autocomplete="username">
+        <!-- Tag row (Reference Image 2) -->
+        <div class="auth-tag-row">
+          <span class="auth-portal-tag">PORTAL LOGIN</span>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="inPass">Password</label>
-          <input type="password" class="form-input" id="inPass" placeholder="••••••••" autocomplete="current-password">
-        </div>
-      </div>
 
-      <div id="inOtpFields" style="display: none;">
-        <div class="form-group">
-          <label class="form-label" for="inEmail">Research Email Address</label>
-          <div class="row-with-btn">
-            <input type="email" class="form-input" id="inEmail" placeholder="yourname@research.org" autocomplete="email">
-            <button type="button" class="btn-send-otp" id="btnSendOtpIn">Send OTP</button>
+        <h2 class="auth-card-title">Welcome back</h2>
+        <p class="auth-card-subtitle">Enter your registered credentials or continue with Google to access AI-GIT Model Hub.</p>
+
+        <!-- Google OAuth Button -->
+        <button type="button" class="btn-google-oauth" id="btnGoogleLogin">
+          <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          <span>Login using Google</span>
+        </button>
+
+        <div class="auth-card-divider">
+          <span>OR CONTINUE WITH EMAIL</span>
+        </div>
+
+        <!-- Login Credentials Form -->
+        <form id="formLogin" class="auth-form">
+          <div class="form-group-wrap">
+            <input type="text" class="form-control-input" id="inUserOrEmail" placeholder="Username or Email" required autocomplete="username">
           </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="inOtp">6-Digit Verification Code</label>
-          <input type="text" class="form-input" id="inOtp" maxlength="6" inputmode="numeric" placeholder="6-digit code">
-        </div>
-      </div>
+          <div class="form-group-wrap">
+            <input type="password" class="form-control-input" id="inPassword" placeholder="Password" autocomplete="current-password">
+          </div>
 
-      <button type="submit" class="btn-auth-submit">Sign In to AI-GIT</button>
-    </form>
+          <div id="authAlert" class="auth-alert-box" role="alert"></div>
 
-    <!-- Sign Up Form -->
-    <form id="formSignUp" style="display: none;">
-      <div class="form-group">
-        <label class="form-label" for="upName">Full Name</label>
-        <input type="text" class="form-input" id="upName" placeholder="Dr. Jane Doe" autocomplete="name">
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="upUser">Username</label>
-        <input type="text" class="form-input" id="upUser" placeholder="janedoe-ai" autocomplete="username">
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="upEmail">Email Address</label>
-        <div class="row-with-btn">
-          <input type="email" class="form-input" id="upEmail" placeholder="jane@institute.org" autocomplete="email">
-          <button type="button" class="btn-send-otp" id="btnSendOtpUp">Send OTP</button>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="upOtp">Verification Code (Optional if local)</label>
-        <input type="text" class="form-input" id="upOtp" maxlength="6" inputmode="numeric" placeholder="6-digit code">
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="upPass">Password</label>
-        <input type="password" class="form-input" id="upPass" placeholder="At least 6 characters" autocomplete="new-password">
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="upPass2">Confirm Password</label>
-        <input type="password" class="form-input" id="upPass2" placeholder="Re-enter password" autocomplete="new-password">
-      </div>
-      <button type="submit" class="btn-auth-submit">Create AI-GIT Account</button>
-    </form>
+          <div class="auth-footer-divider"></div>
 
-    <div class="auth-divider">OR INSTANT TESTING</div>
-
-    <button type="button" class="btn-demo-login" id="btnDemoLogin">
-      <span>⚡ Instant 1-Click Researcher Demo Sign In</span>
-    </button>
-
-    <p class="auth-footer">
-      Demo account: <code>aarya-ml</code> / <code>demo1234</code><br>
-      <a href="dashboard.html" style="display: inline-block; margin-top: 8px; color: var(--text-muted); font-size: 11.5px;">&rarr; Skip directly to Dashboard as Guest</a>
-    </p>
+          <!-- Footer Row (Reference Image 2) -->
+          <div class="auth-footer-row">
+            <span class="auth-switch-link">
+              New here? <a href="signup.html">Create account</a>
+            </span>
+            <button type="submit" class="btn-pill-submit" id="btnLoginSubmit">
+              <span>Log in</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 
-  <script src="auth.js"></script>
+  <script src="auth.js?v=2.1"></script>
 </body>
 </html>
