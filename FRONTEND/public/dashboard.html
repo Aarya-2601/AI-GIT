@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Model Hub · AI-GIT (AI Model Version Control)</title>
-  <link rel="stylesheet" href="dashboard.css?v=2.1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Kaushan+Script&family=Satisfy&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css?v=3.1">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -13,44 +16,45 @@
   <div id="aigitTopNav"></div>
 
   <!-- Model Hub Shell -->
-  <div class="modelhub-shell">
+  <div class="modelhub-shell" id="modelhubShell">
     <!-- Left Side Panel: Top Nodes -->
     <aside class="modelhub-left-panel">
-      <!-- User Switcher -->
-      <div class="panel-user-header" id="panelUserHeader" title="Switch Account">
-        <div class="panel-user-info">
-          <div class="panel-user-avatar" id="sideUserAvatar">A</div>
-          <span class="panel-user-name" id="panelUserName">Aarya-2601</span>
-        </div>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-
-      <!-- Top Nodes Section Header -->
+      <!-- Top Nodes Section Header (Huge Title occupying 2/3rd + Green New Button) -->
       <div class="top-nodes-header">
-        <h3 class="top-nodes-title">Top nodes</h3>
+        <h2 class="top-nodes-title">Top nodes</h2>
         <button type="button" class="btn-new-node" id="btnSideNewNode" title="Create new node">
-          <svg class="node-circle-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <circle cx="12" cy="12" r="4" fill="currentColor"/>
-            <circle cx="12" cy="12" r="9" stroke="currentColor"/>
+          <!-- Triangle of Neural Network Icon in Chameleon Green Palette -->
+          <svg class="neural-triangle-svg" width="15" height="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="10,3.5 3.5,16 16.5,16" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <line x1="10" y1="3.5" x2="10" y2="10.5" stroke="#a7f3d0" stroke-width="1" stroke-dasharray="1.5,1.5"/>
+            <line x1="3.5" y1="16" x2="10" y2="10.5" stroke="#a7f3d0" stroke-width="1" stroke-dasharray="1.5,1.5"/>
+            <line x1="16.5" y1="16" x2="10" y2="10.5" stroke="#a7f3d0" stroke-width="1" stroke-dasharray="1.5,1.5"/>
+            <circle cx="10" cy="10.5" r="1.4" fill="#ffffff"/>
+            <circle cx="10" cy="3.5" r="2.2" fill="#ffffff"/>
+            <circle cx="3.5" cy="16" r="2.2" fill="#6ee7b7"/>
+            <circle cx="16.5" cy="16" r="2.2" fill="#34d399"/>
           </svg>
           <span>New</span>
         </button>
       </div>
 
-      <!-- Nodes Tree Connector Container -->
-      <div class="nodes-tree-container" id="nodesTreeContainer">
-        <!-- Rendered dynamically by dashboard.js with white line connectors and subtle pink repo names -->
-      </div>
+      <!-- Nodes Tree Connector Container (Rendered dynamically by dashboard.js?v=2.6 with enlarged stylized arrows) -->
+      <div class="nodes-tree-container" id="nodesTreeContainer"></div>
 
-      <!-- Show more toggle button -->
+      <!-- Show more toggle button with stylized dropdown chevron -->
       <div class="nodes-show-more-wrap">
-        <button type="button" class="btn-show-more-nodes" id="btnToggleShowMoreNodes">Show more</button>
+        <button type="button" class="btn-show-more-nodes" id="btnToggleShowMoreNodes">
+          <span class="btn-show-more-text">Show all nodes</span>
+          <svg class="dropdown-chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
       </div>
 
       <!-- Searchbar Fixed at Bottom of Left Panel -->
       <div class="panel-search-footer">
         <div class="nodes-search-box">
-          <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/>
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
@@ -62,27 +66,91 @@
     <!-- Main Workspace Content (Remaining Space) -->
     <main class="modelhub-main-area">
       <div class="dashboard-container">
-        <!-- Hero Banner -->
-        <section class="dash-hero">
-          <div class="hero-glow-accent"></div>
-          <div class="hero-content">
-            <div class="hero-title-group">
-              <h1>
-                <span>AI-GIT Research Workspace</span>
-                <span class="pill-badge badge-green" style="font-size: 12px;">Active Cluster</span>
-              </h1>
-              <p>
-                Manage multi-gigabyte foundation models, track training epochs, and eliminate duplicate weights storage using Fast Content-Defined Chunking (FastCDC).
-              </p>
+        <!-- =========================================================
+             SECTION: RECENTLY IN THE WORLD OF AI/ML
+             - Expanding post input box with images, videos, attachments
+             - Live articles fetched from free AI/ML news API
+        ========================================================= -->
+        <section class="ai-news-hub-section" id="aiNewsHubSection">
+          <div class="ai-news-header">
+            <div class="ai-news-title-wrap">
+              <h2 class="ai-news-title">Recently in the World of AI/ML</h2>
             </div>
-            <div class="hero-actions">
-              <div class="cli-badge">
-                <span>$ ai-git push http://localhost:3000</span>
+            
+            <div class="ai-news-filter-tabs">
+              <button type="button" class="news-tab-btn active" data-filter="all">All Updates</button>
+              <button type="button" class="news-tab-btn" data-filter="community">Community Posts</button>
+              <button type="button" class="news-tab-btn" data-filter="articles">Live AI Articles</button>
+              <button type="button" class="news-tab-btn" id="btnRefreshAINews" title="Refresh Live Articles">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- USER INPUT / POST COMPOSER BOX -->
+          <div class="ai-post-composer-card" id="aiPostComposer">
+            <div class="composer-header-row">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Aarya Doshi" class="composer-user-avatar" id="composerUserAvatar">
+              
+              <div class="composer-field-wrap">
+                <textarea 
+                  id="composerTextarea" 
+                  class="composer-auto-expand-input" 
+                  placeholder="Share what's happening in AI/ML today... (Breakthroughs, models, benchmarks, questions)"
+                  rows="1"
+                ></textarea>
               </div>
-              <a href="repositories.html" class="btn-primary" style="display: flex; align-items: center; gap: 8px;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                <span>Explore Models</span>
-              </a>
+            </div>
+
+            <!-- Previews for Attached Media (Images, Videos, Links) -->
+            <div class="composer-attachments-preview" id="composerAttachmentsPreview" style="display: none;"></div>
+
+            <!-- Composer Toolbar -->
+            <div class="composer-toolbar-row">
+              <div class="composer-media-actions">
+                <!-- Attach Image Input -->
+                <label class="btn-composer-tool" title="Attach Image from device">
+                  <input type="file" id="attachImageFileInput" accept="image/*" style="display: none;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span>Image</span>
+                </label>
+
+                <!-- Attach Video Input -->
+                <label class="btn-composer-tool" title="Attach Video (.mp4, .webm)">
+                  <input type="file" id="attachVideoFileInput" accept="video/*" style="display: none;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                  <span>Video</span>
+                </label>
+
+                <!-- Attach Media URL / Paper Link -->
+                <button type="button" class="btn-composer-tool" id="btnAttachMediaUrl" title="Paste Image/Video URL or Paper link">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <span>Link / Paper</span>
+                </button>
+
+                <!-- Tag Model Architecture -->
+                <button type="button" class="btn-composer-tool" id="btnTagModelWeight" title="Tag Model / Architecture">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                  <span>Weights</span>
+                </button>
+              </div>
+
+              <!-- Publish Button -->
+              <div class="composer-publish-wrap">
+                <button type="button" class="btn-publish-update" id="btnPublishUpdate">
+                  <span>Publish Update</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- FEED CONTAINER (COMMUNITY POSTS + LIVE AI/ML ARTICLES) -->
+          <div class="ai-news-feed-container" id="aiNewsFeedContainer">
+            <!-- Loading Indicator -->
+            <div class="news-feed-loading" id="newsFeedLoading">
+              <div class="news-loading-spinner"></div>
+              <span>Fetching live AI/ML articles &amp; research radar...</span>
             </div>
           </div>
         </section>
@@ -235,9 +303,230 @@
         </div>
       </div>
     </main>
+
+    <!-- Right Column: MySpace GitHub-Style Overview Panel (Opens on Profile Click) -->
+    <aside class="modelhub-myspace-panel" id="modelhubMySpacePanel">
+      <!-- MySpace Header with cursive title and close button -->
+      <div class="myspace-header">
+        <h2 class="myspace-title">MySpace</h2>
+        <button type="button" class="btn-close-myspace" id="btnCloseMySpace" title="Collapse MySpace">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Hero Profile Section: Huge Circular PFP & Original Cutesy Template -->
+      <div class="myspace-profile-card">
+        <div class="myspace-avatar-wrap">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" alt="Aarya Doshi" class="myspace-avatar-huge" id="myspaceAvatarImg">
+          <div class="myspace-status-indicator" title="Online in Model Hub"></div>
+        </div>
+
+        <h3 class="myspace-user-name" style="color: #2ea043; font-size: 24px; font-weight: 700;">Hi there! I'm Aarya Doshi</h3>
+        <div class="myspace-cutesy-headline" style="font-family: Georgia, serif; font-style: italic; color: #ff7eb6; font-size: 14.5px; margin: 4px 0 2px;">code, coffee, college clubs & curio</div>
+        <div class="myspace-cutesy-headline" style="font-family: Georgia, serif; font-style: italic; color: #ff7eb6; font-size: 14.5px; margin-bottom: 12px;">Building things that matter</div>
+
+        <p class="myspace-user-bio" style="font-size: 13px; line-height: 1.6; color: #c9d1d9; max-width: 380px; margin: 0 0 16px;">
+          Passionate software builder and creative developer. Love turning ideas into interactive digital experiences, playing with modern tools, and connecting with creators across the globe!
+        </p>
+
+        <!-- Customize MySpace Button (leads to profile studio) -->
+        <a href="profile.html#studio" class="btn-customize-myspace" id="btnCustomizeMySpace" title="Open Profile Studio">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+          <span>Customize MySpace</span>
+        </a>
+      </div>
+
+      <!-- Original Cutesy Template Sections (About Me, Tech Stack, Connect, GitHub Summary) -->
+      <div class="myspace-overview-content">
+<!-- EXACT GITHUB OVERVIEW FROM ATTACHED SCREENSHOT -->
+      <div class="git-overview-container">
+        
+        <!-- 1. PINNED SECTION -->
+        <div class="git-pinned-section">
+          <div class="git-section-header">
+            <span class="git-section-title">Pinned</span>
+            <a href="profile.html#studio" class="git-header-link">Customize your pins</a>
+          </div>
+
+          <div class="git-pinned-grid">
+            <!-- Pinned Card 1: AI-GIT -->
+            <div class="git-pinned-card">
+              <div class="git-card-top">
+                <div class="git-repo-title-row">
+                  <a href="repository.html?repo=AI-GIT" class="git-repo-name">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <span>AI-GIT</span>
+                  </a>
+                  <span class="git-badge-public">Public</span>
+                  <span class="git-drag-dots" title="Drag to reorder">⋮⋮</span>
+                </div>
+                <p class="git-repo-desc">
+                  This is a repository created for the execution of AI-GIT, a standalone version control system designed to store large AI/ML models.
+                </p>
+              </div>
+              <div class="git-repo-meta">
+                <span class="git-lang-dot cpp"></span>
+                <span>C++</span>
+              </div>
+            </div>
+
+            <!-- Pinned Card 2: gaming-arcade -->
+            <div class="git-pinned-card">
+              <div class="git-card-top">
+                <div class="git-repo-title-row">
+                  <a href="repository.html?repo=gaming-arcade" class="git-repo-name">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <span>gaming-arcade</span>
+                  </a>
+                  <span class="git-badge-public">Public</span>
+                  <span class="git-drag-dots" title="Drag to reorder">⋮⋮</span>
+                </div>
+                <p class="git-repo-desc" style="color: transparent;">
+                  Interactive browser games collection.
+                </p>
+              </div>
+              <div class="git-repo-meta">
+                <span class="git-lang-dot css"></span>
+                <span>CSS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. COMMIT HEATMAP SECTION (316 contributions in the last year) -->
+        <div class="git-contributions-section">
+          <div class="git-contrib-header">
+            <span class="git-contrib-title">316 contributions in the last year</span>
+            <div class="git-contrib-controls">
+              <button type="button" class="btn-contrib-settings">Contribution settings ▾</button>
+              <button type="button" class="btn-year-badge">2026</button>
+            </div>
+          </div>
+
+          <!-- Calendar Heatmap Card -->
+          <div class="git-calendar-card">
+            <!-- Months Header -->
+            <div class="calendar-months-row">
+              <span>Sep</span>
+              <span>Oct</span>
+              <span>Nov</span>
+              <span>Dec</span>
+              <span>Jan</span>
+              <span>Feb</span>
+              <span>Mar</span>
+              <span>Apr</span>
+              <span>May</span>
+              <span>Jun</span>
+              <span>Jul</span>
+              <span>Aug</span>
+              <span>Sep</span>
+            </div>
+
+            <!-- Calendar Grid with Days on left -->
+            <div class="calendar-body-wrap">
+              <div class="calendar-days-col">
+                <span></span>
+                <span>Mon</span>
+                <span></span>
+                <span>Wed</span>
+                <span></span>
+                <span>Fri</span>
+                <span></span>
+              </div>
+              <div class="calendar-squares-grid" id="gitCalendarGrid">
+                <!-- Populated dynamically with exact green commit clusters from image -->
+              </div>
+            </div>
+
+            <!-- Heatmap Footer -->
+            <div class="calendar-footer-row">
+              <a href="https://docs.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile" target="_blank" class="calendar-learn-link">
+                Learn how we count contributions
+              </a>
+              <div class="calendar-legend">
+                <span>Less</span>
+                <span class="legend-box lvl-0"></span>
+                <span class="legend-box lvl-1"></span>
+                <span class="legend-box lvl-2"></span>
+                <span class="legend-box lvl-3"></span>
+                <span class="legend-box lvl-4"></span>
+                <span>More</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. CONTRIBUTION ACTIVITY SECTION -->
+        <div class="git-activity-section">
+          <h3 class="git-activity-title">Contribution activity</h3>
+
+          <!-- September 2026 Divider -->
+          <div class="git-month-divider">
+            <span class="git-month-label">September 2026</span>
+            <div class="git-divider-line"></div>
+          </div>
+
+          <!-- Activity Box: Created 121 commits in 3 repositories -->
+          <div class="git-activity-timeline-item">
+            <div class="git-timeline-icon">
+              <!-- Git commit circle icon -->
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4"/>
+                <line x1="12" y1="2" x2="12" y2="8"/>
+                <line x1="12" y1="16" x2="12" y2="22"/>
+              </svg>
+            </div>
+
+            <div class="git-activity-box">
+              <div class="git-activity-left">
+                <div class="git-activity-header">
+                  <span>Created 121 commits in 3 repositories</span>
+                  <span class="git-activity-grip">⋮⋮</span>
+                </div>
+                <div class="git-activity-repos-list">
+                  <div class="git-activity-repo-item">
+                    <a href="repository.html?repo=PixelPlot" class="git-activity-repo-link">rushil23shah-hue/PixelPlot</a>
+                    <span class="git-activity-repo-commits">58 commits</span>
+                  </div>
+                  <div class="git-activity-repo-item">
+                    <a href="repository.html?repo=sagar-mitra-2.0" class="git-activity-repo-link">chaitijain593-prog/sagar-mitra-2.0</a>
+                    <span class="git-activity-repo-commits">32 commits</span>
+                  </div>
+                  <div class="git-activity-repo-item">
+                    <a href="repository.html?repo=AI-GIT" class="git-activity-repo-link">Aarya-2601/AI-GIT</a>
+                    <span class="git-activity-repo-commits">31 commits</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Green comparison visualizer bars on right -->
+              <div class="git-activity-bars-col">
+                <div class="git-activity-bar" style="width: 72px;"></div>
+                <div class="git-activity-bar" style="width: 40px;"></div>
+                <div class="git-activity-bar" style="width: 38px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Show more activity button -->
+          <button type="button" class="git-show-more-btn" id="btnShowMoreActivity">
+            Show more activity
+          </button>
+        </div>
+
+      </div>
+      </div>
+    </aside>
   </div>
 
-  <script src="nav.js?v=2.3"></script>
-  <script src="dashboard.js?v=2.1"></script>
+  <script src="nav.js?v=2.7"></script>
+  <script src="dashboard.js?v=2.6"></script>
+  <script src="chameleon_world.js"></script>
 </body>
 </html>
