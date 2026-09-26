@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Repositories & Tree Explorer · AI-GIT</title>
+  <link rel="stylesheet" href="repositories.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'><circle cx='12' cy='12' r='10'/></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation Placeholder -->
+  <div id="aigitTopNav"></div>
+
+  <main class="repos-container">
+    <!-- Filter and View Mode Switcher -->
+    <section class="repos-control-bar">
+      <div class="filter-group">
+        <div class="search-input-wrap">
+          <input type="text" id="repoFilterSearch" class="form-input" placeholder="Filter by model, family, tag (e.g. llama, vision, gguf)...">
+        </div>
+
+        <select class="form-select" id="frameworkFilter" style="width: auto; min-width: 170px;">
+          <option value="all">All Formats</option>
+          <option value="SafeTensors">SafeTensors (Zero-Copy)</option>
+          <option value="GGUF">GGUF (Quantized Edge)</option>
+          <option value="PyTorch">PyTorch (.pt / .bin)</option>
+          <option value="Raw Binary">Raw Binary</option>
+        </select>
+      </div>
+
+      <!-- View Switcher: Cards vs Whole Tree Explorer -->
+      <div class="view-toggle-wrap" role="tablist" aria-label="Repository View Mode">
+        <button type="button" class="view-btn active" id="viewModeCards">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Model Cards</span>
+        </button>
+        <button type="button" class="view-btn" id="viewModeTree">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>Whole Tree Explorer</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- VIEW 1: CARDS GRID VIEW -->
+    <section class="repos-grid-mode" id="reposGridMode">
+      <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">
+        Loading AI-GIT repositories...
+      </div>
+    </section>
+
+    <!-- VIEW 2: SPLIT-PANE WHOLE TREE & DIRECTORY EXPLORER -->
+    <section class="repos-tree-mode" id="reposTreeMode" style="display: none;">
+      <!-- Left Tree Pane -->
+      <aside class="tree-pane-left">
+        <div class="tree-pane-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>AI-GIT Model Registry Tree</span>
+        </div>
+        <ul class="tree-list" id="modelTreeHierarchy">
+          <!-- Rendered dynamically by repositories.js -->
+        </ul>
+      </aside>
+
+      <!-- Right Inspector Pane -->
+      <div class="tree-pane-right" id="treeInspectorPane">
+        <div style="padding: 40px; text-align: center; color: var(--text-muted);">
+          Select a directory or model file from the left tree to inspect contents and FastCDC chunk maps.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="nav.js"></script>
+  <script src="repositories.js"></script>
+</body>
+</html>
