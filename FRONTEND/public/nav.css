@@ -70,12 +70,23 @@ a:hover {
    TOPBAR NAVIGATION
 ========================================================= */
 
+/* OVERFLOW VISIBLE FOR PERCHED CHAMELEON TAIL */
+#aigitTopNav {
+  overflow: visible !important;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: none !important;
+}
+
 .aigit-topbar {
+  overflow: visible !important;
   height: var(--topbar-height);
   background: rgba(13, 18, 31, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: none !important;
+  box-shadow: none !important;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -862,24 +873,208 @@ a:hover {
 
 
 /* =========================================================
-   TOPBAR CHAMELEON & NEURAL REPO BREADCRUMB
+   ANIMATED CHAMELEON CHARACTER & PERCH
+   - Big character sitting directly on the navbar bottom border line
+   - Curled tail naturally hanging down below the navbar border
+   - Completely transparent background (no box, no card bg)
+   - Color cycle animation shifting through site theme palette:
+     Cyan (#38bdf8) -> Purple (#c084fc) -> Pink (#f43f5e) -> Emerald (#10b981)
+   - Periodic snapping tongue extension & contraction animation
 ========================================================= */
 
-.topbar-chameleon-logo {
-  height: 28px;
-  width: 28px;
-  object-fit: contain;
-  margin-left: 10px;
-  border-radius: 6px;
-  transition: transform 0.2s ease, filter 0.2s ease;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 2px;
+.chameleon-perch-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 64px;
+  margin-left: 6px;
+  margin-right: 6px;
+  overflow: visible !important;
+  z-index: 1020;
 }
 
-.topbar-chameleon-logo:hover {
-  transform: scale(1.08);
-  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));
+.chameleon-anchor {
+  display: block;
+  position: relative;
+  overflow: visible !important;
+  text-decoration: none;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  outline: none;
+}
+
+.topbar-chameleon-character {
+  width: 66px;
+  height: 66px;
+  object-fit: contain;
+  display: block;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  /* Shift down so the branch/feet grip right on the 64px navbar bottom border,
+     allowing the curled tail to gracefully hang 20px below the line! */
+  transform: translateY(20px);
+  cursor: pointer;
+  pointer-events: auto;
+  will-change: filter, transform;
+  animation: chameleonThemeShift 14s ease-in-out infinite, chameleonPerchBreathe 4s ease-in-out infinite;
+  transform-origin: 50% 68%;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.25s ease;
+}
+
+/* Also support legacy class name */
+.topbar-chameleon-logo {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  width: 66px !important;
+  height: 66px !important;
+  transform: translateY(20px) !important;
+  animation: chameleonThemeShift 14s ease-in-out infinite, chameleonPerchBreathe 4s ease-in-out infinite !important;
+}
+
+/* Color cycling within existing theme palette: Cyan -> Purple -> Pink -> Emerald -> Cyan */
+@keyframes chameleonThemeShift {
+  0%, 100% {
+    /* Electric Cyan / AI-GIT Blue (#38bdf8) */
+    filter: hue-rotate(0deg) drop-shadow(0 2px 10px rgba(56, 189, 248, 0.45));
+  }
+  25% {
+    /* Cyber Purple (#a855f7 / #c084fc) */
+    filter: hue-rotate(65deg) drop-shadow(0 2px 12px rgba(192, 132, 252, 0.6));
+  }
+  50% {
+    /* Neon Pink / Magenta (#f43f5e / #f472b6) */
+    filter: hue-rotate(130deg) drop-shadow(0 2px 12px rgba(244, 63, 94, 0.55));
+  }
+  75% {
+    /* Cyber Emerald Green (#10b981 / #34d399) */
+    filter: hue-rotate(255deg) drop-shadow(0 2px 10px rgba(16, 185, 129, 0.5));
+  }
+}
+
+/* Subtle breathing & perch idle motion */
+@keyframes chameleonPerchBreathe {
+  0%, 100% {
+    transform: translateY(20px) scale(1);
+  }
+  50% {
+    transform: translateY(19px) scale(1.025);
+  }
+}
+
+.chameleon-anchor:hover .topbar-chameleon-character {
+  transform: translateY(18px) scale(1.08) !important;
+  filter: drop-shadow(0 2px 16px rgba(192, 132, 252, 0.9)) !important;
+}
+
+/* =========================================================
+   ANIMATED CHAMELEON TONGUE
+   Originates at snout (X: 62px, Y: 65px), shoots out rapidly
+   with a sticky suction bulb, then snaps back in.
+========================================================= */
+
+.chameleon-tongue-track {
+  position: absolute;
+  left: 62px;
+  top: 65px;
+  width: 55px;
+  height: 12px;
+  pointer-events: none;
+  overflow: visible !important;
+  z-index: 1030;
+  display: flex;
+  align-items: center;
+}
+
+.chameleon-tongue-stalk {
+  position: relative;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #f43f5e 0%, #ec4899 60%, #fb7185 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(244, 63, 94, 0.85);
+  transform-origin: left center;
+  animation: chameleonTongueSnap 5.5s cubic-bezier(0.18, 0.89, 0.32, 1.15) infinite;
+  will-change: width, transform, opacity;
+}
+
+.chameleon-tongue-bulb {
+  position: absolute;
+  right: -5px;
+  top: -3.5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #fb7185 45%, #e11d48 100%);
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.95), 0 0 16px rgba(236, 72, 153, 0.7);
+}
+
+/* Snapping keyframes: Retracted for ~4.3s, rapid strike out to 44px, stick/curl, snap back */
+@keyframes chameleonTongueSnap {
+  0%, 75% {
+    width: 0px;
+    opacity: 0;
+    transform: scaleY(0.4) rotate(0deg);
+  }
+  76% {
+    width: 3px;
+    opacity: 1;
+    transform: scaleY(0.9) rotate(-1deg);
+  }
+  78% {
+    width: 44px;
+    opacity: 1;
+    transform: scaleY(1) rotate(-3deg);
+  }
+  80% {
+    width: 46px;
+    opacity: 1;
+    transform: scaleY(1.15) rotate(2deg);
+  }
+  82% {
+    width: 14px;
+    opacity: 0.85;
+    transform: scaleY(0.8) rotate(0deg);
+  }
+  84%, 100% {
+    width: 0px;
+    opacity: 0;
+    transform: scaleY(0.4) rotate(0deg);
+  }
+}
+
+/* Interactive hover snap: User hovers over the chameleon, triggers immediate tongue strike */
+.chameleon-perch-container:hover .chameleon-tongue-stalk {
+  animation: chameleonTongueHoverStrike 0.65s cubic-bezier(0.12, 0.9, 0.25, 1.1) 1;
+}
+
+@keyframes chameleonTongueHoverStrike {
+  0% {
+    width: 0px;
+    opacity: 0;
+  }
+  30% {
+    width: 48px;
+    opacity: 1;
+    transform: scaleY(1.2) rotate(-4deg);
+  }
+  55% {
+    width: 45px;
+    opacity: 1;
+    transform: scaleY(1) rotate(2deg);
+  }
+  80% {
+    width: 15px;
+    opacity: 0.9;
+  }
+  100% {
+    width: 0px;
+    opacity: 0;
+  }
 }
 
 .topbar-repo-breadcrumb {
@@ -1208,40 +1403,270 @@ a:hover {
   margin-top: 3px;
 }
 
+/* =========================================================
+   BIG RIGHTMOST USER PROFILE PICTURE (AVATAR)
+   - Prominent 44px size
+   - Cyber glowing purple/cyan border
+   - Interactive hover scale
+========================================================= */
+
 .user-profile-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 2px;
+  padding: 0;
+  border-radius: 50%;
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.22s ease;
+  outline: none;
+}
+
+.user-profile-btn:hover {
+  transform: scale(1.08);
 }
 
 .user-profile-img {
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1.5px solid #30363d;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  border: 2px solid rgba(192, 132, 252, 0.75);
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.5), 0 0 24px rgba(56, 189, 248, 0.3);
+  transition: all 0.22s ease;
 }
 
 .user-profile-img:hover {
-  border-color: #c084fc;
+  border-color: #38bdf8;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.8), 0 0 32px rgba(192, 132, 252, 0.6);
   transform: scale(1.05);
 }
 
 .user-profile-avatar-fallback {
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: linear-gradient(135deg, #a855f7, #38bdf8);
   color: #fff;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid #30363d;
+  border: 2px solid rgba(192, 132, 252, 0.75);
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.5);
+}
+
+
+/* =========================================================
+   TOPBAR BIG GLOWING BLUE "MODEL HUB" HEADING
+========================================================= */
+
+.topbar-heading-modelhub {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  color: #38bdf8;
+  text-decoration: none;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.75), 0 0 24px rgba(56, 189, 248, 0.45);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.topbar-heading-modelhub:hover {
+  color: #7dd3fc;
+  text-shadow: 0 0 18px rgba(125, 211, 252, 0.95), 0 0 32px rgba(56, 189, 248, 0.6);
+  transform: translateY(-0.5px);
+}
+
+
+/* =========================================================
+   CHAMELEON WORLD: VIEWPORT BRANCHES & ELASTIC TONGUE PHYSICS
+========================================================= */
+
+.chameleon-world-root {
+  pointer-events: none;
+}
+
+/* Fullscreen SVG for Laser-Elastic Chameleon Tongue */
+.chameleon-tongue-world-svg {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: none !important;
+  z-index: 999998 !important; /* Above all text, cards, headings, modals */
+  overflow: visible !important;
+}
+
+.active-tongue-laser-path {
+  stroke: url(#tongueLaserGrad);
+  stroke-width: 4.5px;
+  stroke-linecap: round;
+  fill: none;
+  filter: url(#tongueNeonGlow);
+  opacity: 0.95;
+}
+
+.active-tongue-tip-bulb {
+  fill: url(#tongueBulbGrad);
+  filter: drop-shadow(0 0 10px #f43f5e) drop-shadow(0 0 18px #ec4899);
+}
+
+.active-tongue-impact-ring {
+  fill: none;
+  stroke: #fb7185;
+  stroke-width: 2.5px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.active-tongue-impact-ring.pulse {
+  animation: tongueImpactWave 0.45s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes tongueImpactWave {
+  0% {
+    r: 2px;
+    opacity: 1;
+    stroke-width: 3px;
+  }
+  100% {
+    r: 28px;
+    opacity: 0;
+    stroke-width: 0.5px;
+  }
+}
+
+/* Stylized Viewport Branches */
+.chameleon-viewport-branch {
+  position: fixed;
+  width: 160px;
+  height: 90px;
+  pointer-events: none;
+  z-index: 999990; /* High z-index above text, underneath tongue & creature */
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.75));
+  transform-origin: 20% 70%;
+  transition: transform 0.2s ease-out;
+}
+
+.chameleon-viewport-branch svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Branch bending when grabbed by tongue */
+.chameleon-viewport-branch.branch-flex {
+  transform: rotate(2.5deg) translateY(3.5px) scale(0.98);
+}
+
+/* Branch spring recoil bounce when chameleon lands */
+.chameleon-viewport-branch.branch-recoil {
+  animation: branchSpringRecoil 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
+}
+
+@keyframes branchSpringRecoil {
+  0% {
+    transform: rotate(3deg) translateY(4px);
+  }
+  35% {
+    transform: rotate(-2deg) translateY(-3px);
+  }
+  65% {
+    transform: rotate(1deg) translateY(1.5px);
+  }
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
+}
+
+/* Interactive Traveling Chameleon Creature Sprite */
+.interactive-chameleon-creature {
+  position: fixed !important;
+  width: 66px !important;
+  height: 66px !important;
+  pointer-events: auto !important;
+  cursor: grab !important;
+  z-index: 1000000 !important; /* Topmost creature */
+  transform-origin: 50% 68%;
+  will-change: left, top, transform, filter;
+  transition: filter 0.25s ease;
+}
+
+.chameleon-travel-img {
+  width: 66px !important;
+  height: 66px !important;
+  object-fit: contain !important;
+  display: block !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  animation: chameleonThemeShift 14s ease-in-out infinite, chameleonTravelBreathe 4s ease-in-out infinite;
+  pointer-events: auto;
+}
+
+@keyframes chameleonTravelBreathe {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-1.5px) scale(1.02);
+  }
+}
+
+.interactive-chameleon-creature:hover {
+  filter: drop-shadow(0 0 16px rgba(192, 132, 252, 0.95)) drop-shadow(0 0 24px rgba(56, 189, 248, 0.6)) !important;
+}
+
+.interactive-chameleon-creature:active {
+  cursor: grabbing !important;
+}
+
+/* Neural Triangle beside PFP */
+.btn-neural-triangle-pfp {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #c084fc !important;
+  border: 1px solid rgba(192, 132, 252, 0.28) !important;
+  background: rgba(192, 132, 252, 0.08) !important;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.btn-neural-triangle-pfp:hover,
+.btn-neural-triangle-pfp.open {
+  color: #38bdf8 !important;
+  background: rgba(56, 189, 248, 0.16) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.4) !important;
+  transform: translateY(-1px) scale(1.05);
+}
+
+/* Hide static in-navbar chameleon when interactive world chameleon is active */
+.chameleon-world-active #topbarChameleonImg,
+.chameleon-world-active #chameleonTongueTrack {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Subtle glowing cyber roost in navbar line */
+.chameleon-world-active #chameleonPerch::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  width: 46px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #34d399, #38bdf8, transparent);
+  box-shadow: 0 0 6px rgba(52, 211, 153, 0.6);
+  border-radius: 2px;
+  pointer-events: none;
 }

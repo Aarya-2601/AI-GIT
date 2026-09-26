@@ -164,112 +164,22 @@
             </div>
           </div>
 
-          <!-- 2. CHAMELEON LOGO -->
-          <a href="dashboard.html" title="AI-GIT Model Hub">
-            <img src="chameleon-logo.png" alt="AI-GIT Chameleon" class="topbar-chameleon-logo">
-          </a>
-
-          <!-- 3. REPO BREADCRUMB: USERNAME / REPO NAME (GLOWING PURPLE) + NEURAL TRIANGLE -->
-          <div class="topbar-repo-breadcrumb">
-            <a href="profile.html" class="repo-owner-name">${user.username}</a>
-            <span class="repo-breadcrumb-slash">/</span>
-            <a href="repository.html?repo=${encodeURIComponent(activeRepoName)}" class="repo-current-name glowing-purple" id="topbarCurrentRepoName">${activeRepoName}</a>
-
-            <!-- 4. TRIANGLE OF NEURAL NETWORKS (Click to see all user repos) -->
-            <div class="btn-neural-triangle-wrap">
-              <button type="button" class="btn-neural-triangle" id="btnNeuralTriangle" title="View all repositories of ${user.username}">
-                <!-- Triangle with 3 connected neural network nodes -->
-                <svg class="neural-triangle-svg" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Outer triangle connections -->
-                  <polygon points="10,3.5 3.5,16 16.5,16" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                  <!-- Synapse to center node -->
-                  <line x1="10" y1="3.5" x2="10" y2="10.5" stroke="#38bdf8" stroke-width="1" stroke-dasharray="1.5,1.5"/>
-                  <line x1="3.5" y1="16" x2="10" y2="10.5" stroke="#38bdf8" stroke-width="1" stroke-dasharray="1.5,1.5"/>
-                  <line x1="16.5" y1="16" x2="10" y2="10.5" stroke="#38bdf8" stroke-width="1" stroke-dasharray="1.5,1.5"/>
-                  <!-- Center synapse vertex -->
-                  <circle cx="10" cy="10.5" r="1.4" fill="#ffffff"/>
-                  <!-- Three neural network vertices -->
-                  <circle cx="10" cy="3.5" r="2.2" fill="#c084fc"/>
-                  <circle cx="3.5" cy="16" r="2.2" fill="#38bdf8"/>
-                  <circle cx="16.5" cy="16" r="2.2" fill="#f472b6"/>
-                </svg>
-                <!-- Mini Caret -->
-                <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="6,9 18,9 12,16"/>
-                </svg>
-              </button>
-
-              <!-- ALL USER REPOSITORIES DROPDOWN -->
-              <div class="user-repos-dropdown" id="userReposDropdown">
-                <div class="repos-drop-header">
-                  <span>${user.username}'s Nodes</span>
-                  <span style="font-size: 10px; color: #c084fc;">8 Repositories</span>
-                </div>
-                <input type="text" class="repos-filter-input" id="repoFilterInput" placeholder="Find a repository..." autocomplete="off">
-                <div class="repos-drop-list" id="reposDropList">
-                  <a href="repository.html?repo=AI-GIT" class="repo-drop-item ${activeRepoName === 'AI-GIT' ? 'current' : ''}">
-                    <span style="display: flex; align-items: center; gap: 8px;">
-                      <span>🧠</span>
-                      <strong>AI-GIT</strong>
-                    </span>
-                    <span class="repo-drop-meta">Public Node</span>
-                  </a>
-                  <a href="repository.html?repo=llama-3-8b-instruct" class="repo-drop-item ${activeRepoName === 'llama-3-8b-instruct' ? 'current' : ''}">
-                    <span style="display: flex; align-items: center; gap: 8px;">
-                      <span>📦</span>
-                      <span>llama-3-8b-instruct</span>
-                    </span>
-                    <span class="repo-drop-meta">8B · FastCDC</span>
-                  </a>
-                  <a href="repository.html?repo=mistral-7b-v0.3" class="repo-drop-item ${activeRepoName === 'mistral-7b-v0.3' ? 'current' : ''}">
-                    <span style="display: flex; align-items: center; gap: 8px;">
-                      <span>📦</span>
-                      <span>mistral-7b-v0.3</span>
-                    </span>
-                    <span class="repo-drop-meta">7.3B Safetensors</span>
-                  </a>
-                  <a href="repository.html?repo=stable-diffusion-3-medium" class="repo-drop-item ${activeRepoName === 'stable-diffusion-3-medium' ? 'current' : ''}">
-                    <span style="display: flex; align-items: center; gap: 8px;">
-                      <span>🎨</span>
-                      <span>stable-diffusion-3-medium</span>
-                    </span>
-                    <span class="repo-drop-meta">2B Diffusion</span>
-                  </a>
-                  <a href="repository.html?repo=phi-3-mini-4k" class="repo-drop-item ${activeRepoName === 'phi-3-mini-4k' ? 'current' : ''}">
-                    <span style="display: flex; align-items: center; gap: 8px;">
-                      <span>⚡</span>
-                      <span>phi-3-mini-4k</span>
-                    </span>
-                    <span class="repo-drop-meta">3.8B Checkpoint</span>
-                  </a>
-                  <a href="repository.html?repo=deepseek-coder-v2" class="repo-drop-item ${activeRepoName === 'deepseek-coder-v2' ? 'current' : ''}">
-                    <span style="display: flex; align-items: center; gap: 8px;">
-                      <span>💻</span>
-                      <span>deepseek-coder-v2</span>
-                    </span>
-                    <span class="repo-drop-meta">16B MoE</span>
-                  </a>
-                  <a href="repository.html?repo=whisper-large-v3" class="repo-drop-item">
-                    <span style="display: flex; align-items: center; gap: 8px;">
-                      <span>🎙️</span>
-                      <span>whisper-large-v3</span>
-                    </span>
-                    <span class="repo-drop-meta">Audio Encoder</span>
-                  </a>
-                  <a href="repository.html?repo=gemma-2-9b" class="repo-drop-item">
-                    <span style="display: flex; align-items: center; gap: 8px;">
-                      <span>💎</span>
-                      <span>gemma-2-9b</span>
-                    </span>
-                    <span class="repo-drop-meta">Google DeepMind</span>
-                  </a>
-                </div>
-                <div class="repos-drop-footer">
-                  <a href="repositories.html">View all 14 nodes in Model Hub →</a>
-                </div>
+          <!-- 2. ANIMATED CHAMELEON CHARACTER -->
+          <div class="chameleon-perch-container" id="chameleonPerch">
+            <a href="dashboard.html" class="chameleon-anchor" title="AI-GIT Model Hub (Click home)">
+              <img src="chameleon-logo.png" alt="AI-GIT Chameleon" class="topbar-chameleon-character" id="topbarChameleonImg">
+            </a>
+            <!-- Animated chameleon tongue that extends & snaps periodically -->
+            <div class="chameleon-tongue-track" id="chameleonTongueTrack" aria-hidden="true">
+              <div class="chameleon-tongue-stalk" id="chameleonTongueStalk">
+                <span class="chameleon-tongue-bulb"></span>
               </div>
             </div>
+          </div>
 
+          <!-- 3. TOPBAR HEADING: MODEL HUB (Glowing Blue, Big Heading, Same for all users) -->
+          <div class="topbar-repo-breadcrumb">
+            <a href="dashboard.html" class="topbar-heading-modelhub" id="topbarHeadingModelHub" title="AI-GIT Model Hub">Model Hub</a>
           </div>
 
         </div>
@@ -366,7 +276,93 @@
             </div>
           </div>
 
-          <!-- 4. RIGHTMOST: USER PROFILE PICTURE / AVATAR -->
+          <!-- 4. TRIANGLE OF NEURAL NETWORKS (LINK TO ALL REPOS) BESIDE PFP -->
+          <div class="btn-neural-triangle-wrap" style="position: relative;">
+            <a href="repositories.html" class="topbar-nav-icon-btn btn-neural-triangle-pfp" id="btnNeuralTriangleRepos" title="All Nodes &amp; Repositories (View All Repos)" aria-label="All Nodes">
+              <svg class="neural-triangle-svg" width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="10,3.5 3.5,16 16.5,16" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <line x1="10" y1="3.5" x2="10" y2="10.5" stroke="#38bdf8" stroke-width="1" stroke-dasharray="1.5,1.5"/>
+                <line x1="3.5" y1="16" x2="10" y2="10.5" stroke="#38bdf8" stroke-width="1" stroke-dasharray="1.5,1.5"/>
+                <line x1="16.5" y1="16" x2="10" y2="10.5" stroke="#38bdf8" stroke-width="1" stroke-dasharray="1.5,1.5"/>
+                <circle cx="10" cy="10.5" r="1.4" fill="#ffffff"/>
+                <circle cx="10" cy="3.5" r="2.2" fill="#c084fc"/>
+                <circle cx="3.5" cy="16" r="2.2" fill="#38bdf8"/>
+                <circle cx="16.5" cy="16" r="2.2" fill="#f472b6"/>
+              </svg>
+            </a>
+
+            <!-- ALL USER REPOSITORIES DROPDOWN (Right-aligned next to PFP) -->
+            <div class="user-repos-dropdown" id="userReposDropdown" style="right: 0; left: auto;">
+              <div class="repos-drop-header">
+                <span>All Repositories &amp; Nodes</span>
+                <a href="repositories.html" style="font-size: 11px; color: #38bdf8; text-decoration: none; font-weight: 600;">View All →</a>
+              </div>
+              <input type="text" class="repos-filter-input" id="repoFilterInput" placeholder="Filter repositories..." autocomplete="off">
+              <div class="repos-drop-list" id="reposDropList">
+                <a href="repository.html?repo=AI-GIT" class="repo-drop-item">
+                  <span style="display: flex; align-items: center; gap: 8px;">
+                    <span>🧠</span>
+                    <strong>AI-GIT</strong>
+                  </span>
+                  <span class="repo-drop-meta">Public Node</span>
+                </a>
+                <a href="repository.html?repo=llama-3-8b-instruct" class="repo-drop-item">
+                  <span style="display: flex; align-items: center; gap: 8px;">
+                    <span>📦</span>
+                    <span>llama-3-8b-instruct</span>
+                  </span>
+                  <span class="repo-drop-meta">8B · FastCDC</span>
+                </a>
+                <a href="repository.html?repo=mistral-7b-v0.3" class="repo-drop-item">
+                  <span style="display: flex; align-items: center; gap: 8px;">
+                    <span>📦</span>
+                    <span>mistral-7b-v0.3</span>
+                  </span>
+                  <span class="repo-drop-meta">7.3B Safetensors</span>
+                </a>
+                <a href="repository.html?repo=stable-diffusion-3-medium" class="repo-drop-item">
+                  <span style="display: flex; align-items: center; gap: 8px;">
+                    <span>🎨</span>
+                    <span>stable-diffusion-3-medium</span>
+                  </span>
+                  <span class="repo-drop-meta">2B Diffusion</span>
+                </a>
+                <a href="repository.html?repo=phi-3-mini-4k" class="repo-drop-item">
+                  <span style="display: flex; align-items: center; gap: 8px;">
+                    <span>⚡</span>
+                    <span>phi-3-mini-4k</span>
+                  </span>
+                  <span class="repo-drop-meta">3.8B Checkpoint</span>
+                </a>
+                <a href="repository.html?repo=deepseek-coder-v2" class="repo-drop-item">
+                  <span style="display: flex; align-items: center; gap: 8px;">
+                    <span>💻</span>
+                    <span>deepseek-coder-v2</span>
+                  </span>
+                  <span class="repo-drop-meta">16B MoE</span>
+                </a>
+                <a href="repository.html?repo=whisper-large-v3" class="repo-drop-item">
+                  <span style="display: flex; align-items: center; gap: 8px;">
+                    <span>🎙️</span>
+                    <span>whisper-large-v3</span>
+                  </span>
+                  <span class="repo-drop-meta">Audio Encoder</span>
+                </a>
+                <a href="repository.html?repo=gemma-2-9b" class="repo-drop-item">
+                  <span style="display: flex; align-items: center; gap: 8px;">
+                    <span>💎</span>
+                    <span>gemma-2-9b</span>
+                  </span>
+                  <span class="repo-drop-meta">Google DeepMind</span>
+                </a>
+              </div>
+              <div class="repos-drop-footer">
+                <a href="repositories.html">View all 14 nodes in Model Hub →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. RIGHTMOST: USER PROFILE PICTURE / AVATAR -->
           <div style="position: relative;">
             <button type="button" class="user-profile-btn" id="userMenuToggle" title="Account: ${user.name}">
               ${user.avatar ? `<img src="${user.avatar}" alt="${user.name}" class="user-profile-img" onerror="this.style.display='none'">` : ''}
@@ -404,6 +400,13 @@
     `;
 
     setupEventListeners();
+    if (typeof initChameleonWorld === "function") {
+      initChameleonWorld();
+    } else {
+      const s = document.createElement("script");
+      s.src = "chameleon_world.js";
+      document.body.appendChild(s);
+    }
   }
 
   function setupEventListeners() {
@@ -418,19 +421,23 @@
       });
     }
 
-    // 2. Neural Triangle Button (all user repos)
-    const btnNeuralTriangle = document.getElementById("btnNeuralTriangle");
+    // 2. Neural Triangle Button beside PFP (link to all repos + optional dropdown)
+    const btnNeuralTriangle = document.getElementById("btnNeuralTriangleRepos");
     const userReposDropdown = document.getElementById("userReposDropdown");
     const repoFilterInput = document.getElementById("repoFilterInput");
     if (btnNeuralTriangle && userReposDropdown) {
-      btnNeuralTriangle.addEventListener("click", (e) => {
-        e.stopPropagation();
-        btnNeuralTriangle.classList.toggle("open");
-        userReposDropdown.classList.toggle("show");
-        if (userReposDropdown.classList.contains("show")) {
-          setTimeout(() => repoFilterInput?.focus(), 100);
-        }
-      });
+      // Toggle dropdown on hover or right-click, direct navigation on primary click
+      const wrap = btnNeuralTriangle.closest(".btn-neural-triangle-wrap");
+      if (wrap) {
+        wrap.addEventListener("mouseenter", () => {
+          userReposDropdown.classList.add("show");
+          btnNeuralTriangle.classList.add("open");
+        });
+        wrap.addEventListener("mouseleave", () => {
+          userReposDropdown.classList.remove("show");
+          btnNeuralTriangle.classList.remove("open");
+        });
+      }
 
       // Filter repos inside dropdown
       if (repoFilterInput) {
@@ -455,14 +462,89 @@
       });
     }
 
-    // 4. User profile menu toggle
+    // 4. User Profile Picture click -> Toggle MySpace & Contract Feed
     const userToggle = document.getElementById("userMenuToggle");
     const userDropdown = document.getElementById("userMenuDropdown");
-    if (userToggle && userDropdown) {
+    const modelhubShell = document.getElementById("modelhubShell");
+    const btnCloseMySpace = document.getElementById("btnCloseMySpace");
+
+    function renderMySpaceHeatGrid() {
+      const grid = document.getElementById("gitCalendarGrid");
+      if (!grid || grid.children.length > 0) return;
+
+      // 48 columns (weeks) x 7 rows (days) = 336 cells
+      // Replicate image: Sep-May mostly empty, sparse commits in Feb-May,
+      // and heavy green activity concentrated in Jul, Aug, Sep
+      const totalWeeks = 48;
+      for (let day = 0; day < 7; day++) {
+        for (let week = 0; week < totalWeeks; week++) {
+          const cell = document.createElement('div');
+          let lvl = 'lvl-0';
+
+          // Dense summer/autumn activity (weeks 36 to 48 -> Jul, Aug, Sep)
+          if (week >= 36) {
+            const r = Math.random();
+            if (r > 0.70) lvl = 'lvl-4';
+            else if (r > 0.45) lvl = 'lvl-3';
+            else if (r > 0.25) lvl = 'lvl-2';
+            else lvl = 'lvl-1';
+          } 
+          // Late spring activity (weeks 28 to 35 -> May, Jun)
+          else if (week >= 28) {
+            const r = Math.random();
+            if (r > 0.75) lvl = 'lvl-3';
+            else if (r > 0.55) lvl = 'lvl-2';
+            else if (r > 0.35) lvl = 'lvl-1';
+            else lvl = 'lvl-0';
+          }
+          // Sparse spring commits (weeks 20 to 27 -> Feb, Mar, Apr)
+          else if (week >= 20) {
+            const r = Math.random();
+            if (r > 0.85) lvl = 'lvl-2';
+            else if (r > 0.70) lvl = 'lvl-1';
+            else lvl = 'lvl-0';
+          }
+          // Earlier autumn/winter (Sep - Jan) mostly empty with rare dots
+          else {
+            if (Math.random() > 0.94) lvl = 'lvl-1';
+            else lvl = 'lvl-0';
+          }
+
+          cell.className = 'cal-cell ' + lvl;
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    if (userToggle) {
       userToggle.addEventListener("click", (e) => {
         e.stopPropagation();
-        userDropdown.classList.toggle("show");
+        if (modelhubShell) {
+          modelhubShell.classList.toggle("myspace-open");
+          const isOpen = modelhubShell.classList.contains("myspace-open");
+          localStorage.setItem("aigit_myspace_open", isOpen ? "true" : "false");
+          if (isOpen) renderMySpaceHeatGrid();
+        } else {
+          // If on a page other than dashboard, navigate to dashboard with ?myspace=1
+          window.location.href = "dashboard.html?myspace=1";
+        }
       });
+    }
+
+    if (btnCloseMySpace && modelhubShell) {
+      btnCloseMySpace.addEventListener("click", () => {
+        modelhubShell.classList.remove("myspace-open");
+        localStorage.setItem("aigit_myspace_open", "false");
+      });
+    }
+
+    // Auto-open MySpace if navigated with ?myspace=1 or saved in session
+    if (modelhubShell) {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("myspace") === "1" || localStorage.getItem("aigit_myspace_open") === "true") {
+        modelhubShell.classList.add("myspace-open");
+        renderMySpaceHeatGrid();
+      }
     }
 
     // Close any dropdown when clicking outside
