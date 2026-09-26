@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research Discussions &amp; Community Chat · AI-GIT</title>
+  <link rel="stylesheet" href="discussions.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2338bdf8'><circle cx='12' cy='12' r='10'/></svg>">
+</head>
+<body>
+
+  <!-- Top Global Navigation Placeholder -->
+  <div id="aigitTopNav"></div>
+
+  <main class="discussions-container">
+    <!-- Header -->
+    <header class="discussions-header">
+      <div class="discussions-title-area">
+        <h1>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-blue);">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Research Discussions &amp; Model Chats</span>
+        </h1>
+        <p>
+          Collaborate on training convergence, hyperparameter ablation studies, FastCDC chunking optimizations, and edge serving benchmarks.
+        </p>
+      </div>
+
+      <div>
+        <button type="button" class="btn btn-primary" id="btnOpenNewDiscModal">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Start Discussion</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Layout: Sidebar + Main Threads -->
+    <div class="discussions-layout">
+      <!-- Left Category Sidebar -->
+      <aside class="category-sidebar-card">
+        <div class="sidebar-heading">Discussion Forums</div>
+        <ul class="category-nav-list" id="categoryNavList">
+          <li>
+            <button type="button" class="category-btn active" data-category="all">
+              <span>🌐</span>
+              <span>All Discussions</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="category-btn" data-category="Model Architecture">
+              <span>🧠</span>
+              <span>Model Architecture</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="category-btn" data-category="Fine-Tuning &amp; LoRA">
+              <span>⚡</span>
+              <span>Fine-Tuning &amp; LoRA</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="category-btn" data-category="Quantization &amp; Edge Inference">
+              <span>📱</span>
+              <span>Quantization &amp; Edge</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="category-btn" data-category="General AI-Git">
+              <span>💡</span>
+              <span>General AI-Git &amp; CAS</span>
+            </button>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Right Main Threads Area -->
+      <section class="threads-main-area">
+        <div class="threads-search-bar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-muted);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="discSearchInput" class="form-input" style="background: transparent; border: none; padding: 4px;" placeholder="Search discussions by topic, question, or tag (e.g. FastCDC, Cosine, GGUF)...">
+        </div>
+
+        <div class="threads-list" id="discussionsListContainer">
+          <div style="padding: 40px; text-align: center; color: var(--text-muted);">
+            Loading research discussions...
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Discussion Detail Modal -->
+    <div id="discDetailModal" class="modal-overlay" style="display: none;">
+      <div class="modal-container" style="max-width: 820px; max-height: 85vh; overflow-y: auto;">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="pill-badge badge-purple" id="detailDiscCategory">Category</span>
+            <span id="detailDiscId" style="font-family: var(--font-mono); color: var(--accent-blue); font-size: 13px;">DISC-201</span>
+          </div>
+          <button type="button" class="modal-close-btn" id="btnCloseDiscDetailModal">&times;</button>
+        </div>
+
+        <div style="padding: 20px;">
+          <h2 id="detailDiscTitle" style="font-size: 20px; color: var(--text-primary); margin-bottom: 10px; line-height: 1.4;"></h2>
+          
+          <div id="detailDiscMeta" style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px;"></div>
+
+          <div id="detailDiscTags" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px;"></div>
+
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 20px; font-size: 14.5px; line-height: 1.7; color: #cbd5e1; margin-bottom: 24px;" id="detailDiscContent">
+          </div>
+
+          <!-- Upvote in modal -->
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-default);">
+            <button type="button" class="btn btn-secondary btn-sm" id="btnModalUpvote" style="display: flex; align-items: center; gap: 6px;">
+              <span>▲ Upvote Thread</span>
+              <span class="pill-badge badge-purple" id="detailDiscUpvotesCount">0</span>
+            </button>
+            <span style="font-size: 12px; color: var(--text-muted);">Useful research discussion</span>
+          </div>
+
+          <!-- Replies Timeline -->
+          <h3 style="font-size: 16px; color: var(--text-primary); margin-bottom: 14px;">Community Replies</h3>
+          <div class="replies-timeline" id="detailRepliesTimeline"></div>
+
+          <!-- Reply Composer -->
+          <div style="margin-top: 20px; border-top: 1px solid var(--border-default); padding-top: 16px;">
+            <label class="form-label" for="newReplyInput">Join the Discussion</label>
+            <textarea id="newReplyInput" class="form-input" rows="3" placeholder="Share your ablation results, code snippets, or thoughts..."></textarea>
+            <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+              <button type="button" class="btn btn-primary btn-sm" id="btnSubmitReply">Post Reply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Discussion Modal -->
+    <div id="createDiscModal" class="modal-overlay" style="display: none;">
+      <div class="modal-container" style="max-width: 600px;">
+        <div class="modal-header">
+          <div class="modal-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-blue);"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>Start a New Research Discussion</span>
+          </div>
+          <button type="button" class="modal-close-btn" id="btnCloseCreateDiscModal">&times;</button>
+        </div>
+
+        <form id="createDiscForm" style="padding: 20px;">
+          <div class="form-group">
+            <label class="form-label" for="discCategorySelect">Category *</label>
+            <select id="discCategorySelect" class="form-select" required>
+              <option value="Model Architecture">Model Architecture &amp; Scaling</option>
+              <option value="Fine-Tuning &amp; LoRA">Fine-Tuning, LoRA &amp; Checkpoints</option>
+              <option value="Quantization &amp; Edge Inference">Quantization &amp; Edge Inference</option>
+              <option value="General AI-Git">General AI-Git &amp; Storage Mechanics</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="discTitleInput">Discussion Title *</label>
+            <input type="text" id="discTitleInput" class="form-input" placeholder="e.g. Memory-Mapped Safetensors vs GGUF in distributed inference" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="discTagsInput">Tags (comma-separated)</label>
+            <input type="text" id="discTagsInput" class="form-input" placeholder="FastCDC, Safetensors, PyTorch, LoRA" value="AI-GIT, Research">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="discContentInput">Discussion Content *</label>
+            <textarea id="discContentInput" class="form-input" rows="5" placeholder="Elaborate on the background, experiment setup, and findings..." required></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button type="button" class="btn btn-secondary" id="btnCancelCreateDisc">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="btnSubmitNewDisc">Publish Discussion</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="nav.js"></script>
+  <script src="discussions.js"></script>
+</body>
+</html>
