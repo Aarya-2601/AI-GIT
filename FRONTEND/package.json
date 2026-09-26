@@ -1,15 +1,16 @@
 {
-  "name": "github-profile-overview",
+  "name": "ai-git-frontend",
   "version": "1.0.0",
-  "description": "GitHub profile onboarding and automated profile repository creator",
-  "main": "server.js",
+  "description": "AI-GIT Web Portal - Version Control for AI/ML Models",
+  "private": true,
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "dotenv": "^16.4.7",
-    "express": "^5.1.0",
-    "express-session": "^1.18.2"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "nodemailer": "^6.9.0"
   }
 }
