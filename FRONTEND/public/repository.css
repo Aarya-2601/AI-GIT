@@ -1,0 +1,326 @@
+/* =========================================================
+   AI-GIT SINGLE MODEL REPOSITORY & VISUAL COMMIT GRAPH STYLES
+   Accents: Electric Blue (#38bdf8), Cyber Purple (#a855f7), Neon Pink (#f43f5e)
+========================================================= */
+
+@import url("./nav.css");
+
+.repo-detail-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+}
+
+/* =========================================================
+   REPOSITORY HEADER & ACTION BAR
+========================================================= */
+
+.repo-header {
+  margin-bottom: 24px;
+}
+
+.repo-breadcrumb-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.repo-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.repo-breadcrumb a {
+  color: var(--accent-blue);
+}
+
+.repo-breadcrumb a:hover {
+  color: var(--accent-purple);
+}
+
+.repo-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-clone-group {
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-blue);
+  gap: 8px;
+}
+
+.btn-clone-copy {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.btn-clone-copy:hover {
+  color: #fff;
+  background: var(--bg-muted);
+}
+
+/* =========================================================
+   REPO SUB-NAVIGATION TABS
+========================================================= */
+
+.repo-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid var(--border-default);
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.repo-tab-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.repo-tab-link:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.repo-tab-link.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent-pink);
+  background: rgba(168, 85, 247, 0.08);
+}
+
+.repo-tab-link.active svg {
+  color: var(--accent-pink);
+}
+
+/* =========================================================
+   VISUAL COMMIT GRAPH SECTION (INTERACTIVE DAG)
+========================================================= */
+
+.graph-view-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  margin-bottom: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.graph-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.graph-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.graph-legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.graph-viewport {
+  position: relative;
+  background: #060911;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 30px 20px;
+  min-height: 280px;
+  overflow-x: auto;
+}
+
+.graph-svg-canvas {
+  width: 100%;
+  min-width: 720px;
+  height: 220px;
+}
+
+.graph-node-circle {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.graph-node-circle:hover {
+  filter: drop-shadow(0 0 10px #f43f5e);
+  transform: scale(1.15);
+}
+
+.graph-node-label {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  fill: var(--text-secondary);
+  cursor: pointer;
+}
+
+/* Commit Details Drawer */
+.commit-inspect-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inspect-commit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* =========================================================
+   FILE BROWSER & README STYLES
+========================================================= */
+
+.file-browser-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.file-browser-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+  font-size: 13px;
+}
+
+.file-item-row {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr 1fr;
+  align-items: center;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 13px;
+  transition: background 0.15s ease;
+}
+
+.file-item-row:hover {
+  background: var(--bg-card-hover);
+}
+
+.file-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.file-msg-cell {
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-size-cell {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  text-align: right;
+  font-size: 12px;
+}
+
+.file-time-cell {
+  color: var(--text-muted);
+  text-align: right;
+  font-size: 12px;
+}
+
+/* README Preview Box */
+.readme-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 28px;
+}
+
+.readme-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 20px;
+  color: var(--text-secondary);
+}
+
+.readme-content {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+.readme-content h1, .readme-content h2, .readme-content h3 {
+  color: var(--text-primary);
+  margin: 18px 0 10px;
+}
+
+.readme-content code {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
