@@ -20,12 +20,16 @@ set(SOURCES
     "src/main.cpp"
 
     #core
-    "src/core/hashing.cpp"
-    "src/core/compression.cpp"
     "src/core/storage.cpp"
     "src/core/config.cpp"
     "src/core/index.cpp"
     "src/core/refs.cpp"
+
+    #modular task folders
+    "src/hashing/hashing.cpp"
+    "src/compression/compression.cpp"
+    "src/inspection/file_inspector.cpp"
+    "src/chunking/asymmetric_chunker.cpp"
 
     #commands
     "src/commands/hash_object.cpp"
@@ -54,7 +58,13 @@ set(SOURCES
 
 add_executable(ai-git ${SOURCES})
 
-target_include_directories(ai-git PRIVATE src)
+target_include_directories(ai-git PRIVATE
+    src
+    src/inspection
+    src/chunking
+    src/compression
+    src/hashing
+)
 
 target_link_libraries(ai-git PRIVATE
     OpenSSL::SSL
@@ -67,19 +77,56 @@ target_link_libraries(ai-git PRIVATE
 add_executable(object-store-test
     src/storage/object_store_test.cpp
     src/storage/object_store.cpp
-    src/core/hashing.cpp
+    src/hashing/hashing.cpp
 )
 
 target_include_directories(object-store-test PRIVATE
     src
+    src/hashing
 )
 
 target_link_libraries(object-store-test PRIVATE
     OpenSSL::Crypto
 )
 
+# ------------------------------------------------------------
+# Format Inspector Verification Tool (Task 1.1)
+# ------------------------------------------------------------
+
+add_executable(aigit-inspect
+    src/tools/inspect_main.cpp
+    src/inspection/file_inspector.cpp
+)
+
+target_include_directories(aigit-inspect PRIVATE
+    src
+    src/inspection
+)
+
+# ------------------------------------------------------------
+# Asymmetric Chunker Verification Tool (Task 1.2)
+# ------------------------------------------------------------
+
+add_executable(aigit-chunk
+    src/tools/chunker_test_main.cpp
+    src/chunking/asymmetric_chunker.cpp
+    src/inspection/file_inspector.cpp
+    src/hashing/hashing.cpp
+)
+
+target_include_directories(aigit-chunk PRIVATE
+    src
+    src/inspection
+    src/chunking
+    src/hashing
+)
+
+target_link_libraries(aigit-chunk PRIVATE
+    OpenSSL::Crypto
+)
+
 install(
-    TARGETS ai-git
+    TARGETS ai-git aigit-inspect aigit-chunk
     DESTINATION bin
 )
 
