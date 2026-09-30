@@ -219,11 +219,11 @@
             <!-- Stylized enlarged branch arrow -->
             <svg class="node-branch-svg" width="38" height="46" viewBox="0 0 38 46" fill="none">
               <!-- Vertical tree trunk -->
-              <line class="branch-vline" x1="12" y1="0" x2="12" y2="46" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" />
+              <line class="branch-vline" x1="12" y1="0" x2="12" y2="46" stroke="#0f172a" stroke-width="2.4" stroke-linecap="round" />
               <!-- Horizontal branching connector -->
-              <line x1="12" y1="23" x2="28" y2="23" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" />
+              <line x1="12" y1="23" x2="28" y2="23" stroke="#0f172a" stroke-width="2.4" stroke-linecap="round" />
               <!-- Stylized sharp arrowhead -->
-              <polygon points="26,17 37,23 26,29" fill="#ffffff" />
+              <polygon points="26,17 37,23 26,29" fill="#0f172a" />
             </svg>
           </div>
           <a href="repository.html?repo=${encodeURIComponent(repoName.split('/')[1] || repoName)}" class="node-repo-link" title="${repoName}">
