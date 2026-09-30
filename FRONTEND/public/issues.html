@@ -16,15 +16,15 @@
     <!-- Header -->
     <header class="issues-header">
       <div class="issues-title-area">
-        <h1>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-pink);">
+        <h1 id="pageTitleHeading">
+          <svg id="pageTitleIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-pink);">
             <circle cx="12" cy="12" r="10"/>
             <line x1="12" y1="8" x2="12" y2="12"/>
             <line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          <span>Model Checkpoint Issues &amp; Loss Bugs</span>
+          <span id="pageTitleText">Model Checkpoint Divergences &amp; Loss Bugs</span>
         </h1>
-        <p>
+        <p id="pageSubtitleText">
           Track gradient explosions, loss divergence spikes, FP16/BF16 precision overflows, and FastCDC chunk manifest discrepancies across remote AI models.
         </p>
       </div>
@@ -32,10 +32,36 @@
       <div>
         <button type="button" class="btn btn-primary" id="btnOpenNewIssueModal">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          <span>New Issue</span>
+          <span id="btnNewText">New Divergence</span>
         </button>
       </div>
     </header>
+
+    <!-- Top Mode Switcher: All Divergences vs All Convergences -->
+    <div class="vcs-type-toggle-bar">
+      <button type="button" class="vcs-type-btn active" id="btnModeDivergences" data-mode="divergences">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="6" y1="3" x2="6" y2="21"/>
+          <path d="M6 17 C6 11, 18 13, 18 6"/>
+          <circle cx="6" cy="18" r="2.5" fill="currentColor"/>
+          <circle cx="18" cy="6" r="2.5" fill="currentColor"/>
+          <circle cx="6" cy="5" r="2" fill="currentColor"/>
+        </svg>
+        <span>All Divergences (Issues)</span>
+        <span class="vcs-type-count" id="divergenceCountTag">6</span>
+      </button>
+      <button type="button" class="vcs-type-btn" id="btnModeConvergences" data-mode="convergences">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="3" x2="18" y2="21"/>
+          <path d="M6 6 C6 13, 18 11, 18 18"/>
+          <circle cx="6" cy="6" r="2.5" fill="currentColor"/>
+          <circle cx="18" cy="18" r="2.5" fill="currentColor"/>
+          <circle cx="18" cy="5" r="2" fill="currentColor"/>
+        </svg>
+        <span>All Convergences (Weight Merges)</span>
+        <span class="vcs-type-count" id="convergenceCountTag">5</span>
+      </button>
+    </div>
 
     <!-- Filter Control Card -->
     <section class="issues-control-card">

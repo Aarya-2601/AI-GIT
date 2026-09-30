@@ -6,8 +6,9 @@
 #include "../core/hashing.hpp"
 #include "../core/filesystem.hpp"
 #include "../helpers/gitutils.hpp"
+#include "../helpers/ui_theme.hpp"
 #include "../storage/storage_manager.hpp"
-# include "../commands/commit.hpp"
+#include "../commands/commit.hpp"
 using namespace std;
 #include <filesystem>
 namespace fs=std::filesystem;
@@ -183,43 +184,47 @@ namespace Commands
 
 int runCommit(const std::string& message)
 {
+    UI::initTerminal();
+
     try
     {
         auto entries = readIndex();
 
         if (entries.empty())
         {
-            std::cerr << "Nothing to commit." << std::endl;
+            std::cout << "\n" << UI::Color::AMBER << "  ⚠️  Nothing to commit, working tree clean or no changes staged." << UI::Color::RESET << "\n";
+            std::cout << UI::Color::SLATE << "      (use \"ai-git add <file>...\" to stage files first)\n\n" << UI::Color::RESET;
             return 1;
         }
 
         auto root = buildDirectoryTree(entries);
 
-        std::string rootTreeHash =
-            writeTree(root.get());
-
-        std::string commitHash =
-            writeCommit(rootTreeHash, message);
+        std::string rootTreeHash = writeTree(root.get());
+        std::string commitHash = writeCommit(rootTreeHash, message);
 
         updateHEAD(commitHash);
 
-        std::cout
-            << "Commit created successfully."
-            << std::endl;
+        std::string currentBranch = Utils::getCurrentBranchName();
+        if (currentBranch.empty()) currentBranch = "main";
 
-        std::cout
-            << "Commit: "
-            << commitHash
-            << std::endl;
+        // Display Chameleon Commit Card
+        std::cout << "\n";
+        std::cout << UI::Color::BORDER << "  ╭──────────────────────────────────────────────────────────────────╮\n";
+        std::cout << "  │ " << UI::Color::GREEN << UI::Color::BOLD << "🦎 AI-GIT COMMIT CREATED" << UI::Color::RESET 
+                  << "  [" << UI::Color::CYAN << " " << currentBranch << UI::Color::RESET << " " 
+                  << UI::Color::GREEN << commitHash.substr(0, 7) << UI::Color::BORDER << "]                                  │\n";
+        std::cout << "  ├──────────────────────────────────────────────────────────────────┤\n";
+        std::cout << "  │ " << UI::Color::SLATE << "Commit ID : " << UI::Color::GREEN << commitHash << UI::Color::BORDER << " │\n";
+        std::cout << "  │ " << UI::Color::SLATE << "Tree ID   : " << UI::Color::BLUE << rootTreeHash << UI::Color::BORDER << " │\n";
+        std::cout << "  │ " << UI::Color::SLATE << "Message   : " << UI::Color::WHITE << UI::Color::BOLD << "\"" << message << "\"" << UI::Color::RESET << "\n";
+        std::cout << "  │ " << UI::Color::SLATE << "Entries   : " << UI::Color::TEAL << entries.size() << " files recorded in commit manifest" << UI::Color::RESET << "\n";
+        std::cout << UI::Color::BORDER << "  ╰──────────────────────────────────────────────────────────────────╯\n\n" << UI::Color::RESET;
 
         return 0;
     }
     catch (const std::exception& e)
     {
-        std::cerr
-            << e.what()
-            << std::endl;
-
+        std::cerr << UI::Color::RED << "  Commit Error: " << e.what() << UI::Color::RESET << std::endl;
         return 1;
     }
 }

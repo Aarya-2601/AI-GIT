@@ -19,11 +19,14 @@ find_package(ZLIB REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(CURL REQUIRED)
 
-# SQLite on the current MSYS2/UCRT64 environment.
-# The previous CMake file used unofficial-sqlite3, which is the
-# vcpkg package/config name and does not exist in this environment.
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(SQLITE3 REQUIRED IMPORTED_TARGET sqlite3)
+find_package(unofficial-sqlite3 CONFIG QUIET)
+if(TARGET unofficial::sqlite3::sqlite3)
+    set(SQLITE3_TARGET unofficial::sqlite3::sqlite3)
+else()
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(SQLITE3 REQUIRED IMPORTED_TARGET sqlite3)
+    set(SQLITE3_TARGET PkgConfig::SQLITE3)
+endif()
 
 
 # ------------------------------------------------------------
@@ -83,7 +86,7 @@ target_link_libraries(ai-git PRIVATE
     OpenSSL::SSL
     OpenSSL::Crypto
     ZLIB::ZLIB
-    PkgConfig::SQLITE3
+    ${SQLITE3_TARGET}
     CURL::libcurl
 )
 
@@ -132,7 +135,7 @@ target_include_directories(storage-manager-test PRIVATE
 target_link_libraries(storage-manager-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    PkgConfig::SQLITE3
+    ${SQLITE3_TARGET}
     nlohmann_json::nlohmann_json
 )
 
@@ -163,7 +166,7 @@ target_include_directories(remote-sync-test PRIVATE
 target_link_libraries(remote-sync-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    PkgConfig::SQLITE3
+    ${SQLITE3_TARGET}
     nlohmann_json::nlohmann_json
     CURL::libcurl
 )
@@ -206,7 +209,7 @@ target_include_directories(push-metadata-test PRIVATE
 target_link_libraries(push-metadata-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    PkgConfig::SQLITE3
+    ${SQLITE3_TARGET}
     nlohmann_json::nlohmann_json
 )
 
@@ -249,7 +252,7 @@ target_include_directories(status-clean-test PRIVATE
 target_link_libraries(status-clean-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    PkgConfig::SQLITE3
+    ${SQLITE3_TARGET}
     nlohmann_json::nlohmann_json
 )
 
@@ -293,7 +296,7 @@ target_include_directories(checkout-index-sync-test PRIVATE
 target_link_libraries(checkout-index-sync-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    PkgConfig::SQLITE3
+    ${SQLITE3_TARGET}
     nlohmann_json::nlohmann_json
 )
 
@@ -335,7 +338,7 @@ target_include_directories(hash-object-parity-test PRIVATE
 target_link_libraries(hash-object-parity-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    PkgConfig::SQLITE3
+    ${SQLITE3_TARGET}
     nlohmann_json::nlohmann_json
 )
 
@@ -377,7 +380,7 @@ target_include_directories(metadata-rebuild-test PRIVATE
 target_link_libraries(metadata-rebuild-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    PkgConfig::SQLITE3
+    ${SQLITE3_TARGET}
     nlohmann_json::nlohmann_json
 )
 
@@ -420,7 +423,7 @@ target_include_directories(gc-test PRIVATE
 target_link_libraries(gc-test PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    PkgConfig::SQLITE3
+    ${SQLITE3_TARGET}
     nlohmann_json::nlohmann_json
 )
 

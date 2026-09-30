@@ -5,6 +5,7 @@
 (function () {
   let allIssues = [];
   let allModels = [];
+  let currentMode = window.location.hash.includes("convergence") ? "convergences" : "divergences";
   let currentStatus = "open";
   let currentRepo = "all";
   let currentLabel = "all";
@@ -13,10 +14,72 @@
 
   async function init() {
     setupEventListeners();
+    applyModeUI();
     await Promise.all([loadModels(), loadIssues()]);
   }
 
+  function applyModeUI() {
+    const btnDivergences = document.getElementById("btnModeDivergences");
+    const btnConvergences = document.getElementById("btnModeConvergences");
+    const titleText = document.getElementById("pageTitleText");
+    const subtitleText = document.getElementById("pageSubtitleText");
+    const btnNewText = document.getElementById("btnNewText");
+    const titleIcon = document.getElementById("pageTitleIcon");
+
+    if (btnDivergences && btnConvergences) {
+      if (currentMode === "convergences") {
+        btnConvergences.classList.add("active");
+        btnDivergences.classList.remove("active");
+        if (titleText) titleText.textContent = "Model Checkpoint Convergences & Weight Merges";
+        if (subtitleText) subtitleText.textContent = "Review and merge low-rank delta layers (LoRA), quantization branches, and weight convergences into foundation models.";
+        if (btnNewText) btnNewText.textContent = "New Convergence";
+        if (titleIcon) titleIcon.style.color = "var(--accent-purple)";
+      } else {
+        btnDivergences.classList.add("active");
+        btnConvergences.classList.remove("active");
+        if (titleText) titleText.textContent = "Model Checkpoint Divergences & Loss Bugs";
+        if (subtitleText) subtitleText.textContent = "Track gradient explosions, loss divergence spikes, FP16/BF16 precision overflows, and FastCDC chunk manifest discrepancies across remote AI models.";
+        if (btnNewText) btnNewText.textContent = "New Divergence";
+        if (titleIcon) titleIcon.style.color = "var(--accent-pink)";
+      }
+    }
+  }
+
   function setupEventListeners() {
+    // Mode toggles (Divergences vs Convergences)
+    const btnDivergences = document.getElementById("btnModeDivergences");
+    const btnConvergences = document.getElementById("btnModeConvergences");
+
+    if (btnDivergences) {
+      btnDivergences.addEventListener("click", () => {
+        currentMode = "divergences";
+        window.location.hash = "divergences";
+        applyModeUI();
+        updateCounts();
+        renderIssues();
+      });
+    }
+
+    if (btnConvergences) {
+      btnConvergences.addEventListener("click", () => {
+        currentMode = "convergences";
+        window.location.hash = "convergences";
+        applyModeUI();
+        updateCounts();
+        renderIssues();
+      });
+    }
+
+    window.addEventListener("hashchange", () => {
+      const newMode = window.location.hash.includes("convergence") ? "convergences" : "divergences";
+      if (newMode !== currentMode) {
+        currentMode = newMode;
+        applyModeUI();
+        updateCounts();
+        renderIssues();
+      }
+    });
+
     // Status tab buttons (Open / Closed / All)
     const statusBtns = document.querySelectorAll(".status-tab-btn");
     statusBtns.forEach(btn => {
@@ -196,8 +259,19 @@
   }
 
   function updateCounts() {
-    const openCount = allIssues.filter(i => i.status === "open").length;
-    const closedCount = allIssues.filter(i => i.status === "closed").length;
+    const isConv = currentMode === "convergences";
+    const modeIssues = allIssues.filter(i => isConv ? (i.type === "convergence" || i.id.startsWith("CONV")) : (i.type !== "convergence" && !i.id.startsWith("CONV")));
+
+    const totalDivs = allIssues.filter(i => i.type !== "convergence" && !i.id.startsWith("CONV")).length;
+    const totalConvs = allIssues.filter(i => i.type === "convergence" || i.id.startsWith("CONV")).length;
+
+    const divTag = document.getElementById("divergenceCountTag");
+    const convTag = document.getElementById("convergenceCountTag");
+    if (divTag) divTag.textContent = totalDivs;
+    if (convTag) convTag.textContent = totalConvs;
+
+    const openCount = modeIssues.filter(i => i.status === "open").length;
+    const closedCount = modeIssues.filter(i => i.status === "closed").length;
 
     const openBadge = document.getElementById("openCountBadge");
     const closedBadge = document.getElementById("closedCountBadge");
@@ -207,35 +281,39 @@
   }
 
   /* =========================================================
-     RENDER ISSUES LIST
+     RENDER ISSUES / CONVERGENCES LIST
   ========================================================= */
   function renderIssues() {
     const container = document.getElementById("issuesListContainer");
     if (!container) return;
 
-    let filtered = allIssues;
+    const isConv = currentMode === "convergences";
 
-    // Status filter
+    // 1. Filter by Mode (divergence vs convergence)
+    let filtered = allIssues.filter(i => isConv ? (i.type === "convergence" || i.id.startsWith("CONV")) : (i.type !== "convergence" && !i.id.startsWith("CONV")));
+
+    // 2. Status filter
     if (currentStatus !== "all") {
       filtered = filtered.filter(i => i.status === currentStatus);
     }
 
-    // Repo filter
+    // 3. Repo filter
     if (currentRepo !== "all") {
       filtered = filtered.filter(i => i.repoId === currentRepo);
     }
 
-    // Label filter
+    // 4. Label filter
     if (currentLabel !== "all") {
       filtered = filtered.filter(i => i.labels && i.labels.some(l => l.toLowerCase() === currentLabel.toLowerCase()));
     }
 
-    // Search query
+    // 5. Search query
     if (searchQuery) {
       filtered = filtered.filter(i =>
         i.title.toLowerCase().includes(searchQuery) ||
         i.author.toLowerCase().includes(searchQuery) ||
         i.repoId.toLowerCase().includes(searchQuery) ||
+        (i.branch && i.branch.toLowerCase().includes(searchQuery)) ||
         (i.description && i.description.toLowerCase().includes(searchQuery))
       );
     }
@@ -244,8 +322,8 @@
       container.innerHTML = `
         <div class="issues-empty-state">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--text-muted); margin-bottom: 12px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <div style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px;">No issues match your filter criteria</div>
-          <div style="font-size: 13px; color: var(--text-muted);">Try resetting search filters or report a new model checkpoint bug.</div>
+          <div style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px;">No ${isConv ? 'convergences' : 'issues'} match your filter criteria</div>
+          <div style="font-size: 13px; color: var(--text-muted);">Try resetting search filters or ${isConv ? 'open a new weight convergence' : 'report a new model divergence'}.</div>
         </div>
       `;
       return;
@@ -253,16 +331,32 @@
 
     container.innerHTML = filtered.map(issue => {
       const isOpen = issue.status === "open";
-      const iconSvg = isOpen
-        ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>`
-        : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
+      let iconSvg = "";
+
+      if (isConv) {
+        // Convergence icon (merging branches)
+        iconSvg = isOpen
+          ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="3" x2="18" y2="21"/><path d="M6 6 C6 13, 18 11, 18 18"/><circle cx="6" cy="6" r="2.5" fill="#22c55e"/><circle cx="18" cy="18" r="2.5" fill="#22c55e"/></svg>`
+          : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="3" x2="18" y2="21"/><path d="M6 6 C6 13, 18 11, 18 18"/><polyline points="15 9 18 6 21 9"/></svg>`;
+      } else {
+        // Divergence icon (bug / diverging branches)
+        iconSvg = isOpen
+          ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>`
+          : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
+      }
 
       const labelsHtml = (issue.labels || []).map(label => {
         let badgeClass = "badge-blue";
         if (label.includes("divergence") || label.includes("overflow") || label.includes("fp16")) badgeClass = "badge-pink";
-        else if (label.includes("fastcdc") || label.includes("manifest")) badgeClass = "badge-purple";
+        else if (label.includes("fastcdc") || label.includes("manifest") || label.includes("lora") || label.includes("merge")) badgeClass = "badge-purple";
         return `<span class="pill-badge ${badgeClass}" style="font-size: 10.5px;">${label}</span>`;
       }).join(" ");
+
+      const branchBadge = issue.branch ? `
+        <span class="pill-badge" style="font-size: 11px; font-family: var(--font-mono); background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.35); color: #c084fc;">
+          🔀 ${issue.branch}
+        </span>
+      ` : "";
 
       return `
         <div class="issue-item-row" onclick="window.viewIssueDetail('${issue.id}')">
@@ -273,18 +367,18 @@
               <a href="repository.html?id=${encodeURIComponent(issue.repoId)}" class="pill-badge badge-blue" style="font-size: 11px;" onclick="event.stopPropagation()">
                 ${issue.repoId}
               </a>
+              ${branchBadge}
               ${labelsHtml}
             </div>
             <div class="issue-meta-line">
               <span>#${issue.id}</span>
               <span>&middot;</span>
-              <span>opened ${issue.createdAt} by <strong style="color: var(--text-secondary);">${issue.author}</strong></span>
+              <span>${isConv ? 'convergence proposed' : 'opened'} ${issue.createdAt} by <strong style="color: var(--text-secondary);">${issue.author}</strong></span>
             </div>
           </div>
           <div class="issue-comments-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             <span>${issue.commentsCount || 0}</span>
-          </div>
         </div>
       `;
     }).join("");
