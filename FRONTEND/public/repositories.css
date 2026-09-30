@@ -274,8 +274,9 @@
 }
 
 .tree-item .chevron {
-  color: var(--text-muted);
+  color: #0f172a;
   font-size: 10px;
+  font-weight: bold;
   transition: transform 0.2s ease;
 }
 

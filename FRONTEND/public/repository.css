@@ -7,8 +7,8 @@
 ========================================================= */
 
 .node-tabs-wrapper {
-  background: #0d1117;
-  border-bottom: 1px solid #21262d;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-default, #e2e8f0);
   padding: 0 32px;
   position: relative;
   overflow-x: auto;
@@ -31,7 +31,7 @@
   padding: 10px 16px;
   font-size: 13.5px;
   font-weight: 500;
-  color: #8b949e;
+  color: var(--text-secondary, #64748b);
   text-decoration: none;
   background: transparent;
   border: none;
@@ -44,14 +44,12 @@
 
 /* Light blue color palette */
 .node-tab-item:hover {
-  color: #7dd3fc; /* Light electric blue */
-  text-shadow: 0 0 8px rgba(125, 211, 252, 0.4);
+  color: var(--accent-blue, #0284c7);
 }
 
 .node-tab-item.active {
-  color: #38bdf8; /* Vibrant light blue */
+  color: var(--accent-blue, #0284c7);
   font-weight: 600;
-  text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
 }
 
 .node-tab-item svg {
@@ -71,9 +69,9 @@
   font-size: 11px;
   font-weight: 600;
   line-height: 14px;
-  color: #7dd3fc;
-  background-color: rgba(56, 189, 248, 0.15);
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--accent-blue, #0284c7);
+  background-color: rgba(2, 132, 199, 0.1);
+  border: 1px solid rgba(2, 132, 199, 0.25);
   border-radius: 9999px;
 }
 
@@ -82,9 +80,9 @@
   position: absolute;
   bottom: 0;
   height: 2.5px;
-  background: linear-gradient(90deg, #38bdf8 0%, #7dd3fc 100%);
+  background: linear-gradient(90deg, var(--accent-blue, #0284c7) 0%, #38bdf8 100%);
   border-radius: 9999px;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.8), 0 0 20px rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
   transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1), width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   z-index: 2;
@@ -101,10 +99,11 @@
 }
 
 .placeholder-pane-card {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid var(--border-default, #e2e8f0);
   border-radius: 8px;
   padding: 32px 28px;
+  color: var(--text-primary);
 }
 
 
@@ -146,7 +145,7 @@
 .node-name-text {
   font-size: 20px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: var(--text-primary);
   margin: 0;
   letter-spacing: -0.2px;
 }
@@ -164,22 +163,22 @@
   padding: 4px 10px;
   font-size: 12px;
   font-weight: 500;
-  color: #c9d1d9;
-  background-color: #21262d;
-  border: 1px solid rgba(240, 246, 252, 0.1);
+  color: var(--text-secondary);
+  background-color: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .btn-github-action:hover {
-  background-color: #30363d;
-  border-color: #8b949e;
-  color: #f0f6fc;
+  background-color: var(--bg-muted);
+  border-color: var(--border-highlight);
+  color: var(--text-primary);
 }
 
 .btn-github-action.active-star {
-  color: #e3b341;
+  color: #d97706;
 }
 
 .action-count {
@@ -187,8 +186,8 @@
   padding: 0 5px;
   font-size: 11px;
   font-weight: 600;
-  color: #c9d1d9;
-  background-color: rgba(110, 118, 129, 0.3);
+  color: var(--text-secondary);
+  background-color: var(--bg-muted);
   border-radius: 9999px;
   margin-left: 2px;
 }
@@ -217,9 +216,9 @@
   gap: 8px;
   padding: 5px 12px;
   font-size: 13.5px;
-  color: #c9d1d9;
-  background-color: #21262d;
-  border: 1px solid rgba(240, 246, 252, 0.1);
+  color: var(--text-primary);
+  background-color: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: 6px;
   cursor: pointer;
 }
@@ -228,7 +227,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #8b949e;
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 13px;
   font-weight: 400;
@@ -236,7 +235,7 @@
 }
 
 .branch-meta-link:hover {
-  color: #58a6ff;
+  color: var(--accent-blue);
 }
 
 .controls-right {
@@ -251,23 +250,24 @@
   gap: 6px;
   padding: 5px 12px;
   font-size: 13px;
-  color: #c9d1d9;
-  background-color: #21262d;
-  border: 1px solid rgba(240, 246, 252, 0.1);
+  color: var(--text-secondary);
+  background-color: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: 6px;
   cursor: pointer;
 }
 
 .btn-github-subtle:hover {
-  background-color: #30363d;
+  background-color: var(--bg-muted);
+  color: var(--text-primary);
 }
 
 .kbd-hint {
   display: inline-block;
   padding: 0 4px;
   font-size: 10px;
-  color: #8b949e;
-  border: 1px solid #30363d;
+  color: var(--text-muted);
+  border: 1px solid var(--border-default);
   border-radius: 4px;
 }
 
@@ -313,8 +313,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  background-color: #161b22;
-  border: 1px solid #30363d;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   font-size: 13px;
@@ -330,8 +330,8 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #38bdf8;
-  color: #0d1117;
+  background: #0284c7;
+  color: #ffffff;
   font-size: 11px;
   font-weight: 700;
   display: flex;
@@ -341,11 +341,11 @@
 
 .commit-author-name {
   font-weight: 600;
-  color: #f0f6fc;
+  color: #0f172a;
 }
 
 .commit-message-preview {
-  color: #8b949e;
+  color: #475569;
 }
 
 .commit-meta-right {
@@ -356,28 +356,29 @@
 }
 
 .commit-hash-link {
-  color: #58a6ff;
+  color: #0284c7;
   font-family: ui-monospace, monospace;
 }
 
 .commit-time {
-  color: #8b949e;
+  color: #64748b;
 }
 
 .commit-count-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: #c9d1d9;
+  color: #475569;
 }
 
 .files-table-card {
-  border: 1px solid #30363d;
+  border: 1px solid #e2e8f0;
   border-top: none;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
-  background-color: #0d1117;
+  background-color: #ffffff;
   margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .file-row {
@@ -385,14 +386,14 @@
   grid-template-columns: 220px minmax(0, 1fr) 110px;
   align-items: center;
   padding: 8px 16px;
-  border-top: 1px solid #21262d;
+  border-top: 1px solid #e2e8f0;
   font-size: 13.5px;
   cursor: pointer;
   transition: background-color 0.12s ease;
 }
 
 .file-row:hover {
-  background-color: #161b22;
+  background-color: #f8fafc;
 }
 
 .file-name-part {
@@ -405,17 +406,17 @@
 }
 
 .file-name {
-  color: #e6edf3;
+  color: #0f172a;
   font-weight: 500;
 }
 
 .file-row:hover .file-name {
-  color: #58a6ff;
+  color: #0284c7;
   text-decoration: underline;
 }
 
 .file-commit-part {
-  color: #8b949e;
+  color: #64748b;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -423,19 +424,54 @@
 }
 
 .file-time-part {
-  color: #8b949e;
+  color: #64748b;
   text-align: right;
   font-size: 12px;
+}
+
+/* Subfolder Artifacts in Files Table (Indented under parent directory) */
+.subfolder-artifact-row {
+  background-color: #f8fafc;
+  font-size: 13px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.subfolder-artifact-row:hover {
+  background-color: #f0f9ff;
+}
+
+.subfolder-indent {
+  padding-left: 20px;
+}
+
+.tree-line-sub {
+  color: #0f172a;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 2px;
+}
+
+.subfolder-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  background: rgba(2, 132, 199, 0.08);
+  border: 1px solid rgba(2, 132, 199, 0.25);
+  color: #0284c7;
+  margin-left: 6px;
 }
 
 /* =========================================================
    README BOX (IMAGE REFERENCE)
 ========================================================= */
 .node-readme-box {
-  border: 1px solid #30363d;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
-  background-color: #0d1117;
+  background-color: #ffffff;
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .readme-box-header {
@@ -443,11 +479,11 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background-color: #161b22;
-  border-bottom: 1px solid #30363d;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
   font-size: 13.5px;
   font-weight: 600;
-  color: #e6edf3;
+  color: #0f172a;
 }
 
 .readme-box-body {
@@ -458,26 +494,26 @@
 .readme-title {
   font-size: 26px;
   font-weight: 700;
-  color: #f0f6fc;
-  border-bottom: 1px solid #21262d;
+  color: #0f172a;
+  border-bottom: 1px solid #e2e8f0;
   padding-bottom: 8px;
   margin-bottom: 16px;
 }
 
 .readme-lead {
   font-size: 15px;
-  color: #c9d1d9;
+  color: #475569;
   margin-bottom: 20px;
 }
 
 .cli-pre {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 14px 18px;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   font-size: 13px;
-  color: #38bdf8;
+  color: #0284c7;
   margin-bottom: 20px;
   overflow-x: auto;
 }
@@ -504,25 +540,25 @@
 .sidebar-title {
   font-size: 15.5px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: #0f172a;
   margin: 0;
 }
 
 .sidebar-gear-btn {
   background: transparent;
   border: none;
-  color: #8b949e;
+  color: #64748b;
   cursor: pointer;
   padding: 2px;
 }
 
 .sidebar-gear-btn:hover {
-  color: #58a6ff;
+  color: #0284c7;
 }
 
 .sidebar-desc {
   font-size: 13.5px;
-  color: #c9d1d9;
+  color: #475569;
   line-height: 1.5;
   margin-bottom: 16px;
 }
@@ -540,35 +576,35 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #8b949e;
+  color: #64748b;
   text-decoration: none;
   font-size: 13.5px;
   transition: color 0.15s ease;
 }
 
 .sidebar-link:hover {
-  color: #58a6ff;
+  color: #0284c7;
 }
 
 .sidebar-link strong {
-  color: #f0f6fc;
+  color: #0f172a;
 }
 
 .sidebar-divider {
   height: 1px;
-  background-color: #21262d;
+  background-color: #e2e8f0;
   margin: 12px 0;
 }
 
 .sidebar-subtext {
   font-size: 13px;
-  color: #8b949e;
+  color: #64748b;
   margin-bottom: 8px;
 }
 
 .sidebar-action-link {
   font-size: 13px;
-  color: #58a6ff;
+  color: #0284c7;
   text-decoration: none;
 }
 
@@ -580,10 +616,11 @@
    VISUAL COMMIT GRAPH & DEDUP TABS
 ========================================================= */
 .graph-view-card, .dedup-stats-card {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .graph-header-row {
@@ -599,7 +636,7 @@
   gap: 8px;
   font-size: 16px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: #0f172a;
 }
 
 .graph-legend {
@@ -607,7 +644,7 @@
   align-items: center;
   gap: 16px;
   font-size: 12px;
-  color: #8b949e;
+  color: #64748b;
 }
 
 .legend-dot {
@@ -621,8 +658,8 @@
 .graph-viewport {
   width: 100%;
   overflow-x: auto;
-  background: #0d1117;
-  border: 1px solid #21262d;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 16px;
   margin-bottom: 16px;
@@ -640,8 +677,8 @@
 }
 
 .stat-box {
-  background: #0d1117;
-  border: 1px solid #30363d;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 16px;
   display: flex;
@@ -656,7 +693,7 @@
 
 .stat-label {
   font-size: 12px;
-  color: #8b949e;
+  color: #64748b;
   margin-top: 4px;
 }
 
@@ -668,8 +705,8 @@
 .view-mode-toggle {
   display: inline-flex;
   align-items: center;
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 2px;
   gap: 2px;
@@ -682,7 +719,7 @@
   padding: 4px 10px;
   font-size: 12.5px;
   font-weight: 500;
-  color: #8b949e;
+  color: #64748b;
   background: transparent;
   border: none;
   border-radius: 4px;
@@ -692,15 +729,15 @@
 }
 
 .btn-view-toggle:hover {
-  color: #7dd3fc;
+  color: #0284c7;
 }
 
 .btn-view-toggle.active {
-  background: #21262d;
-  color: #38bdf8;
+  background: #ffffff;
+  color: #0284c7;
   font-weight: 600;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
-  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #cbd5e1;
 }
 
 /* =========================================================
@@ -708,11 +745,12 @@
 ========================================================= */
 
 .subfolder-bubbles-section {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 14px 18px;
   margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .subfolder-bubbles-header {
@@ -733,13 +771,12 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  color: #38bdf8;
-  text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+  color: #0284c7;
 }
 
 .bubbles-hint {
   font-size: 11px;
-  color: #8b949e;
+  color: #64748b;
 }
 
 .bubbles-scroll-controls {
@@ -752,9 +789,9 @@
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  border: 1px solid #30363d;
-  background: #0d1117;
-  color: #8b949e;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #64748b;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -764,8 +801,8 @@
 }
 
 .btn-bubble-scroll:hover {
-  color: #f0f6fc;
-  border-color: #38bdf8;
+  color: #0f172a;
+  border-color: #0284c7;
 }
 
 /* Horizontal Scroll Track for Bubbles */
@@ -776,7 +813,7 @@
   overflow-x: auto;
   padding: 6px 4px 8px;
   scrollbar-width: thin;
-  scrollbar-color: #30363d transparent;
+  scrollbar-color: #cbd5e1 transparent;
   scroll-behavior: smooth;
 }
 
@@ -785,12 +822,12 @@
 }
 
 .folder-bubbles-scroll-track::-webkit-scrollbar-thumb {
-  background: #30363d;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 .folder-bubbles-scroll-track::-webkit-scrollbar-thumb:hover {
-  background: #38bdf8;
+  background: #94a3b8;
 }
 
 /* Individual Folder Bubble */
@@ -799,10 +836,10 @@
   align-items: center;
   gap: 7px;
   padding: 6px 14px;
-  background: #0d1117;
-  border: 1px solid #30363d;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 9999px;
-  color: #e6edf3;
+  color: #0f172a;
   font-size: 12.5px;
   font-weight: 500;
   text-decoration: none;
@@ -810,21 +847,21 @@
   flex-shrink: 0;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .folder-bubble:hover {
-  background: #1c263e;
+  background: #f0f9ff;
   border-color: #38bdf8;
-  color: #7dd3fc;
+  color: #0284c7;
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.2);
 }
 
 .folder-bubble.active-bubble {
-  border-color: #c084fc;
-  background: rgba(192, 132, 252, 0.12);
-  color: #c084fc;
+  border-color: #a855f7;
+  background: #faf5ff;
+  color: #9333ea;
 }
 
 .folder-bubble .bubble-icon {
@@ -835,9 +872,9 @@
   font-size: 10px;
   padding: 1px 6px;
   border-radius: 9999px;
-  background: rgba(56, 189, 248, 0.12);
-  color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.25);
+  background: rgba(2, 132, 199, 0.08);
+  color: #0284c7;
+  border: 1px solid rgba(2, 132, 199, 0.25);
   font-family: monospace;
 }
 
@@ -846,11 +883,12 @@
 ========================================================= */
 
 .tree-view-wrapper {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 28px 24px 36px;
   overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .tree-view-header {
@@ -874,13 +912,13 @@
   align-items: center;
   gap: 10px;
   padding: 10px 22px;
-  background: #0d1117;
+  background: #f8fafc;
   border: 2px solid #a855f7;
   border-radius: 9999px;
-  color: #f0f6fc;
+  color: #0f172a;
   font-size: 16px;
   font-weight: 700;
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.45), inset 0 0 12px rgba(168, 85, 247, 0.2);
+  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.2);
   margin-bottom: 28px;
   position: relative;
 }
@@ -888,86 +926,148 @@
 /* Branching connectors */
 .tree-branch-svg {
   width: 100%;
-  max-width: 950px;
+  max-width: 1200px;
   height: 48px;
   overflow: visible;
   margin-bottom: 8px;
 }
 
-/* Level 1 Grid of Folders */
-.tree-level1-grid {
+/* Level 1 & 2 Grid of Columns */
+.tree-columns-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 16px;
   width: 100%;
+  max-width: 1200px;
+}
+
+.tree-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .tree-folder-card {
-  background: #0d1117;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 14px 12px;
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   transition: all 0.2s ease;
-  position: relative;
+  width: 100%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .tree-folder-card:hover {
   border-color: #38bdf8;
-  transform: translateY(-3px);
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25);
 }
 
 .tree-card-icon {
-  font-size: 20px;
-  margin-bottom: 6px;
+  font-size: 18px;
+  margin-bottom: 4px;
 }
 
 .tree-card-name {
   font-size: 13px;
-  font-weight: 600;
-  color: #f0f6fc;
-  margin-bottom: 4px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 2px;
 }
 
 .tree-card-meta {
-  font-size: 11px;
-  color: #8b949e;
-  margin-bottom: 10px;
+  font-size: 10.5px;
+  color: #64748b;
 }
 
-/* Sub-items in tree card */
-.tree-subitems-list {
+/* Vertical trunk line between parent and subfolder nodes */
+.tree-vertical-stem {
+  width: 2px;
+  height: 18px;
+  background: linear-gradient(180deg, #38bdf8 0%, rgba(56, 189, 248, 0.3) 100%);
+  margin: 0 auto;
+}
+
+/* Subfolder Nodes Container */
+.tree-subfolder-nodes {
   width: 100%;
-  border-top: 1px solid #21262d;
-  padding-top: 8px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
+  position: relative;
+  padding-left: 10px;
+  border-left: 2px dashed rgba(56, 189, 248, 0.35);
+  margin-left: 8px;
 }
 
-.tree-subitem-pill {
-  font-size: 11px;
-  padding: 3px 8px;
-  background: #161b22;
-  border: 1px solid #21262d;
-  border-radius: 4px;
-  color: #c9d1d9;
-  font-family: monospace;
+/* Individual Subfolder Node Card */
+.tree-subfolder-node {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 7px 9px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+}
+
+.tree-subfolder-node::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  width: 10px;
+  height: 2px;
+  background: rgba(56, 189, 248, 0.4);
+}
+
+.tree-subfolder-node:hover {
+  background: #f0f9ff;
+  border-color: #38bdf8;
+  transform: translateX(3px);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+}
+
+.tree-node-bullet {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.tree-node-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
   text-align: left;
+}
+
+.tree-node-title {
+  font-family: monospace;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #334155;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: all 0.15s ease;
 }
 
-.tree-subitem-pill:hover {
-  color: #38bdf8;
-  border-color: #38bdf8;
-  background: rgba(56, 189, 248, 0.1);
+.tree-subfolder-node:hover .tree-node-title {
+  color: #0284c7;
+}
+
+.tree-node-subtitle {
+  font-size: 10px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* =========================================================
@@ -982,10 +1082,11 @@
 }
 
 .metric-widget-box {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .metric-widget-header {
@@ -1000,7 +1101,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  color: #38bdf8;
+  color: #0284c7;
 }
 
 /* 1. Circular Percentage Graph */
@@ -1019,7 +1120,7 @@
 
 .circular-bg-ring {
   fill: none;
-  stroke: #21262d;
+  stroke: #e2e8f0;
   stroke-width: 10;
 }
 
@@ -1044,20 +1145,19 @@
 .circular-percent-val {
   font-size: 26px;
   font-weight: 800;
-  color: #10b981;
-  text-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+  color: #059669;
 }
 
 .circular-percent-label {
   font-size: 10.5px;
-  color: #8b949e;
+  color: #64748b;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .metric-subcaption {
   font-size: 12px;
-  color: #8b949e;
+  color: #64748b;
   text-align: center;
   margin-top: 6px;
 }
@@ -1084,7 +1184,7 @@
 
 .comp-bar-track {
   height: 8px;
-  background: #21262d;
+  background: #e2e8f0;
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -1101,7 +1201,7 @@
   height: 100%;
   background: linear-gradient(90deg, #38bdf8, #10b981);
   border-radius: 9999px;
-  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
 }
 
 /* 3. Chunks Metric Stats */
@@ -1115,8 +1215,7 @@
 .chunks-big-number {
   font-size: 28px;
   font-weight: 800;
-  color: #c084fc;
-  text-shadow: 0 0 14px rgba(192, 132, 252, 0.5);
+  color: #9333ea;
   font-family: monospace;
 }
 
@@ -1125,7 +1224,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 0;
-  border-top: 1px solid #21262d;
+  border-top: 1px solid #e2e8f0;
   font-size: 12px;
 }
 
@@ -1138,16 +1237,19 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: #0d1117;
-  border-top: 2px solid #38bdf8;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(56, 189, 248, 0.2);
+  max-height: 420px;
+  background: #ffffff;
+  border-top: 2px solid #0284c7;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15), 0 -2px 10px rgba(2, 132, 199, 0.1);
   z-index: 2000;
   display: none;
   animation: slideUpPanel 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
 .bottom-checkpoint-panel.open {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes slideUpPanel {
@@ -1159,36 +1261,85 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 28px;
-  background: #161b22;
-  border-bottom: 1px solid #30363d;
+  padding: 10px 24px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
 }
 
 .checkpoint-header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .checkpoint-panel-title {
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 700;
-  color: #f0f6fc;
+  color: #0f172a;
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* Branch Legend in Header */
+.dag-branch-legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11.5px;
+}
+
+.dag-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #475569;
+  font-family: monospace;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot-main {
+  background: #0284c7;
+  box-shadow: 0 0 6px rgba(2, 132, 199, 0.6);
+}
+
+.dot-lora {
+  background: #9333ea;
+  box-shadow: 0 0 6px rgba(147, 51, 234, 0.6);
+}
+
+.dot-fp8 {
+  background: #e11d48;
+  box-shadow: 0 0 6px rgba(225, 29, 72, 0.6);
+}
+
+.legend-icon {
+  font-size: 11px;
+}
+
+.checkpoint-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .current-focus-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 2px 8px;
+  padding: 3px 10px;
   font-size: 11.5px;
   font-weight: 600;
-  color: #38bdf8;
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #0284c7;
+  background: rgba(2, 132, 199, 0.1);
+  border: 1px solid rgba(2, 132, 199, 0.25);
   border-radius: 9999px;
   font-family: monospace;
 }
@@ -1196,7 +1347,7 @@
 .btn-close-checkpoint-panel {
   background: transparent;
   border: none;
-  color: #8b949e;
+  color: #64748b;
   font-size: 18px;
   cursor: pointer;
   padding: 4px 8px;
@@ -1204,108 +1355,406 @@
 }
 
 .btn-close-checkpoint-panel:hover {
-  color: #f0f6fc;
-  background: #21262d;
+  color: #0f172a;
+  background: #e2e8f0;
 }
 
-.checkpoint-timeline-wrapper {
-  padding: 16px 28px 20px;
-  position: relative;
-}
-
-/* Horizontal scrollable commit strip */
-.checkpoint-sideways-track {
+/* DAG BODY: Split into Scrollable Canvas (Left) and Inspector Dock (Right) */
+.checkpoint-dag-body {
   display: flex;
-  align-items: center;
-  gap: 24px;
-  overflow-x: auto;
-  padding: 10px 10px 16px;
-  scrollbar-width: thin;
-  scrollbar-color: #38bdf8 #161b22;
-  scroll-behavior: smooth;
+  height: 340px;
+  background: #ffffff;
+  overflow: hidden;
 }
 
-.checkpoint-sideways-track::-webkit-scrollbar {
+/* Left: Scrollable Graph Area */
+.dag-graph-scroll-area {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 16px 20px 20px;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+.dag-graph-scroll-area::-webkit-scrollbar {
   height: 6px;
 }
 
-.checkpoint-sideways-track::-webkit-scrollbar-thumb {
-  background: #38bdf8;
+.dag-graph-scroll-area::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
-/* Individual Commit Card in Sideways Timeline */
-.commit-card-node {
-  background: #161b22;
-  border: 1px solid #30363d;
-  border-radius: 8px;
-  padding: 12px 16px;
-  min-width: 220px;
-  flex-shrink: 0;
+.dag-canvas-inner {
+  position: relative;
+  width: 1020px;
+  height: 270px;
+}
+
+.dag-svg-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1020px;
+  height: 260px;
+  pointer-events: none;
+}
+
+/* Nodes Overlay */
+.dag-nodes-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1020px;
+  height: 260px;
+}
+
+.dag-node-wrapper {
+  position: absolute;
+  transform: translate(-50%, -50%);
   cursor: pointer;
+  z-index: 10;
+}
+
+/* Node Circle Point */
+.dag-node-point {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #0284c7;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.4);
+  margin: 0 auto;
+}
+
+.dag-node-wrapper:hover .dag-node-point {
+  transform: scale(1.3);
+  box-shadow: 0 0 14px rgba(2, 132, 199, 0.6);
+}
+
+.point-root {
+  border-color: #d97706;
+  box-shadow: 0 0 8px rgba(217, 119, 6, 0.4);
+}
+
+.point-main {
+  border-color: #0284c7;
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.4);
+}
+
+.point-lora {
+  border-color: #9333ea;
+  box-shadow: 0 0 8px rgba(147, 51, 234, 0.4);
+}
+
+.point-fp8 {
+  border-color: #e11d48;
+  box-shadow: 0 0 8px rgba(225, 29, 72, 0.4);
+}
+
+.point-merge {
+  width: 22px;
+  height: 22px;
+  border-color: #9333ea;
+  background: #faf5ff;
+  box-shadow: 0 0 10px rgba(147, 51, 234, 0.4);
+}
+
+.merge-glyph {
+  font-size: 11px;
+  line-height: 1;
+}
+
+.point-head {
+  width: 22px;
+  height: 22px;
+  border-color: #059669;
+  background: #ecfdf5;
+  box-shadow: 0 0 12px rgba(5, 150, 105, 0.6);
   position: relative;
 }
 
-.commit-card-node:hover {
-  border-color: #7dd3fc;
-  transform: translateY(-2px);
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+.head-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #059669;
 }
 
-.commit-card-node.focused-current {
-  border-color: #38bdf8;
-  background: #1c263e;
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(56, 189, 248, 0.2);
-}
-
-.commit-card-node.focused-current::before {
-  content: 'FOCUS / CURRENT';
+.node-head-focused .point-head::after {
+  content: "";
   position: absolute;
-  top: -10px;
-  left: 12px;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: #0d1117;
-  background: #38bdf8;
-  padding: 1px 6px;
-  border-radius: 4px;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(5, 150, 105, 0.5);
+  animation: headPulse 1.8s infinite;
 }
 
-.commit-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 6px;
+@keyframes headPulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
 }
 
-.commit-epoch-tag {
-  font-size: 11px;
-  font-weight: 700;
-  color: #10b981;
+/* Card Attached to Node */
+.dag-node-card {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 10px;
+  width: 140px;
+  text-align: center;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.commit-hash-pill {
+.dag-node-card.align-top {
+  bottom: 24px;
+}
+
+.dag-node-card.align-bottom {
+  top: 24px;
+}
+
+.dag-node-wrapper:hover .dag-node-card {
+  border-color: #0284c7;
+  background: #f0f9ff;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+}
+
+.dag-node-wrapper.selected-commit .dag-node-card {
+  border-color: #0284c7;
+  background: #f0f9ff;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
+}
+
+.dag-card-hash {
   font-family: monospace;
   font-size: 11.5px;
-  color: #58a6ff;
-  font-weight: 600;
+  font-weight: 700;
+  color: #0284c7;
 }
 
-.commit-card-msg {
-  font-size: 12px;
-  color: #f0f6fc;
-  margin-bottom: 6px;
+.dag-card-epoch {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  margin: 1px 0;
+}
+
+.dag-card-msg {
+  font-size: 10.5px;
+  color: #334155;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.commit-card-bottom {
+.dag-card-badge-head {
+  position: absolute;
+  top: -8px;
+  right: 6px;
+  background: #059669;
+  color: #ffffff;
+  font-size: 8.5px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* RIGHT: Inspector Dock */
+.dag-inspector-dock {
+  width: 320px;
+  background: #ffffff;
+  border-left: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.dag-inspector-header {
+  padding: 10px 16px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.inspector-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #0f172a;
+}
+
+.inspector-branch-badge {
+  font-family: monospace;
   font-size: 11px;
-  color: #8b949e;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: rgba(2, 132, 199, 0.1);
+  color: #0284c7;
+  border: 1px solid rgba(2, 132, 199, 0.25);
+}
+
+.dag-inspector-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.insp-hash-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.insp-hash-text {
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0284c7;
+}
+
+.insp-epoch-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: #059669;
+  background: rgba(5, 150, 105, 0.1);
+  border: 1px solid rgba(5, 150, 105, 0.25);
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.insp-msg-box {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #0f172a;
+  line-height: 1.4;
+  padding: 6px 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+.insp-parents-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+}
+
+.insp-label {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.insp-parents-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.insp-parent-tag {
+  font-family: monospace;
+  font-size: 11px;
+  color: #9333ea;
+  background: rgba(147, 51, 234, 0.1);
+  border: 1px solid rgba(147, 51, 234, 0.25);
+  padding: 1px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.insp-parent-tag:hover {
+  border-color: #9333ea;
+  background: rgba(147, 51, 234, 0.18);
+}
+
+.insp-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.insp-metric-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.insp-m-lbl {
+  font-size: 9.5px;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.insp-m-val {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0f172a;
+  font-family: monospace;
+  margin-top: 1px;
+}
+
+.insp-checkout-block {
+  margin-top: 2px;
+}
+
+.insp-cli-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.insp-cli-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+
+.insp-cli-box code {
+  font-family: monospace;
+  font-size: 11px;
+  color: #0284c7;
+}
+
+.btn-copy-cli {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: transform 0.15s ease;
+}
+
+.btn-copy-cli:hover {
+  transform: scale(1.15);
 }

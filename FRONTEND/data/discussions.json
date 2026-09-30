@@ -45,7 +45,7 @@
       {
         "author": "aarya-ml",
         "time": "2 days ago",
-        "text": "Agreed. That matches our findings in checkpoint `epoch_18_best.safetensors`."
+        "text": "Agreed. That matches our findings in checkpoint `epoch_128_best.safetensors`."
       }
     ]
   },
@@ -69,6 +69,51 @@
         "author": "david_speech",
         "time": "4 days ago",
         "text": "Great breakdown! SafeTensors is ideal for server-side vLLM, while GGUF shines on llama.cpp edge devices."
+      }
+    ]
+  },
+  {
+    "id": "DISC-204",
+    "category": "Fine-Tuning & LoRA",
+    "title": "Best practices for LoRA rank selection (r=8 vs r=16 vs r=64)",
+    "author": "sophia_ml",
+    "upvotes": 22,
+    "repliesCount": 5,
+    "createdAt": "6 days ago",
+    "tags": [
+      "LoRA",
+      "Parameter-Efficiency",
+      "Ablation"
+    ],
+    "content": "We evaluated parameter efficiency and trainable weight drift. For 8B models, rank 16 provides the best trade-off between loss convergence and VRAM usage. Ranks above 32 showed diminishing returns.",
+    "replies": [
+      {
+        "author": "sanvinaik",
+        "time": "5 days ago",
+        "text": "Rank 16 also kept checkpoint delta sizes under 450 MB, which deduplicates cleanly in AI-GIT."
+      }
+    ]
+  },
+  {
+    "id": "DISC-205",
+    "category": "Deployment & Infrastructure",
+    "title": "Zero-copy model loading on consumer GPUs with AI-GIT",
+    "author": "david_speech",
+    "upvotes": 19,
+    "repliesCount": 4,
+    "createdAt": "1 week ago",
+    "tags": [
+      "Zero-Copy",
+      "CUDA",
+      "mmap",
+      "Inference"
+    ],
+    "content": "By combining memory-mapped file handles with AI-GIT's content-addressed chunk store, we can initialize and warm 7B weights in under 1.4 seconds directly from NVMe into unified memory without duplication.",
+    "replies": [
+      {
+        "author": "aarya-ml",
+        "time": "6 days ago",
+        "text": "The symlink-based zero-copy clone is now enabled by default in `ai-git clone --zero-copy`."
       }
     ]
   }

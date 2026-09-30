@@ -13,7 +13,7 @@
 .modelhub-shell {
   display: flex;
   min-height: calc(100vh - var(--topbar-height, 64px));
-  background-color: var(--bg-canvas, #090d16);
+  background-color: var(--bg-canvas, #ffffff);
   position: relative;
 }
 
@@ -50,14 +50,14 @@
 }
 
 .top-nodes-title {
-  font-family: 'Kaushan Script', 'Satisfy', 'Caveat', 'Brush Script MT', cursive;
-  font-size: 38px;
+  font-family: var(--font-sans);
+  font-size: 26px;
   font-weight: 700;
-  font-style: italic;
-  color: #d8b4fe;
-  text-shadow: 0 0 18px rgba(192, 132, 252, 0.85), 0 0 34px rgba(168, 85, 247, 0.5), 0 0 50px rgba(244, 114, 182, 0.3);
-  letter-spacing: 0.8px;
-  line-height: 1.15;
+  font-style: normal;
+  color: var(--text-primary, #0f172a);
+  text-shadow: none !important;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
   margin: 0;
   flex: 2; /* Occupies 2/3rd of space */
   display: flex;
@@ -65,11 +65,10 @@
   user-select: none;
 }
 
-/* Purple "New" Button with Neural Network Triangle */
-/* Chameleon Green "New" Button with Neural Network Triangle */
+/* Chameleon Green "New" Button with Neural Network Triangle (Glow removed) */
 .btn-new-node {
   background: linear-gradient(135deg, #10b981 0%, #059669 55%, #047857 100%);
-  border: 1px solid rgba(110, 231, 183, 0.45);
+  border: 1px solid rgba(110, 231, 183, 0.35);
   color: #ffffff;
   padding: 6px 14px;
   font-size: 13.5px;
@@ -81,19 +80,20 @@
   cursor: pointer;
   transition: all 0.2s ease;
   flex-shrink: 0;
-  box-shadow: 0 0 16px rgba(16, 185, 129, 0.45), 0 0 28px rgba(52, 211, 153, 0.25), 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 .btn-new-node:hover {
   background: linear-gradient(135deg, #34d399 0%, #10b981 60%, #059669 100%);
-  border-color: rgba(167, 243, 208, 0.7);
-  box-shadow: 0 0 22px rgba(52, 211, 153, 0.75), 0 0 38px rgba(16, 185, 129, 0.45), 0 4px 14px rgba(0, 0, 0, 0.5);
+  border-color: rgba(167, 243, 208, 0.55);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   transform: translateY(-1px) scale(1.02);
 }
 
 .btn-new-node:active {
   background: #047857;
   transform: translateY(0);
+  box-shadow: none;
 }
 
 /* Tree Nodes List */
@@ -150,7 +150,7 @@
 .node-branch-svg {
   display: block;
   overflow: visible;
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
 }
 
 /* Stylized Repo Link & Text */
@@ -169,9 +169,9 @@
 }
 
 .node-repo-text {
-  color: #f472b6; /* Subtle Pink */
-  font-size: 14.5px; /* Larger, readable size */
-  font-weight: 500;
+  color: #0f172a; /* Deep charcoal/black */
+  font-size: 14.5px;
+  font-weight: 600;
   font-family: var(--font-sans);
   letter-spacing: -0.2px;
   overflow: hidden;
@@ -181,9 +181,10 @@
 }
 
 .node-repo-caret {
-  color: #8b949e;
-  font-size: 11px;
-  opacity: 0;
+  color: #0f172a; /* Black arrow */
+  font-size: 13px;
+  font-weight: bold;
+  opacity: 0.6;
   transform: translateX(-4px);
   transition: all 0.2s ease;
   margin-left: 6px;
@@ -191,14 +192,13 @@
 }
 
 .node-tree-item:hover .node-repo-text {
-  color: #fbcfe8;
-  text-shadow: 0 0 12px rgba(244, 114, 182, 0.6);
+  color: #0284c7;
   transform: translateX(3px);
 }
 
 .node-tree-item:hover .node-repo-caret {
   opacity: 1;
-  color: #f472b6;
+  color: #0284c7;
   transform: translateX(0);
 }
 
@@ -210,10 +210,10 @@
 }
 
 .btn-show-more-nodes {
-  background: rgba(192, 132, 252, 0.08);
-  border: 1px solid rgba(192, 132, 252, 0.25);
+  background: rgba(147, 51, 234, 0.08);
+  border: 1px solid rgba(147, 51, 234, 0.25);
   border-radius: 6px;
-  color: #c084fc;
+  color: var(--accent-purple);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -226,10 +226,10 @@
 }
 
 .btn-show-more-nodes:hover {
-  background: rgba(192, 132, 252, 0.18);
-  border-color: #c084fc;
-  color: #f8fafc;
-  box-shadow: 0 0 12px rgba(192, 132, 252, 0.4);
+  background: rgba(147, 51, 234, 0.16);
+  border-color: var(--accent-purple);
+  color: var(--text-primary);
+  box-shadow: 0 0 10px rgba(147, 51, 234, 0.25);
 }
 
 .dropdown-chevron-icon {
@@ -246,53 +246,30 @@
   margin-top: auto;
   padding: 16px 0 20px 0;
   background: transparent; /* Seamless with dashboard */
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--border-default);
 }
 
 .nodes-search-box input {
   width: 100%;
   padding: 8px 12px 8px 36px;
-  background: rgba(13, 17, 23, 0.85);
-  border: 1px solid #30363d;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #e2e8f0);
   border-radius: 8px;
-  color: #f0f6fc;
+  color: var(--text-primary, #0f172a);
   font-size: 13.5px;
   transition: all 0.2s ease;
   outline: none;
 }
 
 .nodes-search-box input:focus {
-  border-color: #c084fc;
-  box-shadow: 0 0 12px rgba(192, 132, 252, 0.35);
-  background: #161b22;
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 10px rgba(147, 51, 234, 0.2);
+  background: #ffffff;
 }
 
 .nodes-search-box .search-icon {
   left: 12px;
-  color: #8b949e;
-}
-
-
-.nodes-search-box input {
-  width: 100%;
-  padding: 6px 12px 6px 32px;
-  background: #010409;
-  border: 1px solid #30363d;
-  border-radius: 6px;
-  font-size: 12.5px;
-  color: #e6edf3;
-  outline: none;
-  font-family: inherit;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.nodes-search-box input::placeholder {
-  color: #6e7681;
-}
-
-.nodes-search-box input:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+  color: var(--text-muted);
 }
 
 .modelhub-main-area {
@@ -313,13 +290,13 @@
 
 .dash-hero {
   position: relative;
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(19, 25, 41, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(241, 245, 249, 0.9) 0%, rgba(248, 250, 252, 0.95) 100%);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   padding: 30px 36px;
   margin-bottom: 32px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .dash-hero::before {
@@ -822,23 +799,23 @@
   margin-bottom: 24px;
 }
 
-/* Cursive Stylized MySpace Heading (Matches Top nodes style) */
+/* Clean Stylized MySpace Heading (Matches Top nodes style & typography) */
 .myspace-title {
-  font-family: 'Kaushan Script', 'Satisfy', 'Caveat', 'Brush Script MT', cursive;
-  font-size: 38px;
+  font-family: var(--font-sans);
+  font-size: 26px;
   font-weight: 700;
-  font-style: italic;
-  color: #d8b4fe;
-  text-shadow: 0 0 18px rgba(192, 132, 252, 0.85), 0 0 34px rgba(168, 85, 247, 0.5), 0 0 50px rgba(244, 114, 182, 0.3);
-  letter-spacing: 0.8px;
-  line-height: 1.15;
+  font-style: normal;
+  color: var(--text-primary, #f8fafc);
+  text-shadow: none !important;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
   margin: 0;
   user-select: none;
 }
 
 .btn-close-myspace {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-muted);
+  border: 1px solid var(--border-default);
   color: var(--text-secondary);
   border-radius: 8px;
   width: 32px;
@@ -851,9 +828,9 @@
 }
 
 .btn-close-myspace:hover {
-  background: rgba(244, 63, 94, 0.15);
-  color: #f43f5e;
-  border-color: rgba(244, 63, 94, 0.4);
+  background: rgba(225, 29, 72, 0.1);
+  color: #e11d48;
+  border-color: rgba(225, 29, 72, 0.3);
 }
 
 /* Profile Card with Huge Circular PFP */
@@ -863,10 +840,11 @@
   align-items: center;
   text-align: center;
   padding: 16px 20px 24px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: 16px;
   margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
 .myspace-avatar-wrap {
@@ -880,8 +858,8 @@
   height: 136px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3.5px solid rgba(192, 132, 252, 0.85);
-  box-shadow: 0 0 25px rgba(192, 132, 252, 0.6), 0 0 50px rgba(56, 189, 248, 0.35);
+  border: 3px solid rgba(147, 51, 234, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   display: block;
 }
 
@@ -893,27 +871,27 @@
   height: 18px;
   border-radius: 50%;
   background: #10b981;
-  border: 3px solid #0b101b;
+  border: 3px solid #ffffff;
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
 }
 
 .myspace-user-name {
   font-size: 22px;
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--text-primary);
   margin: 0 0 4px;
 }
 
 .myspace-user-handle {
   font-size: 14px;
   font-weight: 600;
-  color: #c084fc;
+  color: var(--accent-purple);
   margin-bottom: 8px;
 }
 
 .myspace-user-role {
   font-size: 13px;
-  color: #38bdf8;
+  color: var(--accent-blue);
   font-weight: 500;
   margin-bottom: 12px;
 }
@@ -921,7 +899,7 @@
 .myspace-user-bio {
   font-size: 13px;
   line-height: 1.5;
-  color: #94a3b8;
+  color: var(--text-secondary);
   max-width: 360px;
   margin: 0 0 20px;
 }
@@ -932,9 +910,9 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(56, 189, 248, 0.15) 100%);
-  border: 1px solid rgba(192, 132, 252, 0.45);
-  color: #f8fafc;
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.08) 0%, rgba(2, 132, 199, 0.08) 100%);
+  border: 1px solid rgba(147, 51, 234, 0.28);
+  color: var(--accent-purple);
   padding: 10px 22px;
   font-size: 13.5px;
   font-weight: 600;
@@ -942,14 +920,14 @@
   text-decoration: none;
   cursor: pointer;
   transition: all 0.22s ease;
-  box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .btn-customize-myspace:hover {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(56, 189, 248, 0.3) 100%);
-  border-color: #c084fc;
-  color: #ffffff;
-  box-shadow: 0 0 24px rgba(192, 132, 252, 0.6), 0 0 36px rgba(56, 189, 248, 0.3);
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.16) 0%, rgba(2, 132, 199, 0.16) 100%);
+  border-color: var(--accent-purple);
+  color: #7e22ce;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transform: translateY(-1.5px);
 }
 
@@ -962,8 +940,8 @@
 }
 
 .myspace-stat-item {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
   border-radius: 10px;
   padding: 10px 6px;
   text-align: center;
@@ -974,12 +952,12 @@
 .stat-number {
   font-size: 16px;
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--text-primary);
 }
 
 .stat-label {
   font-size: 11px;
-  color: #8b949e;
+  color: var(--text-muted);
   margin-top: 2px;
 }
 
@@ -995,7 +973,7 @@
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.8px;
-  color: #c084fc;
+  color: var(--accent-purple);
   margin-bottom: 12px;
 }
 
@@ -1007,8 +985,8 @@
 
 .myspace-pinned-card {
   display: block;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
   border-radius: 10px;
   padding: 14px 16px;
   text-decoration: none;
@@ -1016,8 +994,8 @@
 }
 
 .myspace-pinned-card:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(192, 132, 252, 0.4);
+  background: var(--bg-card-hover);
+  border-color: var(--accent-purple);
   transform: translateY(-1px);
 }
 
@@ -1031,20 +1009,20 @@
 .pinned-repo-name {
   font-size: 14px;
   font-weight: 600;
-  color: #58a6ff;
+  color: var(--accent-blue);
 }
 
 .pinned-pill {
   font-size: 10px;
   padding: 1px 7px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #8b949e;
+  background: var(--bg-muted);
+  color: var(--text-secondary);
 }
 
 .pinned-desc {
   font-size: 12px;
-  color: #8b949e;
+  color: var(--text-secondary);
   line-height: 1.4;
   margin: 0 0 10px;
 }
@@ -1054,7 +1032,7 @@
   align-items: center;
   gap: 14px;
   font-size: 11px;
-  color: #8b949e;
+  color: var(--text-muted);
 }
 
 .pinned-lang {
@@ -1071,7 +1049,7 @@
 }
 
 .lang-python { background: #3572A5; }
-.lang-safetensors { background: #c084fc; }
+.lang-safetensors { background: #9333ea; }
 
 /* Activity Heatmap Grid */
 .myspace-heatgrid {
@@ -1080,21 +1058,21 @@
   grid-template-rows: repeat(5, 1fr);
   gap: 4px;
   padding: 12px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--bg-muted);
+  border: 1px solid var(--border-default);
   border-radius: 10px;
 }
 
 .heat-cell {
   aspect-ratio: 1;
   border-radius: 2px;
-  background: rgba(255, 255, 255, 0.04);
+  background: #e2e8f0;
 }
 
-.heat-cell.l1 { background: rgba(16, 185, 129, 0.3); }
-.heat-cell.l2 { background: rgba(16, 185, 129, 0.6); }
-.heat-cell.l3 { background: rgba(52, 211, 153, 0.85); box-shadow: 0 0 4px rgba(52, 211, 153, 0.4); }
-.heat-cell.l4 { background: #c084fc; box-shadow: 0 0 6px rgba(192, 132, 252, 0.6); }
+.heat-cell.l1 { background: rgba(16, 185, 129, 0.4); }
+.heat-cell.l2 { background: rgba(16, 185, 129, 0.7); }
+.heat-cell.l3 { background: #10b981; box-shadow: 0 0 4px rgba(16, 185, 129, 0.3); }
+.heat-cell.l4 { background: #9333ea; box-shadow: 0 0 6px rgba(147, 51, 234, 0.35); }
 
 
 
@@ -1128,12 +1106,12 @@
 .git-section-title {
   font-size: 14px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: var(--text-primary);
 }
 
 .git-header-link {
   font-size: 12px;
-  color: #58a6ff;
+  color: var(--accent-blue);
   text-decoration: none;
 }
 
@@ -1148,8 +1126,8 @@
 }
 
 .git-pinned-card {
-  background: #0d1117;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: 6px;
   padding: 14px 16px;
   display: flex;
@@ -1157,11 +1135,12 @@
   justify-content: space-between;
   min-height: 120px;
   transition: border-color 0.15s ease, background 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .git-pinned-card:hover {
-  border-color: #8b949e;
-  background: #111620;
+  border-color: var(--accent-purple);
+  background: var(--bg-card-hover);
 }
 
 .git-repo-title-row {
@@ -1177,7 +1156,7 @@
   gap: 6px;
   font-size: 13.5px;
   font-weight: 600;
-  color: #58a6ff;
+  color: var(--accent-blue);
   text-decoration: none;
 }
 
@@ -1187,8 +1166,8 @@
 
 .git-badge-public {
   font-size: 11px;
-  color: #8b949e;
-  border: 1px solid #30363d;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
   border-radius: 12px;
   padding: 0 7px;
   line-height: 18px;
@@ -1197,7 +1176,7 @@
 
 .git-drag-dots {
   margin-left: auto;
-  color: #6e7681;
+  color: var(--text-muted);
   font-size: 14px;
   letter-spacing: -2px;
   cursor: grab;
@@ -1206,7 +1185,7 @@
 
 .git-repo-desc {
   font-size: 12px;
-  color: #8b949e;
+  color: var(--text-secondary);
   line-height: 1.45;
   margin: 0 0 14px;
 }
@@ -1216,7 +1195,7 @@
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #8b949e;
+  color: var(--text-muted);
 }
 
 .git-lang-dot {
@@ -1227,11 +1206,11 @@
 }
 
 .git-lang-dot.cpp {
-  background: #f43f5e; /* Pink / reddish C++ dot */
+  background: #e11d48;
 }
 
 .git-lang-dot.css {
-  background: #a855f7; /* Purple CSS dot */
+  background: #9333ea;
 }
 
 /* Contributions Section */
@@ -1250,7 +1229,7 @@
 .git-contrib-title {
   font-size: 15px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: var(--text-primary);
 }
 
 .git-contrib-controls {
@@ -1262,18 +1241,18 @@
 .btn-contrib-settings {
   background: transparent;
   border: none;
-  color: #8b949e;
+  color: var(--text-muted);
   font-size: 12px;
   cursor: pointer;
   padding: 3px 6px;
 }
 
 .btn-contrib-settings:hover {
-  color: #58a6ff;
+  color: var(--accent-blue);
 }
 
 .btn-year-badge {
-  background: #1f6feb;
+  background: var(--accent-blue);
   color: #ffffff;
   font-size: 12px;
   font-weight: 600;
@@ -1285,17 +1264,18 @@
 
 /* Calendar Card */
 .git-calendar-card {
-  background: #0d1117;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: 6px;
   padding: 14px 16px 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .calendar-months-row {
   display: flex;
   justify-content: space-between;
   font-size: 10.5px;
-  color: #8b949e;
+  color: var(--text-muted);
   padding-left: 28px;
   padding-right: 4px;
   margin-bottom: 6px;
@@ -1313,7 +1293,7 @@
   flex-direction: column;
   justify-content: space-between;
   font-size: 9.5px;
-  color: #8b949e;
+  color: var(--text-muted);
   height: 84px;
   width: 22px;
   padding-top: 2px;
@@ -1332,41 +1312,41 @@
 .cal-cell {
   aspect-ratio: 1;
   border-radius: 2px;
-  background: #161b22;
+  background: #ebedf0;
   transition: transform 0.12s ease;
 }
 
 .cal-cell:hover {
   transform: scale(1.3);
-  outline: 1px solid #fff;
+  outline: 1px solid #0f172a;
   z-index: 5;
 }
 
 /* Heatmap intensity levels matching GitHub */
-.cal-cell.lvl-0 { background: #161b22; }
-.cal-cell.lvl-1 { background: #0e4429; }
-.cal-cell.lvl-2 { background: #006d32; }
-.cal-cell.lvl-3 { background: #26a641; }
-.cal-cell.lvl-4 { background: #39d353; box-shadow: 0 0 3px rgba(57, 211, 83, 0.4); }
+.cal-cell.lvl-0 { background: #ebedf0; }
+.cal-cell.lvl-1 { background: #9be9a8; }
+.cal-cell.lvl-2 { background: #40c463; }
+.cal-cell.lvl-3 { background: #30a14e; }
+.cal-cell.lvl-4 { background: #216e39; }
 
 .calendar-footer-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 11px;
-  color: #8b949e;
+  color: var(--text-muted);
   margin-top: 12px;
   padding-top: 6px;
 }
 
 .calendar-learn-link {
-  color: #8b949e;
+  color: var(--text-muted);
   text-decoration: none;
   font-size: 11px;
 }
 
 .calendar-learn-link:hover {
-  color: #58a6ff;
+  color: var(--accent-blue);
   text-decoration: underline;
 }
 
@@ -1383,11 +1363,11 @@
   display: inline-block;
 }
 
-.legend-box.lvl-0 { background: #161b22; }
-.legend-box.lvl-1 { background: #0e4429; }
-.legend-box.lvl-2 { background: #006d32; }
-.legend-box.lvl-3 { background: #26a641; }
-.legend-box.lvl-4 { background: #39d353; }
+.legend-box.lvl-0 { background: #ebedf0; }
+.legend-box.lvl-1 { background: #9be9a8; }
+.legend-box.lvl-2 { background: #40c463; }
+.legend-box.lvl-3 { background: #30a14e; }
+.legend-box.lvl-4 { background: #216e39; }
 
 /* Contribution Activity */
 .git-activity-section {
@@ -1398,7 +1378,7 @@
 .git-activity-title {
   font-size: 15px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: var(--text-primary);
   margin: 0 0 14px;
 }
 
@@ -1412,14 +1392,14 @@
 .git-month-label {
   font-size: 12px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: var(--text-primary);
   white-space: nowrap;
 }
 
 .git-divider-line {
   flex: 1;
   height: 1px;
-  background: #21262d;
+  background: var(--border-default);
 }
 
 .git-activity-timeline-item {
@@ -1435,22 +1415,23 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8b949e;
+  color: var(--text-muted);
 }
 
 .git-activity-box {
-  background: #0d1117;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: 6px;
   padding: 14px 18px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .git-activity-left {
@@ -1460,7 +1441,7 @@
 .git-activity-header {
   font-size: 13.5px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: var(--text-primary);
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -1468,7 +1449,7 @@
 }
 
 .git-activity-grip {
-  color: #6e7681;
+  color: var(--text-muted);
   font-size: 13px;
   letter-spacing: -2px;
   user-select: none;
@@ -1488,7 +1469,7 @@
 }
 
 .git-activity-repo-link {
-  color: #58a6ff;
+  color: var(--accent-blue);
   text-decoration: none;
   font-weight: 500;
 }
@@ -1498,7 +1479,7 @@
 }
 
 .git-activity-repo-commits {
-  color: #8b949e;
+  color: var(--text-muted);
   font-size: 11.5px;
 }
 
@@ -1513,7 +1494,7 @@
 
 .git-activity-bar {
   height: 6px;
-  background: #26a641;
+  background: #238636;
   border-radius: 3px;
 }
 
@@ -1521,11 +1502,11 @@
   display: block;
   width: 100%;
   text-align: center;
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: 6px;
   padding: 8px 12px;
-  color: #58a6ff;
+  color: var(--accent-blue);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -1535,8 +1516,8 @@
 }
 
 .git-show-more-btn:hover {
-  background: #21262d;
-  border-color: #8b949e;
+  background: var(--bg-muted);
+  border-color: var(--border-highlight);
   text-decoration: none;
 }
 
@@ -1577,7 +1558,7 @@
   gap: 16px;
   margin-bottom: 22px;
   padding-bottom: 14px;
-  border-bottom: 1px solid #21262d;
+  border-bottom: 1px solid var(--border-default);
 }
 
 .ai-news-title-wrap {
@@ -1589,7 +1570,7 @@
 .ai-news-title {
   font-size: 32px;
   font-weight: 700;
-  color: #f0f6fc;
+  color: var(--text-primary);
   letter-spacing: -0.6px;
   line-height: 1.2;
   margin: 0;
@@ -1601,8 +1582,8 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: var(--bg-muted);
+  border: 1px solid var(--border-default);
   padding: 3px;
   border-radius: 6px;
 }
@@ -1610,7 +1591,7 @@
 .news-tab-btn {
   background: transparent;
   border: 1px solid transparent;
-  color: #8b949e;
+  color: var(--text-secondary);
   font-size: 13px;
   font-weight: 500;
   padding: 5px 12px;
@@ -1623,32 +1604,32 @@
 }
 
 .news-tab-btn:hover {
-  color: #f0f6fc;
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  background: var(--bg-surface);
 }
 
 .news-tab-btn.active {
-  background: #21262d;
-  color: #f0f6fc;
+  background: #ffffff;
+  color: var(--text-primary);
   font-weight: 600;
-  border-color: #38424d;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  border-color: var(--border-default);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* Clean Post Composer Card: Natural developer UI */
 .ai-post-composer-card {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: 8px;
   padding: 16px 18px;
   margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: border-color 0.15s ease;
 }
 
 .ai-post-composer-card:focus-within {
-  border-color: #58a6ff;
-  box-shadow: 0 0 0 1px #58a6ff;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 1px var(--accent-blue);
 }
 
 .composer-header-row {
@@ -1662,7 +1643,7 @@
   height: 38px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #30363d;
+  border: 1px solid var(--border-default);
   flex-shrink: 0;
   box-shadow: none !important;
 }
@@ -1679,7 +1660,7 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #f0f6fc;
+  color: var(--text-primary);
   font-size: 15px;
   line-height: 1.5;
   font-family: inherit;
@@ -1690,7 +1671,7 @@
 }
 
 .composer-auto-expand-input::placeholder {
-  color: #8b949e;
+  color: var(--text-muted);
   font-size: 14.5px;
 }
 
@@ -1701,13 +1682,13 @@
   gap: 10px;
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px solid #21262d;
+  border-top: 1px solid var(--border-default);
 }
 
 .preview-chip {
   position: relative;
-  background: #21262d;
-  border: 1px solid #30363d;
+  background: var(--bg-muted);
+  border: 1px solid var(--border-default);
   border-radius: 6px;
   overflow: hidden;
   max-width: 180px;
@@ -1725,9 +1706,9 @@
   position: absolute;
   top: 4px;
   right: 4px;
-  background: rgba(13, 17, 23, 0.85);
-  border: 1px solid #30363d;
-  color: #f0f6fc;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--border-default);
+  color: #ffffff;
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -1752,7 +1733,7 @@
   justify-content: space-between;
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px solid #21262d;
+  border-top: 1px solid var(--border-default);
 }
 
 .composer-media-actions {
@@ -1767,7 +1748,7 @@
   gap: 6px;
   background: transparent;
   border: 1px solid transparent;
-  color: #8b949e;
+  color: var(--text-secondary);
   font-size: 13px;
   padding: 5px 9px;
   border-radius: 6px;
@@ -1776,9 +1757,9 @@
 }
 
 .btn-composer-tool:hover {
-  background: #21262d;
-  border-color: #30363d;
-  color: #f0f6fc;
+  background: var(--bg-muted);
+  border-color: var(--border-default);
+  color: var(--text-primary);
 }
 
 .composer-submit-group {
@@ -1789,7 +1770,7 @@
 
 .composer-char-count {
   font-size: 12px;
-  color: #8b949e;
+  color: var(--text-muted);
 }
 
 /* Clean Primary Action Button: Solid GitHub Green, no neon glow */
@@ -1831,15 +1812,15 @@
   justify-content: center;
   gap: 10px;
   padding: 32px 0;
-  color: #8b949e;
+  color: var(--text-muted);
   font-size: 13.5px;
 }
 
 .news-loading-spinner {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  border-top-color: #58a6ff;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--accent-blue);
   border-radius: 50%;
   animation: spinNews 0.8s linear infinite;
 }
@@ -1850,20 +1831,20 @@
 
 /* Feed Item Card: Clean developer article & community card */
 .feed-item-card {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: 8px;
   padding: 18px 20px;
   transition: border-color 0.15s ease;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 .feed-item-card:hover {
-  border-color: #8b949e;
-  box-shadow: none !important;
+  border-color: var(--border-highlight);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
   transform: none !important;
 }
 
@@ -1885,24 +1866,24 @@
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #30363d;
+  border: 1px solid var(--border-default);
 }
 
 .feed-author-name {
   font-size: 14px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: var(--text-primary);
 }
 
 .feed-author-handle {
   font-size: 12.5px;
-  color: #8b949e;
+  color: var(--text-muted);
   margin-left: 4px;
 }
 
 .feed-item-time {
   font-size: 12px;
-  color: #8b949e;
+  color: var(--text-muted);
 }
 
 /* Subtle, neutral source tag */
@@ -1911,22 +1892,22 @@
   font-weight: 500;
   padding: 2px 8px;
   border-radius: 12px;
-  background: #21262d;
-  color: #8b949e;
-  border: 1px solid #30363d;
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
 }
 
 .feed-source-pill.community {
-  background: #21262d;
-  color: #a371f7;
-  border-color: #38424d;
+  background: var(--bg-muted);
+  color: var(--accent-purple);
+  border-color: var(--border-default);
 }
 
 /* Content */
 .feed-card-title {
   font-size: 17px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: var(--text-primary);
   line-height: 1.4;
   margin: 0;
 }
@@ -1937,13 +1918,13 @@
 }
 
 .feed-card-title a:hover {
-  color: #58a6ff;
+  color: var(--accent-blue);
   text-decoration: underline;
 }
 
 .feed-card-desc {
   font-size: 14px;
-  color: #8b949e;
+  color: var(--text-secondary);
   line-height: 1.55;
   margin: 0;
 }
@@ -1952,9 +1933,9 @@
 .feed-card-media {
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid #30363d;
+  border: 1px solid var(--border-default);
   max-height: 340px;
-  background: #0d1117;
+  background: var(--bg-muted);
 }
 
 .feed-card-media img,
@@ -1974,11 +1955,11 @@
 
 .feed-tag {
   font-size: 11.5px;
-  color: #58a6ff;
-  background: #21262d;
+  color: var(--accent-blue);
+  background: var(--bg-muted);
   padding: 2px 8px;
   border-radius: 12px;
-  border: 1px solid #30363d;
+  border: 1px solid var(--border-default);
   font-family: inherit;
 }
 
@@ -1988,7 +1969,7 @@
   align-items: center;
   justify-content: space-between;
   padding-top: 10px;
-  border-top: 1px solid #21262d;
+  border-top: 1px solid var(--border-default);
   margin-top: 2px;
 }
 
@@ -2004,7 +1985,7 @@
   gap: 5px;
   background: transparent;
   border: none;
-  color: #8b949e;
+  color: var(--text-muted);
   font-size: 12.5px;
   cursor: pointer;
   padding: 4px 6px;
@@ -2013,8 +1994,8 @@
 }
 
 .feed-action-btn:hover {
-  color: #f0f6fc;
-  background: #21262d;
+  color: var(--text-primary);
+  background: var(--bg-muted);
 }
 
 .feed-action-btn.liked {
@@ -2023,7 +2004,7 @@
 
 .feed-open-link {
   font-size: 12.5px;
-  color: #58a6ff;
+  color: var(--accent-blue);
   text-decoration: none;
   display: inline-flex;
   align-items: center;

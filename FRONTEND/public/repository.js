@@ -199,23 +199,188 @@
   }
 
   /* =========================================================
-     CHECKPOINT BUTTON: OPENS BOTTOM PANEL & FOCUSES CURRENT COMMIT
+     COMMIT DAG & CHECKPOINT INSPECTOR
   ========================================================= */
   const btnCheckpointToggle = document.getElementById("btnCheckpointToggle");
   const bottomCheckpointPanel = document.getElementById("bottomCheckpointPanel");
   const btnCloseCheckpointPanel = document.getElementById("btnCloseCheckpointPanel");
-  const checkpointSidewaysTrack = document.getElementById("checkpointSidewaysTrack");
-  const currentCommitCard = document.getElementById("currentCommitCard");
+  const dagGraphScrollArea = document.getElementById("dagGraphScrollArea");
+  const dagNodeHead = document.getElementById("dagNodeHead");
+
+  const DAG_COMMITS = {
+    "f942bc1": {
+      hash: "f942bc1",
+      epoch: "Epoch 1 (Root)",
+      branch: "main",
+      branchColor: "#38bdf8",
+      msg: "Initial model weights & FastCDC manifest",
+      parents: [],
+      valLoss: "2.840",
+      dedup: "0.0%",
+      size: "12.8 GB",
+      time: "last month"
+    },
+    "9f3c81e": {
+      hash: "9f3c81e",
+      epoch: "Epoch 60",
+      branch: "main",
+      branchColor: "#38bdf8",
+      msg: "Learning rate warmdown step",
+      parents: ["f942bc1"],
+      valLoss: "0.281",
+      dedup: "62.4%",
+      size: "13.5 GB",
+      time: "2 weeks ago"
+    },
+    "2b99ef4": {
+      hash: "2b99ef4",
+      epoch: "Epoch 115 (LoRA)",
+      branch: "feature/lora-adapter-r16",
+      branchColor: "#c084fc",
+      msg: "Fine-tune LoRA adapter rank 16",
+      parents: ["9f3c81e"],
+      valLoss: "0.169",
+      dedup: "96.8%",
+      size: "420 MB",
+      time: "2 days ago"
+    },
+    "1d84ca0": {
+      hash: "1d84ca0",
+      epoch: "Epoch 100",
+      branch: "main",
+      branchColor: "#38bdf8",
+      msg: "Add FastCDC 8KB-64KB chunk boundaries",
+      parents: ["9f3c81e"],
+      valLoss: "0.194",
+      dedup: "71.3%",
+      size: "13.9 GB",
+      time: "3 days ago"
+    },
+    "4e10ab3": {
+      hash: "4e10ab3",
+      epoch: "Epoch 118 (FP8)",
+      branch: "exp/fp8-quant",
+      branchColor: "#f43f5e",
+      msg: "FP8 E4M3 quantization calibration",
+      parents: ["1d84ca0"],
+      valLoss: "0.174",
+      dedup: "52.4%",
+      size: "7.1 GB",
+      time: "2 days ago"
+    },
+    "7c31d9a": {
+      hash: "7c31d9a",
+      epoch: "Epoch 120 (Merge)",
+      branch: "main",
+      branchColor: "#38bdf8",
+      msg: "Merge branch 'lora-adapter-r16' into main",
+      parents: ["1d84ca0", "2b99ef4"],
+      valLoss: "0.158",
+      dedup: "84.1%",
+      size: "14.1 GB",
+      time: "yesterday"
+    },
+    "ebb6a18": {
+      hash: "ebb6a18",
+      epoch: "Epoch 128 (HEAD)",
+      branch: "main",
+      branchColor: "#38bdf8",
+      msg: "trying to deploy (FastCDC verified)",
+      parents: ["7c31d9a", "4e10ab3"],
+      valLoss: "0.142",
+      dedup: "78.4%",
+      size: "14.2 GB",
+      time: "19 hrs ago"
+    }
+  };
+
+  let activeCommitHash = "ebb6a18";
+
+  window.selectDagCommit = function (hash) {
+    const data = DAG_COMMITS[hash];
+    if (!data) return;
+
+    activeCommitHash = hash;
+
+    // Highlight node
+    document.querySelectorAll(".dag-node-wrapper").forEach(el => el.classList.remove("selected-commit"));
+    const activeWrapper = document.querySelector(`.dag-node-point[data-hash="${hash}"]`)?.closest(".dag-node-wrapper");
+    if (activeWrapper) {
+      activeWrapper.classList.add("selected-commit");
+    }
+
+    // Update active badge in header
+    const dagActiveBadge = document.getElementById("dagActiveBadge");
+    if (dagActiveBadge) {
+      dagActiveBadge.textContent = `● FOCUSED: ${hash} (${data.epoch})`;
+    }
+
+    // Populate inspector dock
+    const inspBranchBadge = document.getElementById("inspBranchBadge");
+    if (inspBranchBadge) {
+      inspBranchBadge.textContent = data.branch;
+      inspBranchBadge.style.color = data.branchColor;
+      inspBranchBadge.style.borderColor = data.branchColor;
+    }
+
+    const inspHash = document.getElementById("inspHash");
+    if (inspHash) inspHash.textContent = data.hash;
+
+    const inspEpoch = document.getElementById("inspEpoch");
+    if (inspEpoch) inspEpoch.textContent = data.epoch;
+
+    const inspMsg = document.getElementById("inspMsg");
+    if (inspMsg) inspMsg.textContent = data.msg;
+
+    const inspParents = document.getElementById("inspParents");
+    if (inspParents) {
+      if (!data.parents || data.parents.length === 0) {
+        inspParents.innerHTML = `<span style="color: #8b949e; font-size: 11px;">None (Root commit)</span>`;
+      } else {
+        inspParents.innerHTML = data.parents.map(p => `<span class="insp-parent-tag" onclick="selectDagCommit('${p}')" title="Inspect parent commit">${p}</span>`).join("");
+      }
+    }
+
+    const inspLoss = document.getElementById("inspLoss");
+    if (inspLoss) inspLoss.textContent = data.valLoss;
+
+    const inspDedup = document.getElementById("inspDedup");
+    if (inspDedup) inspDedup.textContent = data.dedup;
+
+    const inspSize = document.getElementById("inspSize");
+    if (inspSize) inspSize.textContent = data.size;
+
+    const inspTime = document.getElementById("inspTime");
+    if (inspTime) inspTime.textContent = data.time;
+
+    const inspCliCmd = document.getElementById("inspCliCmd");
+    if (inspCliCmd) inspCliCmd.textContent = `ai-git checkout ${data.hash}`;
+  };
+
+  window.copyCheckoutCmd = function () {
+    const cmd = `ai-git checkout ${activeCommitHash}`;
+    navigator.clipboard.writeText(cmd).then(() => {
+      const btn = document.querySelector(".btn-copy-cli");
+      if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = "✓";
+        setTimeout(() => { btn.textContent = orig; }, 1200);
+      }
+    }).catch(() => {
+      alert(`Command to run:\n${cmd}`);
+    });
+  };
 
   if (btnCheckpointToggle && bottomCheckpointPanel) {
     btnCheckpointToggle.addEventListener("click", () => {
       bottomCheckpointPanel.classList.toggle("open");
       if (bottomCheckpointPanel.classList.contains("open")) {
-        // Focus on current commit by scrolling sideways to it
-        if (currentCommitCard && checkpointSidewaysTrack) {
+        // Focus on HEAD node & select it
+        window.selectDagCommit("ebb6a18");
+        if (dagGraphScrollArea && dagNodeHead) {
           setTimeout(() => {
-            currentCommitCard.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-          }, 100);
+            dagGraphScrollArea.scrollTo({ left: dagGraphScrollArea.scrollWidth, behavior: "smooth" });
+          }, 120);
         }
       }
     });
@@ -227,8 +392,13 @@
     });
   }
 
+  /* Tree Node Inspector function */
+  window.inspectTreeNode = function (name, type, desc, files, size) {
+    alert(`🌳 Tree Node Selected: ${name}\n\nType: ${type}\nRole: ${desc}\nArtifacts: ${files}\nFastCDC Safetensors: ${size}\n\nFastCDC BLAKE3 cryptographic manifest verified.`);
+  };
+
   window.inspectCheckpoint = function (hash, epoch, msg, loss, size) {
-    alert(`⚡ Checkpoint Inspector\nHash: ${hash}\nEpoch: ${epoch}\nMessage: ${msg}\nValidation Metric: ${loss}\nFastCDC Safetensors: ${size}\n\nTo pull this specific checkpoint:\nai-git checkout ${hash}`);
+    window.selectDagCommit(hash);
   };
 
 

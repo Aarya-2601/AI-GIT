@@ -6,17 +6,17 @@
 ========================================================= */
 
 :root {
-  --bg: #0d1117;
-  --panel: #0d1117;
-  --panel2: #161b22;
-  --border: #30363d;
-  --text: #f0f6fc;
-  --muted: #8b949e;
-  --green: #2ea043;
-  --green2: #238636;
-  --link: #58a6ff;
-  --pink: #ff7eb6;
-  --shadow: 0 8px 30px rgba(0,0,0,0.28);
+  --bg: #ffffff;
+  --panel: #ffffff;
+  --panel2: #f8fafc;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --muted: #64748b;
+  --green: #16a34a;
+  --green2: #15803d;
+  --link: #0284c7;
+  --pink: #db2777;
+  --shadow: 0 4px 20px rgba(0,0,0,0.06);
 }
 
 body {
@@ -31,7 +31,7 @@ body {
 /* Sub-Nav */
 .profile-subnav {
   height: 52px;
-  background: rgba(13, 17, 23, 0.95);
+  background: rgba(255, 255, 255, 0.95);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -69,14 +69,14 @@ body {
 }
 
 .profile-tab-btn:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.05);
+  color: #0f172a;
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .profile-tab-btn.active {
-  color: #fff;
-  background: rgba(255, 126, 182, 0.15);
-  border: 1px solid rgba(255, 126, 182, 0.35);
+  color: #db2777;
+  background: rgba(219, 39, 119, 0.08);
+  border: 1px solid rgba(219, 39, 119, 0.35);
   font-weight: 600;
 }
 
@@ -108,14 +108,14 @@ body {
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
   overflow: hidden;
 }
 
 .side h2 {
   font-size: 24px;
   font-weight: 700;
-  color: #fff;
+  color: #0f172a;
   margin: 0 0 4px;
 }
 
@@ -127,7 +127,7 @@ body {
 
 .role-badge {
   font-size: 13px;
-  color: #c084fc;
+  color: #9333ea;
   font-weight: 500;
   margin-bottom: 12px;
 }
@@ -135,15 +135,16 @@ body {
 .side p {
   font-size: 13px;
   line-height: 1.6;
-  color: #c9d1d9;
+  color: #475569;
   margin: 0 0 16px;
 }
 
 .side-stats-card {
-  background: #161b22;
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .side-stat-row {
@@ -151,7 +152,7 @@ body {
   justify-content: space-between;
   font-size: 13px;
   padding: 6px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .side-stat-row:last-child {
@@ -164,6 +165,7 @@ body {
   border-radius: 8px;
   background: var(--panel);
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .readme-card-head {
@@ -173,7 +175,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background: #161b22;
+  background: #f8fafc;
 }
 
 .readme {
@@ -214,13 +216,13 @@ body {
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 14px;
-  color: #f0f6fc;
+  color: #0f172a;
 }
 
 .bio {
   font-size: 14px;
   line-height: 1.75;
-  color: #e6edf3;
+  color: #334155;
 }
 
 .profile-lines {
@@ -236,11 +238,11 @@ body {
 }
 
 .profile-line b {
-  color: #fff;
+  color: #0f172a;
 }
 
 .profile-line span {
-  color: #e6edf3;
+  color: #334155;
 }
 
 /* Badges */
@@ -256,9 +258,9 @@ body {
   gap: 6px;
   border-radius: 5px;
   padding: 5px 10px;
-  border: 1px solid #444c56;
-  background: #21262d;
-  color: #fff;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #0f172a;
   font-size: 12px;
   font-weight: 600;
 }
@@ -272,19 +274,19 @@ body {
 
 .social {
   border: 1px solid var(--border);
-  background: #161b22;
+  background: #f8fafc;
   padding: 8px 14px;
   border-radius: 6px;
   font-size: 13px;
-  color: #58a6ff;
+  color: #0284c7;
   text-decoration: none;
   transition: all 0.15s ease;
 }
 
 .social:hover {
-  border-color: #8b949e;
-  background: #21262d;
-  color: #79c0ff;
+  border-color: #0284c7;
+  background: #f0f9ff;
+  color: #0369a1;
   text-decoration: none;
 }
 
@@ -296,17 +298,18 @@ body {
 }
 
 .summary-box {
-  background: #161b22;
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 16px;
   text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .summary-number {
   font-size: 24px;
   font-weight: 700;
-  color: #f0f6fc;
+  color: #0f172a;
 }
 
 .summary-label {
@@ -326,12 +329,13 @@ body {
 }
 
 .pane.left {
-  background: #161b22;
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 24px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .stepper {
@@ -355,21 +359,21 @@ body {
 }
 
 .step-tab:hover {
-  background: rgba(255, 255, 255, 0.04);
-  color: #fff;
+  background: rgba(0, 0, 0, 0.03);
+  color: #0f172a;
 }
 
 .step-tab.active {
-  background: rgba(255, 126, 182, 0.12);
-  border-color: rgba(255, 126, 182, 0.4);
-  color: #ff7eb6;
+  background: rgba(219, 39, 119, 0.08);
+  border-color: rgba(219, 39, 119, 0.35);
+  color: #db2777;
   font-weight: 600;
 }
 
 .step h2 {
   font-size: 18px;
   margin: 0 0 16px;
-  color: #fff;
+  color: #0f172a;
 }
 
 .step label {
@@ -377,14 +381,14 @@ body {
   flex-direction: column;
   gap: 6px;
   font-size: 12.5px;
-  color: #8b949e;
+  color: #475569;
   margin-bottom: 14px;
 }
 
 .step input, .step textarea {
-  background: #0d1117;
+  background: #ffffff;
   border: 1px solid var(--border);
-  color: #f0f6fc;
+  color: #0f172a;
   padding: 8px 12px;
   border-radius: 6px;
   font-size: 13.5px;
@@ -394,8 +398,8 @@ body {
 }
 
 .step input:focus, .step textarea:focus {
-  border-color: #ff7eb6;
-  box-shadow: 0 0 0 2px rgba(255, 126, 182, 0.2);
+  border-color: #db2777;
+  box-shadow: 0 0 0 2px rgba(219, 39, 119, 0.15);
 }
 
 .stack-badge-grid {
@@ -406,7 +410,7 @@ body {
 }
 
 .stack-badge-btn {
-  background: #0d1117;
+  background: #ffffff;
   border: 1px solid var(--border);
   color: var(--muted);
   padding: 7px 12px;
@@ -418,14 +422,14 @@ body {
 }
 
 .stack-badge-btn:hover {
-  border-color: #ff7eb6;
-  color: #fff;
+  border-color: #db2777;
+  color: #0f172a;
 }
 
 .stack-badge-btn.active {
-  background: rgba(255, 126, 182, 0.15);
-  border-color: #ff7eb6;
-  color: #ff7eb6;
+  background: rgba(219, 39, 119, 0.08);
+  border-color: #db2777;
+  color: #db2777;
   font-weight: 600;
 }
 
@@ -438,12 +442,13 @@ body {
 
 /* Right Studio Preview */
 .pane.right {
-  background: #0d1117;
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .pane.right .readme {
@@ -454,8 +459,8 @@ body {
 
 .raw {
   flex: 1;
-  background: #090d16;
-  color: #79c0ff;
+  background: #f8fafc;
+  color: #0f172a;
   font-family: monospace;
   font-size: 13px;
   padding: 24px;
@@ -471,7 +476,7 @@ body {
   justify-content: space-between;
   padding: 12px 18px;
   border-top: 1px solid var(--border);
-  background: #161b22;
+  background: #f8fafc;
 }
 
 .toggle {
@@ -490,9 +495,10 @@ body {
 }
 
 .tg.active {
-  background: #21262d;
+  background: #ffffff;
   border-color: var(--border);
-  color: #fff;
+  color: #0f172a;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .acts {
@@ -515,24 +521,24 @@ body {
 }
 
 .btn-primary {
-  background: #238636;
+  background: #16a34a;
   color: #fff;
   border-color: rgba(255, 255, 255, 0.1);
 }
 
 .btn-primary:hover {
-  background: #2ea043;
+  background: #15803d;
 }
 
 .btn-secondary {
-  background: #21262d;
-  color: #c9d1d9;
-  border-color: #30363d;
+  background: #f8fafc;
+  color: #334155;
+  border-color: #cbd5e1;
 }
 
 .btn-secondary:hover {
-  background: #30363d;
-  color: #fff;
+  background: #f1f5f9;
+  color: #0f172a;
 }
 
 .toast {
@@ -580,12 +586,12 @@ body {
 .git-section-title {
   font-size: 14px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: #0f172a;
 }
 
 .git-header-link {
   font-size: 12px;
-  color: #58a6ff;
+  color: #0284c7;
   text-decoration: none;
 }
 
@@ -600,8 +606,8 @@ body {
 }
 
 .git-pinned-card {
-  background: #0d1117;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 14px 16px;
   display: flex;
@@ -609,11 +615,12 @@ body {
   justify-content: space-between;
   min-height: 120px;
   transition: border-color 0.15s ease, background 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .git-pinned-card:hover {
-  border-color: #8b949e;
-  background: #111620;
+  border-color: #0284c7;
+  background: #f8fafc;
 }
 
 .git-repo-title-row {
@@ -629,7 +636,7 @@ body {
   gap: 6px;
   font-size: 13.5px;
   font-weight: 600;
-  color: #58a6ff;
+  color: #0284c7;
   text-decoration: none;
 }
 
@@ -639,8 +646,8 @@ body {
 
 .git-badge-public {
   font-size: 11px;
-  color: #8b949e;
-  border: 1px solid #30363d;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 0 7px;
   line-height: 18px;
@@ -649,7 +656,7 @@ body {
 
 .git-drag-dots {
   margin-left: auto;
-  color: #6e7681;
+  color: #94a3b8;
   font-size: 14px;
   letter-spacing: -2px;
   cursor: grab;
@@ -658,7 +665,7 @@ body {
 
 .git-repo-desc {
   font-size: 12px;
-  color: #8b949e;
+  color: #64748b;
   line-height: 1.45;
   margin: 0 0 14px;
 }
@@ -668,7 +675,7 @@ body {
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #8b949e;
+  color: #64748b;
 }
 
 .git-lang-dot {
@@ -702,7 +709,7 @@ body {
 .git-contrib-title {
   font-size: 15px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: #0f172a;
 }
 
 .git-contrib-controls {
@@ -714,18 +721,18 @@ body {
 .btn-contrib-settings {
   background: transparent;
   border: none;
-  color: #8b949e;
+  color: #64748b;
   font-size: 12px;
   cursor: pointer;
   padding: 3px 6px;
 }
 
 .btn-contrib-settings:hover {
-  color: #58a6ff;
+  color: #0284c7;
 }
 
 .btn-year-badge {
-  background: #1f6feb;
+  background: #0284c7;
   color: #ffffff;
   font-size: 12px;
   font-weight: 600;
@@ -737,17 +744,18 @@ body {
 
 /* Calendar Card */
 .git-calendar-card {
-  background: #0d1117;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 14px 16px 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .calendar-months-row {
   display: flex;
   justify-content: space-between;
   font-size: 10.5px;
-  color: #8b949e;
+  color: #64748b;
   padding-left: 28px;
   padding-right: 4px;
   margin-bottom: 6px;
@@ -765,7 +773,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   font-size: 9.5px;
-  color: #8b949e;
+  color: #64748b;
   height: 84px;
   width: 22px;
   padding-top: 2px;
@@ -784,41 +792,41 @@ body {
 .cal-cell {
   aspect-ratio: 1;
   border-radius: 2px;
-  background: #161b22;
+  background: #ebedf0;
   transition: transform 0.12s ease;
 }
 
 .cal-cell:hover {
   transform: scale(1.3);
-  outline: 1px solid #fff;
+  outline: 1px solid #0f172a;
   z-index: 5;
 }
 
 /* Heatmap intensity levels matching GitHub */
-.cal-cell.lvl-0 { background: #161b22; }
-.cal-cell.lvl-1 { background: #0e4429; }
-.cal-cell.lvl-2 { background: #006d32; }
-.cal-cell.lvl-3 { background: #26a641; }
-.cal-cell.lvl-4 { background: #39d353; box-shadow: 0 0 3px rgba(57, 211, 83, 0.4); }
+.cal-cell.lvl-0 { background: #ebedf0; }
+.cal-cell.lvl-1 { background: #9be9a8; }
+.cal-cell.lvl-2 { background: #40c463; }
+.cal-cell.lvl-3 { background: #30a14e; }
+.cal-cell.lvl-4 { background: #216e39; }
 
 .calendar-footer-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 11px;
-  color: #8b949e;
+  color: #64748b;
   margin-top: 12px;
   padding-top: 6px;
 }
 
 .calendar-learn-link {
-  color: #8b949e;
+  color: #64748b;
   text-decoration: none;
   font-size: 11px;
 }
 
 .calendar-learn-link:hover {
-  color: #58a6ff;
+  color: #0284c7;
   text-decoration: underline;
 }
 
@@ -835,11 +843,11 @@ body {
   display: inline-block;
 }
 
-.legend-box.lvl-0 { background: #161b22; }
-.legend-box.lvl-1 { background: #0e4429; }
-.legend-box.lvl-2 { background: #006d32; }
-.legend-box.lvl-3 { background: #26a641; }
-.legend-box.lvl-4 { background: #39d353; }
+.legend-box.lvl-0 { background: #ebedf0; }
+.legend-box.lvl-1 { background: #9be9a8; }
+.legend-box.lvl-2 { background: #40c463; }
+.legend-box.lvl-3 { background: #30a14e; }
+.legend-box.lvl-4 { background: #216e39; }
 
 /* Contribution Activity */
 .git-activity-section {
@@ -850,7 +858,7 @@ body {
 .git-activity-title {
   font-size: 15px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: #0f172a;
   margin: 0 0 14px;
 }
 
@@ -864,14 +872,14 @@ body {
 .git-month-label {
   font-size: 12px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: #0f172a;
   white-space: nowrap;
 }
 
 .git-divider-line {
   flex: 1;
   height: 1px;
-  background: #21262d;
+  background: #e2e8f0;
 }
 
 .git-activity-timeline-item {
@@ -887,22 +895,23 @@ body {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8b949e;
+  color: #64748b;
 }
 
 .git-activity-box {
-  background: #0d1117;
-  border: 1px solid #30363d;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 14px 18px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .git-activity-left {
@@ -912,7 +921,7 @@ body {
 .git-activity-header {
   font-size: 13.5px;
   font-weight: 600;
-  color: #f0f6fc;
+  color: #0f172a;
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -920,7 +929,7 @@ body {
 }
 
 .git-activity-grip {
-  color: #6e7681;
+  color: #94a3b8;
   font-size: 13px;
   letter-spacing: -2px;
   user-select: none;
@@ -940,7 +949,7 @@ body {
 }
 
 .git-activity-repo-link {
-  color: #58a6ff;
+  color: #0284c7;
   text-decoration: none;
   font-weight: 500;
 }
@@ -950,7 +959,7 @@ body {
 }
 
 .git-activity-repo-commits {
-  color: #8b949e;
+  color: #64748b;
   font-size: 11.5px;
 }
 
@@ -965,7 +974,7 @@ body {
 
 .git-activity-bar {
   height: 6px;
-  background: #26a641;
+  background: #16a34a;
   border-radius: 3px;
 }
 
@@ -973,11 +982,11 @@ body {
   display: block;
   width: 100%;
   text-align: center;
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 8px 12px;
-  color: #58a6ff;
+  color: #0284c7;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -987,8 +996,8 @@ body {
 }
 
 .git-show-more-btn:hover {
-  background: #21262d;
-  border-color: #8b949e;
+  background: #f1f5f9;
+  border-color: #cbd5e1;
   text-decoration: none;
 }
 

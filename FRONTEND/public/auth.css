@@ -9,15 +9,102 @@
 body.auth-page {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   min-height: 100vh;
-  /* Gently dulled overlay: preserves the original look, softly toned down so login box is the highlight */
-  background: linear-gradient(135deg, rgba(8, 12, 20, 0.75) 0%, rgba(11, 15, 23, 0.62) 100%),
-              url('auth-bg.jpg') no-repeat center center fixed;
-  background-size: cover;
+  background: #ffffff;
   display: flex;
   flex-direction: column;
-  color: #f8fafc;
+  color: #0f172a;
   position: relative;
   overflow-x: hidden;
+}
+
+/* =========================================================
+   PARALLAX THEME GRID (Horizontal & Vertical Theme Lines)
+========================================================= */
+.parallax-grid-container {
+  position: fixed;
+  inset: -60px;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  contain: layout paint;
+}
+
+.parallax-grid-layer {
+  position: absolute;
+  inset: -100px;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Layer 1: Fine Grid with 36px horizontal and vertical theme cyan lines */
+.grid-layer-base {
+  background-image: 
+    linear-gradient(to right, rgba(2, 132, 199, 0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(2, 132, 199, 0.14) 1px, transparent 1px);
+  background-size: 36px 36px;
+  opacity: 0.85;
+}
+
+/* Layer 2: Major Grid with 144px horizontal and vertical theme emerald green & cyan lines */
+.grid-layer-major {
+  background-image: 
+    linear-gradient(to right, rgba(16, 185, 129, 0.28) 1.5px, transparent 1.5px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.28) 1.5px, transparent 1.5px),
+    linear-gradient(to right, rgba(2, 132, 199, 0.22) 1.5px, transparent 1.5px),
+    linear-gradient(to bottom, rgba(2, 132, 199, 0.22) 1.5px, transparent 1.5px);
+  background-size: 144px 144px, 144px 144px, 72px 72px, 72px 72px;
+  opacity: 0.95;
+}
+
+/* Layer 3: Theme Crosshairs at Grid Intersections */
+.grid-layer-crosshairs {
+  background-image: 
+    radial-gradient(circle at 1px 1px, #00f0ff 2px, transparent 2px),
+    radial-gradient(circle at 1px 1px, #10b981 1.5px, transparent 1.5px);
+  background-size: 144px 144px, 72px 72px;
+  opacity: 0.75;
+}
+
+/* Theme Ambient Glow Spots (Move with Parallax) */
+.parallax-glow-spot {
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(120px);
+  will-change: transform;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-cyan {
+  top: 10%;
+  left: 15%;
+  background: radial-gradient(circle, rgba(2, 132, 199, 0.2) 0%, rgba(2, 132, 199, 0) 70%);
+}
+
+.glow-green {
+  bottom: 5%;
+  right: 12%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, rgba(16, 185, 129, 0) 70%);
+}
+
+/* Subtle Vignette Mask to keep focus on center & editorial typography */
+.parallax-grid-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(255, 255, 255, 0.65) 100%);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .parallax-grid-layer,
+  .parallax-glow-spot,
+  .auth-card {
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* Claude-style Top Left Wordmark */
@@ -43,8 +130,7 @@ body.auth-page {
   font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.4px;
-  color: #fdfbf7;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+  color: #0f172a;
 }
 
 /* Auth Page Two-Column Container */
@@ -72,9 +158,8 @@ body.auth-page {
   font-size: clamp(34px, 4.4vw, 58px);
   font-weight: 600;
   line-height: 1.16;
-  color: #ffffff;
+  color: #0f172a;
   letter-spacing: -0.6px;
-  text-shadow: 0 3px 25px rgba(0, 0, 0, 0.85), 0 0 35px rgba(56, 189, 248, 0.2);
   margin-bottom: 20px;
   min-height: 2.4em;
 }
@@ -83,11 +168,11 @@ body.auth-page {
   display: inline-block;
   width: 3.5px;
   height: 0.9em;
-  background-color: #38bdf8;
+  background-color: #0284c7;
   margin-left: 4px;
   vertical-align: -0.05em;
   animation: blinkCursor 0.75s infinite;
-  box-shadow: 0 0 10px #38bdf8;
+  box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
 }
 
 @keyframes blinkCursor {
@@ -97,10 +182,9 @@ body.auth-page {
 
 .hero-subtext-editorial {
   font-size: 15px;
-  color: rgba(226, 232, 240, 0.8);
+  color: #475569;
   max-width: 480px;
   line-height: 1.6;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 /* Right Column & Glass Card */
@@ -115,22 +199,24 @@ body.auth-page {
 .auth-card {
   width: 440px;
   max-width: 100%;
-  background: rgba(13, 17, 23, 0.58);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
   border-radius: 20px;
   padding: 36px 32px 32px;
-  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.7), 0 0 40px rgba(56, 189, 248, 0.12);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08), 0 0 25px rgba(2, 132, 199, 0.06);
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .auth-card:hover {
-  border-color: rgba(56, 189, 248, 0.35);
-  box-shadow: 0 30px 75px rgba(0, 0, 0, 0.75), 0 0 50px rgba(168, 85, 247, 0.16);
+  border-color: rgba(2, 132, 199, 0.4);
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.12), 0 0 35px rgba(147, 51, 234, 0.1);
 }
 
 .auth-logo-center {
@@ -139,7 +225,7 @@ body.auth-page {
   object-fit: contain;
   margin: 0 auto 16px;
   display: block;
-  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
 }
 
 .auth-tag-row {
@@ -155,7 +241,7 @@ body.auth-page {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #38bdf8;
+  color: #0284c7;
 }
 
 .step-tracker-wrap {
@@ -171,7 +257,7 @@ body.auth-page {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: #38bdf8;
+  color: #0284c7;
 }
 
 .step-bars {
@@ -184,25 +270,25 @@ body.auth-page {
   width: 24px;
   height: 4px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.2);
+  background: #e2e8f0;
 }
 
 .step-pill.active {
-  background: #38bdf8;
-  box-shadow: 0 0 8px #38bdf8;
+  background: #0284c7;
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.4);
 }
 
 .auth-card-title {
   font-size: 25px;
   font-weight: 700;
-  color: #ffffff;
+  color: #0f172a;
   letter-spacing: -0.4px;
   margin-bottom: 6px;
 }
 
 .auth-card-subtitle {
   font-size: 13px;
-  color: #94a3b8;
+  color: #64748b;
   line-height: 1.45;
   margin-bottom: 22px;
 }
@@ -211,9 +297,9 @@ body.auth-page {
   width: 100%;
   padding: 11px 16px;
   border-radius: 10px;
-  background: #ffffff;
+  background: #f8fafc;
   color: #1f2937;
-  border: none;
+  border: 1px solid #e2e8f0;
   font-size: 14px;
   font-weight: 600;
   display: flex;
@@ -221,14 +307,15 @@ body.auth-page {
   justify-content: center;
   gap: 12px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   transition: all 0.2s ease;
 }
 
 .btn-google-oauth:hover {
   background: #f1f5f9;
+  border-color: #cbd5e1;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .auth-card-divider {
@@ -242,7 +329,7 @@ body.auth-page {
 .auth-card-divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .auth-card-divider span {
@@ -269,16 +356,16 @@ body.auth-page {
 .input-label {
   font-size: 12.5px;
   font-weight: 500;
-  color: #cbd5e1;
+  color: #334155;
 }
 
 .input-field-mono {
   width: 100%;
   padding: 10px 14px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: 8px;
-  color: #ffffff;
+  color: #0f172a;
   font-family: 'JetBrains Mono', monospace;
   font-size: 13.5px;
   outline: none;
@@ -286,14 +373,14 @@ body.auth-page {
 }
 
 .input-field-mono:focus {
-  border-color: #38bdf8;
-  background: rgba(15, 23, 42, 0.85);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+  border-color: #0284c7;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
 .country-select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
@@ -301,8 +388,8 @@ body.auth-page {
 }
 
 .country-select option {
-  background: #0f172a;
-  color: #ffffff;
+  background: #ffffff;
+  color: #0f172a;
 }
 
 .terms-row {
@@ -316,24 +403,24 @@ body.auth-page {
   width: 16px;
   height: 16px;
   margin-top: 2px;
-  accent-color: #38bdf8;
+  accent-color: #0284c7;
   cursor: pointer;
 }
 
 .terms-label {
   font-size: 12px;
-  color: #94a3b8;
+  color: #64748b;
   line-height: 1.4;
   cursor: pointer;
 }
 
 .terms-link {
-  color: #38bdf8;
+  color: #0284c7;
   text-decoration: underline;
 }
 
 .terms-link:hover {
-  color: #7dd3fc;
+  color: #0369a1;
 }
 
 .btn-auth-submit {
@@ -342,31 +429,31 @@ body.auth-page {
   margin-top: 6px;
   border-radius: 9999px;
   border: none;
-  background: #ffffff;
-  color: #090d16;
+  background: #0284c7;
+  color: #ffffff;
   font-size: 14.5px;
   font-weight: 700;
   letter-spacing: -0.2px;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
   transition: all 0.2s ease;
 }
 
 .btn-auth-submit:hover {
-  background: #f8fafc;
+  background: #0369a1;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35);
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
 }
 
 .auth-footer-prompt {
   margin-top: 18px;
   text-align: center;
   font-size: 12.5px;
-  color: #94a3b8;
+  color: #64748b;
 }
 
 .auth-footer-link {
-  color: #38bdf8;
+  color: #0284c7;
   font-weight: 600;
   text-decoration: none;
   margin-left: 4px;
@@ -374,7 +461,7 @@ body.auth-page {
 
 .auth-footer-link:hover {
   text-decoration: underline;
-  color: #7dd3fc;
+  color: #0369a1;
 }
 
 /* Responsive Media Queries */

@@ -20,3 +20,4 @@ CLI/vcpkg_installed/
 # Editor / OS caches
 .vscode/
 .DS_Store
+scratch/

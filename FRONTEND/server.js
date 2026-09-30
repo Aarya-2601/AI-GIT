@@ -463,9 +463,10 @@ function getDefaultModels() {
 }
 
 function getDefaultIssues() {
-    return [
+    return readJSON(ISSUES_FILE, [
         {
-            id: "ISSUE-101",
+            id: "DIV-101",
+            type: "divergence",
             repoId: "llama-3-8b-instruct",
             title: "FP16 precision overflow in Attention Projection weights on Epoch 18",
             author: "marcus_ai",
@@ -479,8 +480,9 @@ function getDefaultIssues() {
             ]
         },
         {
-            id: "ISSUE-102",
-            repoId: "stable-diffusion-xl-base",
+            id: "DIV-102",
+            type: "divergence",
+            repoId: "stable-diffusion-3-medium",
             title: "UNet chunk manifest hash mismatch on Windows checkout",
             author: "elena_vision",
             status: "open",
@@ -493,7 +495,8 @@ function getDefaultIssues() {
             ]
         },
         {
-            id: "ISSUE-103",
+            id: "DIV-103",
+            type: "divergence",
             repoId: "whisper-large-v3",
             title: "Support INT8 quantization in GGUF export script",
             author: "david_speech",
@@ -505,12 +508,137 @@ function getDefaultIssues() {
             comments: [
                 { author: "aarya-ml", time: "3 days ago", text: "Merged and pushed in commit `c5e7d0a9b8d3`. Reduces model size by 48% with zero WER degradation." }
             ]
+        },
+        {
+            id: "DIV-104",
+            type: "divergence",
+            repoId: "deepseek-coder-v2",
+            title: "Gradient norm explosion after warmdown step 4500",
+            author: "sophia_ml",
+            status: "open",
+            createdAt: "5 hours ago",
+            labels: ["loss-divergence", "training"],
+            commentsCount: 3,
+            description: "Gradient norm spiked from 0.8 to 14.2 during cosine decay. Clamping gradient clipping to 1.0 resolves loss divergence.",
+            comments: [
+                { author: "marcus_ai", time: "4 hours ago", text: "Testing with gradient clipping 1.0 on cluster node 4. Stability confirmed." }
+            ]
+        },
+        {
+            id: "DIV-105",
+            type: "divergence",
+            repoId: "phi-3-mini-4k",
+            title: "FastCDC chunk boundary threshold drift in RoPE embeddings",
+            author: "sanvinaik",
+            status: "open",
+            createdAt: "2 days ago",
+            labels: ["fastcdc", "manifest"],
+            commentsCount: 1,
+            description: "Rotary embedding layer shifts boundary offsets, resulting in 8 unnecessary chunk deduplication misses.",
+            comments: [
+                { author: "aarya-ml", time: "1 day ago", text: "Normalizing layer header padding fixes chunk alignment." }
+            ]
+        },
+        {
+            id: "DIV-106",
+            type: "divergence",
+            repoId: "llama-3-8b-instruct",
+            title: "CUDA out-of-memory during 32k context batch validation",
+            author: "aarya-ml",
+            status: "closed",
+            createdAt: "6 days ago",
+            labels: ["cuda", "precision"],
+            commentsCount: 6,
+            description: "Validation pass exceeding 32k tokens ran out of memory on 80GB A100. Flash-Attention v2 integration resolved.",
+            comments: [
+                { author: "sophia_ml", time: "5 days ago", text: "Flash-Attention v2 kernels merged into main. Memory footprint reduced by 52%." }
+            ]
+        },
+        {
+            id: "CONV-201",
+            type: "convergence",
+            repoId: "llama-3-8b-instruct",
+            title: "Merge Epoch 128 fine-tuned LoRA weights into main branch",
+            author: "sanvinaik",
+            branch: "lora-adapter-r16 → main",
+            status: "open",
+            createdAt: "19 hours ago",
+            labels: ["lora", "weight-merge"],
+            commentsCount: 3,
+            description: "Zero-copy LoRA adapter merge (rank=16, alpha=32) into foundation safetensors. Content-addressed CAS saved 78.4% storage.",
+            comments: [
+                { author: "aarya-ml", time: "15 hours ago", text: "Evaluation benchmark shows 0.142 validation loss. Safe to converge into main." }
+            ]
+        },
+        {
+            id: "CONV-202",
+            type: "convergence",
+            repoId: "deepseek-coder-v2",
+            title: "Convert base checkpoints to FP8 (E4M3) for 2x faster inference",
+            author: "aarya-ml",
+            branch: "quant-fp8 → main",
+            status: "open",
+            createdAt: "1 day ago",
+            labels: ["fp8", "quantization"],
+            commentsCount: 2,
+            description: "Quantize feed-forward layer weights with zero loss degradation on HumanEval coding benchmark. Ready for test merge.",
+            comments: [
+                { author: "marcus_ai", time: "12 hours ago", text: "Verified throughput on H100: 185 tokens/sec per stream." }
+            ]
+        },
+        {
+            id: "CONV-203",
+            type: "convergence",
+            repoId: "stable-diffusion-3-medium",
+            title: "FastCDC deduplication integration for multi-GPU sync",
+            author: "elena_vision",
+            branch: "fastcdc-sync → main",
+            status: "closed",
+            createdAt: "3 days ago",
+            labels: ["fastcdc", "cas"],
+            commentsCount: 4,
+            description: "Ensures atomic blake3 chunk verification across distributed worker nodes during continuous training convergence.",
+            comments: [
+                { author: "aarya-ml", time: "2 days ago", text: "Successfully converged and committed in `7c31d9a`." }
+            ]
+        },
+        {
+            id: "CONV-204",
+            type: "convergence",
+            repoId: "whisper-large-v3",
+            title: "Prune unused attention heads in encoder blocks 4 through 8",
+            author: "david_speech",
+            branch: "prune-heads → main",
+            status: "open",
+            createdAt: "4 days ago",
+            labels: ["pruning", "speed"],
+            commentsCount: 1,
+            description: "Reduces encoder latency by 22% with negligible 0.02% Word Error Rate difference on LibriSpeech clean.",
+            comments: [
+                { author: "david_speech", time: "3 days ago", text: "Awaiting benchmark validation run." }
+            ]
+        },
+        {
+            id: "CONV-205",
+            type: "convergence",
+            repoId: "phi-3-mini-4k",
+            title: "Integrate Flash-Attention v2 kernels for 16k context window",
+            author: "sophia_ml",
+            branch: "flash-attn-v2 → main",
+            status: "closed",
+            createdAt: "1 week ago",
+            labels: ["flash-attn", "optimization"],
+            commentsCount: 7,
+            description: "Replaces standard multi-head attention with Flash-Attention v2 CUDA kernels. Merged into main.",
+            comments: [
+                { author: "aarya-ml", time: "5 days ago", text: "Merged without conflicts." }
+            ]
         }
-    ];
+    ]);
 }
 
 function getDefaultDiscussions() {
-    return [
+    return readJSON(DISCUSSIONS_FILE, [
         {
             id: "DISC-201",
             category: "Model Architecture",
@@ -537,7 +665,7 @@ function getDefaultDiscussions() {
             tags: ["Llama3", "Hyperparameters", "CosineAnnealing"],
             content: "Sharing our hyperparameter ablation study: 2e-5 initial LR with Cosine decay down to 2e-6, warmup ratio 0.05, batch size 64 with gradient accumulation gives minimal loss divergence.",
             replies: [
-                { author: "aarya-ml", time: "2 days ago", text: "Agreed. That matches our findings in checkpoint `epoch_18_best.safetensors`." }
+                { author: "aarya-ml", time: "2 days ago", text: "Agreed. That matches our findings in checkpoint `epoch_128_best.safetensors`." }
             ]
         },
         {
@@ -553,8 +681,36 @@ function getDefaultDiscussions() {
             replies: [
                 { author: "david_speech", time: "4 days ago", text: "Great breakdown! SafeTensors is ideal for server-side vLLM, while GGUF shines on llama.cpp edge devices." }
             ]
+        },
+        {
+            id: "DISC-204",
+            category: "Fine-Tuning & LoRA",
+            title: "Best practices for LoRA rank selection (r=8 vs r=16 vs r=64)",
+            author: "sophia_ml",
+            upvotes: 22,
+            repliesCount: 5,
+            createdAt: "6 days ago",
+            tags: ["LoRA", "Parameter-Efficiency", "Ablation"],
+            content: "We evaluated parameter efficiency and trainable weight drift. For 8B models, rank 16 provides the best trade-off between loss convergence and VRAM usage. Ranks above 32 showed diminishing returns.",
+            replies: [
+                { author: "sanvinaik", time: "5 days ago", text: "Rank 16 also kept checkpoint delta sizes under 450 MB, which deduplicates cleanly in AI-GIT." }
+            ]
+        },
+        {
+            id: "DISC-205",
+            category: "Deployment & Infrastructure",
+            title: "Zero-copy model loading on consumer GPUs with AI-GIT",
+            author: "david_speech",
+            upvotes: 19,
+            repliesCount: 4,
+            createdAt: "1 week ago",
+            tags: ["Zero-Copy", "CUDA", "mmap", "Inference"],
+            content: "By combining memory-mapped file handles with AI-GIT's content-addressed chunk store, we can initialize and warm 7B weights in under 1.4 seconds directly from NVMe into unified memory without duplication.",
+            replies: [
+                { author: "aarya-ml", time: "6 days ago", text: "The symlink-based zero-copy clone is now enabled by default in `ai-git clone --zero-copy`." }
+            ]
         }
-    ];
+    ]);
 }
 
 /* =========================================================
