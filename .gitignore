@@ -29,3 +29,7 @@ vcpkg_installed/
 *.suo
 *.userosv
 *.sln.docstates
+
+# Dependencies & Scratch
+node_modules/
+scratch/
