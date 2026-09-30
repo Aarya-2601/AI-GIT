@@ -125,8 +125,34 @@ target_link_libraries(aigit-chunk PRIVATE
     OpenSSL::Crypto
 )
 
+# ------------------------------------------------------------
+# Polymorphic Codec Verification Tool (Task 1.3)
+# ------------------------------------------------------------
+
+add_executable(aigit-codec
+    src/tools/codec_test_main.cpp
+    src/compression/polymorphic_codec.cpp
+    src/compression/compression.cpp
+    src/chunking/asymmetric_chunker.cpp
+    src/inspection/file_inspector.cpp
+    src/hashing/hashing.cpp
+)
+
+target_include_directories(aigit-codec PRIVATE
+    src
+    src/inspection
+    src/chunking
+    src/compression
+    src/hashing
+)
+
+target_link_libraries(aigit-codec PRIVATE
+    OpenSSL::Crypto
+    ZLIB::ZLIB
+)
+
 install(
-    TARGETS ai-git aigit-inspect aigit-chunk
+    TARGETS ai-git aigit-inspect aigit-chunk aigit-codec
     DESTINATION bin
 )
 
