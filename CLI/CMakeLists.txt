@@ -13,6 +13,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(SQLite3 REQUIRED)
+find_package(CURL REQUIRED)
 
 set(SOURCES
 
@@ -175,8 +176,50 @@ target_link_libraries(aigit-diff PRIVATE
     SQLite::SQLite3
 )
 
+# ------------------------------------------------------------
+# Global CAS Sync & Remote Delta Engine (Task 1.5)
+# ------------------------------------------------------------
+
+add_executable(aigit-sync
+    src/tools/sync_main.cpp
+    src/sync/cas_sync_engine.cpp
+    src/compression/polymorphic_codec.cpp
+    src/compression/compression.cpp
+    src/chunking/asymmetric_chunker.cpp
+    src/inspection/file_inspector.cpp
+    src/hashing/hashing.cpp
+)
+
+target_include_directories(aigit-sync PRIVATE
+    src
+    src/sync
+    src/compression
+    src/chunking
+    src/inspection
+    src/hashing
+)
+
+target_compile_definitions(aigit-sync PRIVATE
+    CURL_STATICLIB
+)
+
+target_link_libraries(aigit-sync PRIVATE
+    OpenSSL::Crypto
+    ZLIB::ZLIB
+    CURL::libcurl
+    ws2_32
+    crypt32
+    advapi32
+    user32
+    wldap32
+    normaliz
+    bcrypt
+    secur32
+    iphlpapi
+)
+
 install(
-    TARGETS ai-git aigit-inspect aigit-chunk aigit-codec aigit-diff
+    TARGETS ai-git aigit-inspect aigit-chunk aigit-codec aigit-diff aigit-sync
     DESTINATION bin
 )
 
