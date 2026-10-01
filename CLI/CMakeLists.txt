@@ -151,8 +151,32 @@ target_link_libraries(aigit-codec PRIVATE
     ZLIB::ZLIB
 )
 
+# ------------------------------------------------------------
+# Semantic Structural Differ & Metadata Harvester (Task 1.4)
+# ------------------------------------------------------------
+
+add_executable(aigit-diff
+    src/tools/diff_main.cpp
+    src/diffing/structural_differ.cpp
+    src/diffing/metadata_harvester.cpp
+    src/inspection/file_inspector.cpp
+    src/hashing/hashing.cpp
+)
+
+target_include_directories(aigit-diff PRIVATE
+    src
+    src/diffing
+    src/inspection
+    src/hashing
+)
+
+target_link_libraries(aigit-diff PRIVATE
+    OpenSSL::Crypto
+    SQLite::SQLite3
+)
+
 install(
-    TARGETS ai-git aigit-inspect aigit-chunk aigit-codec
+    TARGETS ai-git aigit-inspect aigit-chunk aigit-codec aigit-diff
     DESTINATION bin
 )
 
