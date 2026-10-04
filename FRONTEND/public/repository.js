@@ -6,7 +6,7 @@
 (function () {
   let activeTab = "artifacts";
 
-  function init() {
+  async function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const repoParam = urlParams.get("repo") || urlParams.get("id") || "AI-GIT";
 
@@ -17,6 +17,29 @@
 
     setupTabsWithSmoothSlider();
     setupActions();
+
+    try {
+      const modelRes = await fetch(`/api/models/${repoParam}`);
+      if (modelRes.ok) {
+        const model = await modelRes.json();
+        window.currentCasRepoName = model.casRepoName || null;
+
+        if (model.casRepoName) {
+          const backendRes = await fetch(`/api/backend/repos/${encodeURIComponent(model.casRepoName)}`);
+          if (backendRes.ok) {
+            const backendData = await backendRes.json();
+            const headEl = document.getElementById("backendHead");
+            const countEl = document.getElementById("backendObjectCount");
+            const updatedEl = document.getElementById("backendUpdatedAt");
+            if (headEl && backendData.HEAD) headEl.textContent = backendData.HEAD;
+            if (countEl && backendData.objectCount !== undefined) countEl.textContent = backendData.objectCount;
+            if (updatedEl && backendData.updated_at) updatedEl.textContent = backendData.updated_at;
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching repository metadata:", err);
+    }
   }
 
   function setupTabsWithSmoothSlider() {
@@ -104,10 +127,13 @@
     const codeBtn = document.getElementById("btnCodeDropdown");
     if (codeBtn) {
       codeBtn.addEventListener("click", () => {
-        const repoName = document.getElementById("nodeNameDisplay")?.textContent || "AI-GIT";
-        const cloneCmd = `ai-git clone ${repoName}`;
-        navigator.clipboard.writeText(cloneCmd);
-        alert(`Copied clone command to clipboard:\n${cloneCmd}`);
+        if (window.currentCasRepoName) {
+          const cloneCmd = `ai-git clone ${window.currentCasRepoName}`;
+          navigator.clipboard.writeText(cloneCmd).catch(() => {});
+          alert(`Copied clone command to clipboard:\n${cloneCmd}`);
+        } else {
+          alert("This model is not connected to an AI-Git repository yet.");
+        }
       });
     }
   }

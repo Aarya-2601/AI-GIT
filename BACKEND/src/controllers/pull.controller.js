@@ -1,6 +1,6 @@
 const {download_url}=require('../services/minioservice.js')
 
-try_pull= async (req, res)=>{
+const try_pull = async (req, res) => {
     try{
         const {chunks}=req.body;
         if(!chunks || !Array.isArray(chunks)){
@@ -28,6 +28,4 @@ try_pull= async (req, res)=>{
     }
 };
 
-module.exports={
-
-};
+module.exports = { try_pull };
