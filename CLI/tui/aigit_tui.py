@@ -773,6 +773,27 @@ class AIGitTUI:
         ]
         return next((e for e in candidates if e.exists()), None)
 
+    def do_init(self):
+        """Initialize empty AI-Git repository"""
+        exe = self.get_exe()
+        target_dir = self.repo.root if self.repo.root else Path.cwd()
+        if exe:
+            res = subprocess.run([str(exe), "init"], cwd=str(target_dir), capture_output=True, text=True)
+            if res.returncode == 0:
+                self.set_toast("✔ Initialized empty AI-Git repository")
+            else:
+                self.set_toast(f"Init error: {res.stderr.strip()[:32]}")
+        else:
+            # Fallback direct initialization if binary not present
+            aigit_dir = target_dir / ".aigit"
+            aigit_dir.mkdir(exist_ok=True)
+            (aigit_dir / "objects").mkdir(exist_ok=True)
+            (aigit_dir / "refs" / "heads").mkdir(parents=True, exist_ok=True)
+            (aigit_dir / "HEAD").write_text("ref: refs/heads/main\n", encoding="utf-8")
+            self.set_toast("✔ Initialized empty AI-Git repository (.aigit)")
+        self.repo = AIGitRepo(target_dir)
+        self.refresh_data()
+
     def do_push(self):
         """Execute ai-git push to remote"""
         exe = self.get_exe()
