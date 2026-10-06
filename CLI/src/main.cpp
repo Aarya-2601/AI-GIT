@@ -13,15 +13,36 @@ int main(int argc, char* argv[]) {
         std::cerr<<"Usage: ai-git <command> [<args>]"<<std::endl;
         std::cout<< std::endl;
         std::cout<<"Available Commands: "<<std::endl;
-        std::cout<<" init: Initialize a a new repository"<<std::endl;
-        std::cout<<" hash-object: Compute hash ID and optionally create a blob"<<std::endl;
+        std::cout<<" init: Initialize a new repository"<<std::endl;
+        std::cout<<" add: Stage files or model checkpoints"<<std::endl;
+        std::cout<<" commit: Commit staged changes"<<std::endl;
+        std::cout<<" diff: Semantic AST & SIMD delta model diff"<<std::endl;
+        std::cout<<" inspect: Format-aware header inspection"<<std::endl;
         std::cout<<" status: Show working tree status"<<std::endl;
+        std::cout<<" log: Display commit log"<<std::endl;
+        std::cout<<" push: Push CAS chunks to remote"<<std::endl;
+        std::cout<<" pull: Pull changes from remote"<<std::endl;
+        std::cout<<" clone: Clone repository"<<std::endl;
         return 1;
     }
 
     std::string command=args[1];
     if(command=="init"){
         return Commands::runInit();
+    } 
+
+    else if(command=="diff"){
+        std::vector<std::string> targets(args.begin()+2, args.end());
+        return Commands::runDiff(targets);
+    }
+
+    else if(command=="inspect"){
+        if(args.size()<3){
+            std::cerr<<"Error: 'inspect' requires a target file."<<std::endl;
+            std::cerr<<"Usage: ai-git inspect <file_path>"<<std::endl;
+            return 1;
+        }
+        return Commands::runInspect(args[2]);
     } 
 
     else if(command=="add"){

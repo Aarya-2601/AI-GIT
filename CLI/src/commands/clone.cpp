@@ -1,4 +1,5 @@
 #include "clone.hpp"
+#include "../core/config.hpp"
 #include "../storage/metadata_db.hpp"
 #include "../storage/object_store.hpp"
 #include "../core/filesystem.hpp"
@@ -34,7 +35,7 @@ static std::string getManifestClone(const std::string& serverUrl, const std::str
     if (!curl) return "";
 
     curl_easy_setopt(curl, CURLOPT_URL, cloneEndpoint.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, handleStringResponse);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, expressBytesClone);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &jsonResponse);
 
     CURLcode res=curl_easy_perform(curl);
@@ -89,7 +90,7 @@ static bool downloadChunkClone(const std::string& url, const fs::path& objectPat
     }
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, handleFileWrite);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, minioWriteClone);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &fileOnDisk);
 
     CURLcode result=curl_easy_perform(curl);
@@ -99,15 +100,18 @@ static bool downloadChunkClone(const std::string& url, const fs::path& objectPat
     return(result==CURLE_OK);
 }
 
-bool runClone(const std::string& reponame, const std::string server){
-    metadataDB.setConfig("remote_repo", reponame);
-    curl_global_init(CURL_GLOBAL_ALL);
-
+bool runClone(const std::string& reponame, const std::string& server){
     std::cout<<"[Clone] Setting up local .aigit directory for '"<<reponame<<"'..."<<std::endl;
 
     Storage::ObjectStore objectStore(".aigit");
     objectStore.initialize();
     Storage::MetadataDB metadataDB(".aigit/metadata.db");
+    
+    Core::Config config;
+    config.set("remote_repo", reponame);
+    config.save();
+
+    curl_global_init(CURL_GLOBAL_ALL);
 
     std::string jsonResponse=getManifestClone(server, reponame);
     if(jsonResponse.empty()){
@@ -115,7 +119,7 @@ bool runClone(const std::string& reponame, const std::string server){
         return false;
     }
 
-    std::map<std::string, std::string> downloadMap=parseManifestJson(jsonResponse);
+    std::map<std::string, std::string> downloadMap=createMapClone(jsonResponse);
     if(downloadMap.empty()){
         std::cerr<<"[Clone] Error: No chunks returned or repository '"<<reponame<<"' not found."<<std::endl;
         curl_global_cleanup();
@@ -140,7 +144,7 @@ bool runClone(const std::string& reponame, const std::string server){
         }
     }
 
-    std::cout<<[Clone] Complete! ("<<successCount<<"/"<<downloadMap.size()<<" chunks saved)"<<std::endl;
+    std::cout<<"[Clone] Complete! ("<<successCount<<"/"<<downloadMap.size()<<" chunks saved)"<<std::endl;
 
     curl_global_cleanup();
     return successCount==downloadMap.size();
