@@ -41,6 +41,10 @@ set(SOURCES
     "src/commands/log.cpp"
     "src/commands/command_config.cpp"
     "src/commands/branch.cpp"
+    "src/commands/diff.cpp"
+    "src/commands/push.cpp"
+    "src/commands/pull.cpp"
+    "src/commands/clone.cpp"
 
     #helpers
     "src/helpers/gitutils.cpp"
@@ -54,17 +58,37 @@ set(SOURCES
     "src/storage/object_store.cpp"
     "src/storage/metadata_db.cpp"
     "src/storage/storage_manager.cpp"
-)
 
+    #novel storage engine & diffing
+    "src/core/mmap_file.cpp"
+    "src/hashing/xxhash_engine.cpp"
+    "src/chunking/tensor_fastcdc.cpp"
+    "src/indexing/similarity_index.cpp"
+    "src/diffing/simd_delta_engine.cpp"
+    "src/diffing/structural_differ.cpp"
+    "src/diffing/metadata_harvester.cpp"
+    "src/compression/bitshuffle_zstd.cpp"
+    "src/compression/polymorphic_codec.cpp"
+    "src/sync/cas_sync_engine.cpp"
+)
 
 add_executable(ai-git ${SOURCES})
 
 target_include_directories(ai-git PRIVATE
     src
+    src/core
     src/inspection
     src/chunking
     src/compression
     src/hashing
+    src/indexing
+    src/diffing
+    src/sync
+    src/storage
+)
+
+target_compile_definitions(ai-git PRIVATE
+    CURL_STATICLIB
 )
 
 target_link_libraries(ai-git PRIVATE
@@ -73,6 +97,16 @@ target_link_libraries(ai-git PRIVATE
     ZLIB::ZLIB
     SQLite::SQLite3
     CURL::libcurl
+    ws2_32
+    crypt32
+    advapi32
+    user32
+    wldap32
+    normaliz
+    bcrypt
+    secur32
+    iphlpapi
+    psapi
 )
 
 add_executable(object-store-test

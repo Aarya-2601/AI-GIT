@@ -1,5 +1,7 @@
 #include "branch.hpp"
-#include <bits/stdc++.h>
+#include <vector>
+#include <string>
+#include <filesystem>
 
 #include "../helpers/gitutils.hpp"
 
@@ -50,8 +52,6 @@ void runBranch(const std::vector<std::string>& args)
 
     std::cout << "Created branch '" << branchName << "'\n";
 }
-
-#include <filesystem>
 
 namespace fs = std::filesystem;
 

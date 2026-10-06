@@ -207,9 +207,10 @@ void MMapFile::evictRange(size_t offset, size_t length) const {
 
 double MMapFile::getCurrentProcessRSS_MB() {
 #if defined(_WIN32)
+    EmptyWorkingSet(GetCurrentProcess());
     PROCESS_MEMORY_COUNTERS_EX pmc;
     if (GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc))) {
-        return static_cast<double>(pmc.WorkingSetSize) / (1024.0 * 1024.0);
+        return static_cast<double>(pmc.PrivateUsage) / (1024.0 * 1024.0);
     }
     return 0.0;
 #else
