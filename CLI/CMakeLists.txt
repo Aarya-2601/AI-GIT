@@ -218,8 +218,46 @@ target_link_libraries(aigit-sync PRIVATE
     iphlpapi
 )
 
+# ------------------------------------------------------------
+# Novel Storage Engine (MMap, Tensor FastCDC, LSH, SIMD Delta)
+# ------------------------------------------------------------
+
+add_executable(aigit-engine
+    src/tools/engine_benchmark.cpp
+    src/core/mmap_file.cpp
+    src/hashing/xxhash_engine.cpp
+    src/hashing/hashing.cpp
+    src/chunking/tensor_fastcdc.cpp
+    src/indexing/similarity_index.cpp
+    src/diffing/simd_delta_engine.cpp
+    src/compression/bitshuffle_zstd.cpp
+    src/compression/compression.cpp
+    src/inspection/file_inspector.cpp
+)
+
+target_include_directories(aigit-engine PRIVATE
+    src
+    src/core
+    src/hashing
+    src/chunking
+    src/indexing
+    src/diffing
+    src/compression
+    src/inspection
+)
+
+target_link_libraries(aigit-engine PRIVATE
+    OpenSSL::Crypto
+    ZLIB::ZLIB
+    ws2_32
+    crypt32
+    advapi32
+    user32
+    psapi
+)
+
 install(
-    TARGETS ai-git aigit-inspect aigit-chunk aigit-codec aigit-diff aigit-sync
+    TARGETS ai-git aigit-inspect aigit-chunk aigit-codec aigit-diff aigit-sync aigit-engine
     DESTINATION bin
 )
 
