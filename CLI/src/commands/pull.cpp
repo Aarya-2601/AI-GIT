@@ -4,6 +4,7 @@
 //update local db
 
 #include "pull.hpp"
+#include "../core/config.hpp"
 #include "../storage/metadata_db.hpp"
 #include "../storage/object_store.hpp"
 
@@ -37,7 +38,7 @@ static std::string getManifestPull(const std::string& serverUrl, const std::stri
     if(!curl) return "";
 
     curl_easy_setopt(curl, CURLOPT_URL, pullEndpoint.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, handleStringResponse);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, expressBytesPull);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &jsonResponse);
 
     CURLcode res=curl_easy_perform(curl);
@@ -104,7 +105,7 @@ static bool downloadChunkPull(const std::string& url, const fs::path& objectPath
     }
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, handleFileWrite);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, minioWritePull);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &fileOnDisk);
 
     CURLcode result=curl_easy_perform(curl);
@@ -115,32 +116,34 @@ static bool downloadChunkPull(const std::string& url, const fs::path& objectPath
 }
 
 
-bool runPull(const std::string& reponame, const std::string server){
+bool runPull(const std::string& reponame, const std::string& server){
+    Storage::MetadataDB metadataDB(".aigit/metadata.db");
+    Storage::ObjectStore objectStore(".aigit");
+
     std::string repoToPull=reponame;
 
     if(repoToPull.empty() || repoToPull=="default-repo"){
-        repoToPull=metadataDB.getConfig("remote_repo");
+        Core::Config config;
+        config.load();
+        repoToPull=config.get("remote_repo");
         
         if(repoToPull.empty()){
             std::cerr<<"[Error] Could not determine remote repository name. Please specify it or clone the repo first."<<std::endl;
-            return 1;
+            return false;
         }
     }
     
     curl_global_init(CURL_GLOBAL_ALL);
 
-    std::cout<<"[Pull] Checking remote repository '"<<reponame<<"' for updates..."<<std::endl;
+    std::cout<<"[Pull] Checking remote repository '"<<repoToPull<<"' for updates..."<<std::endl;
 
-    Storage::MetadataDB metadataDB(".aigit/metadata.db");
-    Storage::ObjectStore objectStore(".aigit");
-
-    std::string jsonResponse=getManifestPull(server, reponame);
+    std::string jsonResponse=getManifestPull(server, repoToPull);
     if (jsonResponse.empty()) {
         curl_global_cleanup();
         return false;
     }
 
-    std::map<std::string, std::string> remoteManifest=parseManifestJson(jsonResponse);
+    std::map<std::string, std::string> remoteManifest=createMapPull(jsonResponse);
     if(remoteManifest.empty()){
         std::cerr<<"[Pull] Remote repository is empty or not found.\n";
         curl_global_cleanup();
