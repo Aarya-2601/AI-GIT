@@ -707,24 +707,21 @@ class AIGitTUI:
     # -----------------------------------------------------------------
     # ACTIONS & REPOSITORY MUTATIONS
     # -----------------------------------------------------------------
-    def toggle_stage(self):
-        """Stage or unstage currently selected file"""
+    def stage_selected(self):
+        """Stage the currently selected modified/untracked file"""
         if not self.all_file_items:
             return
         idx = min(self.selected_indices[self.PANEL_FILES], len(self.all_file_items) - 1)
-        item, kind = self.all_file_items[idx]
-        file_path = item["path"]
+        item, section = self.all_file_items[idx]
+        file_path = item.get("path", "")
+        if not file_path:
+            return
 
-        # Run ai-git add via executable or direct command
-        exe_candidates = [
-            self.repo.root / "CLI" / "build" / "Debug" / "ai-git.exe",
-            self.repo.root / "CLI" / "build" / "ai-git.exe",
-            self.repo.root / "ai-git.exe"
-        ]
-        exe = next((e for e in exe_candidates if e.exists()), None)
+        exe = self.get_exe()
+        repo_root = self.repo.root or Path.cwd()
         if exe:
             cmd = [str(exe), "add", file_path]
-            subprocess.run(cmd, cwd=str(self.repo.root), capture_output=True)
+            subprocess.run(cmd, cwd=str(repo_root), capture_output=True)
             self.set_toast(f"✔ Staged {file_path}")
         else:
             self.set_toast(f"Staged {file_path}")
@@ -733,13 +730,10 @@ class AIGitTUI:
 
     def stage_all(self):
         """Stage all files in workspace"""
-        exe_candidates = [
-            self.repo.root / "CLI" / "build" / "Debug" / "ai-git.exe",
-            self.repo.root / "CLI" / "build" / "ai-git.exe"
-        ]
-        exe = next((e for e in exe_candidates if e.exists()), None)
+        exe = self.get_exe()
+        repo_root = self.repo.root or Path.cwd()
         if exe:
-            subprocess.run([str(exe), "add", "."], cwd=str(self.repo.root), capture_output=True)
+            subprocess.run([str(exe), "add", "."], cwd=str(repo_root), capture_output=True)
             self.set_toast("✔ Staged all files")
         self.refresh_data()
 
@@ -748,13 +742,10 @@ class AIGitTUI:
         if not msg.strip():
             self.set_toast("⚠️  Commit message cannot be empty")
             return
-        exe_candidates = [
-            self.repo.root / "CLI" / "build" / "Debug" / "ai-git.exe",
-            self.repo.root / "CLI" / "build" / "ai-git.exe"
-        ]
-        exe = next((e for e in exe_candidates if e.exists()), None)
+        exe = self.get_exe()
+        repo_root = self.repo.root or Path.cwd()
         if exe:
-            res = subprocess.run([str(exe), "commit", "-m", msg], cwd=str(self.repo.root), capture_output=True, text=True)
+            res = subprocess.run([str(exe), "commit", "-m", msg], cwd=str(repo_root), capture_output=True, text=True)
             if res.returncode == 0:
                 self.set_toast(f"✔ Committed: \"{msg[:24]}\"")
             else:
@@ -763,14 +754,20 @@ class AIGitTUI:
 
     def get_exe(self) -> Path | None:
         """Find ai-git binary across Release, Debug, or root build dirs"""
-        candidates = [
-            self.repo.root / "CLI" / "build" / "Release" / "ai-git.exe",
-            self.repo.root / "CLI" / "build" / "Debug" / "ai-git.exe",
-            self.repo.root / "CLI" / "build" / "ai-git.exe",
-            self.repo.root / "ai-git.exe",
+        candidates = []
+        if self.repo.root:
+            candidates.extend([
+                self.repo.root / "CLI" / "build" / "Release" / "ai-git.exe",
+                self.repo.root / "CLI" / "build" / "Debug" / "ai-git.exe",
+                self.repo.root / "CLI" / "build" / "ai-git.exe",
+                self.repo.root / "ai-git.exe",
+            ])
+        candidates.extend([
             Path.cwd() / "CLI" / "build" / "Release" / "ai-git.exe",
-            Path.cwd() / "CLI" / "build" / "Debug" / "ai-git.exe"
-        ]
+            Path.cwd() / "CLI" / "build" / "Debug" / "ai-git.exe",
+            Path.cwd() / "CLI" / "build" / "ai-git.exe",
+            Path.cwd() / "ai-git.exe",
+        ])
         return next((e for e in candidates if e.exists()), None)
 
     def do_init(self):
@@ -800,8 +797,9 @@ class AIGitTUI:
         if not exe:
             self.set_toast("⚠️  ai-git executable not found")
             return
+        repo_root = self.repo.root or Path.cwd()
         self.set_toast("⏳ Pushing chunks to remote CAS...")
-        res = subprocess.run([str(exe), "push"], cwd=str(self.repo.root), capture_output=True, text=True)
+        res = subprocess.run([str(exe), "push"], cwd=str(repo_root), capture_output=True, text=True)
         if res.returncode == 0:
             self.set_toast("✔ Push completed successfully")
         else:
@@ -815,8 +813,9 @@ class AIGitTUI:
         if not exe:
             self.set_toast("⚠️  ai-git executable not found")
             return
+        repo_root = self.repo.root or Path.cwd()
         self.set_toast("⏳ Pulling chunks from remote...")
-        res = subprocess.run([str(exe), "pull"], cwd=str(self.repo.root), capture_output=True, text=True)
+        res = subprocess.run([str(exe), "pull"], cwd=str(repo_root), capture_output=True, text=True)
         if res.returncode == 0:
             self.set_toast("✔ Pull completed successfully")
         else:
@@ -830,11 +829,12 @@ class AIGitTUI:
         if not exe:
             self.set_toast("⚠️  ai-git executable not found")
             return
+        repo_root = self.repo.root or Path.cwd()
         if self.all_file_items and self.active_panel == self.PANEL_FILES:
             idx = min(self.selected_indices[self.PANEL_FILES], len(self.all_file_items) - 1)
             item, _ = self.all_file_items[idx]
             fpath = item["path"]
-            res = subprocess.run([str(exe), "inspect", fpath], cwd=str(self.repo.root), capture_output=True, text=True)
+            res = subprocess.run([str(exe), "inspect", fpath], cwd=str(repo_root), capture_output=True, text=True)
             if res.returncode == 0:
                 self.set_toast(f"✔ Inspected {Path(fpath).name}")
             else:
@@ -846,8 +846,9 @@ class AIGitTUI:
     def do_status(self):
         """Execute status & refresh working tree"""
         exe = self.get_exe()
+        repo_root = self.repo.root or Path.cwd()
         if exe:
-            subprocess.run([str(exe), "status"], cwd=str(self.repo.root), capture_output=True)
+            subprocess.run([str(exe), "status"], cwd=str(repo_root), capture_output=True)
         self.refresh_data()
         self.set_toast("✔ Working tree synchronized & refreshed")
 
@@ -928,10 +929,11 @@ class AIGitTUI:
                             self.modal_mode = None
                             self.modal_input = ""
                             if bname.strip():
-                                exe = self.repo.root / "CLI" / "build" / "Debug" / "ai-git.exe"
-                                if exe.exists():
-                                    subprocess.run([str(exe), "branch", bname.strip()], cwd=str(self.repo.root), capture_output=True)
-                                    subprocess.run([str(exe), "checkout", bname.strip()], cwd=str(self.repo.root), capture_output=True)
+                                exe = self.get_exe()
+                                repo_root = self.repo.root or Path.cwd()
+                                if exe:
+                                    subprocess.run([str(exe), "branch", bname.strip()], cwd=str(repo_root), capture_output=True)
+                                    subprocess.run([str(exe), "checkout", bname.strip()], cwd=str(repo_root), capture_output=True)
                                     self.set_toast(f"✔ Created and switched to branch {bname}")
                                     self.refresh_data()
                         elif self.modal_mode == "help":
