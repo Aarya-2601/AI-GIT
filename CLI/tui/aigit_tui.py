@@ -362,24 +362,21 @@ class AIGitRepo:
 
 # =====================================================================
 # TERMINAL USER INTERFACE APPLICATION ENGINE
+# Clean 2-Column Architecture (Files Table on Left, Action Dock on Right)
 # =====================================================================
 class AIGitTUI:
-    PANEL_FILES    = 0
-    PANEL_COMMITS  = 1
-    PANEL_CHUNKS   = 2
-    PANEL_BRANCHES = 3
+    PANEL_FILES = 0
+    PANEL_ACTIONS = 1
 
     def __init__(self):
         self.repo = AIGitRepo()
         self.active_panel = self.PANEL_FILES
         self.selected_indices = {
             self.PANEL_FILES: 0,
-            self.PANEL_COMMITS: 0,
-            self.PANEL_CHUNKS: 0,
-            self.PANEL_BRANCHES: 0
+            self.PANEL_ACTIONS: 0
         }
         self.running = True
-        self.toast_msg = "🦎 AI-Git TUI Ready. Press [?] for help."
+        self.toast_msg = "🦎 AI-Git Terminal Ready"
         self.toast_time = time.time()
         
         # Modal Dialog State
@@ -427,20 +424,13 @@ class AIGitTUI:
         self.last_refresh = time.time()
 
     def update_chunk_inspector(self):
-        """Update chunks based on currently selected file or commit"""
-        if self.active_panel == self.PANEL_FILES and self.all_file_items:
+        """Update inspection metrics based on currently selected file"""
+        if self.all_file_items:
             idx = min(self.selected_indices[self.PANEL_FILES], len(self.all_file_items) - 1)
             item, kind = self.all_file_items[idx]
             self.current_chunks = self.repo.get_file_chunk_details(item["path"], item.get("hash", ""))
-        elif self.active_panel == self.PANEL_COMMITS and self.commits:
-            idx = min(self.selected_indices[self.PANEL_COMMITS], len(self.commits) - 1)
-            c = self.commits[idx]
-            self.current_chunks = [{
-                "index": 0,
-                "offset": 0,
-                "length": 0,
-                "hash": c["tree"]
-            }]
+        else:
+            self.current_chunks = []
 
     # -----------------------------------------------------------------
     # TERMINAL DRAWING PRIMITIVES
@@ -517,171 +507,124 @@ class AIGitTUI:
         # 2. MAIN PANELS LAYOUT
         # Available vertical space: row 3 to term_rows - 2
         content_h = term_rows - 4
-        y_start = 3
-
-        # Column widths:
-        # Col 1 (Left): Working Tree (36% width)
-        # Col 2 (Middle): Commit History DAG (34% width)
-        # Col 3 (Right): FastCDC Chunk Inspector (remaining width)
-        w_left = max(26, int(term_cols * 0.36))
-        w_mid = max(26, int(term_cols * 0.32))
-        w_right = max(24, term_cols - w_left - w_mid)
+        # 2. CLEAN TWO-COLUMN REPOSITORY LAYOUT (Modeled after repository.html)
+        # Left (65% width): Files Table
+        # Right (35% width): Actions & Repository Card
+        w_left = max(36, int(term_cols * 0.64))
+        w_right = max(30, term_cols - w_left - 2)
 
         x_left = 1
-        x_mid = x_left + w_left
-        x_right = x_mid + w_mid
+        x_right = x_left + w_left + 1
 
-        # Height splits on left: Files (70%), Branches/Remotes (30%)
-        h_files = max(6, int(content_h * 0.70))
-        h_branch = content_h - h_files
-
-        # --- PANEL 1: Working Tree & Staging ---
-        self.draw_box(x_left, y_start, w_left, h_files, "1: Working Tree / Files", self.active_panel == self.PANEL_FILES, buf)
-        inner_w = w_left - 4
-        inner_h = h_files - 2
+        # --- LEFT: FILES & ARTIFACTS TABLE ---
+        self.draw_box(x_left, y_start, w_left, content_h, "Artifacts & Files", self.active_panel == self.PANEL_FILES, buf)
+        inner_w_left = w_left - 4
+        inner_h_left = content_h - 2
 
         file_idx = self.selected_indices[self.PANEL_FILES]
-        start_f = max(0, file_idx - (inner_h // 2))
-        slice_f = self.all_file_items[start_f : start_f + inner_h]
+        start_f = max(0, file_idx - (inner_h_left // 2))
+        slice_f = self.all_file_items[start_f : start_f + inner_h_left]
 
         if not self.all_file_items:
-            buf.append(f"\033[{y_start + 1};{x_left + 2}H{Palette.GREEN}✔ Working tree clean{Palette.RESET}")
+            buf.append(f"\033[{y_start + 2};{x_left + 3}H{Palette.GREEN}✔ Working tree clean (No modified or untracked artifacts){Palette.RESET}")
+            buf.append(f"\033[{y_start + 4};{x_left + 3}H{Palette.SLATE}Press {Palette.CYAN}[space]{Palette.SLATE} to stage, or use action buttons on right.{Palette.RESET}")
         else:
-            for i, (item, kind) in enumerate(slice_f):
-                row_y = y_start + 1 + i
-                is_sel = (start_f + i == file_idx) and (self.active_panel == self.PANEL_FILES)
+            # Table header
+            col_icon_w = 4
+            col_sz_w = 9
+            col_stat_w = 11
+            col_name_w = max(10, inner_w_left - col_icon_w - col_sz_w - col_stat_w)
+            
+            hdr_str = f" {Palette.CYAN}{'NAME':<{col_name_w}} {'SIZE':>{col_sz_w}} {'STATUS':^{col_stat_w}}{Palette.RESET}"
+            buf.append(f"\033[{y_start + 1};{x_left + 2}H{hdr_str}")
+            buf.append(f"\033[{y_start + 2};{x_left + 2}H{Palette.BORDER_DIM}{'─' * inner_w_left}{Palette.RESET}")
 
-                if kind == "staged":
-                    badge = f"{Palette.GREEN}[+]{Palette.RESET}"
-                elif kind == "modified":
-                    badge = f"{Palette.AMBER}[~]{Palette.RESET}"
-                elif kind == "deleted":
-                    badge = f"{Palette.RED}[-]{Palette.RESET}"
-                else:
-                    badge = f"{Palette.BLUE}[?]{Palette.RESET}"
+            for i, (item, kind) in enumerate(slice_f[:inner_h_left - 2]):
+                row_y = y_start + 3 + i
+                is_sel = (start_f + i == file_idx)
 
                 fname = item["path"]
                 sz_str = format_bytes(item["size"])
-                # Truncate if long
-                max_nm = max(6, inner_w - len(sz_str) - 8)
-                disp_nm = fname if len(fname) <= max_nm else "…" + fname[-(max_nm - 1):]
+                icon = "📁" if "/" in fname else "📄"
 
-                row_bg = Palette.BG_ACTIVE if is_sel else ""
-                row_txt = f"{row_bg}{badge} {Palette.WHITE}{disp_nm:<{max_nm}} {Palette.DARK_SLATE}{sz_str:>6}{Palette.RESET}"
-                buf.append(f"\033[{row_y};{x_left + 2}H{row_txt}")
+                if kind == "staged":
+                    stat_badge = f"{Palette.GREEN}STAGED ✔{Palette.RESET}"
+                elif kind == "modified":
+                    stat_badge = f"{Palette.AMBER}MODIFIED{Palette.RESET}"
+                elif kind == "deleted":
+                    stat_badge = f"{Palette.RED}DELETED{Palette.RESET}"
+                else:
+                    stat_badge = f"{Palette.BLUE}UNTRACKED{Palette.RESET}"
 
-        # --- PANEL 4: Branches & Remotes (Bottom Left) ---
-        y_branch = y_start + h_files
-        self.draw_box(x_left, y_branch, w_left, h_branch, "4: Branches", self.active_panel == self.PANEL_BRANCHES, buf)
-        for i, br in enumerate(self.branches[:h_branch - 2]):
-            row_y = y_branch + 1 + i
-            is_cur = (br == branch)
-            is_sel = (i == self.selected_indices[self.PANEL_BRANCHES]) and (self.active_panel == self.PANEL_BRANCHES)
-            marker = f"{Palette.CYAN}* {Palette.RESET}" if is_cur else "  "
-            bg = Palette.BG_ACTIVE if is_sel else ""
-            buf.append(f"\033[{row_y};{x_left + 2}H{bg}{marker}{Palette.WHITE}{br}{Palette.RESET}")
-
-        # --- PANEL 2: Commit History & DAG (Center) ---
-        self.draw_box(x_mid, y_start, w_mid, content_h, "2: Commit DAG", self.active_panel == self.PANEL_COMMITS, buf)
-        commit_idx = self.selected_indices[self.PANEL_COMMITS]
-        inner_w_mid = w_mid - 4
-        inner_h_mid = content_h - 2
-
-        start_c = max(0, commit_idx - (inner_h_mid // 2))
-        slice_c = self.commits[start_c : start_c + inner_h_mid]
-
-        if not self.commits:
-            buf.append(f"\033[{y_start + 1};{x_mid + 2}H{Palette.SLATE}No commits yet on branch.{Palette.RESET}")
-        else:
-            for i, c in enumerate(slice_c):
-                row_y = y_start + 1 + i
-                is_sel = (start_c + i == commit_idx) and (self.active_panel == self.PANEL_COMMITS)
-                is_head = (start_c + i == 0)
-
-                dot = f"{Palette.CYAN}●{Palette.RESET}" if is_head else f"{Palette.GREEN}○{Palette.RESET}"
-                h_short = c["hash"][:7]
-                msg = c["message"].split("\n")[0]
-                avail = max(4, inner_w_mid - 11)
-                disp_msg = msg if len(msg) <= avail else msg[:avail - 1] + "…"
-
+                disp_name = fname if len(fname) <= col_name_w else "…" + fname[-(col_name_w - 1):]
                 bg = Palette.BG_ACTIVE if is_sel else ""
-                row_str = f"{bg}{dot} {Palette.GREEN}{h_short} {Palette.WHITE}{disp_msg:<{avail}}{Palette.RESET}"
-                buf.append(f"\033[{row_y};{x_mid + 2}H{row_str}")
+                row_str = f"{bg} {icon} {Palette.WHITE}{disp_name:<{col_name_w}} {Palette.DARK_SLATE}{sz_str:>{col_sz_w}}  {stat_badge}{Palette.RESET}"
+                buf.append(f"\033[{row_y};{x_left + 2}H{row_str}")
 
-        # --- PANEL 3: FastCDC CAS Object Inspector (Right) ---
-        self.draw_box(x_right, y_start, w_right, content_h, "3: FastCDC CAS Inspector", self.active_panel == self.PANEL_CHUNKS, buf)
-        inner_w_r = w_right - 4
-        
-        # Details of highlighted item
-        r_y = y_start + 1
-        if self.all_file_items and self.active_panel == self.PANEL_FILES:
-            f_item, f_kind = self.all_file_items[min(file_idx, len(self.all_file_items) - 1)]
-            f_path = f_item["path"]
-            f_hash = f_item.get("hash", "")
-            f_size = f_item.get("size", 0)
-            mode = "FastCDC Chunked" if f_size > 256 * 1024 else "Direct Blob"
+        # --- RIGHT: ACTIONS & REPOSITORY CARD ---
+        self.draw_box(x_right, y_start, w_right, content_h, "Quick Actions & Inspector", self.active_panel == self.PANEL_ACTIONS, buf)
+        inner_w_right = w_right - 4
+        ry = y_start + 2
 
-            buf.append(f"\033[{r_y};{x_right + 2}H{Palette.SLATE}File: {Palette.WHITE}{Palette.BOLD}{Path(f_path).name}{Palette.RESET}")
-            r_y += 1
-            buf.append(f"\033[{r_y};{x_right + 2}H{Palette.SLATE}Size: {Palette.TEAL}{format_bytes(f_size)} {Palette.DARK_SLATE}({mode}){Palette.RESET}")
-            r_y += 1
-            if f_hash:
-                buf.append(f"\033[{r_y};{x_right + 2}H{Palette.SLATE}Hash: {Palette.CYAN}{f_hash[:16]}…{Palette.RESET}")
-                r_y += 1
+        # Selected File Details Card
+        buf.append(f"\033[{ry};{x_right + 2}H{Palette.WHITE}{Palette.BOLD}SELECTED ARTIFACT:{Palette.RESET}")
+        ry += 1
 
-            # Chunk breakdown table
-            r_y += 1
-            buf.append(f"\033[{r_y};{x_right + 2}H{Palette.BORDER_DIM}{'─' * inner_w_r}{Palette.RESET}")
-            r_y += 1
-            buf.append(f"\033[{r_y};{x_right + 2}H{Palette.CYAN}#  OFFSET   SIZE    CHUNK BLAKE3{Palette.RESET}")
-            r_y += 1
-
-            for chk in self.current_chunks[:max(1, content_h - 15)]:
-                c_idx = chk["index"]
-                c_off = format_bytes(chk["offset"])
-                c_len = format_bytes(chk["length"])
-                c_hash = chk["hash"][:8] if chk["hash"] else "blob"
-                row_chk = f"{Palette.SLATE}{c_idx:<2} {c_off:<8} {c_len:<7} {Palette.MINT}{c_hash}{Palette.RESET}"
-                buf.append(f"\033[{r_y};{x_right + 2}H{row_chk}")
-                r_y += 1
-
-        elif self.commits and self.active_panel == self.PANEL_COMMITS:
-            c = self.commits[min(commit_idx, len(self.commits) - 1)]
-            buf.append(f"\033[{r_y};{x_right + 2}H{Palette.SLATE}Commit: {Palette.GREEN}{c['hash'][:14]}…{Palette.RESET}")
-            r_y += 1
-            buf.append(f"\033[{r_y};{x_right + 2}H{Palette.SLATE}Tree:   {Palette.BLUE}{c['tree'][:14]}…{Palette.RESET}")
-            r_y += 1
-            buf.append(f"\033[{r_y};{x_right + 2}H{Palette.SLATE}Author: {Palette.WHITE}{c['author']}{Palette.RESET}")
-            r_y += 1
-            r_y += 1
-            buf.append(f"\033[{r_y};{x_right + 2}H{Palette.BORDER_DIM}{'─' * inner_w_r}{Palette.RESET}")
-            r_y += 1
-            buf.append(f"\033[{r_y};{x_right + 2}H{Palette.WHITE}{Palette.BOLD}Message:{Palette.RESET}")
-            r_y += 1
-            for m_line in c['message'].splitlines()[:max(1, content_h - 15)]:
-                buf.append(f"\033[{r_y};{x_right + 2}H{Palette.SLATE}{m_line[:inner_w_r]}{Palette.RESET}")
-                r_y += 1
+        if self.all_file_items:
+            sel_item, sel_kind = self.all_file_items[min(file_idx, len(self.all_file_items) - 1)]
+            sel_name = Path(sel_item["path"]).name
+            sel_sz = format_bytes(sel_item["size"])
+            sel_h = sel_item.get("hash", "")[:12] if sel_item.get("hash") else "not hashed"
+            
+            buf.append(f"\033[{ry};{x_right + 2}H{Palette.SLATE}File:   {Palette.CYAN}{Palette.BOLD}{sel_name[:inner_w_right - 8]}{Palette.RESET}")
+            ry += 1
+            buf.append(f"\033[{ry};{x_right + 2}H{Palette.SLATE}Size:   {Palette.TEAL}{sel_sz}{Palette.RESET}")
+            ry += 1
+            buf.append(f"\033[{ry};{x_right + 2}H{Palette.SLATE}Hash:   {Palette.DARK_SLATE}{sel_h}{Palette.RESET}")
+            ry += 1
+            buf.append(f"\033[{ry};{x_right + 2}H{Palette.SLATE}Status: {Palette.WHITE}{sel_kind.upper()}{Palette.RESET}")
+            ry += 2
         else:
-            buf.append(f"\033[{r_y};{x_right + 2}H{Palette.SLATE}Select an item to inspect FastCDC CAS chunks.{Palette.RESET}")
+            buf.append(f"\033[{ry};{x_right + 2}H{Palette.SLATE}No file selected.{Palette.RESET}")
+            ry += 3
 
-        # --- RIGHT-SIDE ACTIONS DOCK (Pink, Blue, Green, Purple Buttons) ---
-        btn_y = y_start + content_h - 6
-        buf.append(f"\033[{btn_y};{x_right + 2}H{Palette.BORDER_DIM}{'─' * inner_w_r}{Palette.RESET}")
-        buf.append(f"\033[{btn_y + 1};{x_right + 2}H{Palette.WHITE}{Palette.BOLD}QUICK COMMAND ACTIONS:{Palette.RESET}")
+        # Divider
+        buf.append(f"\033[{ry};{x_right + 2}H{Palette.BORDER_DIM}{'─' * inner_w_right}{Palette.RESET}")
+        ry += 1
 
-        # Button Row 1: Push (Pink) & Pull (Blue)
-        btn_push = f"{Palette.BTN_PINK} [P] PUSH ▲ {Palette.RESET}"
-        btn_pull = f"{Palette.BTN_BLUE} [U] PULL ▼ {Palette.RESET}"
-        buf.append(f"\033[{btn_y + 2};{x_right + 2}H{btn_push}  {btn_pull}")
+        # High-Contrast Colored Action Buttons
+        buf.append(f"\033[{ry};{x_right + 2}H{Palette.WHITE}{Palette.BOLD}COMMAND ACTION BUTTONS:{Palette.RESET}")
+        ry += 2
 
-        # Button Row 2: Commit (Green) & Diff / Inspect (Purple)
-        btn_commit = f"{Palette.BTN_GREEN} [C] COMMIT ✔ {Palette.RESET}"
-        btn_diff = f"{Palette.BTN_PURPLE} [D] DIFF ⚡ {Palette.RESET}"
-        buf.append(f"\033[{btn_y + 3};{x_right + 2}H{btn_commit}  {btn_diff}")
+        # 1. PUSH (Pink)
+        btn_push = f" {Palette.BTN_PINK}  [P] PUSH CHUNKS ▲  {Palette.RESET}  {Palette.DARK_SLATE}Remote CAS sync{Palette.RESET}"
+        buf.append(f"\033[{ry};{x_right + 2}H{btn_push}")
+        ry += 2
 
-        # Button Row 3: Status / Sync (Mint Green / Blue)
-        btn_status = f"{Palette.BTN_BLUE} [S] SYNC ⟳ {Palette.RESET}"
-        buf.append(f"\033[{btn_y + 4};{x_right + 2}H{btn_status} {Palette.DARK_SLATE}(Click hotkey to trigger){Palette.RESET}")
+        # 2. PULL (Blue)
+        btn_pull = f" {Palette.BTN_BLUE}  [U] PULL CHUNKS ▼  {Palette.RESET}  {Palette.DARK_SLATE}Fetch updates{Palette.RESET}"
+        buf.append(f"\033[{ry};{x_right + 2}H{btn_pull}")
+        ry += 2
+
+        # 3. COMMIT (Green)
+        btn_commit = f" {Palette.BTN_GREEN}  [C] COMMIT STAGED ✔  {Palette.RESET}  {Palette.DARK_SLATE}Create checkpoint{Palette.RESET}"
+        buf.append(f"\033[{ry};{x_right + 2}H{btn_commit}")
+        ry += 2
+
+        # 4. DIFF / INSPECT (Purple)
+        btn_diff = f" {Palette.BTN_PURPLE}  [D] DIFF / INSPECT ⚡ {Palette.RESET}  {Palette.DARK_SLATE}FastCDC SIMD delta{Palette.RESET}"
+        buf.append(f"\033[{ry};{x_right + 2}H{btn_diff}")
+        ry += 2
+
+        # 5. SYNC / STATUS (Blue)
+        btn_sync = f" {Palette.BTN_BLUE}  [S] SYNC STATUS ⟳  {Palette.RESET}  {Palette.DARK_SLATE}Refresh tree{Palette.RESET}"
+        buf.append(f"\033[{ry};{x_right + 2}H{btn_sync}")
+        ry += 2
+
+        # Divider
+        buf.append(f"\033[{ry};{x_right + 2}H{Palette.BORDER_DIM}{'─' * inner_w_right}{Palette.RESET}")
+        ry += 1
+        buf.append(f"\033[{ry};{x_right + 2}H{Palette.DARK_SLATE}Press key in [ ] to instantly run command.{Palette.RESET}")
 
         # 3. MODAL POPUPS (if active)
         if self.modal_mode == "commit":
@@ -694,9 +637,9 @@ class AIGitTUI:
         # 4. FOOTER STATUS BAR (Row term_rows)
         footer_y = term_rows
         toast = self.toast_msg if (time.time() - self.toast_time < 5.0) else "Ready"
-        shortcuts = f"{Palette.BTN_PINK} [p] Push {Palette.RESET} {Palette.BTN_BLUE} [u] Pull {Palette.RESET} {Palette.BTN_GREEN} [c] Commit {Palette.RESET} {Palette.BTN_PURPLE} [d] Diff {Palette.RESET} {Palette.SLATE}[Tab] Panel [?] Help [q] Quit{Palette.RESET}"
+        shortcuts = f"{Palette.BTN_PINK} [P] Push {Palette.RESET} {Palette.BTN_BLUE} [U] Pull {Palette.RESET} {Palette.BTN_GREEN} [C] Commit {Palette.RESET} {Palette.BTN_PURPLE} [D] Diff {Palette.RESET} {Palette.SLATE}[Space] Stage [?] Help [Q] Quit{Palette.RESET}"
         
-        status_bar = f"\033[{footer_y};1H\033[2K{Palette.BG_PANEL} {Palette.MINT}● {Palette.WHITE}{toast:<24} {shortcuts} {Palette.RESET}"
+        status_bar = f"\033[{footer_y};1H\033[2K{Palette.BG_PANEL} {Palette.MINT}● {Palette.WHITE}{toast:<22} {shortcuts} {Palette.RESET}"
         buf.append(status_bar)
 
         # Flush full frame to terminal
@@ -741,25 +684,21 @@ class AIGitTUI:
         x = (cols - w) // 2
         y = (rows - h) // 2
 
-        self.draw_box(x, y, w, h, "🦎 AI-Git TUI Help & Keybindings", True, buf)
+        self.draw_box(x, y, w, h, "🦎 AI-Git Terminal Commands", True, buf)
         help_lines = [
             f"{Palette.CYAN}NAVIGATION:{Palette.RESET}",
-            f"  {Palette.WHITE}[Tab] / [Shift+Tab]{Palette.SLATE}  Switch focused panel (1 - 4)",
-            f"  {Palette.WHITE}[1, 2, 3, 4]{Palette.SLATE}          Directly jump to panel",
-            f"  {Palette.WHITE}[↑ / ↓] or [k / j]{Palette.SLATE}    Navigate list items",
+            f"  {Palette.WHITE}[Tab]{Palette.SLATE}             Switch focus between Files & Actions",
+            f"  {Palette.WHITE}[↑ / ↓] or [k / j]{Palette.SLATE} Navigate files list",
+            f"  {Palette.WHITE}[Space]{Palette.SLATE}           Stage / Unstage selected file",
             "",
-            f"{Palette.GREEN}WORKING TREE & COMMITS:{Palette.RESET}",
-            f"  {Palette.WHITE}[Space]{Palette.SLATE}               Stage / Unstage selected file",
-            f"  {Palette.WHITE}[a]{Palette.SLATE}                   Stage all changes (ai-git add .)",
-            f"  {Palette.WHITE}[c]{Palette.SLATE}                   Open Commit dialog",
-            f"  {Palette.WHITE}[b]{Palette.SLATE}                   Create new branch",
-            f"  {Palette.WHITE}[Enter]{Palette.SLATE}               Checkout branch / Select item",
+            f"{Palette.GREEN}QUICK ACTIONS:{Palette.RESET}",
+            f"  {Palette.BTN_PINK} [P] {Palette.RESET} {Palette.WHITE}Push chunks to remote CAS{Palette.RESET}",
+            f"  {Palette.BTN_BLUE} [U] {Palette.RESET} {Palette.WHITE}Pull latest updates from remote{Palette.RESET}",
+            f"  {Palette.BTN_GREEN} [C] {Palette.RESET} {Palette.WHITE}Commit staged changes{Palette.RESET}",
+            f"  {Palette.BTN_PURPLE} [D] {Palette.RESET} {Palette.WHITE}Diff / Inspect selected file{Palette.RESET}",
+            f"  {Palette.BTN_BLUE} [S] {Palette.RESET} {Palette.WHITE}Sync status & refresh tree{Palette.RESET}",
             "",
-            f"{Palette.MINT}FASTCDC & CAS TELEMETRY:{Palette.RESET}",
-            f"  {Palette.SLATE}Files >256KB are chunked via FastCDC (256KB-4MB boundaries)",
-            f"  {Palette.SLATE}Chunk hashes and manifests are deduplicated in metadata.db",
-            "",
-            f"{Palette.DARK_SLATE}Press [Esc] or [?] to close this help dialog.{Palette.RESET}"
+            f"{Palette.DARK_SLATE}Press [Esc] or [?] to close this dialog.{Palette.RESET}"
         ]
         for i, line in enumerate(help_lines):
             if i < h - 2:
@@ -997,45 +936,33 @@ class AIGitTUI:
                     self.do_init()
                     continue
 
-                # Panel switching
+                # Panel switching (Left Files <-> Right Actions)
                 elif key == "TAB":
-                    self.active_panel = (self.active_panel + 1) % 4
+                    self.active_panel = (self.active_panel + 1) % 2
                     self.update_chunk_inspector()
                 elif key == '1':
                     self.active_panel = self.PANEL_FILES
                     self.update_chunk_inspector()
                 elif key == '2':
-                    self.active_panel = self.PANEL_COMMITS
+                    self.active_panel = self.PANEL_ACTIONS
                     self.update_chunk_inspector()
-                elif key == '3':
-                    self.active_panel = self.PANEL_CHUNKS
-                elif key == '4':
-                    self.active_panel = self.PANEL_BRANCHES
 
                 # List navigation (UP / DOWN)
                 elif key in ("UP", "k"):
-                    cur = self.selected_indices[self.active_panel]
-                    self.selected_indices[self.active_panel] = max(0, cur - 1)
+                    cur = self.selected_indices[self.PANEL_FILES]
+                    self.selected_indices[self.PANEL_FILES] = max(0, cur - 1)
                     self.update_chunk_inspector()
                 elif key in ("DOWN", "j"):
-                    cur = self.selected_indices[self.active_panel]
-                    max_len = 1
-                    if self.active_panel == self.PANEL_FILES:
-                        max_len = max(1, len(self.all_file_items))
-                    elif self.active_panel == self.PANEL_COMMITS:
-                        max_len = max(1, len(self.commits))
-                    elif self.active_panel == self.PANEL_BRANCHES:
-                        max_len = max(1, len(self.branches))
-                    self.selected_indices[self.active_panel] = min(max_len - 1, cur + 1)
+                    cur = self.selected_indices[self.PANEL_FILES]
+                    max_len = max(1, len(self.all_file_items))
+                    self.selected_indices[self.PANEL_FILES] = min(max_len - 1, cur + 1)
                     self.update_chunk_inspector()
 
                 # Action hotkeys
                 elif key == ' ':
-                    if self.active_panel == self.PANEL_FILES:
-                        self.toggle_stage()
+                    self.toggle_stage()
                 elif key in ('a', 'A'):
-                    if self.active_panel == self.PANEL_FILES:
-                        self.stage_all()
+                    self.stage_all()
                 elif key in ('c', 'C'):
                     self.modal_mode = "commit"
                     self.modal_input = ""
@@ -1051,10 +978,7 @@ class AIGitTUI:
                 elif key in ('s', 'S'):
                     self.do_status()
                 elif key == "ENTER":
-                    if self.active_panel == self.PANEL_BRANCHES:
-                        self.do_checkout_branch()
-                    elif self.active_panel == self.PANEL_FILES:
-                        self.toggle_stage()
+                    self.toggle_stage()
 
         finally:
             # Restore terminal buffer and show cursor
