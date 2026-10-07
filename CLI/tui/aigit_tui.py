@@ -447,8 +447,8 @@ class AIGitTUI:
     # -----------------------------------------------------------------
     # TERMINAL DRAWING PRIMITIVES
     # -----------------------------------------------------------------
-    def draw_box(self, x: int, y: int, w: int, h: int, title: str, is_active: bool, lines_out: list[str]):
-        """Render a rounded box with Chameleon styling into lines buffer"""
+    def draw_box(self, x: int, y: int, w: int, h: int, title: str, is_active: bool, lines_out: list[str], fill_bg: str = ""):
+        """Render a rounded box with Chameleon styling into lines buffer, with optional solid background fill"""
         color_border = Palette.BORDER_ACT if is_active else Palette.BORDER_DIM
         color_title = (Palette.CYAN + Palette.BOLD) if is_active else (Palette.SLATE)
 
@@ -458,9 +458,13 @@ class AIGitTUI:
         top = f"\033[{y};{x}H{color_border}╭─{color_title}{title_str}{color_border}{'─' * top_len}╮{Palette.RESET}"
         lines_out.append(top)
 
-        # Side walls
+        # Side walls and optional solid background fill
         for row in range(1, h - 1):
-            wall = f"\033[{y + row};{x}H{color_border}│\033[{y + row};{x + w - 1}H{color_border}│{Palette.RESET}"
+            if fill_bg:
+                fill_str = f"{fill_bg}{' ' * (w - 2)}{Palette.RESET}"
+                wall = f"\033[{y + row};{x}H{color_border}│{fill_str}{color_border}│{Palette.RESET}"
+            else:
+                wall = f"\033[{y + row};{x}H{color_border}│\033[{y + row};{x + w - 1}H{color_border}│{Palette.RESET}"
             lines_out.append(wall)
 
         # Bottom border
@@ -668,16 +672,18 @@ class AIGitTUI:
         x = (cols - w) // 2
         y = (rows - h) // 2
 
-        self.draw_box(x, y, w, h, "Commit Staged Changes", True, buf)
+        # Draw box with solid panel background so underlying workspace is completely covered
+        self.draw_box(x, y, w, h, "Commit Staged Changes", True, buf, fill_bg=Palette.BG_PANEL)
         staged_count = len(self.staged)
 
-        buf.append(f"\033[{y + 1};{x + 2}H{Palette.GREEN}{staged_count} file(s) staged for commit.{Palette.RESET}")
-        buf.append(f"\033[{y + 3};{x + 2}H{Palette.WHITE}Enter commit message:{Palette.RESET}")
+        buf.append(f"\033[{y + 1};{x + 2}H{Palette.BG_PANEL}{Palette.GREEN}✔ {staged_count} file(s) staged for commit.{Palette.RESET}")
+        buf.append(f"\033[{y + 3};{x + 2}H{Palette.BG_PANEL}{Palette.WHITE}{Palette.BOLD}Enter commit message:{Palette.RESET}")
         
-        # Input box
+        # Solid High-Contrast Input Box
         input_disp = self.modal_input + "█"
-        buf.append(f"\033[{y + 5};{x + 2}H{Palette.BG_ACTIVE}{Palette.CYAN} > {input_disp:<{w - 8}}{Palette.RESET}")
-        buf.append(f"\033[{y + 7};{x + 2}H{Palette.DARK_SLATE}[Enter] Commit    [Esc] Cancel{Palette.RESET}")
+        inner_input_w = w - 6
+        buf.append(f"\033[{y + 5};{x + 2}H{Palette.BG_ACTIVE}{Palette.CYAN} > {Palette.WHITE}{input_disp:<{inner_input_w - 3}}{Palette.RESET}")
+        buf.append(f"\033[{y + 7};{x + 2}H{Palette.BG_PANEL}{Palette.DARK_SLATE}[Enter] Commit    [Esc] Cancel{Palette.RESET}")
 
     def render_branch_modal(self, cols: int, rows: int, buf: list[str]):
         w = min(54, cols - 6)
@@ -685,11 +691,15 @@ class AIGitTUI:
         x = (cols - w) // 2
         y = (rows - h) // 2
 
-        self.draw_box(x, y, w, h, "Create New Branch", True, buf)
-        buf.append(f"\033[{y + 2};{x + 2}H{Palette.WHITE}Enter new branch name:{Palette.RESET}")
+        # Draw box with solid panel background so underlying workspace is completely covered
+        self.draw_box(x, y, w, h, "Create New Branch", True, buf, fill_bg=Palette.BG_PANEL)
+        buf.append(f"\033[{y + 2};{x + 2}H{Palette.BG_PANEL}{Palette.WHITE}{Palette.BOLD}Enter new branch name:{Palette.RESET}")
+        
+        # Solid High-Contrast Input Box
         input_disp = self.modal_input + "█"
-        buf.append(f"\033[{y + 4};{x + 2}H{Palette.BG_ACTIVE}{Palette.CYAN} > {input_disp:<{w - 8}}{Palette.RESET}")
-        buf.append(f"\033[{y + 6};{x + 2}H{Palette.DARK_SLATE}[Enter] Create    [Esc] Cancel{Palette.RESET}")
+        inner_input_w = w - 6
+        buf.append(f"\033[{y + 4};{x + 2}H{Palette.BG_ACTIVE}{Palette.CYAN} > {Palette.WHITE}{input_disp:<{inner_input_w - 3}}{Palette.RESET}")
+        buf.append(f"\033[{y + 6};{x + 2}H{Palette.BG_PANEL}{Palette.DARK_SLATE}[Enter] Create    [Esc] Cancel{Palette.RESET}")
 
     def render_help_modal(self, cols: int, rows: int, buf: list[str]):
         w = min(72, cols - 4)
@@ -697,21 +707,22 @@ class AIGitTUI:
         x = (cols - w) // 2
         y = (rows - h) // 2
 
-        self.draw_box(x, y, w, h, "🦎 AI-Git Terminal Commands", True, buf)
+        # Draw box with solid panel background so underlying workspace is completely covered
+        self.draw_box(x, y, w, h, "🦎 AI-Git Terminal Commands", True, buf, fill_bg=Palette.BG_PANEL)
         help_lines = [
-            f"{Palette.CYAN}NAVIGATION:{Palette.RESET}",
-            f"  {Palette.WHITE}[Tab]{Palette.SLATE}             Switch focus between Files & Actions",
-            f"  {Palette.WHITE}[↑ / ↓] or [k / j]{Palette.SLATE} Navigate files list",
-            f"  {Palette.WHITE}[Space]{Palette.SLATE}           Stage / Unstage selected file",
-            "",
-            f"{Palette.GREEN}QUICK ACTIONS:{Palette.RESET}",
-            f"  {Palette.BTN_PINK} [P] {Palette.RESET} {Palette.WHITE}Push chunks to remote CAS{Palette.RESET}",
-            f"  {Palette.BTN_BLUE} [U] {Palette.RESET} {Palette.WHITE}Pull latest updates from remote{Palette.RESET}",
-            f"  {Palette.BTN_GREEN} [C] {Palette.RESET} {Palette.WHITE}Commit staged changes{Palette.RESET}",
-            f"  {Palette.BTN_PURPLE} [D] {Palette.RESET} {Palette.WHITE}Diff / Inspect selected file{Palette.RESET}",
-            f"  {Palette.BTN_BLUE} [S] {Palette.RESET} {Palette.WHITE}Sync status & refresh tree{Palette.RESET}",
-            "",
-            f"{Palette.DARK_SLATE}Press [Esc] or [?] to close this dialog.{Palette.RESET}"
+            f"{Palette.BG_PANEL}{Palette.CYAN}NAVIGATION:{Palette.RESET}",
+            f"{Palette.BG_PANEL}  {Palette.WHITE}[Tab]{Palette.SLATE}             Switch focus between Files & Actions{Palette.RESET}",
+            f"{Palette.BG_PANEL}  {Palette.WHITE}[↑ / ↓] or [k / j]{Palette.SLATE} Navigate files list{Palette.RESET}",
+            f"{Palette.BG_PANEL}  {Palette.WHITE}[Space]{Palette.SLATE}           Stage / Unstage selected file{Palette.RESET}",
+            f"{Palette.BG_PANEL}",
+            f"{Palette.BG_PANEL}{Palette.GREEN}QUICK ACTIONS:{Palette.RESET}",
+            f"{Palette.BG_PANEL}  {Palette.BTN_PINK} [P] {Palette.RESET}{Palette.BG_PANEL} {Palette.WHITE}Push chunks to remote CAS{Palette.RESET}",
+            f"{Palette.BG_PANEL}  {Palette.BTN_BLUE} [U] {Palette.RESET}{Palette.BG_PANEL} {Palette.WHITE}Pull latest updates from remote{Palette.RESET}",
+            f"{Palette.BG_PANEL}  {Palette.BTN_GREEN} [C] {Palette.RESET}{Palette.BG_PANEL} {Palette.WHITE}Commit staged changes{Palette.RESET}",
+            f"{Palette.BG_PANEL}  {Palette.BTN_PURPLE} [D] {Palette.RESET}{Palette.BG_PANEL} {Palette.WHITE}Diff / Inspect selected file{Palette.RESET}",
+            f"{Palette.BG_PANEL}  {Palette.BTN_BLUE} [S] {Palette.RESET}{Palette.BG_PANEL} {Palette.WHITE}Sync status & refresh tree{Palette.RESET}",
+            f"{Palette.BG_PANEL}",
+            f"{Palette.BG_PANEL}{Palette.DARK_SLATE}Press [Esc] or [?] to close this dialog.{Palette.RESET}"
         ]
         for i, line in enumerate(help_lines):
             if i < h - 2:
