@@ -994,6 +994,80 @@ app.post("/api/models", (req, res) => {
     res.status(201).json(newModel);
 });
 
+// Endpoint for AI-GIT CLI push to sync repository & commit live into the website portal
+app.post("/api/models/sync", (req, res) => {
+    const { repoName, branch, commitHash, commitMessage, files, metrics } = req.body;
+    if (!repoName) return res.status(400).json({ error: "repoName is required" });
+
+    const models = readJSON(REPOS_FILE, getDefaultModels());
+    const id = repoName.toLowerCase().replace(/[^a-z0-9-_]/g, "-");
+    let model = models.find(m => m.id === id || m.name.toLowerCase() === repoName.toLowerCase());
+
+    const commitObj = {
+        hash: (commitHash || crypto.randomBytes(6).toString("hex")).substring(0, 7),
+        fullHash: commitHash || crypto.randomBytes(32).toString("hex"),
+        branch: branch || "main",
+        epoch: "Epoch 1",
+        valLoss: "1.05",
+        message: commitMessage || "Model weights pushed via ai-git CLI",
+        author: "Aarya Doshi (CLI)",
+        date: "Just now",
+        parents: [],
+        newChunks: metrics?.totalChunks || 168,
+        reusedChunks: metrics?.deduplicatedChunks || 125
+    };
+
+    if (model) {
+        model.updatedAt = "Just now";
+        if (metrics) model.metrics = metrics;
+        if (!model.commits) model.commits = [];
+        // Add commit to front if not duplicate
+        if (!model.commits.some(c => c.hash === commitObj.hash || c.fullHash === commitObj.fullHash)) {
+            model.commits.unshift(commitObj);
+        }
+        if (files && files.length > 0) {
+            model.tree = files;
+        }
+    } else {
+        model = {
+            id,
+            casRepoName: repoName,
+            name: repoName,
+            description: "High-performance AI model synced via AI-GIT CLI & MinIO CAS.",
+            family: "Large Language Model",
+            framework: "SafeTensors",
+            precision: "bfloat16",
+            parameters: "7.0B",
+            architecture: "LlamaForCausalLM (7B)",
+            epoch: "Checkpoint 1",
+            valLoss: "1.05",
+            stars: 12,
+            forks: 3,
+            updatedAt: "Just now",
+            author: "aarya-ml",
+            tags: ["SafeTensors", "FastCDC", "MinIO-CAS", "AI-GIT"],
+            metrics: metrics || {
+                rawSizeBytes: 7516192768,
+                casSizeBytes: 1909112963,
+                spaceSavedBytes: 5607079805,
+                savingsPercentage: 74.6,
+                totalChunks: 168,
+                deduplicatedChunks: 125,
+                compressionRatio: "3.9x"
+            },
+            tree: files || [
+                { name: "model_7gb_benchmark.safetensors", type: "file", size: "7.00 GB", chunks: 168, deduped: 125, hash: commitObj.fullHash }
+            ],
+            commits: [commitObj]
+        };
+        models.unshift(model);
+    }
+
+    writeJSON(REPOS_FILE, models);
+    console.log(`[FRONTEND] Synced CLI push for '${repoName}' - ${commitObj.hash}`);
+    res.json({ ok: true, model });
+});
+
 /* =========================================================
    ISSUES & DISCUSSIONS REST ENDPOINTS
 ========================================================= */
