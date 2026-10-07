@@ -194,14 +194,72 @@
     }
 
     const btnSideNewNode = document.getElementById("btnSideNewNode");
-    if (btnSideNewNode) {
-      btnSideNewNode.addEventListener("click", () => {
-        const topNewBtn = document.getElementById("btnOpenNewRepoModal");
-        if (topNewBtn) {
-          topNewBtn.click();
-        } else {
-          const modal = document.getElementById("newRepoModal");
-          if (modal) modal.classList.add("active");
+    const topNewBtn = document.getElementById("btnOpenNewRepoModal");
+    const modal = document.getElementById("newRepoModal");
+    const btnClose = document.getElementById("btnCloseNewRepoModal");
+    const btnCancel = document.getElementById("btnCancelNewRepo");
+    const form = document.getElementById("createRepoForm");
+
+    const openModal = () => {
+      if (modal) {
+        modal.style.display = "flex";
+      }
+    };
+
+    const closeModal = () => {
+      if (modal) {
+        modal.style.display = "none";
+        if (form) form.reset();
+      }
+    };
+
+    if (btnSideNewNode) btnSideNewNode.addEventListener("click", openModal);
+    if (topNewBtn) topNewBtn.addEventListener("click", openModal);
+    if (btnClose) btnClose.addEventListener("click", closeModal);
+    if (btnCancel) btnCancel.addEventListener("click", closeModal);
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    if (form) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById("btnSubmitNewRepo");
+        const origText = submitBtn ? submitBtn.textContent : "Create Repository";
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Creating...";
+        }
+
+        const name = document.getElementById("newRepoName")?.value?.trim();
+        const description = document.getElementById("newRepoDesc")?.value?.trim();
+        const framework = document.getElementById("newRepoFramework")?.value;
+        const precision = document.getElementById("newRepoPrecision")?.value;
+
+        try {
+          const res = await fetch("/api/models", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, description, framework, precision })
+          });
+
+          if (res.ok) {
+            const created = await res.json();
+            closeModal();
+            window.location.href = `repository.html?repo=${encodeURIComponent(created.id)}`;
+          } else {
+            const err = await res.json();
+            alert(`Error creating repository: ${err.error || res.statusText}`);
+          }
+        } catch (err) {
+          alert(`Network error creating repository: ${err.message}`);
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = origText;
+          }
         }
       });
     }
