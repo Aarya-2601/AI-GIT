@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const textEl = document.getElementById("typewriterText");
     if (!textEl) return;
 
-    const fullText = "Why Wait for the Future?. Version It.";
+    const fullText = "Why Wait for the Future? Version It.";
     let charIndex = 0;
     let isDeleting = false;
 
