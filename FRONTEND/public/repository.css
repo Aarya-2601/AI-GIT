@@ -318,6 +318,29 @@
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.latest-commit-bar:hover {
+  background-color: #f0f9ff;
+  border-color: #bae6fd;
+}
+
+.latest-commit-bar:hover .commit-message-preview {
+  color: #0284c7;
+}
+
+.latest-commit-bar:hover .commit-count-badge {
+  background-color: rgba(2, 132, 199, 0.1);
+  color: #0284c7;
+}
+
+#btnCheckpointToggle.active {
+  background-color: #e0f2fe;
+  color: #0284c7;
+  border-color: #7dd3fc;
+  font-weight: 600;
 }
 
 .commit-author-row {
