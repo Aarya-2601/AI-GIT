@@ -168,16 +168,19 @@ class AIGitRepo:
         index_entries = self.read_index()
         seen_files = set()
 
-        # Scan workspace files
-        for p in self.root.rglob("*"):
-            if not p.is_file():
-                continue
-            rel = p.relative_to(self.root).as_posix()
-            if rel.startswith(".aigit") or rel.startswith(".git") or rel.startswith("build") or rel.startswith("vcpkg"):
-                continue
-
-            seen_files.add(rel)
-            size = p.stat().st_size
+        # Fast workspace file traversal skipping ignored / heavy build directories
+        ignore_dirs = {".aigit", ".git", "build", "vcpkg", "node_modules", ".vscode", "__pycache__", "obj", "bin"}
+        for root, dirs, files in os.walk(self.root):
+            # Prune ignored directories in-place so os.walk doesn't descend into them
+            dirs[:] = [d for d in dirs if d not in ignore_dirs and not d.startswith(".")]
+            for f in files:
+                p = Path(root) / f
+                rel = p.relative_to(self.root).as_posix()
+                seen_files.add(rel)
+                try:
+                    size = p.stat().st_size
+                except Exception:
+                    size = 0
 
             if rel in index_entries:
                 idx = index_entries[rel]
