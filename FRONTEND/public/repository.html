@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-GIT · Node Repository</title>
+  <link rel="stylesheet" href="nav.css?v=2.6">
+  <link rel="stylesheet" href="repository.css?v=2.5">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3C/svg%3E">
+</head>
+<body class="node-detail-body">
+
+  <!-- Universal Top Navigation (contains Top-left circular expandable navbar button & dropdown) -->
+  <div id="aigitTopNav"></div>
+
+    <!-- NODE SUB-NAVIGATION TABS (Exact 6 Sections Requested) -->
+  <div class="node-tabs-wrapper">
+    <div class="node-tabs-container" id="nodeTabsContainer" role="tablist">
+      
+      <!-- 1. code = artifacts -->
+      <button type="button" class="node-tab-item active" data-tab="artifacts" role="tab" aria-selected="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <span>Artifacts</span>
+      </button>
+
+      <!-- 2. issues = divergences -->
+      <button type="button" class="node-tab-item" data-tab="divergences" role="tab" aria-selected="false">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="6" y1="3" x2="6" y2="21"/>
+          <path d="M6 17 C6 11, 18 13, 18 6"/>
+          <circle cx="6" cy="18" r="2.5" fill="currentColor"/>
+          <circle cx="18" cy="6" r="2.5" fill="currentColor"/>
+        </svg>
+        <span>Divergences</span>
+        <span class="tab-counter-badge">2</span>
+      </button>
+
+      <!-- 3. pull requests = convergences -->
+      <button type="button" class="node-tab-item" data-tab="convergences" role="tab" aria-selected="false">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="3" x2="18" y2="21"/>
+          <path d="M6 6 C6 13, 18 11, 18 18"/>
+          <circle cx="6" cy="6" r="2.5" fill="currentColor"/>
+          <circle cx="18" cy="18" r="2.5" fill="currentColor"/>
+        </svg>
+        <span>Convergences</span>
+        <span class="tab-counter-badge">1</span>
+      </button>
+
+      <!-- 4. projects = pipelines -->
+      <button type="button" class="node-tab-item" data-tab="pipelines" role="tab" aria-selected="false">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Pipelines</span>
+      </button>
+
+      <!-- 5. security & quality = guardrails -->
+      <button type="button" class="node-tab-item" data-tab="guardrails" role="tab" aria-selected="false">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Guardrails</span>
+      </button>
+
+      <!-- 6. settings = config -->
+      <button type="button" class="node-tab-item" data-tab="config" role="tab" aria-selected="false">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Config</span>
+      </button>
+
+      <!-- SMOOTH MOVING INDICATOR SLIDER -->
+      <div class="node-tabs-slider-bar" id="nodeTabsSliderBar"></div>
+    </div>
+  </div>
+
+  <main class="node-main-layout">
+
+    <!-- NODE TITLE ROW & ACTIONS (IMAGE REFERENCE) -->
+    <section class="node-header-section">
+      <div class="node-title-left">
+        <img src="chameleon-logo.png" alt="Node Chameleon" class="node-avatar-badge">
+        <h1 class="node-name-text" id="nodeNameDisplay">AI-GIT</h1>
+        <span class="node-badge-public">Public</span>
+      </div>
+
+      <div class="node-actions-right">
+        <button type="button" class="btn-github-action" id="btnUnpin">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-2l-3-3V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v7l-3 3v2z"/></svg>
+          <span>Unpin</span>
+        </button>
+
+        <button type="button" class="btn-github-action" id="btnWatch">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Watch</span>
+          <span class="action-count">0</span>
+        </button>
+
+        <button type="button" class="btn-github-action" id="btnFork">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+          <span>Fork</span>
+          <span class="action-count">0</span>
+        </button>
+
+        <button type="button" class="btn-github-action active-star" id="btnStar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Star</span>
+          <span class="action-count" id="starCount">142</span>
+        </button>
+      </div>
+    </section>
+
+    
+    <!-- TAB 1: ARTIFACTS (Files & Weights) -->
+    <div id="tabContentArtifacts" class="tab-pane-content">
+      <!-- BRANCH BAR & REPO CONTROLS -->
+      <div class="node-controls-bar">
+        <div class="controls-left">
+
+          <!-- 1. VIEW MODE TOGGLE (REPO VIEW vs TREE VIEW) - Placed to the left of main branch -->
+          <div class="view-mode-toggle" id="viewModeToggle">
+            <button type="button" class="btn-view-toggle active" id="btnRepoView" title="Standard Folder & Sub-Folder Bubbles View">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              <span>Repo View</span>
+            </button>
+            <button type="button" class="btn-view-toggle" id="btnTreeView" title="Hierarchical Tree Visualizer">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4m0 0l-7 4m7-4l7 4"/></svg>
+              <span>Tree View</span>
+            </button>
+          </div>
+
+          <!-- MAIN BRANCH DROPDOWN -->
+          <div class="branch-selector-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+            <span style="font-weight: 600;">main</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+
+          <a href="#" class="branch-meta-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+            <span><strong>4</strong> Branches</span>
+          </a>
+
+          <a href="#" class="branch-meta-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span><strong>0</strong> Tags</span>
+          </a>
+        </div>
+
+        <div class="controls-right">
+          <button type="button" class="btn-github-subtle" id="btnGoToFile">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>Go to file</span>
+            <span class="kbd-hint">t</span>
+          </button>
+
+          <button type="button" class="btn-github-subtle" id="btnAddFile">
+            <span>Add file</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+
+          <!-- RENAMED CODE TO ARTIFACTS -->
+          <button type="button" class="btn-code-green" id="btnCodeDropdown">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span>&lt;&gt; Artifacts</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+
+          <!-- METRICS BUTTON (Beside Artifacts button) -->
+          <button type="button" class="btn-github-subtle" id="btnMetricsToggle" title="Toggle Compression & Chunk Metrics in About section">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span>Metrics</span>
+          </button>
+
+          <!-- CHECKPOINT BUTTON (Beside Metrics button) -->
+          <button type="button" class="btn-github-subtle" id="btnCheckpointToggle" title="Open Checkpoints & Commit Graph Panel">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Checkpoint</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TWO COLUMN LAYOUT: FILES/TREE (LEFT) + ABOUT/METRICS (RIGHT) -->
+      <div class="node-columns-grid">
+        
+        <!-- LEFT COLUMN -->
+        <div class="node-left-col">
+          
+          <!-- (A) REPO VIEW MODE CONTAINER -->
+          <div id="repoViewModeContainer">
+            
+            <!-- LATEST COMMIT ROW -->
+            <div class="latest-commit-bar">
+              <div class="commit-author-row">
+                <div class="author-avatar-circle">S</div>
+                <span class="commit-author-name">sanvinaik</span>
+                <span class="commit-message-preview">trying to deploy</span>
+              </div>
+              <div class="commit-meta-right">
+                <span class="commit-hash-link">ebb6a18</span>
+                <span class="commit-time">19 hours ago</span>
+                <span class="commit-count-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <strong>128</strong> Commits
+                </span>
+              </div>
+            </div>
+
+            <!-- MAIN FOLDERS & FILES TABLE WITH EMBEDDED SUBFOLDER ARTIFACTS -->
+            <div class="files-table-card">
+              <!-- .vscode -->
+              <div class="file-row" onclick="handleFileClick('.vscode', 'directory')">
+                <div class="file-name-part">
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">.vscode</span>
+                </div>
+                <div class="file-commit-part">Solved linkage issues in cli</div>
+                <div class="file-time-part">last week</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('.vscode/launch.json', 'file')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">├──</span>
+                  <span class="file-icon-file">📄</span>
+                  <span class="file-name">launch.json</span>
+                  <span class="subfolder-tag">Debug Runner</span>
+                </div>
+                <div class="file-commit-part">Configure GDB / Python model debug targets</div>
+                <div class="file-time-part">last week</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('.vscode/settings.json', 'file')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">└──</span>
+                  <span class="file-icon-file">📄</span>
+                  <span class="file-name">settings.json</span>
+                  <span class="subfolder-tag">Workspace</span>
+                </div>
+                <div class="file-commit-part">C++17 and PyTorch clang-format rules</div>
+                <div class="file-time-part">last week</div>
+              </div>
+
+              <!-- BACKEND -->
+              <div class="file-row" onclick="handleFileClick('BACKEND', 'directory')">
+                <div class="file-name-part">
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">BACKEND</span>
+                </div>
+                <div class="file-commit-part">i think it's working</div>
+                <div class="file-time-part">2 days ago</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('BACKEND/api', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">├──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">api</span>
+                  <span class="subfolder-tag">REST Endpoints</span>
+                </div>
+                <div class="file-commit-part">fastapi chunk manifest &amp; checkout routes</div>
+                <div class="file-time-part">2 days ago</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('BACKEND/cas_engine', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">├──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">cas_engine</span>
+                  <span class="subfolder-tag">Blake3 CAS</span>
+                </div>
+                <div class="file-commit-part">content-addressable layer chunk storage</div>
+                <div class="file-time-part">3 days ago</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('BACKEND/fastcdc', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">├──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">fastcdc</span>
+                  <span class="subfolder-tag">FastCDC Chunker</span>
+                </div>
+                <div class="file-commit-part">gear hash dynamic window boundary detection</div>
+                <div class="file-time-part">3 days ago</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('BACKEND/storage', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">└──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">storage</span>
+                  <span class="subfolder-tag">MinIO S3</span>
+                </div>
+                <div class="file-commit-part">zero-copy local chunk cache &amp; s3 sync adapter</div>
+                <div class="file-time-part">4 days ago</div>
+              </div>
+
+              <!-- CLI -->
+              <div class="file-row" onclick="handleFileClick('CLI', 'directory')">
+                <div class="file-name-part">
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">CLI</span>
+                </div>
+                <div class="file-commit-part">testing done</div>
+                <div class="file-time-part">yesterday</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('CLI/commands', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">├──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">commands</span>
+                  <span class="subfolder-tag">CLI Dispatcher</span>
+                </div>
+                <div class="file-commit-part">ai-git clone, pull, push, dedup CLI entrypoints</div>
+                <div class="file-time-part">yesterday</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('CLI/cloning', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">└──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">cloning</span>
+                  <span class="subfolder-tag">Zero-Copy</span>
+                </div>
+                <div class="file-commit-part">symlink-based zero-copy clone across repos</div>
+                <div class="file-time-part">2 days ago</div>
+              </div>
+
+              <!-- DEPLOY/minio -->
+              <div class="file-row" onclick="handleFileClick('DEPLOY/minio', 'directory')">
+                <div class="file-name-part">
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">DEPLOY/minio</span>
+                </div>
+                <div class="file-commit-part">trying to deploy</div>
+                <div class="file-time-part">19 hours ago</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('DEPLOY/minio/buckets', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">└──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">buckets</span>
+                  <span class="subfolder-tag">CAS Buckets</span>
+                </div>
+                <div class="file-commit-part">CAS bucket provisioning and lifecycle rules</div>
+                <div class="file-time-part">19 hours ago</div>
+              </div>
+
+              <!-- FRONTEND -->
+              <div class="file-row" onclick="handleFileClick('FRONTEND', 'directory')">
+                <div class="file-name-part">
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">FRONTEND</span>
+                </div>
+                <div class="file-commit-part">Frontend broke</div>
+                <div class="file-time-part">3 days ago</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('FRONTEND/public', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">├──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">public</span>
+                  <span class="subfolder-tag">Portal UI</span>
+                </div>
+                <div class="file-commit-part">Dashboard, model hub, repository views</div>
+                <div class="file-time-part">3 days ago</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('FRONTEND/components', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">└──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">components</span>
+                  <span class="subfolder-tag">UI Widgets</span>
+                </div>
+                <div class="file-commit-part">Navigation bar, commit DAG, &amp; tree explorers</div>
+                <div class="file-time-part">3 days ago</div>
+              </div>
+
+              <!-- aigit-e2e-test -->
+              <div class="file-row" onclick="handleFileClick('aigit-e2e-test', 'directory')">
+                <div class="file-name-part">
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">aigit-e2e-test</span>
+                </div>
+                <div class="file-commit-part">i think it's working</div>
+                <div class="file-time-part">2 days ago</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('aigit-e2e-test/fixtures', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">└──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">fixtures</span>
+                  <span class="subfolder-tag">PyTest Fixtures</span>
+                </div>
+                <div class="file-commit-part">Simulated safetensors tensor delta benchmarks</div>
+                <div class="file-time-part">2 days ago</div>
+              </div>
+
+              <!-- done-e2e-test -->
+              <div class="file-row" onclick="handleFileClick('done-e2e-test', 'directory')">
+                <div class="file-name-part">
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">done-e2e-test</span>
+                </div>
+                <div class="file-commit-part">i think it's working</div>
+                <div class="file-time-part">2 days ago</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('done-e2e-test/results', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">└──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">results</span>
+                  <span class="subfolder-tag">Benchmark Logs</span>
+                </div>
+                <div class="file-commit-part">128 epoch FastCDC deduplication test reports</div>
+                <div class="file-time-part">2 days ago</div>
+              </div>
+
+              <!-- test-repo -->
+              <div class="file-row" onclick="handleFileClick('test-repo', 'directory')">
+                <div class="file-name-part">
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">test-repo</span>
+                </div>
+                <div class="file-commit-part">remote cas in process</div>
+                <div class="file-time-part">last week</div>
+              </div>
+              <div class="file-row subfolder-artifact-row" onclick="handleFileClick('test-repo/safetensors', 'directory')">
+                <div class="file-name-part subfolder-indent">
+                  <span class="tree-line-sub">└──</span>
+                  <span class="file-icon-dir">📁</span>
+                  <span class="file-name">safetensors</span>
+                  <span class="subfolder-tag">8B Checkpoint</span>
+                </div>
+                <div class="file-commit-part">Chunked model layer weights (14.2 GB FastCDC)</div>
+                <div class="file-time-part">last week</div>
+              </div>
+
+              <div class="file-row" onclick="handleFileClick('.gitignore', 'file')">
+                <div class="file-name-part">
+                  <span class="file-icon-file">📄</span>
+                  <span class="file-name">.gitignore</span>
+                </div>
+                <div class="file-commit-part">Merge origin/main and integrate latest changes</div>
+                <div class="file-time-part">last week</div>
+              </div>
+
+              <div class="file-row" onclick="handleFileClick('README.md', 'file')">
+                <div class="file-name-part">
+                  <span class="file-icon-file">📄</span>
+                  <span class="file-name">README.md</span>
+                </div>
+                <div class="file-commit-part">header changes part 2</div>
+                <div class="file-time-part">last month</div>
+              </div>
+            </div>
+
+            <!-- README PREVIEW BOX -->
+            <article class="node-readme-box">
+              <div class="readme-box-header">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <span>README.md · Node Artifacts Specification</span>
+              </div>
+              <div class="readme-box-body">
+                <h1 class="readme-title">AI-GIT</h1>
+                <p class="readme-lead">A standalone, decentralized version control system designed explicitly for large AI/ML foundation models and neural network weights.</p>
+                
+                <h3>⚡ Quickstart CLI</h3>
+                <pre class="cli-pre"><code># Clone repository metadata
+ai-git clone AI-GIT
+
+# Pull zero-copy deduplicated safetensors
+ai-git pull origin main --weights</code></pre>
+
+                <h3>🧩 FastCDC Deduplication</h3>
+                <p>AI-GIT splits checkpoints using Content-Defined Chunking (FastCDC), avoiding redundant storage of multi-gigabyte safetensors across training epochs. Unmodified layers are reused in MinIO / S3 with cryptographic content addressing.</p>
+              </div>
+            </article>
+
+          </div>
+
+          <!-- (B) TREE VIEW MODE CONTAINER (Root node branching down) -->
+          <div id="treeViewModeContainer" style="display: none;">
+            <div class="tree-view-wrapper">
+              <div class="tree-view-header">
+                <div>
+                  <h3 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 2px;">🌲 Repository Hierarchical Tree</h3>
+                  <span style="font-size: 12px; color: #64748b;">Rooted at AI-GIT node, branching into folders, subfolders &amp; content-addressed chunks</span>
+                </div>
+                <button type="button" class="btn-github-subtle" onclick="document.getElementById('btnRepoView').click()">Return to Repo View</button>
+              </div>
+
+              <div class="tree-canvas-container">
+                <!-- ROOT NODE -->
+                <div class="tree-root-node">
+                  <img src="chameleon-logo.png" alt="Root Logo" style="width: 22px; height: 22px; border-radius: 50%;">
+                  <span>AI-GIT (Root Node)</span>
+                  <span style="font-size: 11px; padding: 2px 7px; background: rgba(168, 85, 247, 0.25); border-radius: 9999px; color: #c084fc;">main</span>
+                </div>
+
+                <!-- SVG BRANCHING LINES -->
+                <svg class="tree-branch-svg" viewBox="0 0 1200 48" preserveAspectRatio="none">
+                  <path d="M 600 0 L 600 20" stroke="#a855f7" stroke-width="2.5" />
+                  <path d="M 100 20 L 1100 20" stroke="#38bdf8" stroke-width="2" />
+                  <path d="M 100 20 L 100 48" stroke="#38bdf8" stroke-width="2" />
+                  <path d="M 300 20 L 300 48" stroke="#38bdf8" stroke-width="2" />
+                  <path d="M 500 20 L 500 48" stroke="#38bdf8" stroke-width="2" />
+                  <path d="M 700 20 L 700 48" stroke="#38bdf8" stroke-width="2" />
+                  <path d="M 900 20 L 900 48" stroke="#38bdf8" stroke-width="2" />
+                  <path d="M 1100 20 L 1100 48" stroke="#38bdf8" stroke-width="2" />
+                </svg>
+
+                <!-- LEVEL 1 & LEVEL 2 TREE COLUMNS -->
+                <div class="tree-columns-grid">
+                  
+                  <!-- COLUMN 1: BACKEND -->
+                  <div class="tree-column">
+                    <div class="tree-folder-card" onclick="inspectTreeNode('BACKEND', 'Directory', 'Core Python Server Engine', '8 modules', '3.4 GB')">
+                      <span class="tree-card-icon">📁</span>
+                      <div class="tree-card-name">BACKEND</div>
+                      <div class="tree-card-meta">Python Engine</div>
+                    </div>
+                    <div class="tree-vertical-stem"></div>
+                    <div class="tree-subfolder-nodes">
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('api/', 'Subfolder', 'FastAPI REST Endpoints', '4 files', '120 KB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">api/</span>
+                          <span class="tree-node-subtitle">FastAPI routes</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('cas_engine/', 'Subfolder', 'Content-Addressed Storage', '6 files', '2.1 GB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">cas_engine/</span>
+                          <span class="tree-node-subtitle">CAS &amp; Blake3</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('fastcdc/', 'Subfolder', 'Dynamic Chunk Boundary Engine', '3 files', '840 MB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">fastcdc/</span>
+                          <span class="tree-node-subtitle">Chunking 8-64KB</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('storage/', 'Subfolder', 'MinIO & S3 Blob Store Drivers', '5 files', '380 MB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">storage/</span>
+                          <span class="tree-node-subtitle">MinIO S3 driver</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- COLUMN 2: CLI -->
+                  <div class="tree-column">
+                    <div class="tree-folder-card" onclick="inspectTreeNode('CLI', 'Directory', 'Command Line Client Interface', '6 files', '45 MB')">
+                      <span class="tree-card-icon">📁</span>
+                      <div class="tree-card-name">CLI</div>
+                      <div class="tree-card-meta">Rust / Python Core</div>
+                    </div>
+                    <div class="tree-vertical-stem"></div>
+                    <div class="tree-subfolder-nodes">
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('commands/', 'Subfolder', 'CLI Subcommand Dispatcher', '5 files', '85 KB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">commands/</span>
+                          <span class="tree-node-subtitle">CLI subcommands</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('clone.py', 'Artifact', 'Zero-copy clone & mmap weights loader', 'Python script', '14 KB')">
+                        <span class="tree-node-bullet">📄</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">clone.py</span>
+                          <span class="tree-node-subtitle">Zero-copy clone</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('push.py', 'Artifact', 'FastCDC multi-part chunk streamer', 'Python script', '18 KB')">
+                        <span class="tree-node-bullet">📄</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">push.py</span>
+                          <span class="tree-node-subtitle">FastCDC streamer</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('dedup.py', 'Artifact', 'Local Blake3 deduplication cache', 'Python script', '12 KB')">
+                        <span class="tree-node-bullet">📄</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">dedup.py</span>
+                          <span class="tree-node-subtitle">Local dedup cache</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- COLUMN 3: DEPLOY -->
+                  <div class="tree-column">
+                    <div class="tree-folder-card" onclick="inspectTreeNode('DEPLOY', 'Directory', 'Cloud & Container Deployment', '4 files', '12 MB')">
+                      <span class="tree-card-icon">📁</span>
+                      <div class="tree-card-name">DEPLOY</div>
+                      <div class="tree-card-meta">Cloud Infra</div>
+                    </div>
+                    <div class="tree-vertical-stem"></div>
+                    <div class="tree-subfolder-nodes">
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('minio/', 'Subfolder', 'Distributed Object Storage cluster', '3 configs', '8 KB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">minio/</span>
+                          <span class="tree-node-subtitle">MinIO CAS store</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('docker-compose.yml', 'Artifact', 'Docker service orchestration', 'YAML config', '4 KB')">
+                        <span class="tree-node-bullet">📄</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">docker-compose</span>
+                          <span class="tree-node-subtitle">Stack services</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('s3-cas/', 'Subfolder', 'S3 content-addressed bucket configs', '2 files', '6 KB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">s3-cas/</span>
+                          <span class="tree-node-subtitle">CAS bucket config</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- COLUMN 4: FRONTEND -->
+                  <div class="tree-column">
+                    <div class="tree-folder-card" onclick="inspectTreeNode('FRONTEND', 'Directory', 'Web Portal & Visualization UI', '14 files', '18 MB')">
+                      <span class="tree-card-icon">📁</span>
+                      <div class="tree-card-name">FRONTEND</div>
+                      <div class="tree-card-meta">Web Portal</div>
+                    </div>
+                    <div class="tree-vertical-stem"></div>
+                    <div class="tree-subfolder-nodes">
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('public/', 'Subfolder', 'Static web views, CSS, JS, logos', '10 files', '8.4 MB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">public/</span>
+                          <span class="tree-node-subtitle">HTML/CSS/JS</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('dashboard/', 'Subfolder', 'Model Hub & Metric widgets', '4 files', '4.2 MB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">dashboard/</span>
+                          <span class="tree-node-subtitle">Model analytics</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('repository/', 'Subfolder', 'Branch & DAG Graph components', '5 files', '5.1 MB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">repository/</span>
+                          <span class="tree-node-subtitle">DAG visualizer</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- COLUMN 5: TESTS -->
+                  <div class="tree-column">
+                    <div class="tree-folder-card" onclick="inspectTreeNode('TESTS', 'Directory', 'Test & Validation Suites', '9 files', '2.8 GB')">
+                      <span class="tree-card-icon">📁</span>
+                      <div class="tree-card-name">TESTS</div>
+                      <div class="tree-card-meta">Validation Suite</div>
+                    </div>
+                    <div class="tree-vertical-stem"></div>
+                    <div class="tree-subfolder-nodes">
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('aigit-e2e/', 'Subfolder', 'FastCDC chunk deduplication suite', '4 scripts', '1.2 GB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">aigit-e2e/</span>
+                          <span class="tree-node-subtitle">FastCDC e2e</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('done-e2e/', 'Subfolder', 'Completed integration test suites', '3 scripts', '980 MB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">done-e2e/</span>
+                          <span class="tree-node-subtitle">Regression test</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('test-repo/', 'Subfolder', 'Synthetic weights testing fixture', '2 files', '650 MB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">test-repo/</span>
+                          <span class="tree-node-subtitle">Weights fixture</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- COLUMN 6: CONFIG -->
+                  <div class="tree-column">
+                    <div class="tree-folder-card" onclick="inspectTreeNode('CONFIG', 'Directory', 'Project Root Metadata & Settings', '5 files', '45 KB')">
+                      <span class="tree-card-icon">📄</span>
+                      <div class="tree-card-name">CONFIG</div>
+                      <div class="tree-card-meta">Root Metadata</div>
+                    </div>
+                    <div class="tree-vertical-stem"></div>
+                    <div class="tree-subfolder-nodes">
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('.vscode/', 'Subfolder', 'VSCode task & launch settings', '3 files', '12 KB')">
+                        <span class="tree-node-bullet">📁</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">.vscode/</span>
+                          <span class="tree-node-subtitle">Dev container</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('README.md', 'Artifact', 'AI-GIT Architecture & Specs', 'Markdown', '18 KB')">
+                        <span class="tree-node-bullet">📄</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">README.md</span>
+                          <span class="tree-node-subtitle">VCS Spec &amp; Doc</span>
+                        </div>
+                      </div>
+                      <div class="tree-subfolder-node" onclick="inspectTreeNode('.gitignore', 'Artifact', 'Model weight and cache ignore patterns', 'Config', '1.5 KB')">
+                        <span class="tree-node-bullet">📄</span>
+                        <div class="tree-node-text">
+                          <span class="tree-node-title">.gitignore</span>
+                          <span class="tree-node-subtitle">Weights filter</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: ABOUT SIDEBAR (OR METRICS VIEW) -->
+        <aside class="node-sidebar-col" id="nodeSidebarColumn">
+          
+          <!-- 1. STANDARD ABOUT SECTION -->
+          <div id="sidebarAboutSection">
+            <div class="sidebar-section">
+              <div class="sidebar-header-row">
+                <h3 class="sidebar-title">About</h3>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <button type="button" class="btn-github-subtle" onclick="toggleSidebarMetrics(true)" style="padding: 2px 7px; font-size: 11px;" title="Switch to Metrics">📊 Metrics</button>
+                  <button type="button" class="sidebar-gear-btn" title="Edit repository details">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  </button>
+                </div>
+              </div>
+              <p class="sidebar-desc">
+                This is a repository created for the execution of AI-GIT, a standalone version control system designed to store large AI/ML models.
+              </p>
+
+              <ul class="sidebar-links-list">
+                <li>
+                  <a href="#readme" class="sidebar-link">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <span>Readme</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="sidebar-link">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <span>Activity</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="sidebar-link">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span><strong>142</strong> stars</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="sidebar-link">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span><strong>0</strong> watching</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="sidebar-link">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                    <span><strong>0</strong> forks</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-section">
+              <h3 class="sidebar-title">Releases</h3>
+              <p class="sidebar-subtext">No releases published.</p>
+              <a href="#" class="sidebar-action-link">Create a new release</a>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-section">
+              <h3 class="sidebar-title">Packages</h3>
+              <p class="sidebar-subtext">No packages published.</p>
+              <a href="#" class="sidebar-action-link">Publish your first package</a>
+            </div>
+          </div>
+
+          <!-- 2. METRICS CONVERSION PANEL (CONVERTS ABOUT SECTION AS REQUESTED) -->
+          <div id="sidebarMetricsSection" class="sidebar-metrics-panel" style="display: none;">
+            
+            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
+              <h3 style="font-size: 14px; font-weight: 700; color: #0284c7;">📊 Storage &amp; Checkpoint Metrics</h3>
+              <button type="button" class="btn-github-subtle" onclick="toggleSidebarMetrics(false)" style="padding: 2px 7px; font-size: 11px;">✕ About</button>
+            </div>
+
+            <!-- (1) CIRCULAR GRAPH: PERCENTAGE OF STORAGE SPACE SAVED -->
+            <div class="metric-widget-box">
+              <div class="metric-widget-header">
+                <span class="metric-widget-title">Storage Space Saved</span>
+                <span style="font-size: 11px; color: #10b981; font-weight: 700;">FastCDC</span>
+              </div>
+              <div class="circular-graph-wrap">
+                <svg width="140" height="140" class="circular-svg">
+                  <defs>
+                    <linearGradient id="cyanEmeraldGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#38bdf8" />
+                      <stop offset="100%" stop-color="#10b981" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="70" cy="70" r="56" class="circular-bg-ring" />
+                  <circle cx="70" cy="70" r="56" class="circular-progress-ring" />
+                </svg>
+                <div class="circular-center-text">
+                  <span class="circular-percent-val">78.4%</span>
+                  <span class="circular-percent-label">SAVINGS</span>
+                </div>
+              </div>
+              <div class="metric-subcaption">
+                <strong>11.13 GB saved</strong> across 128 epochs using chunk-level content addressing.
+              </div>
+            </div>
+
+            <!-- (2) COMPRESSION GRAPH -->
+            <div class="metric-widget-box">
+              <div class="metric-widget-header">
+                <span class="metric-widget-title">Compression Graph</span>
+                <span style="font-size: 11px; color: #38bdf8; font-weight: 700;">4.62x</span>
+              </div>
+              <div class="compression-bar-group">
+                <div class="comp-bar-item">
+                  <div class="comp-bar-labels">
+                    <span style="color: #8b949e;">Raw Safetensors</span>
+                    <strong style="color: #f59e0b;">14.2 GB</strong>
+                  </div>
+                  <div class="comp-bar-track">
+                    <div class="comp-bar-fill-raw"></div>
+                  </div>
+                </div>
+
+                <div class="comp-bar-item">
+                  <div class="comp-bar-labels">
+                    <span style="color: #8b949e;">AI-GIT Deduplicated</span>
+                    <strong style="color: #10b981;">3.07 GB</strong>
+                  </div>
+                  <div class="comp-bar-track">
+                    <div class="comp-bar-fill-dedup"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="metric-subcaption">
+                Deduplication ratio: <strong>4.62 : 1</strong> zero-copy density in MinIO storage.
+              </div>
+            </div>
+
+            <!-- (3) NUMBER OF CHUNKS CREATED -->
+            <div class="metric-widget-box">
+              <div class="metric-widget-header">
+                <span class="metric-widget-title">Chunks Created</span>
+                <span style="font-size: 11px; color: #c084fc; font-weight: 700;">Blake3 Hashes</span>
+              </div>
+              <div class="chunks-count-display">
+                <span class="chunks-big-number">1,420</span>
+                <span style="font-size: 13px; color: #8b949e;">Total Chunks</span>
+              </div>
+              <div class="chunks-ratio-row">
+                <span style="color: #64748b;">Reused Chunks (Shared)</span>
+                <strong style="color: #10b981;">1,114 (78.5%)</strong>
+              </div>
+              <div class="chunks-ratio-row">
+                <span style="color: #64748b;">Unique Delta Chunks</span>
+                <strong style="color: #0284c7;">306 (21.5%)</strong>
+              </div>
+              <div class="chunks-ratio-row">
+                <span style="color: #64748b;">Avg Chunk Size</span>
+                <strong style="color: #0f172a;">4.2 MB</strong>
+              </div>
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: DIVERGENCES (Issues) -->
+    <div id="tabContentDivergences" class="tab-pane-content" style="display: none;">
+      <div class="placeholder-pane-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Node Divergences (Issues)</h2>
+            <p style="color: #64748b; font-size: 13.5px;">Track weight divergence, validation loss spikes, and architecture regressions.</p>
+          </div>
+          <a href="issues.html" class="btn-code-green" style="text-decoration: none;">+ New Divergence</a>
+        </div>
+
+        <div class="files-table-card" style="border-top: 1px solid #e2e8f0;">
+          <div class="file-row" style="grid-template-columns: 32px minmax(0, 1fr) 140px;">
+            <span style="color: #d97706;">!</span>
+            <div>
+              <div style="font-weight: 600; color: #0f172a;">#4 LoRA rank mismatch in attention weights (r=16 vs r=32)</div>
+              <div style="font-size: 11.5px; color: #64748b;">opened 2 days ago by keya-ai · <span style="color: #9333ea;">bug:weight-shape</span></div>
+            </div>
+            <div class="file-time-part">2 days ago</div>
+          </div>
+          <div class="file-row" style="grid-template-columns: 32px minmax(0, 1fr) 140px;">
+            <span style="color: #d97706;">!</span>
+            <div>
+              <div style="font-weight: 600; color: #0f172a;">#3 FastCDC boundary calculation fails on bfloat16 tensors</div>
+              <div style="font-size: 11.5px; color: #64748b;">opened 5 days ago by sanvinaik · <span style="color: #0284c7;">fastcdc</span></div>
+            </div>
+            <div class="file-time-part">5 days ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: CONVERGENCES (Pull Requests) -->
+    <div id="tabContentConvergences" class="tab-pane-content" style="display: none;">
+      <div class="placeholder-pane-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Node Convergences (Pull Requests)</h2>
+            <p style="color: #64748b; font-size: 13.5px;">Merge fine-tuned checkpoints and weight branches with zero-copy deduplication.</p>
+          </div>
+          <button type="button" class="btn-code-green">+ New Convergence</button>
+        </div>
+
+        <div class="files-table-card" style="border-top: 1px solid #e2e8f0;">
+          <div class="file-row" style="grid-template-columns: 32px minmax(0, 1fr) 140px;">
+            <span style="color: #9333ea;">🔀</span>
+            <div>
+              <div style="font-weight: 600; color: #0f172a;">#1 Convergence: Merge epoch 128 checkpoint into main branch</div>
+              <div style="font-size: 11.5px; color: #64748b;">opened 19 hours ago by sanvinaik · 14.2 GB FastCDC verified</div>
+            </div>
+            <div class="file-time-part">19 hours ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: PIPELINES (Projects) -->
+    <div id="tabContentPipelines" class="tab-pane-content" style="display: none;">
+      <div class="placeholder-pane-card">
+        <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">Automated Model Pipelines</h2>
+        <p style="color: #64748b; font-size: 13.5px; margin-bottom: 24px;">Continuous evaluation, FastCDC deduplication hashing, and quantization workflows.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 18px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <strong style="color: #0284c7;">FastCDC Chunker Pipeline</strong>
+              <span style="color: #16a34a; font-size: 12px; font-weight: 600;">PASSING</span>
+            </div>
+            <p style="font-size: 12.5px; color: #64748b;">Dynamic boundary detection &amp; blake3 content-addressing across epochs.</p>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 18px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <strong style="color: #9333ea;">LoRA Weight Merge Pipeline</strong>
+              <span style="color: #16a34a; font-size: 12px; font-weight: 600;">ACTIVE</span>
+            </div>
+            <p style="font-size: 12.5px; color: #64748b;">Zero-copy delta layer integration into foundation checkpoint.</p>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 18px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <strong style="color: #db2777;">GGUF 4-bit Quantizer</strong>
+              <span style="color: #d97706; font-size: 12px; font-weight: 600;">QUEUED</span>
+            </div>
+            <p style="font-size: 12.5px; color: #64748b;">Auto-export quantized weights for edge device inference.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: GUARDRAILS (Security & Quality) -->
+    <div id="tabContentGuardrails" class="tab-pane-content" style="display: none;">
+      <div class="placeholder-pane-card">
+        <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">Model Guardrails &amp; Safety Verification</h2>
+        <p style="color: #64748b; font-size: 13.5px; margin-bottom: 24px;">Cryptographic safetensors integrity checks, pickle vulnerability scanning, and license provenance.</p>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px 18px;">
+            <div>
+              <strong style="color: #16a34a;">✓ SafeTensors Binary Validation</strong>
+              <div style="font-size: 12px; color: #64748b;">Zero arbitrary code execution vulnerabilities detected. No unpickling hazards.</div>
+            </div>
+            <span style="color: #16a34a; font-weight: 700; font-size: 12px;">PASSED</span>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px 18px;">
+            <div>
+              <strong style="color: #16a34a;">✓ Content-Addressable Cryptographic Integrity</strong>
+              <div style="font-size: 12px; color: #64748b;">Every FastCDC chunk verified against root Merkle tree hash.</div>
+            </div>
+            <span style="color: #16a34a; font-weight: 700; font-size: 12px;">VERIFIED</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: CONFIG (Settings) -->
+    <div id="tabContentConfig" class="tab-pane-content" style="display: none;">
+      <div class="placeholder-pane-card">
+        <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">Node Configuration</h2>
+        <p style="color: #64748b; font-size: 13.5px; margin-bottom: 24px;">Manage repository visibility, FastCDC chunk storage tier, and remote CAS endpoints.</p>
+
+        <div style="max-width: 600px; display: flex; flex-direction: column; gap: 16px;">
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px;">Repository Visibility</label>
+            <select style="width: 100%; padding: 8px 12px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; color: #0f172a;">
+              <option value="public">Public (Visible to entire AI-GIT network)</option>
+              <option value="private">Private (Restricted to workspace members)</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px;">MinIO / S3 CAS Endpoint</label>
+            <input type="text" value="http://localhost:9000/aigit-weights" style="width: 100%; padding: 8px 12px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; color: #0f172a; font-family: monospace;">
+          </div>
+
+          <div style="margin-top: 10px;">
+            <button type="button" class="btn-code-green">Save Configuration</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="nav.js?v=2.7"></script>
+  <script src="repository.js?v=2.5"></script>
+
+  <!-- BOTTOM CHECKPOINT COMMIT DAG PANEL -->
+  <div class="bottom-checkpoint-panel" id="bottomCheckpointPanel">
+    <div class="checkpoint-panel-header">
+      <div class="checkpoint-header-left">
+        <div class="checkpoint-panel-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #38bdf8;">
+            <circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+            <path d="M18 9a9 9 0 0 0-9 9"/><line x1="6" y1="9" x2="6" y2="15"/>
+          </svg>
+          <span>Training Checkpoint Directed Acyclic Graph (DAG)</span>
+        </div>
+        
+        <!-- BRANCH LEGEND -->
+        <div class="dag-branch-legend">
+          <span class="dag-legend-item branch-main"><span class="legend-dot dot-main"></span> main</span>
+          <span class="dag-legend-item branch-lora"><span class="legend-dot dot-lora"></span> feature/lora-adapter-r16</span>
+          <span class="dag-legend-item branch-fp8"><span class="legend-dot dot-fp8"></span> exp/fp8-quant</span>
+          <span class="dag-legend-item branch-merge"><span class="legend-icon">🔀</span> Convergence Merge</span>
+        </div>
+      </div>
+
+      <div class="checkpoint-header-right">
+        <span class="current-focus-badge" id="dagActiveBadge">● FOCUSED: ebb6a18 (Epoch 128 - HEAD)</span>
+        <button type="button" class="btn-close-checkpoint-panel" id="btnCloseCheckpointPanel" title="Close Panel">✕</button>
+      </div>
+    </div>
+
+    <div class="checkpoint-dag-body">
+      <!-- SCROLLABLE DAG CANVAS AREA -->
+      <div class="dag-graph-scroll-area" id="dagGraphScrollArea">
+        <div class="dag-canvas-inner">
+          
+          <!-- SVG TRACKS & DIRECTED EDGES -->
+          <svg class="dag-svg-canvas" width="1020" height="260" viewBox="0 0 1020 260">
+            <defs>
+              <linearGradient id="mainGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="100%" stop-color="#38bdf8" />
+              </linearGradient>
+              <linearGradient id="loraForkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="100%" stop-color="#c084fc" />
+              </linearGradient>
+              <linearGradient id="loraMergeGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#c084fc" />
+                <stop offset="100%" stop-color="#38bdf8" />
+              </linearGradient>
+              <linearGradient id="fp8ForkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="100%" stop-color="#f43f5e" />
+              </linearGradient>
+              <linearGradient id="fp8MergeGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f43f5e" />
+                <stop offset="100%" stop-color="#38bdf8" />
+              </linearGradient>
+            </defs>
+
+            <!-- LANE TRACK GUIDES -->
+            <line x1="80" y1="50" x2="980" y2="50" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4,4" />
+            <line x1="80" y1="130" x2="980" y2="130" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4,4" />
+            <line x1="80" y1="210" x2="980" y2="210" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4,4" />
+
+            <!-- LANE HEADERS / LABELS ON LEFT -->
+            <rect x="8" y="38" width="60" height="24" rx="4" fill="rgba(56, 189, 248, 0.12)" stroke="#38bdf8" stroke-width="1" />
+            <text x="38" y="54" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="700" text-anchor="middle">main</text>
+
+            <rect x="8" y="118" width="64" height="24" rx="4" fill="rgba(192, 132, 252, 0.12)" stroke="#c084fc" stroke-width="1" />
+            <text x="40" y="134" fill="#c084fc" font-size="10.5" font-family="monospace" font-weight="700" text-anchor="middle">lora-r16</text>
+
+            <rect x="8" y="198" width="64" height="24" rx="4" fill="rgba(244, 63, 94, 0.12)" stroke="#f43f5e" stroke-width="1" />
+            <text x="40" y="214" fill="#f43f5e" font-size="10" font-family="monospace" font-weight="700" text-anchor="middle">fp8-quant</text>
+
+            <!-- DAG EDGES -->
+            <!-- 1. Root f942bc1 (x=110, y=50) -> 9f3c81e (x=260, y=50) -->
+            <line x1="110" y1="50" x2="260" y2="50" stroke="#38bdf8" stroke-width="3" />
+
+            <!-- 2. 9f3c81e (x=260, y=50) -> 1d84ca0 (x=430, y=50) -->
+            <line x1="260" y1="50" x2="430" y2="50" stroke="#38bdf8" stroke-width="3" />
+
+            <!-- 3. FORK 1: 9f3c81e (x=260, y=50) -> 2b99ef4 (x=430, y=130) -->
+            <path d="M 260 50 C 330 50, 350 130, 430 130" fill="none" stroke="url(#loraForkGrad)" stroke-width="3" />
+
+            <!-- 4. 1d84ca0 (x=430, y=50) -> 7c31d9a Merge (x=610, y=50) -->
+            <line x1="430" y1="50" x2="610" y2="50" stroke="#38bdf8" stroke-width="3" />
+
+            <!-- 5. FORK 2: 1d84ca0 (x=430, y=50) -> 4e10ab3 (x=610, y=210) -->
+            <path d="M 430 50 C 500 50, 520 210, 610 210" fill="none" stroke="url(#fp8ForkGrad)" stroke-width="3" />
+
+            <!-- 6. CONVERGENCE MERGE 1: 2b99ef4 (x=430, y=130) -> 7c31d9a Merge (x=610, y=50) -->
+            <path d="M 430 130 C 510 130, 530 50, 610 50" fill="none" stroke="url(#loraMergeGrad)" stroke-width="3" />
+
+            <!-- 7. 7c31d9a Merge (x=610, y=50) -> ebb6a18 HEAD (x=800, y=50) -->
+            <line x1="610" y1="50" x2="800" y2="50" stroke="#38bdf8" stroke-width="3" />
+
+            <!-- 8. CONVERGENCE MERGE 2: 4e10ab3 (x=610, y=210) -> ebb6a18 HEAD (x=800, y=50) -->
+            <path d="M 610 210 C 700 210, 720 50, 800 50" fill="none" stroke="url(#fp8MergeGrad)" stroke-width="3" />
+          </svg>
+
+          <!-- DAG COMMIT INTERACTIVE NODES OVERLAY -->
+          <div class="dag-nodes-container">
+            
+            <!-- NODE 1: f942bc1 (Root) -->
+            <div class="dag-node-wrapper" style="left: 110px; top: 50px;" onclick="selectDagCommit('f942bc1')">
+              <div class="dag-node-point point-root" data-hash="f942bc1"></div>
+              <div class="dag-node-card align-top">
+                <div class="dag-card-hash">f942bc1</div>
+                <div class="dag-card-epoch">Epoch 1 (Root)</div>
+                <div class="dag-card-msg">Initial model weights</div>
+              </div>
+            </div>
+
+            <!-- NODE 2: 9f3c81e -->
+            <div class="dag-node-wrapper" style="left: 260px; top: 50px;" onclick="selectDagCommit('9f3c81e')">
+              <div class="dag-node-point point-main" data-hash="9f3c81e"></div>
+              <div class="dag-node-card align-bottom">
+                <div class="dag-card-hash">9f3c81e</div>
+                <div class="dag-card-epoch">Epoch 60</div>
+                <div class="dag-card-msg">LR warmdown step</div>
+              </div>
+            </div>
+
+            <!-- NODE 3: 2b99ef4 (LoRA Branch) -->
+            <div class="dag-node-wrapper" style="left: 430px; top: 130px;" onclick="selectDagCommit('2b99ef4')">
+              <div class="dag-node-point point-lora" data-hash="2b99ef4"></div>
+              <div class="dag-node-card align-bottom">
+                <div class="dag-card-hash" style="color: #c084fc;">2b99ef4</div>
+                <div class="dag-card-epoch" style="color: #c084fc;">Epoch 115 (LoRA)</div>
+                <div class="dag-card-msg">LoRA rank 16 adapter</div>
+              </div>
+            </div>
+
+            <!-- NODE 4: 1d84ca0 (main) -->
+            <div class="dag-node-wrapper" style="left: 430px; top: 50px;" onclick="selectDagCommit('1d84ca0')">
+              <div class="dag-node-point point-main" data-hash="1d84ca0"></div>
+              <div class="dag-node-card align-top">
+                <div class="dag-card-hash">1d84ca0</div>
+                <div class="dag-card-epoch">Epoch 100</div>
+                <div class="dag-card-msg">FastCDC chunk boundaries</div>
+              </div>
+            </div>
+
+            <!-- NODE 5: 4e10ab3 (FP8 Branch) -->
+            <div class="dag-node-wrapper" style="left: 610px; top: 210px;" onclick="selectDagCommit('4e10ab3')">
+              <div class="dag-node-point point-fp8" data-hash="4e10ab3"></div>
+              <div class="dag-node-card align-top">
+                <div class="dag-card-hash" style="color: #f43f5e;">4e10ab3</div>
+                <div class="dag-card-epoch" style="color: #f43f5e;">Epoch 118 (FP8)</div>
+                <div class="dag-card-msg">FP8 E4M3 calibration</div>
+              </div>
+            </div>
+
+            <!-- NODE 6: 7c31d9a (Merge Convergence) -->
+            <div class="dag-node-wrapper" style="left: 610px; top: 50px;" onclick="selectDagCommit('7c31d9a')">
+              <div class="dag-node-point point-merge" data-hash="7c31d9a">
+                <span class="merge-glyph">🔀</span>
+              </div>
+              <div class="dag-node-card align-top">
+                <div class="dag-card-hash">7c31d9a</div>
+                <div class="dag-card-epoch" style="color: #a855f7;">Epoch 120 (Merge)</div>
+                <div class="dag-card-msg">Merge LoRA r16 into main</div>
+              </div>
+            </div>
+
+            <!-- NODE 7: ebb6a18 (HEAD Current Focus) -->
+            <div class="dag-node-wrapper node-head-focused" id="dagNodeHead" style="left: 800px; top: 50px;" onclick="selectDagCommit('ebb6a18')">
+              <div class="dag-node-point point-head" data-hash="ebb6a18">
+                <span class="head-dot"></span>
+              </div>
+              <div class="dag-node-card align-top active-focus-card">
+                <div class="dag-card-badge-head">HEAD</div>
+                <div class="dag-card-hash">ebb6a18</div>
+                <div class="dag-card-epoch">Epoch 128 (Latest)</div>
+                <div class="dag-card-msg">trying to deploy</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: DAG COMMIT DETAILS INSPECTOR DOCK -->
+      <aside class="dag-inspector-dock" id="dagInspectorDock">
+        <div class="dag-inspector-header">
+          <span class="inspector-title">Commit Inspector</span>
+          <span class="inspector-branch-badge" id="inspBranchBadge">main</span>
+        </div>
+        
+        <div class="dag-inspector-body">
+          <div class="insp-hash-row">
+            <span class="insp-hash-text" id="inspHash">ebb6a18</span>
+            <span class="insp-epoch-pill" id="inspEpoch">Epoch 128 (HEAD)</span>
+          </div>
+
+          <div class="insp-msg-box" id="inspMsg">trying to deploy</div>
+
+          <div class="insp-parents-row">
+            <span class="insp-label">Parents:</span>
+            <div class="insp-parents-tags" id="inspParents">
+              <span class="insp-parent-tag" onclick="selectDagCommit('7c31d9a')">7c31d9a</span>
+              <span class="insp-parent-tag" onclick="selectDagCommit('4e10ab3')">4e10ab3</span>
+            </div>
+          </div>
+
+          <div class="insp-metrics-grid">
+            <div class="insp-metric-item">
+              <span class="insp-m-lbl">Validation Loss</span>
+              <span class="insp-m-val" id="inspLoss" style="color: #10b981;">0.142</span>
+            </div>
+            <div class="insp-metric-item">
+              <span class="insp-m-lbl">FastCDC Dedup</span>
+              <span class="insp-m-val" id="inspDedup" style="color: #38bdf8;">78.4%</span>
+            </div>
+            <div class="insp-metric-item">
+              <span class="insp-m-lbl">Model Weights</span>
+              <span class="insp-m-val" id="inspSize">14.2 GB</span>
+            </div>
+            <div class="insp-metric-item">
+              <span class="insp-m-lbl">Committed</span>
+              <span class="insp-m-val" id="inspTime">19 hrs ago</span>
+            </div>
+          </div>
+
+          <div class="insp-checkout-block">
+            <div class="insp-cli-label">CHECKOUT THIS CHECKPOINT:</div>
+            <div class="insp-cli-box">
+              <code id="inspCliCmd">ai-git checkout ebb6a18</code>
+              <button type="button" class="btn-copy-cli" onclick="copyCheckoutCmd()" title="Copy command">📋</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+</body>
+</html>
