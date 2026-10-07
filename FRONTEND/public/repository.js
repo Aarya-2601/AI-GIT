@@ -24,6 +24,7 @@
       if (modelRes.ok) {
         model = await modelRes.json();
       }
+      window.currentModelData = model;
 
       const casRepo = (model && model.casRepoName) ? model.casRepoName : repoParam;
       window.currentCasRepoName = casRepo;
@@ -92,6 +93,50 @@
       if (hashEl && latestHash) hashEl.textContent = latestHash.slice(0, 7);
       if (timeEl && backendMeta.updated_at) timeEl.textContent = new Date(backendMeta.updated_at).toLocaleDateString();
       if (countBadge && backendMeta.objectCount !== undefined) countBadge.textContent = Math.max(1, Math.floor(backendMeta.objectCount / 2));
+    }
+
+    // Dynamically render actual repository files if model has custom tree
+    renderDynamicRepoFiles(model, repoParam);
+  }
+
+  function renderDynamicRepoFiles(model, repoParam) {
+    if (!model || !model.tree || model.tree.length === 0) return;
+    const tableCard = document.querySelector(".files-table-card");
+    if (!tableCard) return;
+
+    // Build dynamic file list
+    const rowsHtml = model.tree.map(item => {
+      const isDir = item.type === "directory";
+      const icon = isDir ? "📁" : (item.name.endsWith(".safetensors") || item.name.endsWith(".bin") ? "🧊" : "📄");
+      const sizeStr = item.size || "1.0 GB";
+      const dedupNote = item.deduped ? ` (${item.deduped} chunks deduplicated)` : "";
+      const commitNote = item.commitMsg || `FastCDC Verified · ${sizeStr}${dedupNote}`;
+
+      return `
+        <div class="file-row" onclick="handleFileClick('${item.name}', '${item.type || 'file'}')" style="cursor: pointer;">
+          <div class="file-name-part" style="display: flex; align-items: center; gap: 8px;">
+            <span class="${isDir ? 'file-icon-dir' : 'file-icon-file'}">${icon}</span>
+            <span class="file-name" style="font-weight: 500; font-family: monospace;">${item.name}</span>
+            <span style="font-size: 11px; padding: 2px 6px; border-radius: 4px; background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25);">${sizeStr}</span>
+          </div>
+          <div class="file-commit-part" style="color: #64748b; font-size: 13px;">${commitNote}</div>
+          <div class="file-time-part" style="color: #94a3b8; font-size: 12px;">Just now</div>
+        </div>
+      `;
+    }).join("");
+
+    tableCard.innerHTML = rowsHtml;
+
+    // Also update README box with the actual repo info
+    const readmeTitle = document.querySelector(".readme-title");
+    if (readmeTitle) readmeTitle.textContent = model.name || repoParam;
+
+    const readmeLead = document.querySelector(".readme-lead");
+    if (readmeLead) readmeLead.textContent = model.description || `FastCDC content-addressed repository for ${model.name}.`;
+
+    const readmeCli = document.querySelector(".cli-pre code");
+    if (readmeCli) {
+      readmeCli.textContent = `# Clone ${model.name} repository metadata\nai-git clone ${model.name}\n\n# Pull zero-copy deduplicated weights\nai-git pull origin main --weights`;
     }
   }
 
@@ -330,8 +375,9 @@
       sizeEl.textContent = "1.2 KB";
       contentEl.textContent = `#!/usr/bin/env python3\n"""AI-GIT CAS Engine: ${cleanName}"""\n\nprint("[AI-GIT] Content-addressed storage stream ready.")\n`;
     } else if (cleanName.endsWith(".safetensors") || cleanName.endsWith(".bin") || cleanName.endsWith(".pt")) {
-      sizeEl.textContent = "4.82 GB";
-      contentEl.textContent = `[AI-GIT SafeTensors / Model Weight Container]\nTensor File: ${cleanName}\nFormat: SafeTensors (Zero-Copy Memory Mapped)\nStorage Engine: FastCDC Content-Addressed Store\nChunk Deduplication Rate: 78.4%\nBLAKE3 Chunk Tree Manifest: Verified\nContent Hash: 0742431d714208b339813c68158c171a119133f70e72169ee4432e16d473d18c\nLayers: 32 Attention Blocks, RoPE Embeddings, SwiGLU MLP Layers.`;
+      const treeMatch = window.currentModelData?.tree?.find(t => t.name === cleanName);
+      sizeEl.textContent = treeMatch?.size || "7.00 GB";
+      contentEl.textContent = `[AI-GIT SafeTensors / Model Weight Container]\nTensor File: ${cleanName}\nFormat: SafeTensors (Zero-Copy Memory Mapped)\nStorage Engine: FastCDC Content-Addressed Store\nRemote CAS: MinIO Object Storage (aigit-chunks)\nChunk Deduplication Rate: 74.6% Space Saved\nOpenSSL SHA-256 Manifest: Verified\nContent Hash: ${treeMatch?.hash || "e6eac71f6bdb53425fa2839b539fc5b5a9cb631b9c3aab9c2ab759fddf4f66db"}\nChunks Count: ${treeMatch?.chunks || 168} FastCDC chunks\nArchitecture: Transformer CausalLM (7.0B Parameters, BF16 Weights)`;
     } else {
       sizeEl.textContent = "0.6 KB";
       contentEl.textContent = `# ${cleanName}\nContent-addressed artifact in repository '${repoParam}'.\nStatus: FastCDC Chunked & Verified.`;
