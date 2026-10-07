@@ -40,6 +40,13 @@
       }
 
       applyRepoMetadata(model, backendMeta, repoParam);
+
+      // Support direct deep link: ?view=dag or ?tab=dag
+      const viewParam = urlParams.get("view") || urlParams.get("tab");
+      if (viewParam === "dag") {
+        const dagTabBtn = document.getElementById("tabCommitDag");
+        if (dagTabBtn) dagTabBtn.click();
+      }
     } catch (err) {
       console.error("Error fetching repository metadata:", err);
     }
@@ -139,7 +146,8 @@
       convergences: document.getElementById("tabContentConvergences"),
       pipelines: document.getElementById("tabContentPipelines"),
       guardrails: document.getElementById("tabContentGuardrails"),
-      config: document.getElementById("tabContentConfig")
+      config: document.getElementById("tabContentConfig"),
+      dag: document.getElementById("tabContentDag")
     };
 
     Object.keys(panes).forEach(k => {
@@ -147,6 +155,16 @@
         panes[k].style.display = k === tab ? "block" : "none";
       }
     });
+
+    if (tab === "dag") {
+      window.selectDagCommit("ebb6a18");
+      const tabScrollArea = document.getElementById("tabDagGraphScrollArea");
+      if (tabScrollArea) {
+        setTimeout(() => {
+          tabScrollArea.scrollTo({ left: tabScrollArea.scrollWidth, behavior: "smooth" });
+        }, 80);
+      }
+    }
   }
 
   function setupActions() {
@@ -515,7 +533,7 @@
       dagActiveBadge.textContent = `● FOCUSED: ${hash} (${data.epoch})`;
     }
 
-    // Populate inspector dock
+    // Update bottom inspector
     const inspBranchBadge = document.getElementById("inspBranchBadge");
     if (inspBranchBadge) {
       inspBranchBadge.textContent = data.branch;
@@ -555,29 +573,84 @@
 
     const inspCliCmd = document.getElementById("inspCliCmd");
     if (inspCliCmd) inspCliCmd.textContent = `ai-git checkout ${data.hash}`;
+
+    // Update tab-level inspector (if user is viewing the Commit DAG tab)
+    const tabInspBranchBadge = document.getElementById("tabInspBranchBadge");
+    if (tabInspBranchBadge) {
+      tabInspBranchBadge.textContent = data.branch;
+      tabInspBranchBadge.style.color = data.branchColor;
+      tabInspBranchBadge.style.borderColor = data.branchColor;
+    }
+
+    const tabInspHash = document.getElementById("tabInspHash");
+    if (tabInspHash) tabInspHash.textContent = data.hash;
+
+    const tabInspEpoch = document.getElementById("tabInspEpoch");
+    if (tabInspEpoch) tabInspEpoch.textContent = data.epoch;
+
+    const tabInspMsg = document.getElementById("tabInspMsg");
+    if (tabInspMsg) tabInspMsg.textContent = data.msg;
+
+    const tabInspParents = document.getElementById("tabInspParents");
+    if (tabInspParents) {
+      if (!data.parents || data.parents.length === 0) {
+        tabInspParents.innerHTML = `<span style="color: #8b949e; font-size: 11px;">None (Root commit)</span>`;
+      } else {
+        tabInspParents.innerHTML = data.parents.map(p => `<span class="insp-parent-tag" onclick="selectDagCommit('${p}')" title="Inspect parent commit">${p}</span>`).join("");
+      }
+    }
+
+    const tabInspLoss = document.getElementById("tabInspLoss");
+    if (tabInspLoss) tabInspLoss.textContent = data.valLoss;
+
+    const tabInspDedup = document.getElementById("tabInspDedup");
+    if (tabInspDedup) tabInspDedup.textContent = data.dedup;
+
+    const tabInspSize = document.getElementById("tabInspSize");
+    if (tabInspSize) tabInspSize.textContent = data.size;
+
+    const tabInspTime = document.getElementById("tabInspTime");
+    if (tabInspTime) tabInspTime.textContent = data.time;
+
+    const tabInspCliCmd = document.getElementById("tabInspCliCmd");
+    if (tabInspCliCmd) tabInspCliCmd.textContent = `ai-git checkout ${data.hash}`;
   };
 
   window.copyCheckoutCmd = function () {
     const cmd = `ai-git checkout ${activeCommitHash}`;
     navigator.clipboard.writeText(cmd).then(() => {
-      const btn = document.querySelector(".btn-copy-cli");
-      if (btn) {
+      const btns = document.querySelectorAll(".btn-copy-cli");
+      btns.forEach(btn => {
         const orig = btn.textContent;
         btn.textContent = "✓";
         setTimeout(() => { btn.textContent = orig; }, 1200);
-      }
+      });
     }).catch(() => {
       alert(`Command to run:\n${cmd}`);
     });
   };
 
+  window.triggerBottomDagPanel = function () {
+    if (bottomCheckpointPanel) {
+      bottomCheckpointPanel.classList.add("open");
+      if (btnCheckpointToggle) btnCheckpointToggle.classList.add("active");
+      window.selectDagCommit("ebb6a18");
+      if (dagGraphScrollArea) {
+        setTimeout(() => {
+          dagGraphScrollArea.scrollTo({ left: dagGraphScrollArea.scrollWidth, behavior: "smooth" });
+        }, 120);
+      }
+    }
+  };
+
   if (btnCheckpointToggle && bottomCheckpointPanel) {
     btnCheckpointToggle.addEventListener("click", () => {
-      bottomCheckpointPanel.classList.toggle("open");
-      if (bottomCheckpointPanel.classList.contains("open")) {
-        // Focus on HEAD node & select it
+      const willOpen = !bottomCheckpointPanel.classList.contains("open");
+      bottomCheckpointPanel.classList.toggle("open", willOpen);
+      btnCheckpointToggle.classList.toggle("active", willOpen);
+      if (willOpen) {
         window.selectDagCommit("ebb6a18");
-        if (dagGraphScrollArea && dagNodeHead) {
+        if (dagGraphScrollArea) {
           setTimeout(() => {
             dagGraphScrollArea.scrollTo({ left: dagGraphScrollArea.scrollWidth, behavior: "smooth" });
           }, 120);
@@ -589,6 +662,28 @@
   if (btnCloseCheckpointPanel && bottomCheckpointPanel) {
     btnCloseCheckpointPanel.addEventListener("click", () => {
       bottomCheckpointPanel.classList.remove("open");
+      if (btnCheckpointToggle) btnCheckpointToggle.classList.remove("active");
+    });
+  }
+
+  // Make the entire latest commit bar clickable to launch the Commit DAG!
+  const latestCommitBar = document.querySelector(".latest-commit-bar");
+  if (latestCommitBar) {
+    latestCommitBar.style.cursor = "pointer";
+    latestCommitBar.setAttribute("title", "Click to view visual Commit DAG & training checkpoints");
+    latestCommitBar.addEventListener("click", (e) => {
+      // Don't intercept if clicking something else specific
+      window.triggerBottomDagPanel();
+    });
+  }
+
+  // Also wire the commit count badge
+  const commitCountBadge = document.querySelector(".commit-count-badge");
+  if (commitCountBadge) {
+    commitCountBadge.style.cursor = "pointer";
+    commitCountBadge.addEventListener("click", (e) => {
+      e.stopPropagation();
+      window.triggerBottomDagPanel();
     });
   }
 
