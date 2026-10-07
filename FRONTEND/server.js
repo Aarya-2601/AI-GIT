@@ -824,6 +824,21 @@ app.post("/api/auth/demo-login", (req, res) => {
     return res.json({ ok: true, user: demoUser });
 });
 
+app.post("/api/auth/google", (req, res) => {
+    const users = readJSON(USERS_FILE, {});
+    const googleUser = users["aarya-ml"] || {
+        name: "Aarya Doshi",
+        username: "aarya-ml",
+        email: "aaryadoshi7@gmail.com",
+        role: "Lead AI Researcher & Systems Architect",
+        bio: "Training multi-billion parameter diffusion models & building decentralized content-addressed VCS for large neural weights.",
+        skills: ["PyTorch", "FastCDC", "CUDA", "SafeTensors", "Distributed Training"],
+        organization: "AI-GIT Foundation"
+    };
+    req.session.user = googleUser;
+    return res.json({ ok: true, user: googleUser });
+});
+
 app.post("/api/auth/signup", (req, res) => {
     const { name, username, email, password, otp } = req.body;
     if (!name || !username || !email || !password) {
