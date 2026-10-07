@@ -437,9 +437,10 @@ class AIGitTUI:
 
     def update_chunk_inspector(self):
         """Update inspection metrics based on currently selected file"""
-        if self.all_file_items:
-            idx = min(self.selected_indices[self.PANEL_FILES], len(self.all_file_items) - 1)
-            item, kind = self.all_file_items[idx]
+        idx = self.selected_indices[self.PANEL_FILES]
+        if idx > 0 and self.all_file_items:
+            file_idx = min(idx - 1, len(self.all_file_items) - 1)
+            item, kind = self.all_file_items[file_idx]
             self.current_chunks = self.repo.get_file_chunk_details(item["path"], item.get("hash", ""))
         else:
             self.current_chunks = []
@@ -556,9 +557,24 @@ class AIGitTUI:
             buf.append(f"\033[{y_start + 1};{x_left + 2}H{hdr_str}")
             buf.append(f"\033[{y_start + 2};{x_left + 2}H{Palette.BORDER_DIM}{'─' * inner_w_left}{Palette.RESET}")
 
-            for i, (item, kind) in enumerate(slice_f[:inner_h_left - 2]):
-                row_y = y_start + 3 + i
-                is_sel = (start_f + i == file_idx)
+            # Top Entry (index 0): "[ALL FILES] - Batch Workspace"
+            is_all_sel = (file_idx == 0)
+            all_bg = Palette.BG_ACTIVE if is_all_sel else ""
+            total_ws_bytes = sum(item.get("size", 0) for item, _ in self.all_file_items)
+            total_staged_count = len(self.staged)
+            all_stat_badge = f"{Palette.GREEN}ALL STAGED ✔{Palette.RESET}" if (total_staged_count == len(self.all_file_items) and len(self.all_file_items) > 0) else f"{Palette.CYAN}WORKSPACE{Palette.RESET}"
+            all_row_str = f"{all_bg} 📦 {Palette.CYAN}{Palette.BOLD}{'[ALL FILES] Batch All':<{col_name_w}}{Palette.RESET} {Palette.DARK_SLATE}{format_bytes(total_ws_bytes):>{col_sz_w}}  {all_stat_badge}{Palette.RESET}"
+            buf.append(f"\033[{y_start + 3};{x_left + 2}H{all_row_str}")
+
+            # Individual file entries (1-indexed in file selection)
+            max_visible_files = inner_h_left - 3
+            start_f = max(0, (file_idx - 1) - (max_visible_files // 2))
+            slice_f = self.all_file_items[start_f : start_f + max_visible_files]
+
+            for i, (item, kind) in enumerate(slice_f):
+                row_y = y_start + 4 + i
+                item_actual_idx = start_f + i + 1
+                is_sel = (file_idx == item_actual_idx)
 
                 fname = item["path"]
                 sz_str = format_bytes(item["size"])
@@ -584,11 +600,20 @@ class AIGitTUI:
         ry = y_start + 2
 
         # Selected File Details Card
-        buf.append(f"\033[{ry};{x_right + 2}H{Palette.WHITE}{Palette.BOLD}SELECTED ARTIFACT:{Palette.RESET}")
-        ry += 1
-
-        if self.all_file_items:
-            sel_item, sel_kind = self.all_file_items[min(file_idx, len(self.all_file_items) - 1)]
+        if file_idx == 0:
+            buf.append(f"\033[{ry};{x_right + 2}H{Palette.CYAN}{Palette.BOLD}WORKSPACE SCOPE: [ALL FILES]{Palette.RESET}")
+            ry += 1
+            total_ws_bytes = sum(item.get("size", 0) for item, _ in self.all_file_items)
+            buf.append(f"\033[{ry};{x_right + 2}H{Palette.SLATE}Files:  {Palette.WHITE}{len(self.all_file_items)} artifacts ({len(self.staged)} staged){Palette.RESET}")
+            ry += 1
+            buf.append(f"\033[{ry};{x_right + 2}H{Palette.SLATE}Size:   {Palette.TEAL}{format_bytes(total_ws_bytes)}{Palette.RESET}")
+            ry += 1
+            buf.append(f"\033[{ry};{x_right + 2}H{Palette.SLATE}Action: {Palette.GREEN}[A] Stage All  [C] Commit All{Palette.RESET}")
+            ry += 2
+        elif self.all_file_items:
+            buf.append(f"\033[{ry};{x_right + 2}H{Palette.WHITE}{Palette.BOLD}SELECTED ARTIFACT:{Palette.RESET}")
+            ry += 1
+            sel_item, sel_kind = self.all_file_items[min(file_idx - 1, len(self.all_file_items) - 1)]
             sel_name = Path(sel_item["path"]).name
             sel_sz = format_bytes(sel_item["size"])
             sel_h = sel_item.get("hash", "")[:12] if sel_item.get("hash") else "not hashed"
@@ -614,34 +639,34 @@ class AIGitTUI:
         ry += 2
 
         # 1. PUSH (Pink)
-        btn_push = f" {Palette.BTN_PINK}  [P] PUSH CHUNKS ▲  {Palette.RESET}  {Palette.DARK_SLATE}Remote CAS sync{Palette.RESET}"
+        btn_push = f" {Palette.BTN_PINK}  [P] PUSH ALL CHUNKS ▲  {Palette.RESET}  {Palette.DARK_SLATE}Remote CAS sync{Palette.RESET}"
         buf.append(f"\033[{ry};{x_right + 2}H{btn_push}")
         ry += 2
 
         # 2. PULL (Blue)
-        btn_pull = f" {Palette.BTN_BLUE}  [U] PULL CHUNKS ▼  {Palette.RESET}  {Palette.DARK_SLATE}Fetch updates{Palette.RESET}"
+        btn_pull = f" {Palette.BTN_BLUE}  [U] PULL ALL CHUNKS ▼  {Palette.RESET}  {Palette.DARK_SLATE}Fetch updates{Palette.RESET}"
         buf.append(f"\033[{ry};{x_right + 2}H{btn_pull}")
         ry += 2
 
         # 3. COMMIT (Green)
-        btn_commit = f" {Palette.BTN_GREEN}  [C] COMMIT STAGED ✔  {Palette.RESET}  {Palette.DARK_SLATE}Create checkpoint{Palette.RESET}"
+        btn_commit = f" {Palette.BTN_GREEN}  [C] COMMIT STAGED ✔    {Palette.RESET}  {Palette.DARK_SLATE}Create checkpoint{Palette.RESET}"
         buf.append(f"\033[{ry};{x_right + 2}H{btn_commit}")
         ry += 2
 
         # 4. DIFF / INSPECT (Purple)
-        btn_diff = f" {Palette.BTN_PURPLE}  [D] DIFF / INSPECT ⚡ {Palette.RESET}  {Palette.DARK_SLATE}FastCDC SIMD delta{Palette.RESET}"
+        btn_diff = f" {Palette.BTN_PURPLE}  [D] DIFF / INSPECT ⚡   {Palette.RESET}  {Palette.DARK_SLATE}FastCDC SIMD delta{Palette.RESET}"
         buf.append(f"\033[{ry};{x_right + 2}H{btn_diff}")
         ry += 2
 
         # 5. SYNC / STATUS (Blue)
-        btn_sync = f" {Palette.BTN_BLUE}  [S] SYNC STATUS ⟳  {Palette.RESET}  {Palette.DARK_SLATE}Refresh tree{Palette.RESET}"
+        btn_sync = f" {Palette.BTN_BLUE}  [S] SYNC STATUS ⟳    {Palette.RESET}  {Palette.DARK_SLATE}Refresh tree{Palette.RESET}"
         buf.append(f"\033[{ry};{x_right + 2}H{btn_sync}")
         ry += 2
 
         # Divider
         buf.append(f"\033[{ry};{x_right + 2}H{Palette.BORDER_DIM}{'─' * inner_w_right}{Palette.RESET}")
         ry += 1
-        buf.append(f"\033[{ry};{x_right + 2}H{Palette.DARK_SLATE}Press key in [ ] to instantly run command.{Palette.RESET}")
+        buf.append(f"\033[{ry};{x_right + 2}H{Palette.DARK_SLATE}Press [Space] to Stage/Unstage, key in [ ] to run.{Palette.RESET}")
 
         # 3. MODAL POPUPS (if active)
         if self.modal_mode == "commit":
@@ -731,12 +756,24 @@ class AIGitTUI:
     # -----------------------------------------------------------------
     # ACTIONS & REPOSITORY MUTATIONS
     # -----------------------------------------------------------------
+    def toggle_stage(self):
+        """Toggle staging for current selection (or Stage All if on [ALL FILES])"""
+        idx = self.selected_indices[self.PANEL_FILES]
+        if idx == 0:
+            self.stage_all()
+        else:
+            self.stage_selected()
+
     def stage_selected(self):
         """Stage the currently selected modified/untracked file"""
+        idx = self.selected_indices[self.PANEL_FILES]
+        if idx == 0:
+            self.stage_all()
+            return
         if not self.all_file_items:
             return
-        idx = min(self.selected_indices[self.PANEL_FILES], len(self.all_file_items) - 1)
-        item, section = self.all_file_items[idx]
+        file_idx = min(idx - 1, len(self.all_file_items) - 1)
+        item, section = self.all_file_items[file_idx]
         file_path = item.get("path", "")
         if not file_path:
             return
@@ -855,14 +892,20 @@ class AIGitTUI:
             return
         repo_root = self.repo.root or Path.cwd()
         if self.all_file_items and self.active_panel == self.PANEL_FILES:
-            idx = min(self.selected_indices[self.PANEL_FILES], len(self.all_file_items) - 1)
-            item, _ = self.all_file_items[idx]
-            fpath = item["path"]
-            res = subprocess.run([str(exe), "inspect", fpath], cwd=str(repo_root), capture_output=True, text=True)
-            if res.returncode == 0:
-                self.set_toast(f"✔ Inspected {Path(fpath).name}")
+            raw_idx = self.selected_indices[self.PANEL_FILES]
+            if raw_idx == 0:
+                # Inspect whole workspace status
+                res = subprocess.run([str(exe), "diff"], cwd=str(repo_root), capture_output=True, text=True)
+                self.set_toast("✔ Inspected entire workspace diff")
             else:
-                self.set_toast(f"Inspect: {res.stderr.strip()[:32]}")
+                idx = min(raw_idx - 1, len(self.all_file_items) - 1)
+                item, _ = self.all_file_items[idx]
+                fpath = item["path"]
+                res = subprocess.run([str(exe), "inspect", fpath], cwd=str(repo_root), capture_output=True, text=True)
+                if res.returncode == 0:
+                    self.set_toast(f"✔ Inspected {Path(fpath).name}")
+                else:
+                    self.set_toast(f"Inspect: {res.stderr.strip()[:32]}")
         else:
             self.set_toast("✔ Diff / Inspect ready (Select file)")
         self.refresh_data()
@@ -1001,7 +1044,8 @@ class AIGitTUI:
                     self.update_chunk_inspector()
                 elif key in ("DOWN", "j"):
                     cur = self.selected_indices[self.PANEL_FILES]
-                    max_len = max(1, len(self.all_file_items))
+                    # Total entries: index 0 (ALL FILES) + N individual files
+                    max_len = 1 + len(self.all_file_items)
                     self.selected_indices[self.PANEL_FILES] = min(max_len - 1, cur + 1)
                     self.update_chunk_inspector()
 
