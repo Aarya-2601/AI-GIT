@@ -31,10 +31,9 @@ body.auth-page {
 
 .parallax-grid-layer {
   position: absolute;
-  inset: -100px;
+  inset: -250px;
   will-change: transform;
   transform: translate3d(0, 0, 0);
-  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Layer 1: Fine Grid with 36px horizontal and vertical theme cyan lines */
