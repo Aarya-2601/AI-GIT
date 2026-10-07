@@ -6,5 +6,19 @@
         "-DCMAKE_TOOLCHAIN_FILE=${workspaceFolder}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "-DVCPKG_TARGET_TRIPLET=x64-windows-static"
     ],
-    "cmake.sourceDirectory": "C:/Users/Keya/Desktop/AI-GIT/CLI"
+    "cmake.sourceDirectory": "C:/Users/Keya/Desktop/AI-GIT/CLI",
+    "python.analysis.exclude": [
+        "**/vcpkg/**",
+        "**/build/**",
+        "**/.aigit/**",
+        "**/.git/**",
+        "**/node_modules/**"
+    ],
+    "files.watcherExclude": {
+        "**/vcpkg/**": true,
+        "**/build/**": true,
+        "**/.aigit/**": true,
+        "**/.git/**": true,
+        "**/node_modules/**": true
+    }
 }
