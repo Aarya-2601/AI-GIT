@@ -20,16 +20,25 @@ import subprocess
 import threading
 from pathlib import Path
 
-# Enable ANSI escape sequences on Windows console
+# Enable ANSI escape sequences & UTF-8 on Windows console
 if os.name == 'nt':
     import msvcrt
     import ctypes
     kernel32 = ctypes.windll.kernel32
+    # Set Windows console code page to UTF-8 (65001)
+    kernel32.SetConsoleOutputCP(65001)
+    kernel32.SetConsoleCP(65001)
     # Enable ENABLE_VIRTUAL_TERMINAL_PROCESSING (0x0004)
     hOut = kernel32.GetStdHandle(-11) # STD_OUTPUT_HANDLE
     mode = ctypes.c_ulong()
     kernel32.GetConsoleMode(hOut, ctypes.byref(mode))
     kernel32.SetConsoleMode(hOut, mode.value | 0x0004 | 0x0001)
+
+# Ensure stdout and stderr handle UTF-8 without charmap crashes
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
 # =====================================================================
 # CHAMELEON COLOR PALETTE & ANSI STYLING
@@ -509,6 +518,7 @@ class AIGitTUI:
 
         # 2. MAIN PANELS LAYOUT
         # Available vertical space: row 3 to term_rows - 2
+        y_start = 3
         content_h = term_rows - 4
         # 2. CLEAN TWO-COLUMN REPOSITORY LAYOUT (Modeled after repository.html)
         # Left (65% width): Files Table
