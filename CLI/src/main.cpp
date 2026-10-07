@@ -1,9 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <chrono>
+#include <iomanip>
 #include "commands/commands.hpp"
 
-//argument count and agrument vector ahving the number of aruments written in command line
+//argument count and argument vector having the number of arguments written in command line
 int main(int argc, char* argv[]) {
     //make a vector of strings, each string representing an argument
     std::vector<std::string> args(argv, argv + argc);
@@ -26,14 +28,17 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    auto startTime = std::chrono::high_resolution_clock::now();
     std::string command=args[1];
+    int exitCode = 0;
+
     if(command=="init"){
-        return Commands::runInit();
+        exitCode = Commands::runInit();
     } 
 
     else if(command=="diff"){
         std::vector<std::string> targets(args.begin()+2, args.end());
-        return Commands::runDiff(targets);
+        exitCode = Commands::runDiff(targets);
     }
 
     else if(command=="inspect"){
@@ -42,16 +47,16 @@ int main(int argc, char* argv[]) {
             std::cerr<<"Usage: ai-git inspect <file_path>"<<std::endl;
             return 1;
         }
-        return Commands::runInspect(args[2]);
+        exitCode = Commands::runInspect(args[2]);
     } 
 
     else if(command=="add"){
         std::vector<std::string> targets(args.begin()+2, args.end());
-        return Commands::runAdd(targets);
+        exitCode = Commands::runAdd(targets);
     }
 
     else if(command=="status"){
-        return Commands::runStatus();
+        exitCode = Commands::runStatus();
     }
 
     else if(command=="commit"){
@@ -75,7 +80,7 @@ int main(int argc, char* argv[]) {
             commitMessage=args[2];
         }
 
-        return Commands::runCommit(commitMessage);
+        exitCode = Commands::runCommit(commitMessage);
     }
 
     else if(command=="hash-object"){
@@ -83,28 +88,28 @@ int main(int argc, char* argv[]) {
             std::cerr<<"Error: 'hash-object' requires a valid filename parameter."<<std::endl;
             return 1;
         }
-        return Commands::runHashObject(args[2]);
+        exitCode = Commands::runHashObject(args[2]);
     }
     
     else if(command=="log"){
-    return Commands::runLog();
+        exitCode = Commands::runLog();
     }
 
     else if(command=="config"){
         std::vector<std::string> configArgs(args.begin()+2, args.end());
-        return Commands::runConfig(configArgs);
+        exitCode = Commands::runConfig(configArgs);
     }
 
     else if(command=="push"){
         //custom server parameter: ai-git push http://localhost:3000
         std::string server=(args.size()>=3)? args[2]:"http://localhost:3000";
-        return Commands::runPush(server);
+        exitCode = Commands::runPush(server);
     }
 
     else if (command=="pull") {
         //use like ai-git pull <reponame>
         std::string repoName=(args.size()>=3)? args[2]:"default-repo";
-        return Commands::runPull(repoName);
+        exitCode = Commands::runPull(repoName);
     }
     
     else if(command == "clone") {
@@ -115,11 +120,20 @@ int main(int argc, char* argv[]) {
             return 1;
         }
         std::string repoName=args[2];
-        return Commands::runClone(repoName);
+        exitCode = Commands::runClone(repoName);
     }
 
     else{
         std::cerr<<"Error: Command '"<<command<<"' not recognized."<<std::endl;
         return 1;
     }
+
+    auto endTime = std::chrono::high_resolution_clock::now();
+    double elapsedSeconds = std::chrono::duration<double>(endTime - startTime).count();
+
+    std::cout << "\n⚡ Done: 'ai-git " << command << "' completed in " 
+              << std::fixed << std::setprecision(2) << elapsedSeconds 
+              << "s\n" << std::flush;
+
+    return exitCode;
 }
