@@ -336,51 +336,51 @@ document.addEventListener("DOMContentLoaded", () => {
         ambientY = Math.cos(timestamp * 0.0005) * 0.12;
       }
 
-      // Smooth lerp (0.075 factor)
-      currentX += ((targetX + ambientX) - currentX) * 0.075;
-      currentY += ((targetY + ambientY) - currentY) * 0.075;
+      // Smooth, responsive lerp (0.12 factor for faster, crisper tracking)
+      currentX += ((targetX + ambientX) - currentX) * 0.12;
+      currentY += ((targetY + ambientY) - currentY) * 0.12;
 
       const scrollOff = scrollY * 0.15;
 
-      // Staggered parallax movement on horizontal and vertical grid lines
+      // Amplified parallax movement for dramatic cursor responsiveness
       if (layerBase) {
-        const x1 = currentX * -18;
-        const y1 = currentY * -18 - scrollOff * 0.5;
+        const x1 = currentX * -45;
+        const y1 = currentY * -45 - scrollOff * 0.5;
         layerBase.style.transform = `translate3d(${x1.toFixed(2)}px, ${y1.toFixed(2)}px, 0)`;
       }
 
       if (layerMajor) {
-        const x2 = currentX * -38;
-        const y2 = currentY * -38 - scrollOff * 0.9;
+        const x2 = currentX * -95;
+        const y2 = currentY * -95 - scrollOff * 0.9;
         layerMajor.style.transform = `translate3d(${x2.toFixed(2)}px, ${y2.toFixed(2)}px, 0)`;
       }
 
       if (layerCross) {
-        const x3 = currentX * -54;
-        const y3 = currentY * -54 - scrollOff * 1.3;
+        const x3 = currentX * -140;
+        const y3 = currentY * -140 - scrollOff * 1.3;
         layerCross.style.transform = `translate3d(${x3.toFixed(2)}px, ${y3.toFixed(2)}px, 0)`;
       }
 
       if (glowCyan) {
-        const gx = currentX * 65;
-        const gy = currentY * 65;
+        const gx = currentX * 160;
+        const gy = currentY * 160;
         glowCyan.style.transform = `translate3d(${gx.toFixed(2)}px, ${gy.toFixed(2)}px, 0)`;
       }
 
       if (glowGreen) {
-        const gx2 = currentX * -55;
-        const gy2 = currentY * -55;
+        const gx2 = currentX * -140;
+        const gy2 = currentY * -140;
         glowGreen.style.transform = `translate3d(${gx2.toFixed(2)}px, ${gy2.toFixed(2)}px, 0)`;
       }
 
-      // Subtle 3D perspective tilt on glass login card for desktop
+      // 3D perspective tilt on glass login card for desktop
       if (authCard && window.innerWidth > 992) {
-        const tiltX = -currentY * 4.2;
-        const tiltY = currentX * 4.2;
-        const shadowX = -currentX * 12;
-        const shadowY = 20 - currentY * 8;
-        authCard.style.transform = `perspective(1000px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateZ(4px)`;
-        authCard.style.boxShadow = `${shadowX.toFixed(1)}px ${shadowY.toFixed(1)}px 45px rgba(0, 0, 0, 0.08), 0 0 30px rgba(2, 132, 199, 0.08)`;
+        const tiltX = -currentY * 7.5;
+        const tiltY = currentX * 7.5;
+        const shadowX = -currentX * 24;
+        const shadowY = 24 - currentY * 16;
+        authCard.style.transform = `perspective(1000px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateZ(8px)`;
+        authCard.style.boxShadow = `${shadowX.toFixed(1)}px ${shadowY.toFixed(1)}px 50px rgba(0, 0, 0, 0.12), 0 0 40px rgba(2, 132, 199, 0.14)`;
       }
 
       requestAnimationFrame(renderParallax);
