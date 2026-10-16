@@ -32,4 +32,13 @@ vcpkg_installed/
 
 # Dependencies & Scratch
 node_modules/
-scratch/
+scratch/
+
+# Local AI-GIT storage & caches
+.aigit/objects/
+.aigit/metadata.db
+.aigit/cas/
+aigit-e2e-test/
+clone-e2e-test/
+test-repo/
+CLI/build*/
