@@ -1,24 +1,44 @@
-# CMake build outputs
+#build putputs and generated binaries
 build/
-CLI/build/
-CLI/build-remote/
-**/bin/
-**/obj/
+bin/
+lib/
+out/
+*.exe
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.obj
+*.o
+*.pdb
 
+#heavy packages
+vcpkg/
+vcpkg_installed/
 
-# Node.js dependencies
+#vscode local settings
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/settings.json
+
+#vs code cache
+.vs/
+*.user
+*.suo
+*.userosv
+*.sln.docstates
+
+# Dependencies & Scratch
 node_modules/
-**/node_modules/
-
-# vcpkg generated dependencies
-CLI/vcpkg_installed/
-**/vcpkg/packages/
-**/vcpkg/installed/
-**/vcpkg/buildtrees/
-**/vcpkg/downloads/
-
-# Editor / OS caches
-.vscode/
-.DS_Store
 scratch/
-aigit-demo/
+
+# Local AI-GIT storage & caches
+.aigit/objects/
+.aigit/metadata.db
+.aigit/cas/
+aigit-e2e-test/
+clone-e2e-test/
+test-repo/
+CLI/build*/

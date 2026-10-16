@@ -131,50 +131,14 @@
                   <span class="node-item-desc">Community discussions</span>
                 </div>
               </a>
-
-              <div class="node-dropdown-divider"></div>
-
-              <!-- TREE OF TOP REPOSITORIES -->
-              <div class="node-tree-header">
-                <span>TOP NODES</span>
-              </div>
-
-              <div class="dropdown-tree-list">
-                <a href="repository.html?repo=llama-3-8b-instruct" class="dropdown-tree-node">
-                  <span class="tree-line">├──►</span>
-                  <span class="tree-repo-name">llama-3-8b-instruct</span>
-                </a>
-                <a href="repository.html?repo=mistral-7b-v0.3" class="dropdown-tree-node">
-                  <span class="tree-line">├──►</span>
-                  <span class="tree-repo-name">mistral-7b-v0.3</span>
-                </a>
-                <a href="repository.html?repo=stable-diffusion-3-medium" class="dropdown-tree-node">
-                  <span class="tree-line">├──►</span>
-                  <span class="tree-repo-name">stable-diffusion-3-medium</span>
-                </a>
-                <a href="repository.html?repo=phi-3-mini-4k" class="dropdown-tree-node">
-                  <span class="tree-line">├──►</span>
-                  <span class="tree-repo-name">phi-3-mini-4k</span>
-                </a>
-                <a href="repository.html?repo=deepseek-coder-v2" class="dropdown-tree-node">
-                  <span class="tree-line">└──►</span>
-                  <span class="tree-repo-name">deepseek-coder-v2</span>
-                </a>
-              </div>
             </div>
           </div>
 
-          <!-- 2. ANIMATED CHAMELEON CHARACTER -->
+          <!-- 2. CHAMELEON LOGO -->
           <div class="chameleon-perch-container" id="chameleonPerch">
             <a href="dashboard.html" class="chameleon-anchor" title="AI-GIT Model Hub (Click home)">
               <img src="chameleon-logo.png" alt="AI-GIT Chameleon" class="topbar-chameleon-character" id="topbarChameleonImg">
             </a>
-            <!-- Animated chameleon tongue that extends & snaps periodically -->
-            <div class="chameleon-tongue-track" id="chameleonTongueTrack" aria-hidden="true">
-              <div class="chameleon-tongue-stalk" id="chameleonTongueStalk">
-                <span class="chameleon-tongue-bulb"></span>
-              </div>
-            </div>
           </div>
 
           <!-- 3. TOPBAR HEADING: MODEL HUB (Glowing Blue, Big Heading, Same for all users) -->

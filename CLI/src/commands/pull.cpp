@@ -1,519 +1,184 @@
-#include "pull.hpp"
-#include "checkout.hpp"
+//send a GET request to get a list of chunks and presigned urls
+////deduplication so comapre local with remote and discard those we already have
+//download missing chunks from MinIo using libcurl
+//update local db
 
+#include "pull.hpp"
+#include "../core/config.hpp"
 #include "../storage/metadata_db.hpp"
 #include "../storage/object_store.hpp"
-#include "../core/config.hpp"
-#include "../core/hashing.hpp"
-#include "../helpers/curl_helpers.hpp"
 
 #include <curl/curl.h>
-#include <nlohmann/json.hpp>
-
-#include <filesystem>
-#include <fstream>
 #include <iostream>
+#include <fstream>
+#include <filesystem>
 #include <map>
-#include <string>
-
 namespace fs = std::filesystem;
 
-namespace Commands
-{
-
-static std::string getRemoteRepository(
-    const std::string& serverUrl,
-    const std::string& repoName
-)
-{
-    // Current backend contract used by clone as well.
-    const std::string endpoint =serverUrl + "/api/v1/clone/" + repoName;
-    return Utils::httpGet(endpoint, "Pull");
+namespace Commands{
+//st:1 incoming network bytes from Express appended into std::string
+static size_t expressBytesPull(void* contents, size_t size, size_t nmemb, std::string* outputString) {
+    size_t totalBytes=size*nmemb;
+    outputString->append(static_cast<char*>(contents), totalBytes);
+    return totalBytes;
 }
 
-static std::string branchNameFromHead(
-    const std::string& headRef
-)
-{
-    const std::string prefix = "refs/heads/";
+//writes incoming binary stream bytes from MinIO to a file on disk
+static size_t minioWritePull(void* contents, size_t size, size_t nmemb, std::ofstream* fileStream) {
+    size_t totalBytes=size*nmemb;
+    fileStream->write(static_cast<char*>(contents), totalBytes);
+    return totalBytes;
+}
+//st 2: sends GET request to backend for manifest JSON
+static std::string getManifestPull(const std::string& serverUrl, const std::string& repoName) {
+    std::string pullEndpoint=serverUrl+"/api/v1/pull/clone/"+repoName;
+    std::string jsonResponse;
 
-    if (headRef.rfind(prefix, 0) == 0)
-    {
-        return headRef.substr(prefix.size());
+    CURL* curl=curl_easy_init();
+    if(!curl) return "";
+
+    curl_easy_setopt(curl, CURLOPT_URL, pullEndpoint.c_str());
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, expressBytesPull);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &jsonResponse);
+
+    CURLcode res=curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
+
+    if(res!=CURLE_OK){
+        std::cerr<<"[Pull] Network Error: Could not reach server at "<<pullEndpoint<<std::endl;
+        return "";
+    }
+    return jsonResponse;
+}
+
+//hash:url map
+static std::map<std::string, std::string> createMapPull(const std::string& json){
+    std::map<std::string, std::string> urlMap;
+    size_t pos=0;
+
+    while((pos=json.find("\"", pos))!=std::string::npos){
+        size_t keyStart=pos+1;
+        size_t keyEnd=json.find("\"", keyStart);
+        if(keyEnd==std::string::npos) break;
+
+        std::string key=json.substr(keyStart, keyEnd-keyStart);
+        
+        size_t urlStart=json.find("\"http", keyEnd);
+        if(urlStart==std::string::npos) break;
+
+        size_t urlEnd=json.find("\"", urlStart+1);
+        if(urlEnd==std::string::npos) break;
+
+        std::string url=json.substr(urlStart+1, urlEnd-urlStart-1);
+        urlMap[key]=url;
+
+        pos=urlEnd+1;
     }
 
-    return "";
+    return urlMap;
 }
 
-static bool writeTextFile(
-    const fs::path& path,
-    const std::string& contents
-)
-{
-    try
-    {
-        if (path.has_parent_path())
-        {
-            fs::create_directories(path.parent_path());
+//filter out chunks that already exist in local storage
+static std::map<std::string, std::string> filterChunks(const std::map<std::string, std::string>& remoteManifest, const Storage::MetadataDB& metadataDB){
+    std::map<std::string, std::string> missingChunks;
+
+    for (const auto& [hash, url]:remoteManifest){
+        //keep chunks not in local CAS
+        if(!metadataDB.objectExists(hash)){
+            missingChunks[hash]=url;
         }
+    }
+    return missingChunks;
+}
 
-        std::ofstream out(path, std::ios::binary);
+//st:3 connects to MinIO using libcurl GET and writes to disk
+static bool downloadChunkPull(const std::string& url, const fs::path& objectPath) {
+    fs::create_directories(objectPath.parent_path());
 
-        if (!out)
-        {
+    std::ofstream fileOnDisk(objectPath, std::ios::binary);
+    if(!fileOnDisk.is_open()) return false;
+
+    CURL* curl=curl_easy_init();
+    if(!curl){
+        fileOnDisk.close();
+        return false;
+    }
+
+    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, minioWritePull);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &fileOnDisk);
+
+    CURLcode result=curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
+    fileOnDisk.close();
+
+    return(result==CURLE_OK);
+}
+
+
+bool runPull(const std::string& reponame, const std::string& server){
+    Storage::MetadataDB metadataDB(".aigit/metadata.db");
+    Storage::ObjectStore objectStore(".aigit");
+
+    std::string repoToPull=reponame;
+
+    if(repoToPull.empty() || repoToPull=="default-repo"){
+        Core::Config config;
+        config.load();
+        repoToPull=config.get("remote_repo");
+        
+        if(repoToPull.empty()){
+            std::cerr<<"[Error] Could not determine remote repository name. Please specify it or clone the repo first."<<std::endl;
             return false;
         }
-
-        out << contents;
-
-        return static_cast<bool>(out);
     }
-    catch (...)
-    {
-        return false;
-    }
-}
-
-bool runPull(
-    const std::string& reponame,
-    const std::string& server
-)
-{
-    if (!fs::exists(".aigit"))
-    {
-        std::cerr
-            << "[Pull] Error: Not an AI-Git repository."
-            << std::endl;
-
-        return false;
-    }
-
-    // --------------------------------------------------------
-    // 1. Determine which remote repository this clone tracks.
-    // --------------------------------------------------------
-
-    Core::Config config;
-    config.load(".aigit/config");
-
-    std::string repoToPull = reponame;
-
-    if (repoToPull.empty() || repoToPull == "default-repo")
-    {
-        repoToPull = config.get("remote.repo");
-    }
-
-    if (repoToPull.empty())
-    {
-        std::cerr
-            << "[Pull] Error: Could not determine remote repository."
-            << std::endl;
-
-        return false;
-    }
-
-    std::string serverUrl = server;
-
-    if (serverUrl.empty())
-    {
-        serverUrl = config.get(
-            "remote.server",
-            "http://localhost:3000"
-        );
-    }
-
-    std::cout
-        << "[Pull] Checking remote repository '"
-        << repoToPull
-        << "' for updates..."
-        << std::endl;
-
+    
     curl_global_init(CURL_GLOBAL_ALL);
 
-    // --------------------------------------------------------
-    // 2. Ask backend for repository metadata + download URLs.
-    // --------------------------------------------------------
+    std::cout<<"[Pull] Checking remote repository '"<<repoToPull<<"' for updates..."<<std::endl;
 
-    const std::string jsonResponse =
-        getRemoteRepository(serverUrl, repoToPull);
-
-    if (jsonResponse.empty())
-    {
+    std::string jsonResponse=getManifestPull(server, repoToPull);
+    if (jsonResponse.empty()) {
         curl_global_cleanup();
         return false;
     }
 
-    nlohmann::json response;
-
-    try
-    {
-        response = nlohmann::json::parse(jsonResponse);
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr
-            << "[Pull] Error: Server returned malformed JSON: "
-            << e.what()
-            << std::endl;
-
+    std::map<std::string, std::string> remoteManifest=createMapPull(jsonResponse);
+    if(remoteManifest.empty()){
+        std::cerr<<"[Pull] Remote repository is empty or not found.\n";
         curl_global_cleanup();
         return false;
     }
 
-    if (
-        !response.contains("status") ||
-        response["status"] != "ok" ||
-        !response.contains("repository") ||
-        !response["repository"].is_object() ||
-        !response.contains("download_urls") ||
-        !response["download_urls"].is_object()
-    )
-    {
-        std::cerr
-            << "[Pull] Error: Invalid response from backend."
-            << std::endl;
+    std::map<std::string, std::string> missingChunks=filterChunks(remoteManifest, metadataDB);
 
+    if (missingChunks.empty()) {
+        std::cout<<"[Pull] Local repository is already up to date."<<std::endl;
         curl_global_cleanup();
-        return false;
+        return true;
     }
 
-    const nlohmann::json& repository =
-        response["repository"];
+    std::cout<<"[Pull] Found "<<missingChunks.size()<<" new chunk(s) to pull..."<<std::endl;
 
-    if (
-        !repository.contains("head") ||
-        !repository["head"].is_string() ||
-        !repository.contains("refs") ||
-        !repository["refs"].is_object()
-    )
-    {
-        std::cerr
-            << "[Pull] Error: Remote repository metadata is incomplete."
-            << std::endl;
+    size_t successCount=0;
+    for(const auto& [hash, url]:missingChunks){
+        fs::path objectPath=fs::path(".aigit")/"objects"/hash.substr(0, 2)/hash.substr(2);
 
-        curl_global_cleanup();
-        return false;
-    }
+        if(downloadChunkPull(url, objectPath)){
+            long long fileSize=static_cast<long long>(fs::file_size(objectPath));
+            metadataDB.addObject(hash, fileSize, "chunk");
 
-    const std::string remoteHead =repository["head"].get<std::string>();
-
-    const std::string branchName =branchNameFromHead(remoteHead);
-
-    if (branchName.empty())
-    {
-        std::cerr
-            << "[Pull] Error: Unsupported remote HEAD: "
-            << remoteHead
-            << std::endl;
-
-        curl_global_cleanup();
-        return false;
-    }
-
-    const nlohmann::json& remoteRefs =
-        repository["refs"];
-
-    if (
-        !remoteRefs.contains(remoteHead) ||
-        !remoteRefs[remoteHead].is_string()
-    )
-    {
-        std::cerr
-            << "[Pull] Error: Remote HEAD does not point to a commit."
-            << std::endl;
-
-        curl_global_cleanup();
-        return false;
-    }
-
-    const std::string remoteCommit =
-        remoteRefs[remoteHead].get<std::string>();
-
-    // --------------------------------------------------------
-    // 3. Parse remote object download URLs.
-    // --------------------------------------------------------
-
-    std::map<std::string, std::string> downloadUrls;
-
-    try
-    {
-        for (
-            auto it = response["download_urls"].begin();
-            it != response["download_urls"].end();
-            ++it
-        )
-        {
-            if (it.value().is_string())
-            {
-                downloadUrls[it.key()] =
-                    it.value().get<std::string>();
-            }
-        }
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr
-            << "[Pull] Error: Could not parse download URLs: "
-            << e.what()
-            << std::endl;
-
-        curl_global_cleanup();
-        return false;
-    }
-
-    // --------------------------------------------------------
-    // 4. Find which remote objects are missing locally.
-    // --------------------------------------------------------
-
-    Storage::MetadataDB metadataDB(
-        ".aigit/metadata.db"
-    );
-
-    Storage::ObjectStore objectStore(
-        ".aigit"
-    );
-
-    std::map<std::string, std::string> missingObjects;
-
-    for (const auto& [hash, url] : downloadUrls)
-    {
-        if (!metadataDB.objectExists(hash))
-        {
-            missingObjects[hash] = url;
+            std::cout<<"Pulled chunk: "<<hash.substr(0, 8)<<"..."<<std::endl;
+            successCount++;
+        } 
+        else{
+            std::cerr<<"Failed to pull chunk: "<<hash.substr(0, 8)<<"..."<<std::endl;
         }
     }
 
-    std::cout
-        << "[Pull] Remote references "
-        << downloadUrls.size()
-        << " object(s); "
-        << missingObjects.size()
-        << " missing locally."
-        << std::endl;
-
-    // --------------------------------------------------------
-    // 5. Download only missing objects.
-    // --------------------------------------------------------
-
-    std::size_t downloaded = 0;
-
-    for (const auto& [hash, url] : missingObjects)
-    {
-        std::string data;
-
-        if (!Utils::downloadObjectToString(url, data))
-        {
-            std::cerr
-                << "[Pull] Error downloading "
-                << hash.substr(0, 8)
-                << "..."
-                << std::endl;
-
-            curl_global_cleanup();
-            return false;
-        }
-
-        const std::string actualHash =
-            Core::calcSHA256(data);
-
-        if (actualHash != hash)
-        {
-            std::cerr
-                << "[Pull] Hash verification failed for "
-                << hash.substr(0, 8)
-                << "..."
-                << std::endl;
-
-            curl_global_cleanup();
-            return false;
-        }
-
-        // "unknown" is intentional here: the downloaded object already
-        // contains its serialized AI-Git object representation. This is
-        // the same approach used by the working clone path.
-        objectStore.storeObject(
-            hash,
-            data,
-            "unknown"
-        );
-
-        metadataDB.addObject(
-            hash,
-            static_cast<long long>(data.size()),
-            "unknown"
-        );
-
-        ++downloaded;
-
-        std::cout
-            << "[Pull] Downloaded "
-            << downloaded
-            << "/"
-            << missingObjects.size()
-            << "  "
-            << hash.substr(0, 8)
-            << "..."
-            << std::endl;
-    }
-
-    // --------------------------------------------------------
-    // 6. Update local refs to match the remote repository.
-    // --------------------------------------------------------
-
-    for (
-        auto it = remoteRefs.begin();
-        it != remoteRefs.end();
-        ++it
-    )
-    {
-        if (!it.value().is_string())
-        {
-            continue;
-        }
-
-        const std::string refName =
-            it.key();
-
-        const std::string commitHash =
-            it.value().get<std::string>();
-
-        const fs::path refPath =
-            fs::path(".aigit") / fs::path(refName);
-
-        if (!writeTextFile(refPath, commitHash + "\n"))
-        {
-            std::cerr
-                << "[Pull] Error: Could not update ref "
-                << refName
-                << std::endl;
-
-            curl_global_cleanup();
-            return false;
-        }
-    }
-
-    // --------------------------------------------------------
-    // 7. Checkout the updated branch.
-    //
-    // Important:
-    // checkout needs to know the CURRENT commit so it can remove the
-    // currently tracked files before restoring the new snapshot.
-    //
-    // We therefore temporarily keep HEAD on a bootstrap ref pointing to
-    // the old local commit, then checkout the newly-updated branch.
-    // --------------------------------------------------------
-
-    std::string oldHeadContents;
-    std::string oldCommit;
-
-    {
-        std::ifstream headIn(
-            ".aigit/HEAD",
-            std::ios::binary
-        );
-
-        if (headIn)
-        {
-            std::getline(headIn, oldHeadContents);
-        }
-    }
-
-    if (
-        oldHeadContents.rfind("ref: ", 0) == 0
-    )
-    {
-        const std::string oldRef =
-            oldHeadContents.substr(5);
-
-        std::ifstream oldRefIn(
-            fs::path(".aigit") / fs::path(oldRef),
-            std::ios::binary
-        );
-
-        if (oldRefIn)
-        {
-            std::getline(oldRefIn, oldCommit);
-        }
-    }
-
-    const fs::path bootstrapRef =
-        ".aigit/refs/heads/__pull_bootstrap__";
-
-    if (!oldCommit.empty())
-    {
-        if (
-            !writeTextFile(
-                bootstrapRef,
-                oldCommit + "\n"
-            ) ||
-            !writeTextFile(
-                ".aigit/HEAD",
-                "ref: refs/heads/__pull_bootstrap__\n"
-            )
-        )
-        {
-            std::cerr
-                << "[Pull] Error: Could not prepare checkout."
-                << std::endl;
-
-            curl_global_cleanup();
-            return false;
-        }
-    }
-
-    const int checkoutResult =
-        runCheckout(branchName);
-
-    std::error_code ec;
-    fs::remove(bootstrapRef, ec);
-
-    if (checkoutResult != 0)
-    {
-        std::cerr
-            << "[Pull] Error: Download succeeded but checkout failed."
-            << std::endl;
-
-        curl_global_cleanup();
-        return false;
-    }
-
-    // --------------------------------------------------------
-    // 8. Persist remote tracking information.
-    // --------------------------------------------------------
-
-    config.set(
-        "remote.repo",
-        repoToPull
-    );
-
-    config.set(
-        "remote.server",
-        serverUrl
-    );
-
-    config.save(
-        ".aigit/config"
-    );
-
-    std::cout
-        << "[Pull] Pull completed successfully."
-        << std::endl;
-
-    std::cout
-        << "[Pull] Updated "
-        << branchName
-        << " to "
-        << remoteCommit.substr(0, 8)
-        << "..."
-        << std::endl;
-
-    std::cout
-        << "[Pull] Downloaded and verified "
-        << downloaded
-        << " new object(s)."
-        << std::endl;
+    std::cout<<"[Pull] Complete! ("<<successCount<<"/"<<missingChunks.size()<<" updated)"<<std::endl;
 
     curl_global_cleanup();
-    return true;
+    return successCount==missingChunks.size();
 }
-
 }

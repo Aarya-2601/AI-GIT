@@ -978,29 +978,14 @@ a:hover {
    with a sticky suction bulb, then snaps back in.
 ========================================================= */
 
-.chameleon-tongue-track {
-  position: absolute;
-  left: 62px;
-  top: 65px;
-  width: 55px;
-  height: 12px;
-  pointer-events: none;
-  overflow: visible !important;
-  z-index: 1030;
-  display: flex;
-  align-items: center;
-}
-
-.chameleon-tongue-stalk {
-  position: relative;
-  height: 3px;
-  width: 0;
-  background: linear-gradient(90deg, #f43f5e 0%, #ec4899 60%, #fb7185 100%);
-  border-radius: 2px;
-  box-shadow: 0 0 6px rgba(244, 63, 94, 0.85);
-  transform-origin: left center;
-  animation: chameleonTongueSnap 5.5s cubic-bezier(0.18, 0.89, 0.32, 1.15) infinite;
-  will-change: width, transform, opacity;
+.chameleon-tongue-track,
+.chameleon-tongue-stalk,
+.chameleon-tongue-bulb,
+.chameleon-tongue-world-svg {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .chameleon-tongue-bulb {

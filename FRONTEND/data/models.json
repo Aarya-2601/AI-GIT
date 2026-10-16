@@ -1,5 +1,88 @@
 [
   {
+    "id": "my-7gb-llama",
+    "casRepoName": "my-7gb-llama",
+    "name": "my-7gb-llama",
+    "description": "High-performance AI model synced via AI-GIT CLI & MinIO CAS.",
+    "family": "Large Language Model",
+    "framework": "SafeTensors",
+    "precision": "bfloat16",
+    "parameters": "7.0B",
+    "architecture": "LlamaForCausalLM (7B)",
+    "epoch": "Checkpoint 1",
+    "valLoss": "1.05",
+    "stars": 12,
+    "forks": 3,
+    "updatedAt": "Just now",
+    "author": "aarya-ml",
+    "tags": [
+      "SafeTensors",
+      "FastCDC",
+      "MinIO-CAS",
+      "AI-GIT"
+    ],
+    "metrics": {
+      "rawSizeBytes": 7516112004,
+      "casSizeBytes": 1909092450,
+      "spaceSavedBytes": 5607019554,
+      "savingsPercentage": 74.6,
+      "totalChunks": 99,
+      "deduplicatedChunks": 73,
+      "compressionRatio": "3.9x"
+    },
+    "tree": [
+      {
+        "name": "model_7gb_benchmark.safetensors",
+        "type": "file",
+        "size": "7.00 GB",
+        "chunks": 168,
+        "deduped": 125,
+        "hash": "ref:"
+      }
+    ],
+    "commits": [
+      {
+        "hash": "339d7f0",
+        "fullHash": "339d7f0b62362508a46e1810027f512a52e552867f3517eec41d161a8e5e3ca8",
+        "branch": "main",
+        "epoch": "Epoch 1",
+        "valLoss": "1.05",
+        "message": "Pushed model checkpoint & tensor chunks",
+        "author": "Aarya Doshi (CLI)",
+        "date": "Just now",
+        "parents": [],
+        "newChunks": 99,
+        "reusedChunks": 73
+      },
+      {
+        "hash": "e6eac71",
+        "fullHash": "e6eac71f6bdb53425fa2839b539fc5b5a9cb631b9c3aab9c2ab759fddf4f66db",
+        "branch": "main",
+        "epoch": "Epoch 1",
+        "valLoss": "1.05",
+        "message": "Pushed model checkpoint & tensor chunks",
+        "author": "Aarya Doshi (CLI)",
+        "date": "Just now",
+        "parents": [],
+        "newChunks": 99,
+        "reusedChunks": 73
+      },
+      {
+        "hash": "ref:",
+        "fullHash": "ref:",
+        "branch": "main",
+        "epoch": "Epoch 1",
+        "valLoss": "1.05",
+        "message": "Pushed model checkpoint & tensor chunks",
+        "author": "Aarya Doshi (CLI)",
+        "date": "Just now",
+        "parents": [],
+        "newChunks": 99,
+        "reusedChunks": 73
+      }
+    ]
+  },
+  {
     "id": "llama-3-8b-instruct",
     "casRepoName": "aigit-e2e-test",
     "name": "llama-3-8b-instruct",

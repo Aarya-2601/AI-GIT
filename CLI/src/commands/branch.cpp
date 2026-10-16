@@ -1,12 +1,12 @@
 #include "branch.hpp"
-#include "../helpers/gitutils.hpp"
-
-#include <iostream>
-#include <filesystem>
-#include <fstream>
 #include <vector>
 #include <string>
-#include <algorithm>
+#include <filesystem>
+
+#include "../helpers/gitutils.hpp"
+
+#include <fstream>
+#include <iostream>
 
 namespace Commands
 {
@@ -38,12 +38,20 @@ void runBranch(const std::vector<std::string>& args)
         return;
     }
 
-    Utils::writeBranchRef(branchName, currentCommit);
+    std::ofstream branchFile(".aigit/refs/heads/" + branchName);
+
+    if(!branchFile)
+    {
+        std::cout << "Unable to create branch.\n";
+        return;
+    }
+
+    branchFile << currentCommit;
+
+    branchFile.close();
 
     std::cout << "Created branch '" << branchName << "'\n";
 }
-
-#include <filesystem>
 
 namespace fs = std::filesystem;
 
