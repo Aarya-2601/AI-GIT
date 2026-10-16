@@ -10,40 +10,29 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY
     "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 )
 
-# ------------------------------------------------------------
-# Dependencies
-# ------------------------------------------------------------
-
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(nlohmann_json CONFIG REQUIRED)
+find_package(SQLite3 REQUIRED)
 find_package(CURL REQUIRED)
 
-find_package(unofficial-sqlite3 CONFIG QUIET)
-if(TARGET unofficial::sqlite3::sqlite3)
-    set(SQLITE3_TARGET unofficial::sqlite3::sqlite3)
-else()
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(SQLITE3 REQUIRED IMPORTED_TARGET sqlite3)
-    set(SQLITE3_TARGET PkgConfig::SQLITE3)
-endif()
-
-
-# ------------------------------------------------------------
-# Main AI-Git CLI
-# ------------------------------------------------------------
-
 set(SOURCES
+
+    #main
     "src/main.cpp"
 
-    "src/core/hashing.cpp"
-    "src/core/compression.cpp"
+    #core
+    "src/core/storage.cpp"
     "src/core/config.cpp"
     "src/core/index.cpp"
-    "src/core/chunking.cpp"
-    "src/core/object_io.cpp"
-    "src/core/filesystem.cpp"
+    "src/core/refs.cpp"
 
+    #modular task folders
+    "src/hashing/hashing.cpp"
+    "src/compression/compression.cpp"
+    "src/inspection/file_inspector.cpp"
+    "src/chunking/asymmetric_chunker.cpp"
+
+    #commands
     "src/commands/hash_object.cpp"
     "src/commands/init.cpp"
     "src/commands/add.cpp"
@@ -52,393 +41,267 @@ set(SOURCES
     "src/commands/log.cpp"
     "src/commands/command_config.cpp"
     "src/commands/branch.cpp"
-    "src/commands/checkout.cpp"
+    "src/commands/diff.cpp"
     "src/commands/push.cpp"
     "src/commands/pull.cpp"
     "src/commands/clone.cpp"
-    "src/commands/fsck.cpp"
-    "src/commands/migrate.cpp"
-    "src/commands/gc.cpp"
 
+    #helpers
     "src/helpers/gitutils.cpp"
-    "src/helpers/curl_helpers.cpp"
 
+    #models
     "src/models/blob.cpp"
     "src/models/tree.cpp"
     "src/models/commit.cpp"
 
+    #storage
     "src/storage/object_store.cpp"
     "src/storage/metadata_db.cpp"
     "src/storage/storage_manager.cpp"
 
-    "src/RemoteCASClient/remote_cas_client.cpp"
-    "src/RemoteCASClient/remote_sync_manager.cpp"
+    #novel storage engine & diffing
+    "src/core/mmap_file.cpp"
+    "src/hashing/xxhash_engine.cpp"
+    "src/chunking/tensor_fastcdc.cpp"
+    "src/indexing/similarity_index.cpp"
+    "src/diffing/simd_delta_engine.cpp"
+    "src/diffing/structural_differ.cpp"
+    "src/diffing/metadata_harvester.cpp"
+    "src/compression/bitshuffle_zstd.cpp"
+    "src/compression/polymorphic_codec.cpp"
+    "src/sync/cas_sync_engine.cpp"
 )
 
 add_executable(ai-git ${SOURCES})
 
 target_include_directories(ai-git PRIVATE
     src
+    src/core
+    src/inspection
+    src/chunking
+    src/compression
+    src/hashing
+    src/indexing
+    src/diffing
+    src/sync
+    src/storage
+)
+
+target_compile_definitions(ai-git PRIVATE
+    CURL_STATICLIB
 )
 
 target_link_libraries(ai-git PRIVATE
-    nlohmann_json::nlohmann_json
     OpenSSL::SSL
     OpenSSL::Crypto
     ZLIB::ZLIB
-    ${SQLITE3_TARGET}
+    SQLite::SQLite3
     CURL::libcurl
+    ws2_32
+    crypt32
+    advapi32
+    user32
+    wldap32
+    normaliz
+    bcrypt
+    secur32
+    iphlpapi
+    psapi
 )
-
-
-# ------------------------------------------------------------
-# Object Store Test
-# ------------------------------------------------------------
 
 add_executable(object-store-test
     src/storage/object_store_test.cpp
     src/storage/object_store.cpp
-    src/core/hashing.cpp
-    src/core/filesystem.cpp
-    src/core/compression.cpp
+    src/hashing/hashing.cpp
 )
 
 target_include_directories(object-store-test PRIVATE
     src
+    src/hashing
 )
 
 target_link_libraries(object-store-test PRIVATE
     OpenSSL::Crypto
-    ZLIB::ZLIB
 )
 
-
 # ------------------------------------------------------------
-# Storage Manager Test
+# Format Inspector Verification Tool (Task 1.1)
 # ------------------------------------------------------------
 
-add_executable(storage-manager-test
-    src/storage/storage_manager_test.cpp
-    src/storage/storage_manager.cpp
-    src/storage/object_store.cpp
-    src/storage/metadata_db.cpp
-    src/core/hashing.cpp
-    src/core/chunking.cpp
-    src/core/filesystem.cpp
-    src/core/compression.cpp
+add_executable(aigit-inspect
+    src/tools/inspect_main.cpp
+    src/inspection/file_inspector.cpp
 )
 
-target_include_directories(storage-manager-test PRIVATE
+target_include_directories(aigit-inspect PRIVATE
     src
+    src/inspection
 )
 
-target_link_libraries(storage-manager-test PRIVATE
+# ------------------------------------------------------------
+# Asymmetric Chunker Verification Tool (Task 1.2)
+# ------------------------------------------------------------
+
+add_executable(aigit-chunk
+    src/tools/chunker_test_main.cpp
+    src/chunking/asymmetric_chunker.cpp
+    src/inspection/file_inspector.cpp
+    src/hashing/hashing.cpp
+)
+
+target_include_directories(aigit-chunk PRIVATE
+    src
+    src/inspection
+    src/chunking
+    src/hashing
+)
+
+target_link_libraries(aigit-chunk PRIVATE
+    OpenSSL::Crypto
+)
+
+# ------------------------------------------------------------
+# Polymorphic Codec Verification Tool (Task 1.3)
+# ------------------------------------------------------------
+
+add_executable(aigit-codec
+    src/tools/codec_test_main.cpp
+    src/compression/polymorphic_codec.cpp
+    src/compression/compression.cpp
+    src/chunking/asymmetric_chunker.cpp
+    src/inspection/file_inspector.cpp
+    src/hashing/hashing.cpp
+)
+
+target_include_directories(aigit-codec PRIVATE
+    src
+    src/inspection
+    src/chunking
+    src/compression
+    src/hashing
+)
+
+target_link_libraries(aigit-codec PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    ${SQLITE3_TARGET}
-    nlohmann_json::nlohmann_json
 )
 
-
 # ------------------------------------------------------------
-# Remote Sync Test
+# Semantic Structural Differ & Metadata Harvester (Task 1.4)
 # ------------------------------------------------------------
 
-add_executable(remote-sync-test
-    src/RemoteCASClient/remote_sync_test.cpp
-    src/RemoteCASClient/remote_cas_client.cpp
-    src/RemoteCASClient/remote_sync_manager.cpp
-
-    src/storage/storage_manager.cpp
-    src/storage/object_store.cpp
-    src/storage/metadata_db.cpp
-
-    src/core/hashing.cpp
-    src/core/chunking.cpp
-    src/core/filesystem.cpp
-    src/core/compression.cpp
+add_executable(aigit-diff
+    src/tools/diff_main.cpp
+    src/diffing/structural_differ.cpp
+    src/diffing/metadata_harvester.cpp
+    src/inspection/file_inspector.cpp
+    src/hashing/hashing.cpp
 )
 
-target_include_directories(remote-sync-test PRIVATE
+target_include_directories(aigit-diff PRIVATE
     src
+    src/diffing
+    src/inspection
+    src/hashing
 )
 
-target_link_libraries(remote-sync-test PRIVATE
+target_link_libraries(aigit-diff PRIVATE
+    OpenSSL::Crypto
+    SQLite::SQLite3
+)
+
+# ------------------------------------------------------------
+# Global CAS Sync & Remote Delta Engine (Task 1.5)
+# ------------------------------------------------------------
+
+add_executable(aigit-sync
+    src/tools/sync_main.cpp
+    src/sync/cas_sync_engine.cpp
+    src/compression/polymorphic_codec.cpp
+    src/compression/compression.cpp
+    src/chunking/asymmetric_chunker.cpp
+    src/inspection/file_inspector.cpp
+    src/hashing/hashing.cpp
+)
+
+target_include_directories(aigit-sync PRIVATE
+    src
+    src/sync
+    src/compression
+    src/chunking
+    src/inspection
+    src/hashing
+)
+
+target_compile_definitions(aigit-sync PRIVATE
+    CURL_STATICLIB
+)
+
+target_link_libraries(aigit-sync PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    ${SQLITE3_TARGET}
-    nlohmann_json::nlohmann_json
     CURL::libcurl
+    ws2_32
+    crypt32
+    advapi32
+    user32
+    wldap32
+    normaliz
+    bcrypt
+    secur32
+    iphlpapi
 )
 
-
 # ------------------------------------------------------------
-# Push Metadata Test
+# Novel Storage Engine (MMap, Tensor FastCDC, LSH, SIMD Delta)
 # ------------------------------------------------------------
 
-add_executable(push-metadata-test
-    src/storage/push_metadata_test.cpp
-
-    src/commands/init.cpp
-    src/commands/add.cpp
-    src/commands/commit.cpp
-
-    src/core/hashing.cpp
-    src/core/compression.cpp
-    src/core/config.cpp
-    src/core/index.cpp
-    src/core/chunking.cpp
-    src/core/object_io.cpp
-    src/core/filesystem.cpp
-
-    src/storage/object_store.cpp
-    src/storage/metadata_db.cpp
-    src/storage/storage_manager.cpp
-
-    src/models/blob.cpp
-    src/models/tree.cpp
-    src/models/commit.cpp
-
-    src/helpers/gitutils.cpp
+add_executable(aigit-engine
+    src/tools/engine_benchmark.cpp
+    src/core/mmap_file.cpp
+    src/hashing/xxhash_engine.cpp
+    src/hashing/hashing.cpp
+    src/chunking/tensor_fastcdc.cpp
+    src/indexing/similarity_index.cpp
+    src/diffing/simd_delta_engine.cpp
+    src/compression/bitshuffle_zstd.cpp
+    src/compression/compression.cpp
+    src/inspection/file_inspector.cpp
 )
 
-target_include_directories(push-metadata-test PRIVATE
+target_include_directories(aigit-engine PRIVATE
     src
+    src/core
+    src/hashing
+    src/chunking
+    src/indexing
+    src/diffing
+    src/compression
+    src/inspection
 )
 
-target_link_libraries(push-metadata-test PRIVATE
+target_link_libraries(aigit-engine PRIVATE
     OpenSSL::Crypto
     ZLIB::ZLIB
-    ${SQLITE3_TARGET}
-    nlohmann_json::nlohmann_json
+    ws2_32
+    crypt32
+    advapi32
+    user32
+    psapi
 )
-
-
-# ------------------------------------------------------------
-# Status Clean Test
-# ------------------------------------------------------------
-
-add_executable(status-clean-test
-    src/storage/status_clean_test.cpp
-
-    src/commands/init.cpp
-    src/commands/add.cpp
-    src/commands/commit.cpp
-    src/commands/status.cpp
-
-    src/core/hashing.cpp
-    src/core/compression.cpp
-    src/core/config.cpp
-    src/core/index.cpp
-    src/core/chunking.cpp
-    src/core/object_io.cpp
-    src/core/filesystem.cpp
-
-    src/storage/object_store.cpp
-    src/storage/metadata_db.cpp
-    src/storage/storage_manager.cpp
-
-    src/models/blob.cpp
-    src/models/tree.cpp
-    src/models/commit.cpp
-
-    src/helpers/gitutils.cpp
-)
-
-target_include_directories(status-clean-test PRIVATE
-    src
-)
-
-target_link_libraries(status-clean-test PRIVATE
-    OpenSSL::Crypto
-    ZLIB::ZLIB
-    ${SQLITE3_TARGET}
-    nlohmann_json::nlohmann_json
-)
-
-
-# ------------------------------------------------------------
-# Checkout Index Sync Test
-# ------------------------------------------------------------
-
-add_executable(checkout-index-sync-test
-    src/storage/checkout_index_sync_test.cpp
-
-    src/commands/init.cpp
-    src/commands/add.cpp
-    src/commands/commit.cpp
-    src/commands/branch.cpp
-    src/commands/checkout.cpp
-
-    src/core/hashing.cpp
-    src/core/compression.cpp
-    src/core/config.cpp
-    src/core/index.cpp
-    src/core/chunking.cpp
-    src/core/object_io.cpp
-    src/core/filesystem.cpp
-
-    src/storage/object_store.cpp
-    src/storage/metadata_db.cpp
-    src/storage/storage_manager.cpp
-
-    src/models/blob.cpp
-    src/models/tree.cpp
-    src/models/commit.cpp
-
-    src/helpers/gitutils.cpp
-)
-
-target_include_directories(checkout-index-sync-test PRIVATE
-    src
-)
-
-target_link_libraries(checkout-index-sync-test PRIVATE
-    OpenSSL::Crypto
-    ZLIB::ZLIB
-    ${SQLITE3_TARGET}
-    nlohmann_json::nlohmann_json
-)
-
-
-# ------------------------------------------------------------
-# Hash Object Parity Test
-# ------------------------------------------------------------
-
-add_executable(hash-object-parity-test
-    src/storage/hash_object_parity_test.cpp
-
-    src/commands/init.cpp
-    src/commands/add.cpp
-    src/commands/hash_object.cpp
-
-    src/core/hashing.cpp
-    src/core/compression.cpp
-    src/core/config.cpp
-    src/core/index.cpp
-    src/core/chunking.cpp
-    src/core/object_io.cpp
-    src/core/filesystem.cpp
-
-    src/storage/object_store.cpp
-    src/storage/metadata_db.cpp
-    src/storage/storage_manager.cpp
-
-    src/models/blob.cpp
-    src/models/tree.cpp
-    src/models/commit.cpp
-
-    src/helpers/gitutils.cpp
-)
-
-target_include_directories(hash-object-parity-test PRIVATE
-    src
-)
-
-target_link_libraries(hash-object-parity-test PRIVATE
-    OpenSSL::Crypto
-    ZLIB::ZLIB
-    ${SQLITE3_TARGET}
-    nlohmann_json::nlohmann_json
-)
-
-
-# ------------------------------------------------------------
-# Metadata Rebuild Test
-# ------------------------------------------------------------
-
-add_executable(metadata-rebuild-test
-    src/storage/metadata_rebuild_test.cpp
-
-    src/commands/init.cpp
-    src/commands/add.cpp
-    src/commands/commit.cpp
-
-    src/core/hashing.cpp
-    src/core/compression.cpp
-    src/core/config.cpp
-    src/core/index.cpp
-    src/core/chunking.cpp
-    src/core/object_io.cpp
-    src/core/filesystem.cpp
-
-    src/storage/object_store.cpp
-    src/storage/metadata_db.cpp
-    src/storage/storage_manager.cpp
-
-    src/models/blob.cpp
-    src/models/tree.cpp
-    src/models/commit.cpp
-
-    src/helpers/gitutils.cpp
-)
-
-target_include_directories(metadata-rebuild-test PRIVATE
-    src
-)
-
-target_link_libraries(metadata-rebuild-test PRIVATE
-    OpenSSL::Crypto
-    ZLIB::ZLIB
-    ${SQLITE3_TARGET}
-    nlohmann_json::nlohmann_json
-)
-
-
-# ------------------------------------------------------------
-# Garbage Collection Test
-# ------------------------------------------------------------
-
-add_executable(gc-test
-    src/storage/gc_test.cpp
-
-    src/commands/init.cpp
-    src/commands/add.cpp
-    src/commands/commit.cpp
-    src/commands/gc.cpp
-
-    src/core/hashing.cpp
-    src/core/compression.cpp
-    src/core/config.cpp
-    src/core/index.cpp
-    src/core/chunking.cpp
-    src/core/object_io.cpp
-    src/core/filesystem.cpp
-
-    src/storage/object_store.cpp
-    src/storage/metadata_db.cpp
-    src/storage/storage_manager.cpp
-
-    src/models/blob.cpp
-    src/models/tree.cpp
-    src/models/commit.cpp
-
-    src/helpers/gitutils.cpp
-)
-
-target_include_directories(gc-test PRIVATE
-    src
-)
-
-target_link_libraries(gc-test PRIVATE
-    OpenSSL::Crypto
-    ZLIB::ZLIB
-    ${SQLITE3_TARGET}
-    nlohmann_json::nlohmann_json
-)
-
-
-# ------------------------------------------------------------
-# Installation / Packaging
-# ------------------------------------------------------------
 
 install(
-    TARGETS ai-git
+    TARGETS ai-git aigit-inspect aigit-chunk aigit-codec aigit-diff aigit-sync aigit-engine
     DESTINATION bin
 )
 
+
 set(CPACK_PACKAGE_NAME "AI-Git")
-set(CPACK_PACKAGE_VENDOR "The AI-Git Team")
+
+set(CPACK_PACKAGE_VENDOR
+    "The AI-Git Team"
+)
+
 set(
     CPACK_PACKAGE_DESCRIPTION_SUMMARY
     "High-Performance Standalone VCS for AI & ML Models"
@@ -451,11 +314,17 @@ set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_NSIS_MODIFY_PATH ON)
 
 if(WIN32)
+
     set(CPACK_GENERATOR "NSIS;ZIP")
+
 elseif(APPLE)
+
     set(CPACK_GENERATOR "DragNDrop;TGZ")
+
 else()
+
     set(CPACK_GENERATOR "DEB;RPM;TGZ")
+
 endif()
 
 include(CPack)

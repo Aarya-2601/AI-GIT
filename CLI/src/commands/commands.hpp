@@ -6,15 +6,15 @@
 
 namespace Commands{  //organizational namepace box
     int runInit();  //init command to be scheduled for run first
-    int runHashObject(const std::string& filePath, bool verbose = false);  //hash object function
+    int runHashObject(const std::string& filePath);  //hash object function
     int runAdd(const std::vector<std::string>& targets);
     int runCommit(const std::string& message);
     int runStatus();
     int runLog();
     int runConfig(const std::vector<std::string>& args);
-    int runFsck();
-    int runMigrate();
-    int runGc();
+
+    int runDiff(const std::vector<std::string>& targets);
+    int runInspect(const std::string& filePath);
 
     //remote commands
     bool runPush(const std::string& server = "http://localhost:3000");
