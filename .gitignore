@@ -29,3 +29,16 @@ vcpkg_installed/
 *.suo
 *.userosv
 *.sln.docstates
+
+# Dependencies & Scratch
+node_modules/
+scratch/
+
+# Local AI-GIT storage & caches
+.aigit/objects/
+.aigit/metadata.db
+.aigit/cas/
+aigit-e2e-test/
+clone-e2e-test/
+test-repo/
+CLI/build*/
